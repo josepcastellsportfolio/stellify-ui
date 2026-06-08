@@ -1,0 +1,255 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "stellify",
+  "homepage": "https://github.com/josepcastellsportfolio/stellify-ui",
+  "items": [
+    {
+      "name": "stellify-base",
+      "type": "registry:style",
+      "title": "StellifyIT design system base",
+      "description": "Canonical StellifyIT theme: emerald/teal/slate tokens (light + dark, oklch), Inter font, radius. Install first.",
+      "dependencies": ["tailwindcss-animate", "class-variance-authority", "clsx", "tailwind-merge"],
+      "registryDependencies": ["utils"],
+      "cssVars": {
+        "theme": {
+          "font-sans": "Inter, system-ui, sans-serif",
+          "radius": "0.625rem"
+        },
+        "light": {
+          "background": "oklch(0.98 0.002 264.536)",
+          "foreground": "oklch(0.208 0.042 265.755)",
+          "card": "oklch(1 0 0)",
+          "card-foreground": "oklch(0.208 0.042 265.755)",
+          "popover": "oklch(1 0 0)",
+          "popover-foreground": "oklch(0.208 0.042 265.755)",
+          "primary": "oklch(0.525 0.095 126)",
+          "primary-foreground": "oklch(1 0 0)",
+          "secondary": "oklch(0.511 0.096 186.391)",
+          "secondary-foreground": "oklch(0.982 0.018 166.913)",
+          "muted": "oklch(0.968 0.007 264.536)",
+          "muted-foreground": "oklch(0.554 0.046 257.417)",
+          "accent": "oklch(0.96 0.025 126)",
+          "accent-foreground": "oklch(0.3 0.06 126)",
+          "destructive": "oklch(0.577 0.245 27.325)",
+          "destructive-foreground": "oklch(0.985 0 0)",
+          "border": "oklch(0.929 0.013 255.508)",
+          "input": "oklch(0.929 0.013 255.508)",
+          "ring": "oklch(0.525 0.095 126)",
+          "chart-1": "oklch(0.525 0.095 126)",
+          "chart-2": "oklch(0.62 0.09 120)",
+          "chart-3": "oklch(0.45 0.08 135)",
+          "chart-4": "oklch(0.72 0.08 118)",
+          "chart-5": "oklch(0.58 0.07 142)",
+          "sidebar": "oklch(0.985 0.005 264.536)",
+          "sidebar-foreground": "oklch(0.208 0.042 265.755)",
+          "sidebar-primary": "oklch(0.525 0.095 126)",
+          "sidebar-primary-foreground": "oklch(1 0 0)",
+          "sidebar-accent": "oklch(0.96 0.025 126)",
+          "sidebar-accent-foreground": "oklch(0.3 0.06 126)",
+          "sidebar-border": "oklch(0.929 0.013 255.508)",
+          "sidebar-ring": "oklch(0.525 0.095 126)",
+          "success": "oklch(0.525 0.095 126)",
+          "success-foreground": "oklch(1 0 0)",
+          "warning": "oklch(0.795 0.184 86.047)",
+          "warning-foreground": "oklch(0.279 0.077 45.635)",
+          "info": "oklch(0.511 0.096 186.391)",
+          "info-foreground": "oklch(1 0 0)"
+        },
+        "dark": {
+          "background": "oklch(0.15 0.02 265)",
+          "foreground": "oklch(0.968 0.007 264.536)",
+          "card": "oklch(0.21 0.026 265)",
+          "card-foreground": "oklch(0.968 0.007 264.536)",
+          "popover": "oklch(0.21 0.026 265)",
+          "popover-foreground": "oklch(0.968 0.007 264.536)",
+          "primary": "oklch(0.72 0.095 126)",
+          "primary-foreground": "oklch(0.25 0.05 126)",
+          "secondary": "oklch(0.704 0.14 182.503)",
+          "secondary-foreground": "oklch(0.277 0.046 192.524)",
+          "muted": "oklch(0.293 0.033 265.755)",
+          "muted-foreground": "oklch(0.704 0.04 256.788)",
+          "accent": "oklch(0.3 0.06 126)",
+          "accent-foreground": "oklch(0.72 0.095 126)",
+          "destructive": "oklch(0.396 0.141 25.723)",
+          "destructive-foreground": "oklch(0.985 0 0)",
+          "border": "oklch(0.293 0.033 265.755)",
+          "input": "oklch(0.293 0.033 265.755)",
+          "ring": "oklch(0.72 0.095 126)",
+          "chart-1": "oklch(0.72 0.095 126)",
+          "chart-2": "oklch(0.6 0.09 120)",
+          "chart-3": "oklch(0.78 0.08 135)",
+          "chart-4": "oklch(0.55 0.08 118)",
+          "chart-5": "oklch(0.65 0.07 142)",
+          "sidebar": "oklch(0.18 0.023 265)",
+          "sidebar-foreground": "oklch(0.968 0.007 264.536)",
+          "sidebar-primary": "oklch(0.72 0.095 126)",
+          "sidebar-primary-foreground": "oklch(0.25 0.05 126)",
+          "sidebar-accent": "oklch(0.3 0.06 126)",
+          "sidebar-accent-foreground": "oklch(0.72 0.095 126)",
+          "sidebar-border": "oklch(0.293 0.033 265.755)",
+          "sidebar-ring": "oklch(0.72 0.095 126)",
+          "success": "oklch(0.72 0.095 126)",
+          "success-foreground": "oklch(0.25 0.05 126)",
+          "warning": "oklch(0.828 0.189 84.429)",
+          "warning-foreground": "oklch(0.279 0.077 45.635)",
+          "info": "oklch(0.704 0.14 182.503)",
+          "info-foreground": "oklch(0.277 0.046 192.524)"
+        }
+      },
+      "css": {
+        "@import": "url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap')"
+      },
+      "files": []
+    },
+    {
+      "name": "metric-card",
+      "type": "registry:component",
+      "title": "MetricCard",
+      "description": "KPI card: label, value, unit, delta with trend arrow, accent icon chip. invertDelta flips good/bad colors (for expenses).",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "registry/stellify/metric-card.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "chart-card",
+      "type": "registry:component",
+      "title": "ChartCard",
+      "description": "Card shell for charts with loading skeleton, empty and error states, header actions slot. All copy passed via props.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["card", "button", "utils"],
+      "files": [
+        { "path": "registry/stellify/chart-card.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "currency-display",
+      "type": "registry:component",
+      "title": "CurrencyDisplay",
+      "description": "Formats a number as currency via Intl.NumberFormat. locale + currency via props, no hardcoded language.",
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "registry/stellify/currency-display.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "money-input",
+      "type": "registry:component",
+      "title": "MoneyInput",
+      "description": "Numeric input for monetary amounts with a currency adornment. Controlled, emits number values.",
+      "registryDependencies": ["input", "utils"],
+      "files": [
+        { "path": "registry/stellify/money-input.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "progress-ring",
+      "type": "registry:component",
+      "title": "ProgressRing",
+      "description": "SVG circular progress indicator. value/max/size/strokeWidth via props, themed with currentColor + muted track.",
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "registry/stellify/progress-ring.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "page-header",
+      "type": "registry:component",
+      "title": "PageHeader",
+      "description": "Page title + optional description + actions slot. Presentational only (no auth/theme/locale logic).",
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "registry/stellify/page-header.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "section-card",
+      "type": "registry:component",
+      "title": "SectionCard",
+      "description": "Card with a titled header, optional description, header actions slot and content area. Common panel shell.",
+      "registryDependencies": ["card", "utils"],
+      "files": [
+        { "path": "registry/stellify/section-card.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:component",
+      "title": "EmptyState",
+      "description": "Centered empty/placeholder block: icon, title, description and optional action.",
+      "dependencies": ["lucide-react"],
+      "files": [
+        { "path": "registry/stellify/empty-state.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "status-badge",
+      "type": "registry:component",
+      "title": "StatusBadge",
+      "description": "Badge with semantic status variants (success/warning/danger/info/neutral). Label via children.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "registry/stellify/status-badge.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "confirm-dialog",
+      "type": "registry:component",
+      "title": "ConfirmDialog",
+      "description": "Controlled confirmation dialog over AlertDialog. All copy via props; destructive flag for dangerous actions.",
+      "registryDependencies": ["alert-dialog", "button", "utils"],
+      "files": [
+        { "path": "registry/stellify/confirm-dialog.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:component",
+      "title": "DataTable",
+      "description": "Presentational paginated table (columns, rows, sort, loading skeleton, empty state). Fetching is the consumer's job — see toolbar/pagination slots.",
+      "registryDependencies": ["table", "utils"],
+      "files": [
+        { "path": "registry/stellify/data-table.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "use-currency-format",
+      "type": "registry:hook",
+      "title": "useCurrencyFormat",
+      "description": "Hook returning a memoized currency formatter (Intl.NumberFormat) for a given locale + currency.",
+      "files": [
+        { "path": "registry/stellify/use-currency-format.ts", "type": "registry:hook" }
+      ]
+    },
+    {
+      "name": "use-persisted-state",
+      "type": "registry:hook",
+      "title": "usePersistedState",
+      "description": "useState that persists to localStorage (JSON-serialized), SSR-safe.",
+      "files": [
+        { "path": "registry/stellify/use-persisted-state.ts", "type": "registry:hook" }
+      ]
+    },
+    {
+      "name": "week-dates",
+      "type": "registry:lib",
+      "title": "week-dates",
+      "description": "Date helpers for weekly grids: start-of-week, week range, day labels. No external date library.",
+      "files": [
+        { "path": "registry/stellify/week-dates.ts", "type": "registry:lib" }
+      ]
+    },
+    {
+      "name": "week-grid",
+      "type": "registry:component",
+      "title": "WeekGrid / DayColumn",
+      "description": "Presentational 7-day week grid with day columns. Events and rendering passed via props; no scheduling business logic.",
+      "registryDependencies": ["utils", "week-dates"],
+      "files": [
+        { "path": "registry/stellify/week-grid.tsx", "type": "registry:component" }
+      ]
+    }
+  ]
+}

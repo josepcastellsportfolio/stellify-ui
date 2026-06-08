@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section-card",
+  "title": "SectionCard",
+  "description": "Card with a titled header, optional description, header actions slot and content area. Common panel shell.",
+  "registryDependencies": [
+    "card",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/section-card.tsx",
+      "content": "import type { FC, ReactNode } from \"react\"\n\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardHeader,\n  CardTitle,\n} from \"@/components/ui/card\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface SectionCardProps {\n  /** Section title. */\n  title: string\n  /** Optional description under the title. */\n  description?: string\n  /** Slot on the right of the header (e.g. an \"Add\" button). */\n  actions?: ReactNode\n  /** Section body. */\n  children?: ReactNode\n  /** Drop the default CardContent padding (e.g. for tables that draw their own). */\n  noContentPadding?: boolean\n  className?: string\n  contentClassName?: string\n}\n\n/**\n * Titled card used as a panel shell across StellifyIT (budgets, alerts, etc.):\n * a header with title/description and an actions slot, plus a content area.\n */\nconst SectionCard: FC<SectionCardProps> = ({\n  title,\n  description,\n  actions,\n  children,\n  noContentPadding = false,\n  className,\n  contentClassName,\n}) => (\n  <Card className={className}>\n    <CardHeader className=\"flex flex-row items-start justify-between space-y-0\">\n      <div className=\"space-y-1\">\n        <CardTitle>{title}</CardTitle>\n        {description && <CardDescription>{description}</CardDescription>}\n      </div>\n      {actions && <div className=\"flex items-center gap-2\">{actions}</div>}\n    </CardHeader>\n    <CardContent\n      className={cn(noContentPadding && \"p-0\", contentClassName)}\n    >\n      {children}\n    </CardContent>\n  </Card>\n)\n\nexport default SectionCard\nexport { SectionCard }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

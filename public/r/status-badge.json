@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "status-badge",
+  "title": "StatusBadge",
+  "description": "Badge with semantic status variants (success/warning/danger/info/neutral). Label via children.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/status-badge.tsx",
+      "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst statusBadgeVariants = cva(\n  \"inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors\",\n  {\n    variants: {\n      status: {\n        success:\n          \"border-transparent bg-success/15 text-success dark:bg-success/20\",\n        warning:\n          \"border-transparent bg-warning/15 text-warning dark:bg-warning/20\",\n        danger:\n          \"border-transparent bg-destructive/15 text-destructive dark:bg-destructive/20\",\n        info: \"border-transparent bg-info/15 text-info dark:bg-info/20\",\n        neutral:\n          \"border-transparent bg-muted text-muted-foreground\",\n      },\n    },\n    defaultVariants: {\n      status: \"neutral\",\n    },\n  }\n)\n\nexport interface StatusBadgeProps\n  extends React.HTMLAttributes<HTMLSpanElement>,\n    VariantProps<typeof statusBadgeVariants> {\n  /** Show a small leading dot in the current text color. */\n  withDot?: boolean\n}\n\n/**\n * Badge with semantic status colors backed by the StellifyIT tokens\n * (success / warning / danger / info / neutral). The label is the children,\n * so it stays i18n-agnostic.\n *\n * Note: relies on the `success`, `warning` and `info` tokens shipped by\n * `stellify-base` (in addition to the standard shadcn `destructive`/`muted`).\n */\nfunction StatusBadge({\n  className,\n  status,\n  withDot = false,\n  children,\n  ...props\n}: StatusBadgeProps) {\n  return (\n    <span\n      className={cn(statusBadgeVariants({ status }), className)}\n      {...props}\n    >\n      {withDot && (\n        <span className=\"h-1.5 w-1.5 rounded-full bg-current\" aria-hidden />\n      )}\n      {children}\n    </span>\n  )\n}\n\nexport default StatusBadge\nexport { StatusBadge, statusBadgeVariants }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/lib/utils": ["./lib/utils.ts"],
+      "@/lib/week-dates": ["./lib/week-dates.ts"],
+      "@/components/ui/*": ["./components/ui/*"],
+      "lucide-react": ["./node_modules/lucide-react"],
+      "class-variance-authority": ["./node_modules/class-variance-authority"]
+    },
+    "typeRoots": [
+      "../../stellifyit-global/apps/web-app/node_modules/@types"
+    ]
+  },
+  "include": [
+    "../registry/stellify/**/*.ts",
+    "../registry/stellify/**/*.tsx",
+    "./lib/**/*.ts",
+    "./components/ui/**/*.tsx"
+  ]
+}

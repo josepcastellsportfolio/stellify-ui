@@ -1,0 +1,14 @@
+{
+  "name": "stellify-ui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "@stellify — shared shadcn-style component registry for StellifyIT projects",
+  "type": "module",
+  "scripts": {
+    "registry:build": "shadcn build",
+    "registry:list": "ls -1 public/r"
+  },
+  "devDependencies": {
+    "shadcn": "4.10.0"
+  }
+}

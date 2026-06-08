@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "week-dates",
+  "title": "week-dates",
+  "description": "Date helpers for weekly grids: start-of-week, week range, day labels. No external date library.",
+  "files": [
+    {
+      "path": "registry/stellify/week-dates.ts",
+      "content": "/**\n * Date helpers for weekly grids. No external date library — plain `Date` and\n * ISO `YYYY-MM-DD` strings, matching how the StellifyIT planner addresses days.\n */\n\n/** Format a Date as a local `YYYY-MM-DD` string (no timezone shift). */\nexport function toISODate(date: Date): string {\n  const y = date.getFullYear()\n  const m = String(date.getMonth() + 1).padStart(2, \"0\")\n  const d = String(date.getDate()).padStart(2, \"0\")\n  return `${y}-${m}-${d}`\n}\n\n/** Parse a `YYYY-MM-DD` string into a local Date at midnight. */\nexport function fromISODate(iso: string): Date {\n  return new Date(`${iso}T00:00:00`)\n}\n\n/** Today as a `YYYY-MM-DD` string. */\nexport function todayISO(): string {\n  return toISODate(new Date())\n}\n\n/**\n * Monday-of-the-week for the given ISO date, as an ISO string.\n * Weeks start on Monday (ISO-8601), matching the planner.\n */\nexport function startOfWeek(iso: string): string {\n  const date = fromISODate(iso)\n  const day = date.getDay() // 0 = Sun\n  const mondayOffset = day === 0 ? -6 : 1 - day\n  date.setDate(date.getDate() + mondayOffset)\n  return toISODate(date)\n}\n\n/** The 7 ISO dates (Mon..Sun) of the week containing `iso`. */\nexport function getWeekDates(iso: string): string[] {\n  const monday = fromISODate(startOfWeek(iso))\n  return Array.from({ length: 7 }, (_, i) => {\n    const day = new Date(monday)\n    day.setDate(monday.getDate() + i)\n    return toISODate(day)\n  })\n}\n\n/** Localized weekday labels (Mon..Sun) for the given locale. */\nexport function weekdayLabels(\n  locale?: string,\n  weekday: \"long\" | \"short\" | \"narrow\" = \"short\"\n): string[] {\n  const formatter = new Intl.DateTimeFormat(locale, { weekday })\n  // 2024-01-01 is a Monday — a stable anchor for label generation.\n  const monday = new Date(2024, 0, 1)\n  return Array.from({ length: 7 }, (_, i) => {\n    const day = new Date(monday)\n    day.setDate(monday.getDate() + i)\n    return formatter.format(day)\n  })\n}\n\n/** True if the ISO date is today. */\nexport function isToday(iso: string): boolean {\n  return iso === todayISO()\n}\n",
+      "type": "registry:lib"
+    }
+  ],
+  "type": "registry:lib"
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "page-header",
+  "title": "PageHeader",
+  "description": "Page title + optional description + actions slot. Presentational only (no auth/theme/locale logic).",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/page-header.tsx",
+      "content": "import type { FC, ReactNode } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface PageHeaderProps {\n  /** Page title. */\n  title: string\n  /** Optional supporting text under the title. */\n  description?: string\n  /** Slot on the right for actions (buttons, selectors, etc.). */\n  actions?: ReactNode\n  /** Optional content rendered below the title row (e.g. tabs, breadcrumbs). */\n  children?: ReactNode\n  className?: string\n}\n\n/**\n * Standard page heading: title + optional description on the left, actions on\n * the right, with an optional row below for tabs/breadcrumbs.\n *\n * Presentational only. The app's real header logic (auth menu, theme/locale\n * switchers, navigation) stays in the consumer — this is just the title block.\n */\nconst PageHeader: FC<PageHeaderProps> = ({\n  title,\n  description,\n  actions,\n  children,\n  className,\n}) => (\n  <div className={cn(\"mb-6 flex flex-col gap-4\", className)}>\n    <div className=\"flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between\">\n      <div className=\"space-y-1\">\n        <h1 className=\"text-2xl font-bold tracking-tight text-foreground\">\n          {title}\n        </h1>\n        {description && (\n          <p className=\"text-sm text-muted-foreground\">{description}</p>\n        )}\n      </div>\n      {actions && (\n        <div className=\"flex shrink-0 items-center gap-2\">{actions}</div>\n      )}\n    </div>\n    {children}\n  </div>\n)\n\nexport default PageHeader\nexport { PageHeader }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

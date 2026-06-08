@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "currency-display",
+  "title": "CurrencyDisplay",
+  "description": "Formats a number as currency via Intl.NumberFormat. locale + currency via props, no hardcoded language.",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/currency-display.tsx",
+      "content": "import type { FC } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface CurrencyDisplayProps {\n  /** The numeric amount to format. */\n  value: number\n  /** ISO 4217 currency code, e.g. \"EUR\", \"USD\". Defaults to \"EUR\". */\n  currency?: string\n  /**\n   * BCP 47 locale for formatting, e.g. \"es-ES\", \"en-US\".\n   * Defaults to the runtime locale (undefined -> Intl default).\n   */\n  locale?: string\n  /** Minimum fraction digits. Defaults to 2. */\n  minimumFractionDigits?: number\n  /** Maximum fraction digits. Defaults to 2. */\n  maximumFractionDigits?: number\n  /** Color the value by sign (positive emerald, negative rose). */\n  colorBySign?: boolean\n  className?: string\n}\n\n/**\n * Renders a number as a localized currency string via Intl.NumberFormat.\n *\n * Currency and locale come from props so no language is hardcoded; the same\n * component serves es/en/ca consumers. For repeated formatting in lists,\n * prefer the `useCurrencyFormat` hook to share one formatter instance.\n */\nconst CurrencyDisplay: FC<CurrencyDisplayProps> = ({\n  value,\n  currency = \"EUR\",\n  locale,\n  minimumFractionDigits = 2,\n  maximumFractionDigits = 2,\n  colorBySign = false,\n  className,\n}) => {\n  const formatted = new Intl.NumberFormat(locale, {\n    style: \"currency\",\n    currency,\n    minimumFractionDigits,\n    maximumFractionDigits,\n  }).format(value)\n\n  return (\n    <span\n      className={cn(\n        \"tabular-nums\",\n        colorBySign &&\n          (value < 0\n            ? \"text-rose-600 dark:text-rose-400\"\n            : \"text-emerald-600 dark:text-emerald-400\"),\n        className\n      )}\n    >\n      {formatted}\n    </span>\n  )\n}\n\nexport default CurrencyDisplay\nexport { CurrencyDisplay }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

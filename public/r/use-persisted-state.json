@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-persisted-state",
+  "title": "usePersistedState",
+  "description": "useState that persists to localStorage (JSON-serialized), SSR-safe.",
+  "files": [
+    {
+      "path": "registry/stellify/use-persisted-state.ts",
+      "content": "import { useCallback, useEffect, useRef, useState } from \"react\"\n\ntype SetState<T> = T | ((prev: T) => T)\n\n/**\n * useState that mirrors its value to localStorage (JSON-serialized).\n *\n * SSR-safe: the initial render always uses `defaultValue` (so server and\n * client markup match), then the stored value is hydrated in an effect after\n * mount. Reads/writes are wrapped in try/catch so a disabled or full storage\n * never crashes the app.\n */\nexport function usePersistedState<T>(\n  key: string,\n  defaultValue: T\n): [T, (value: SetState<T>) => void] {\n  const [state, setState] = useState<T>(defaultValue)\n  const hydrated = useRef(false)\n\n  // Hydrate from storage once, after mount (avoids SSR hydration mismatch).\n  useEffect(() => {\n    try {\n      const raw = window.localStorage.getItem(key)\n      if (raw !== null) {\n        setState(JSON.parse(raw) as T)\n      }\n    } catch {\n      // ignore malformed or inaccessible storage\n    }\n    hydrated.current = true\n    // eslint-disable-next-line react-hooks/exhaustive-deps\n  }, [key])\n\n  // Persist on change (but not before the initial hydration has run).\n  useEffect(() => {\n    if (!hydrated.current) return\n    try {\n      window.localStorage.setItem(key, JSON.stringify(state))\n    } catch {\n      // ignore quota / privacy-mode errors\n    }\n  }, [key, state])\n\n  const set = useCallback((value: SetState<T>) => {\n    setState((prev) =>\n      typeof value === \"function\"\n        ? (value as (prev: T) => T)(prev)\n        : value\n    )\n  }, [])\n\n  return [state, set]\n}\n\nexport default usePersistedState\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

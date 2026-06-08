@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "confirm-dialog",
+  "title": "ConfirmDialog",
+  "description": "Controlled confirmation dialog over AlertDialog. All copy via props; destructive flag for dangerous actions.",
+  "registryDependencies": [
+    "alert-dialog",
+    "button",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/confirm-dialog.tsx",
+      "content": "import type { ReactNode } from \"react\"\n\nimport {\n  AlertDialog,\n  AlertDialogAction,\n  AlertDialogCancel,\n  AlertDialogContent,\n  AlertDialogDescription,\n  AlertDialogFooter,\n  AlertDialogHeader,\n  AlertDialogTitle,\n  AlertDialogTrigger,\n} from \"@/components/ui/alert-dialog\"\nimport { buttonVariants } from \"@/components/ui/button\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface ConfirmDialogProps {\n  /** Controlled open state. Omit (with `trigger`) for uncontrolled usage. */\n  open?: boolean\n  /** Open-state change handler for controlled usage. */\n  onOpenChange?: (open: boolean) => void\n  /** Element that opens the dialog (uncontrolled usage). */\n  trigger?: ReactNode\n  /** Dialog title. */\n  title: string\n  /** Dialog description / body copy. */\n  description?: ReactNode\n  /** Confirm button label. Defaults to \"Confirm\". */\n  confirmLabel?: string\n  /** Cancel button label. Defaults to \"Cancel\". */\n  cancelLabel?: string\n  /** Called when the user confirms. */\n  onConfirm: () => void\n  /** Style the confirm button as destructive (red). */\n  destructive?: boolean\n  /** Disable the confirm button (e.g. while a request is in flight). */\n  loading?: boolean\n}\n\n/**\n * Confirmation dialog built on shadcn's AlertDialog.\n *\n * Works controlled (`open` + `onOpenChange`) or uncontrolled (pass a\n * `trigger`). All copy is passed via props. Use `destructive` for dangerous\n * actions like delete.\n */\nexport default function ConfirmDialog({\n  open,\n  onOpenChange,\n  trigger,\n  title,\n  description,\n  confirmLabel = \"Confirm\",\n  cancelLabel = \"Cancel\",\n  onConfirm,\n  destructive = false,\n  loading = false,\n}: ConfirmDialogProps) {\n  return (\n    <AlertDialog open={open} onOpenChange={onOpenChange}>\n      {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}\n      <AlertDialogContent>\n        <AlertDialogHeader>\n          <AlertDialogTitle>{title}</AlertDialogTitle>\n          {description && (\n            <AlertDialogDescription>{description}</AlertDialogDescription>\n          )}\n        </AlertDialogHeader>\n        <AlertDialogFooter>\n          <AlertDialogCancel disabled={loading}>\n            {cancelLabel}\n          </AlertDialogCancel>\n          <AlertDialogAction\n            disabled={loading}\n            onClick={onConfirm}\n            className={cn(\n              destructive &&\n                buttonVariants({ variant: \"destructive\" })\n            )}\n          >\n            {confirmLabel}\n          </AlertDialogAction>\n        </AlertDialogFooter>\n      </AlertDialogContent>\n    </AlertDialog>\n  )\n}\n\nexport { ConfirmDialog }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

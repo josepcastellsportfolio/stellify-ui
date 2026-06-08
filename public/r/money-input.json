@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "money-input",
+  "title": "MoneyInput",
+  "description": "Numeric input for monetary amounts with a currency adornment. Controlled, emits number values.",
+  "registryDependencies": [
+    "input",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/money-input.tsx",
+      "content": "import { forwardRef, useId } from \"react\"\n\nimport { Input } from \"@/components/ui/input\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface MoneyInputProps {\n  /** Current amount, or null/undefined when empty. Controlled. */\n  value: number | null | undefined\n  /** Called with the parsed number, or null when the field is cleared. */\n  onChange: (value: number | null) => void\n  /** Currency symbol/code adornment, e.g. \"€\", \"$\", \"EUR\". Defaults to \"€\". */\n  symbol?: string\n  /** Position of the adornment. Defaults to \"leading\". */\n  symbolPosition?: \"leading\" | \"trailing\"\n  /** Step for the number input. Defaults to 0.01. */\n  step?: number\n  /** Minimum value. */\n  min?: number\n  placeholder?: string\n  disabled?: boolean\n  id?: string\n  name?: string\n  className?: string\n  \"aria-label\"?: string\n}\n\n/**\n * Numeric input for monetary amounts with a currency adornment.\n *\n * Controlled component: holds no internal value, emits `number | null`.\n * Display formatting (thousands separators, etc.) is intentionally left to a\n * read-only `CurrencyDisplay` — editing a grouped string is hostile, so the\n * raw number input stays plain while focused.\n */\nconst MoneyInput = forwardRef<HTMLInputElement, MoneyInputProps>(\n  (\n    {\n      value,\n      onChange,\n      symbol = \"€\",\n      symbolPosition = \"leading\",\n      step = 0.01,\n      min,\n      placeholder,\n      disabled,\n      id,\n      name,\n      className,\n      \"aria-label\": ariaLabel,\n    },\n    ref\n  ) => {\n    const reactId = useId()\n    const inputId = id ?? reactId\n    const leading = symbolPosition === \"leading\"\n\n    const adornment = (\n      <span\n        className={cn(\n          \"pointer-events-none absolute inset-y-0 flex items-center text-sm text-muted-foreground\",\n          leading ? \"left-3\" : \"right-3\"\n        )}\n      >\n        {symbol}\n      </span>\n    )\n\n    return (\n      <div className={cn(\"relative\", className)}>\n        {adornment}\n        <Input\n          ref={ref}\n          id={inputId}\n          name={name}\n          type=\"number\"\n          inputMode=\"decimal\"\n          step={step}\n          min={min}\n          disabled={disabled}\n          placeholder={placeholder}\n          aria-label={ariaLabel}\n          className={cn(leading ? \"pl-8\" : \"pr-8\")}\n          value={value ?? \"\"}\n          onChange={(event) => {\n            const raw = event.target.value\n            onChange(raw === \"\" ? null : Number(raw))\n          }}\n        />\n      </div>\n    )\n  }\n)\nMoneyInput.displayName = \"MoneyInput\"\n\nexport default MoneyInput\nexport { MoneyInput }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
