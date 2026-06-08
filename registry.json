@@ -250,6 +250,70 @@
       "files": [
         { "path": "registry/stellify/week-grid.tsx", "type": "registry:component" }
       ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button (StellifyIT)",
+      "description": "API-compatible superset of the shadcn button: primary/secondary/base hierarchy + success/warning/info, a loading spinner state, and a CRUD `mode` (create/edit/finish) that injects a semantic color and icon. Overwrites ui/button.",
+      "dependencies": ["lucide-react", "class-variance-authority", "@radix-ui/react-slot"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "registry/stellify/button.tsx", "type": "registry:ui", "target": "components/ui/button.tsx" }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input (StellifyIT)",
+      "description": "Standard shadcn input plus an invalid state (aria-invalid turns the border destructive). API-compatible; overwrites ui/input.",
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "registry/stellify/input.tsx", "type": "registry:ui", "target": "components/ui/input.tsx" }
+      ]
+    },
+    {
+      "name": "text-field",
+      "type": "registry:component",
+      "title": "TextField",
+      "description": "Labeled input with error/helper text and optional leading/trailing icons. Wires htmlFor/aria-invalid/aria-describedby. Copy via props.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["input", "label", "utils"],
+      "files": [
+        { "path": "registry/stellify/text-field.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "data-table-pagination",
+      "type": "registry:component",
+      "title": "DataTablePagination",
+      "description": "Controlled pagination footer for data-table: page-size selector + prev/next. Labels via props. No paging logic.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "select", "utils"],
+      "files": [
+        { "path": "registry/stellify/data-table-pagination.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "data-table-toolbar",
+      "type": "registry:component",
+      "title": "DataTableToolbar",
+      "description": "Search box (with clear) + optional filters toggle and reset for data-table. Presentational; owns no filter state. Drop into the toolbar slot.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["input", "button", "utils"],
+      "files": [
+        { "path": "registry/stellify/data-table-toolbar.tsx", "type": "registry:component" }
+      ]
+    },
+    {
+      "name": "data-table-mobile",
+      "type": "registry:component",
+      "title": "DataTableMobile",
+      "description": "Card-per-row mobile view reusing data-table's columns. Pair with data-table behind a breakpoint. Includes loading skeletons + empty slot.",
+      "registryDependencies": ["card", "utils", "data-table"],
+      "files": [
+        { "path": "registry/stellify/data-table-mobile.tsx", "type": "registry:component" }
+      ]
     }
   ]
 }

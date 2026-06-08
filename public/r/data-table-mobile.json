@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-table-mobile",
+  "title": "DataTableMobile",
+  "description": "Card-per-row mobile view reusing data-table's columns. Pair with data-table behind a breakpoint. Includes loading skeletons + empty slot.",
+  "registryDependencies": [
+    "card",
+    "utils",
+    "data-table"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/data-table-mobile.tsx",
+      "content": "import type { ReactNode } from \"react\"\n\nimport { Card, CardContent } from \"@/components/ui/card\"\nimport { cn } from \"@/lib/utils\"\nimport type { DataTableColumn } from \"@/components/data-table\"\n\nexport interface DataTableMobileProps<T> {\n  columns: DataTableColumn<T>[]\n  rows: T[]\n  /** Stable row key extractor. */\n  getRowKey: (row: T) => string | number\n  /** Per-row trailing actions. */\n  actions?: (row: T) => ReactNode\n  /** Show loading skeleton cards instead of rows. */\n  loading?: boolean\n  /** Number of skeleton cards while loading. Defaults to 3. */\n  skeletonCards?: number\n  /** Rendered when there are no rows and not loading. */\n  emptyState?: ReactNode\n  className?: string\n}\n\nfunction cellValue<T>(col: DataTableColumn<T>, row: T): ReactNode {\n  return col.render\n    ? col.render(row)\n    : String((row as Record<string, unknown>)[col.key] ?? \"\")\n}\n\n/**\n * Card-per-row mobile view for the same `columns` used by `data-table`.\n *\n * The first column is shown prominently; the rest become a compact, label-less\n * row of values. Pair with `data-table` behind a breakpoint:\n * `<div className=\"hidden md:block\"><DataTable …/></div>` +\n * `<div className=\"md:hidden\"><DataTableMobile …/></div>`.\n */\nexport default function DataTableMobile<T>({\n  columns,\n  rows,\n  getRowKey,\n  actions,\n  loading = false,\n  skeletonCards = 3,\n  emptyState,\n  className,\n}: DataTableMobileProps<T>) {\n  if (loading) {\n    return (\n      <div className={cn(\"space-y-3\", className)}>\n        {Array.from({ length: skeletonCards }).map((_, i) => (\n          <Card key={i} className=\"border-l-4 border-l-primary/30\">\n            <CardContent className=\"space-y-2 px-3 pb-2 pt-3\">\n              {Array.from({ length: 3 }).map((__, j) => (\n                <div\n                  key={j}\n                  className=\"flex animate-pulse items-center justify-between gap-2\"\n                >\n                  <div className=\"h-3 w-1/3 rounded bg-muted\" />\n                  <div className=\"h-4 w-1/2 rounded bg-muted\" />\n                </div>\n              ))}\n            </CardContent>\n          </Card>\n        ))}\n      </div>\n    )\n  }\n\n  if (rows.length === 0) {\n    return <div className={className}>{emptyState}</div>\n  }\n\n  const [primary, ...rest] = columns\n\n  return (\n    <div className={cn(\"space-y-3\", className)}>\n      {rows.map((row) => (\n        <Card key={getRowKey(row)} className=\"border-l-4 border-l-primary\">\n          <CardContent className=\"px-3 pb-2 pt-3\">\n            {primary && (\n              <p className=\"mb-1 truncate text-sm font-medium\">\n                {cellValue(primary, row)}\n              </p>\n            )}\n\n            {rest.length > 0 && (\n              <div className=\"flex flex-wrap items-center gap-x-3 gap-y-1\">\n                {rest.map((col) => (\n                  <span key={col.key} className=\"text-xs text-muted-foreground\">\n                    {cellValue(col, row)}\n                  </span>\n                ))}\n              </div>\n            )}\n\n            {actions && (\n              <div className=\"mt-1 flex justify-end gap-1 border-t border-border pt-2\">\n                {actions(row)}\n              </div>\n            )}\n          </CardContent>\n        </Card>\n      ))}\n    </div>\n  )\n}\n\nexport { DataTableMobile }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

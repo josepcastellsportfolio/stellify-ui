@@ -13,6 +13,9 @@ pull-based (re-run `shadcn add`).
 | Item | Type | Summary |
 |---|---|---|
 | `stellify-base` | style | The design system: emerald/teal/slate tokens (light + dark, oklch), Inter font, radius. **Install first.** |
+| `button` | ui | **Overwrites `ui/button`.** Hierarchy `primary`/`secondary`/`base` (+ `destructive`/`success`/`warning`/`info`/`link`, plus `default`/`outline`/`ghost` back-compat aliases), `loading` spinner, and a CRUD `mode` (`create`/`edit`/`finish`) → semantic color + icon. |
+| `input` | ui | **Overwrites `ui/input`.** Standard shadcn input + invalid state (`aria-invalid` → destructive border). API-compatible. |
+| `text-field` | component | Labeled input with error/helper text + leading/trailing icons (wraps `input`). |
 | `metric-card` | component | KPI card (label, value, unit, delta, accent icon, `invertDelta`). |
 | `chart-card` | component | Card shell for charts: loading / empty / error states + header actions. |
 | `currency-display` | component | Number → localized currency via `Intl.NumberFormat`. |
@@ -23,7 +26,10 @@ pull-based (re-run `shadcn add`).
 | `empty-state` | ui | Icon + title + description + action placeholder. |
 | `status-badge` | component | Badge with semantic status colors. |
 | `confirm-dialog` | component | Confirmation dialog over AlertDialog. |
-| `data-table` | component | Controlled, presentational paginated table. |
+| `data-table` | component | Controlled, presentational paginated table (sort, skeleton, empty; `toolbar`/`footer` slots). |
+| `data-table-pagination` | component | Pagination footer (page-size + prev/next) for `data-table`. |
+| `data-table-toolbar` | component | Search box + filters toggle for `data-table`'s toolbar slot. |
+| `data-table-mobile` | component | Card-per-row mobile view reusing `data-table` columns. |
 | `use-currency-format` | hook | Memoized currency formatter. |
 | `use-persisted-state` | hook | `useState` synced to localStorage (SSR-safe). |
 | `week-dates` | lib | Date helpers for weekly grids (no date library). |
@@ -77,6 +83,54 @@ npx shadcn@latest add @stellify/metric-card
 `stellify-base` writes the StellifyIT tokens into your CSS. Components land in
 `@/components/...` and import `@/lib/utils` (`cn`) and `@/components/ui/*` exactly
 like any other shadcn component — re-using the ones you already have.
+
+### Overwriting `ui/button` and `ui/input`
+
+`@stellify/button` and `@stellify/input` **replace** the standard shadcn files
+at `@/components/ui/button.tsx` and `@/components/ui/input.tsx`. Their API is a
+superset of the standard ones (same variants/sizes/props, plus extras), so the
+overwrite is safe — existing usages keep working. Install with `--overwrite`:
+
+```bash
+npx shadcn@latest add @stellify/button @stellify/input --overwrite
+```
+
+The enhanced button adds the `primary`/`secondary`/`base` hierarchy, `loading`,
+and a CRUD `mode`:
+
+```tsx
+<Button mode="create">New expense</Button>      {/* success color + Plus icon */}
+<Button mode="edit" variant="secondary">Edit</Button>
+<Button loading>Saving…</Button>
+```
+
+`@stellify/text-field` is a labeled wrapper around the input:
+
+```tsx
+<TextField label="Email" error={errors.email} leadingIcon={Mail} required />
+```
+
+### Composing the data table
+
+`data-table` is the controlled view; compose it with the helpers via its slots,
+and swap to the mobile view behind a breakpoint:
+
+```tsx
+<div className="hidden md:block">
+  <DataTable
+    columns={columns} rows={rows} getRowKey={(r) => r.id}
+    sort={sort} onSortChange={onSortChange} loading={loading}
+    toolbar={<DataTableToolbar search={q} onSearchChange={setQ} />}
+    footer={<DataTablePagination total={total} page={page} pageSize={size}
+              onPageChange={setPage} onPageSizeChange={setSize} />}
+  />
+</div>
+<div className="md:hidden">
+  <DataTableMobile columns={columns} rows={rows} getRowKey={(r) => r.id} loading={loading} />
+</div>
+```
+
+Fetching, debouncing and filter state stay in your own hook (e.g. `useDataGrid`).
 
 ### Per-stack notes
 

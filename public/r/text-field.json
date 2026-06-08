@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "text-field",
+  "title": "TextField",
+  "description": "Labeled input with error/helper text and optional leading/trailing icons. Wires htmlFor/aria-invalid/aria-describedby. Copy via props.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "input",
+    "label",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/text-field.tsx",
+      "content": "import * as React from \"react\"\nimport type { LucideIcon } from \"lucide-react\"\n\nimport { Input } from \"@/components/ui/input\"\nimport { Label } from \"@/components/ui/label\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface TextFieldProps\n  extends Omit<React.ComponentProps<\"input\">, \"id\"> {\n  /** Field label rendered above the input. */\n  label?: string\n  /** Error message; sets the invalid state and is announced to a11y tools. */\n  error?: string\n  /** Helper text shown below the input when there's no error. */\n  helperText?: string\n  /** Icon rendered inside the input, on the left. */\n  leadingIcon?: LucideIcon\n  /** Icon rendered inside the input, on the right. */\n  trailingIcon?: LucideIcon\n  /** Marks the field required (adds an asterisk to the label). */\n  required?: boolean\n  /** Override the generated id. */\n  id?: string\n  /** Class for the outer wrapper (the input keeps `className`). */\n  wrapperClassName?: string\n}\n\n/**\n * Labeled input with error / helper text and optional leading/trailing icons.\n *\n * Wraps the StellifyIT `Input`. Wiring (`htmlFor`, `aria-invalid`,\n * `aria-describedby`) is handled so screen readers announce the label and the\n * error/helper. All copy is passed via props — no hardcoded language.\n */\nconst TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(\n  (\n    {\n      label,\n      error,\n      helperText,\n      leadingIcon: LeadingIcon,\n      trailingIcon: TrailingIcon,\n      required,\n      id,\n      className,\n      wrapperClassName,\n      ...props\n    },\n    ref\n  ) => {\n    const generatedId = React.useId()\n    const inputId = id ?? generatedId\n    const describedById = error\n      ? `${inputId}-error`\n      : helperText\n        ? `${inputId}-helper`\n        : undefined\n\n    return (\n      <div className={cn(\"space-y-1.5\", wrapperClassName)}>\n        {label && (\n          <Label htmlFor={inputId}>\n            {label}\n            {required && <span className=\"ml-0.5 text-destructive\">*</span>}\n          </Label>\n        )}\n\n        <div className=\"relative\">\n          {LeadingIcon && (\n            <LeadingIcon\n              className=\"pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground\"\n              aria-hidden\n            />\n          )}\n          <Input\n            ref={ref}\n            id={inputId}\n            required={required}\n            aria-invalid={error ? true : undefined}\n            aria-describedby={describedById}\n            className={cn(\n              LeadingIcon && \"pl-9\",\n              TrailingIcon && \"pr-9\",\n              className\n            )}\n            {...props}\n          />\n          {TrailingIcon && (\n            <TrailingIcon\n              className=\"pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground\"\n              aria-hidden\n            />\n          )}\n        </div>\n\n        {error ? (\n          <p id={`${inputId}-error`} className=\"text-xs text-destructive\">\n            {error}\n          </p>\n        ) : helperText ? (\n          <p id={`${inputId}-helper`} className=\"text-xs text-muted-foreground\">\n            {helperText}\n          </p>\n        ) : null}\n      </div>\n    )\n  }\n)\nTextField.displayName = \"TextField\"\n\nexport default TextField\nexport { TextField }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

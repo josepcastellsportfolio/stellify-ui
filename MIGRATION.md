@@ -26,6 +26,12 @@ copies); it's mainly useful to dogfood the registry.
 | `@stellify/progress-ring` | (none — new) | — |
 | `@stellify/money-input` | `FormModal` number fields | Optional, for standalone money fields outside FormModal. |
 | `@stellify/use-persisted-state` | pattern in `context/ThemeContext.tsx` | Generic localStorage state. |
+| `@stellify/button` | `src/components/ui/button.tsx` | **Overwrite.** Superset API — adds `primary`/`secondary`/`base`, `loading`, CRUD `mode`. `default`/`outline`/`ghost` kept as aliases so existing usages don't break. Install with `--overwrite`. |
+| `@stellify/input` | `src/components/ui/input.tsx` | **Overwrite.** Same API + `aria-invalid` border. Install with `--overwrite`. |
+| `@stellify/text-field` | label+input pairs in forms / `Fields/` | Optional labeled wrapper (error/helper/icons) for inputs outside FormModal. |
+| `@stellify/data-table-pagination` | `src/components/DataGrid/DataGridPagination.tsx` | Presentational; Spanish labels are now props (English defaults). |
+| `@stellify/data-table-toolbar` | `src/components/DataGrid/DataGridFilters.tsx` | Search + filters toggle; filter widgets stay app-side. |
+| `@stellify/data-table-mobile` | `src/components/DataGrid/MobileList.tsx` + `MobileListItem.tsx` | Card-per-row view, decoupled from `useDataGrid`. |
 
 ## Other consuming apps
 

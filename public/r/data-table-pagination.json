@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-table-pagination",
+  "title": "DataTablePagination",
+  "description": "Controlled pagination footer for data-table: page-size selector + prev/next. Labels via props. No paging logic.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "select",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/data-table-pagination.tsx",
+      "content": "import { ChevronLeft, ChevronRight } from \"lucide-react\"\n\nimport { Button } from \"@/components/ui/button\"\nimport {\n  Select,\n  SelectContent,\n  SelectItem,\n  SelectTrigger,\n  SelectValue,\n} from \"@/components/ui/select\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface DataTablePaginationProps {\n  /** Total number of rows across all pages. */\n  total: number\n  /** Current page (1-based). */\n  page: number\n  /** Current page size. */\n  pageSize: number\n  /** Called with the requested page. */\n  onPageChange: (page: number) => void\n  /** Called with the requested page size; omit to hide the size selector. */\n  onPageSizeChange?: (size: number) => void\n  /** Page size options. Defaults to [10, 25, 50, 100]. */\n  pageSizeOptions?: number[]\n  /** Label before the size selector. Defaults to \"Rows per page\". */\n  rowsPerPageLabel?: string\n  /** Label before the total count. Defaults to \"of\". */\n  ofLabel?: string\n  /** Previous-button label. Defaults to \"Previous\". */\n  previousLabel?: string\n  /** Next-button label. Defaults to \"Next\". */\n  nextLabel?: string\n  className?: string\n}\n\nconst DEFAULT_PAGE_SIZES = [10, 25, 50, 100]\n\n/**\n * Controlled pagination footer for `data-table`.\n *\n * Presentational: it reflects `page`/`pageSize`/`total` and emits change\n * intents — paging logic stays in the consumer. All copy is passed via props\n * (English defaults). Drop into the table's `footer` slot.\n */\nexport default function DataTablePagination({\n  total,\n  page,\n  pageSize,\n  onPageChange,\n  onPageSizeChange,\n  pageSizeOptions = DEFAULT_PAGE_SIZES,\n  rowsPerPageLabel = \"Rows per page\",\n  ofLabel = \"of\",\n  previousLabel = \"Previous\",\n  nextLabel = \"Next\",\n  className,\n}: DataTablePaginationProps) {\n  const totalPages = Math.max(1, Math.ceil(total / pageSize))\n\n  return (\n    <div\n      className={cn(\n        \"flex flex-wrap items-center justify-between gap-2 pt-2 text-sm text-muted-foreground\",\n        className\n      )}\n    >\n      <div className=\"flex items-center gap-2\">\n        <span className=\"shrink-0\">{rowsPerPageLabel}</span>\n        <Select\n          value={String(pageSize)}\n          onValueChange={(v) => onPageSizeChange?.(Number(v))}\n          disabled={!onPageSizeChange}\n        >\n          <SelectTrigger className=\"h-8 w-[70px] text-xs\">\n            <SelectValue />\n          </SelectTrigger>\n          <SelectContent>\n            {pageSizeOptions.map((size) => (\n              <SelectItem key={size} value={String(size)} className=\"text-xs\">\n                {size}\n              </SelectItem>\n            ))}\n          </SelectContent>\n        </Select>\n        <span className=\"shrink-0\">\n          {ofLabel} {total}\n        </span>\n      </div>\n\n      {totalPages > 1 && (\n        <div className=\"flex items-center gap-2\">\n          <Button\n            variant=\"secondary\"\n            size=\"sm\"\n            onClick={() => onPageChange(page - 1)}\n            disabled={page <= 1}\n          >\n            <ChevronLeft className=\"mr-1 h-4 w-4\" />\n            {previousLabel}\n          </Button>\n\n          <span className=\"px-2\">\n            {page} / {totalPages}\n          </span>\n\n          <Button\n            variant=\"secondary\"\n            size=\"sm\"\n            onClick={() => onPageChange(page + 1)}\n            disabled={page >= totalPages}\n          >\n            {nextLabel}\n            <ChevronRight className=\"ml-1 h-4 w-4\" />\n          </Button>\n        </div>\n      )}\n    </div>\n  )\n}\n\nexport { DataTablePagination }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

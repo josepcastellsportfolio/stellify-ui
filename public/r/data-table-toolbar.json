@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-table-toolbar",
+  "title": "DataTableToolbar",
+  "description": "Search box (with clear) + optional filters toggle and reset for data-table. Presentational; owns no filter state. Drop into the toolbar slot.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "input",
+    "button",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/data-table-toolbar.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { Search, SlidersHorizontal, X } from \"lucide-react\"\n\nimport { Input } from \"@/components/ui/input\"\nimport { Button } from \"@/components/ui/button\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface DataTableToolbarProps {\n  /** Current search text (controlled). */\n  search: string\n  /** Called as the user types (and with \"\" when cleared). */\n  onSearchChange: (value: string) => void\n  /** Placeholder for the search box. Defaults to \"Search…\". */\n  searchPlaceholder?: string\n  /** Show a filters toggle button. */\n  showFilterToggle?: boolean\n  /** Whether the filter panel is currently open (controls the toggle style). */\n  filtersOpen?: boolean\n  /** Called when the filters toggle is clicked. */\n  onToggleFilters?: () => void\n  /** Show a \"clear\" button (e.g. when filters/search are active). */\n  showReset?: boolean\n  /** Called when reset is clicked. */\n  onReset?: () => void\n  /** Reset button label. Defaults to \"Clear\". */\n  resetLabel?: string\n  /** Trailing slot, e.g. an \"Add\" button. */\n  actions?: ReactNode\n  /** aria-label for the clear-search button. Defaults to \"Clear search\". */\n  clearSearchLabel?: string\n  className?: string\n}\n\n/**\n * Search + filters toolbar for `data-table`.\n *\n * Presentational: owns no filter state. Wire `search`/`onSearchChange`, and use\n * the `filtersOpen` + `onToggleFilters` pair to drive your own filter panel\n * (render it yourself below the table). Drop into the table's `toolbar` slot.\n * Copy is passed via props (English defaults).\n */\nexport default function DataTableToolbar({\n  search,\n  onSearchChange,\n  searchPlaceholder = \"Search…\",\n  showFilterToggle = false,\n  filtersOpen = false,\n  onToggleFilters,\n  showReset = false,\n  onReset,\n  resetLabel = \"Clear\",\n  actions,\n  clearSearchLabel = \"Clear search\",\n  className,\n}: DataTableToolbarProps) {\n  return (\n    <div className={cn(\"flex items-center gap-2\", className)}>\n      <div className=\"relative min-w-0 flex-1\">\n        <Search className=\"absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground\" />\n        <Input\n          className=\"h-10 pl-9 text-sm\"\n          placeholder={searchPlaceholder}\n          value={search}\n          onChange={(e) => onSearchChange(e.target.value)}\n        />\n        {search && (\n          <button\n            type=\"button\"\n            className=\"absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground\"\n            onClick={() => onSearchChange(\"\")}\n            aria-label={clearSearchLabel}\n          >\n            <X className=\"h-4 w-4\" />\n          </button>\n        )}\n      </div>\n\n      {showFilterToggle && (\n        <Button\n          variant={filtersOpen ? \"primary\" : \"secondary\"}\n          size=\"icon\"\n          onClick={onToggleFilters}\n          aria-pressed={filtersOpen}\n        >\n          <SlidersHorizontal className=\"h-4 w-4\" />\n        </Button>\n      )}\n\n      {showReset && (\n        <Button variant=\"base\" size=\"sm\" onClick={onReset}>\n          {resetLabel}\n        </Button>\n      )}\n\n      {actions && <div className=\"shrink-0\">{actions}</div>}\n    </div>\n  )\n}\n\nexport { DataTableToolbar }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

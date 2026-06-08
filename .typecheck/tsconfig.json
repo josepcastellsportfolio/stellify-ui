@@ -15,8 +15,10 @@
       "@/lib/utils": ["./lib/utils.ts"],
       "@/lib/week-dates": ["./lib/week-dates.ts"],
       "@/components/ui/*": ["./components/ui/*"],
+      "@/components/data-table": ["../registry/stellify/data-table.tsx"],
       "lucide-react": ["./node_modules/lucide-react"],
-      "class-variance-authority": ["./node_modules/class-variance-authority"]
+      "class-variance-authority": ["./node_modules/class-variance-authority"],
+      "@radix-ui/react-slot": ["./node_modules/@radix-ui/react-slot"]
     },
     "typeRoots": [
       "../../stellifyit-global/apps/web-app/node_modules/@types"
