@@ -8,6 +8,26 @@ pull-based (re-run `shadcn add`).
 > Not an npm package. There is no `@stellify` to `npm install`. You consume it
 > through the shadcn CLI, which fetches JSON from this repo's raw GitHub URLs.
 
+## Storybook (component showcase)
+
+Browse every component in isolation — variants, light/dark, controls — in
+Storybook:
+
+- **Online:** https://josepcastellsportfolio.github.io/stellify-ui/ (deployed
+  from `main` via GitHub Actions).
+- **Local:**
+  ```bash
+  npm install
+  npm run storybook      # dev server on :6006
+  npm run build-storybook  # static build → storybook-static/
+  ```
+
+Storybook renders the **published registry sources** directly. The shadcn
+primitives (`card`, `select`, `table`, …) plus `cn` live in
+`.storybook/shadcn/` — a "consumer" tree that mimics an app after `shadcn init`,
+so the stories prove the components work exactly as installed. It does not touch
+the registry; `shadcn build` is unaffected.
+
 ## What's in here
 
 | Item | Type | Summary |
