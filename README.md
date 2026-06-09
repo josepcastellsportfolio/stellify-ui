@@ -54,6 +54,21 @@ the registry; `shadcn build` is unaffected.
 | `use-persisted-state` | hook | `useState` synced to localStorage (SSR-safe). |
 | `week-dates` | lib | Date helpers for weekly grids (no date library). |
 | `week-grid` | component | 7-day week grid + day columns (generalized planner). |
+| `carousel` | component | Generic card carousel: autoplay, hover-pause, drag/swipe, responsive slides-per-view, arrows + dots. Pass `items` + `renderItem`. |
+
+### shadcn primitives
+
+The registry also ships the standard shadcn primitives under `@stellify`, so an
+app **without** shadcn can install everything from one place (they overwrite
+`ui/<name>` and are identical to upstream):
+
+`badge`, `card`, `dialog`, `select`, `tabs`, `checkbox`, `switch`, `tooltip`,
+`dropdown-menu`, `popover`, `calendar`, `textarea`, `separator`, `label`,
+`progress`, `form` (plus the customized `button` / `input` above).
+
+```bash
+npx shadcn@latest add @stellify/card @stellify/dialog @stellify/select --overwrite
+```
 
 Source lives in [`registry/stellify/`](registry/stellify/). Built JSON (what the
 CLI fetches) lives in [`public/r/`](public/r/).
