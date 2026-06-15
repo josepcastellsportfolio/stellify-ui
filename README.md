@@ -56,6 +56,26 @@ the registry; `shadcn build` is unaffected.
 | `week-grid` | component | 7-day week grid + day columns (generalized planner). |
 | `carousel` | component | Generic card carousel: autoplay, hover-pause, drag/swipe, responsive slides-per-view, arrows + dots. Pass `items` + `renderItem`. |
 
+### Charts
+
+Vendored from shadcn/ui and re-themed with the stellify-base `--chart-*` tokens
+(so they match the StellifyIT palette in light/dark). Each chart ships demo data
+inside its file — copy it in and edit freely.
+
+| Item | Type | Summary |
+|---|---|---|
+| `chart` | ui | The chart primitive: `ChartContainer` / `ChartTooltip` / `ChartLegend` over Recharts. **Required by the charts below.** Overwrites `ui/chart`. |
+| `chart-area` | component | Area chart. |
+| `chart-bar` | component | Bar chart. |
+| `chart-line` | component | Line chart. |
+| `chart-pie` | component | Pie / donut chart. |
+| `chart-radar` | component | Radar chart. |
+| `chart-radial` | component | Radial chart. |
+
+```bash
+npx shadcn@latest add @stellify/chart @stellify/chart-area
+```
+
 ### shadcn primitives
 
 The registry also ships the standard shadcn primitives under `@stellify`, so an

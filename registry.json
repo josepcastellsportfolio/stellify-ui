@@ -775,6 +775,153 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart (StellifyIT)",
+      "description": "shadcn chart primitive: ChartContainer/ChartTooltip/ChartLegend over Recharts, wired to stellify-base chart tokens. Overwrites ui/chart.",
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "card",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/chart.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chart-area",
+      "type": "registry:component",
+      "title": "Area chart",
+      "description": "Area chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "card",
+        "chart",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/chart-area.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "chart-bar",
+      "type": "registry:component",
+      "title": "Bar chart",
+      "description": "Bar chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "card",
+        "chart",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/chart-bar.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "chart-line",
+      "type": "registry:component",
+      "title": "Line chart",
+      "description": "Line chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "card",
+        "chart",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/chart-line.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "chart-pie",
+      "type": "registry:component",
+      "title": "Pie / donut chart",
+      "description": "Pie / donut chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "card",
+        "chart",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/chart-pie.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "chart-radar",
+      "type": "registry:component",
+      "title": "Radar chart",
+      "description": "Radar chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "card",
+        "chart",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/chart-radar.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "chart-radial",
+      "type": "registry:component",
+      "title": "Radial chart",
+      "description": "Radial chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "card",
+        "chart",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/chart-radial.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
