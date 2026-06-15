@@ -1,23 +1,24 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
+import type { ReactNode } from "react"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
+import { type ChartFormat, makeFormatter } from "@/lib/chart-formatters"
+
+const DEFAULT_DATA = [
   { month: "January", desktop: 186 },
   { month: "February", desktop: 305 },
   { month: "March", desktop: 237 },
@@ -26,47 +27,69 @@ const chartData = [
   { month: "June", desktop: 214 },
 ]
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "var(--chart-1)",
-  },
+const DEFAULT_CONFIG = {
+  desktop: { label: "Desktop", color: "var(--chart-1)" },
 } satisfies ChartConfig
 
-export default function Component() {
+export interface ChartBarProps {
+  data?: Record<string, string | number>[]
+  config?: ChartConfig
+  xKey?: string
+  seriesKeys?: string[]
+  valueFormat?: ChartFormat
+  title?: string
+  description?: string
+  footer?: ReactNode
+  className?: string
+}
+
+/** Bar chart. Data-driven; renders a demo dataset with no props. */
+export default function Component({
+  data = DEFAULT_DATA,
+  config = DEFAULT_CONFIG,
+  xKey = "month",
+  seriesKeys,
+  valueFormat,
+  title = "Bar Chart",
+  description = "Showing data for the last 6 months",
+  footer,
+  className,
+}: ChartBarProps = {}) {
+  const keys = seriesKeys ?? Object.keys(config)
+  const valueFormatter = makeFormatter(valueFormat)
+
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
-        <CardTitle>Bar Chart</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+        <ChartContainer config={config}>
+          <BarChart accessibilityLayer data={data}>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey={xKey}
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) =>
+                typeof value === "string" ? value.slice(0, 3) : String(value)
+              }
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={
+                <ChartTooltipContent formatter={(value) => valueFormatter(value)} />
+              }
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
+            {keys.map((key) => (
+              <Bar key={key} dataKey={key} fill={`var(--color-${key})`} radius={8} />
+            ))}
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
+      {footer}
     </Card>
   )
 }

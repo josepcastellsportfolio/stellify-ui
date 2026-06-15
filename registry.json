@@ -809,6 +809,7 @@
       "registryDependencies": [
         "card",
         "chart",
+        "chart-formatters",
         "utils"
       ],
       "files": [
@@ -830,6 +831,7 @@
       "registryDependencies": [
         "card",
         "chart",
+        "chart-formatters",
         "utils"
       ],
       "files": [
@@ -851,6 +853,7 @@
       "registryDependencies": [
         "card",
         "chart",
+        "chart-formatters",
         "utils"
       ],
       "files": [
@@ -919,6 +922,77 @@
       "files": [
         {
           "path": "registry/stellify/chart-radial.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "chart-formatters",
+      "type": "registry:lib",
+      "title": "chart-formatters",
+      "description": "Intl-based value/currency/date/number formatters for chart tooltips, legends and axis ticks. Pure, no React.",
+      "files": [
+        {
+          "path": "registry/stellify/chart-formatters.ts",
+          "type": "registry:lib",
+          "target": "lib/chart-formatters.ts"
+        }
+      ]
+    },
+    {
+      "name": "use-series-toggle",
+      "type": "registry:hook",
+      "title": "useSeriesToggle",
+      "description": "Visibility state for an interactive chart legend (click series to show/hide).",
+      "files": [
+        {
+          "path": "registry/stellify/use-series-toggle.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-series-toggle.ts"
+        }
+      ]
+    },
+    {
+      "name": "time-range-selector",
+      "type": "registry:ui",
+      "title": "TimeRangeSelector",
+      "description": "Segmented time-range control (7d/30d/90d/All) + getRangeBounds() helper. i18n-agnostic. For chart headers.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/time-range-selector.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/time-range-selector.tsx"
+        }
+      ]
+    },
+    {
+      "name": "power-chart",
+      "type": "registry:component",
+      "title": "PowerChart",
+      "description": "Configurable dashboard-grade chart over the chart primitive: thresholds (reference lines), interactive legend, Intl tooltips/axes, brush + time-range, and loading/empty/error states. type=area|bar|line|pie|radar|radial.",
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "chart",
+        "chart-card",
+        "time-range-selector",
+        "chart-formatters",
+        "use-series-toggle",
+        "card",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/power-chart.tsx",
           "type": "registry:component"
         }
       ]

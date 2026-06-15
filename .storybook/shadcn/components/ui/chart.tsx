@@ -266,10 +266,25 @@ const ChartLegendContent = React.forwardRef<
     Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
       hideIcon?: boolean
       nameKey?: string
+      /**
+       * When provided, legend items become buttons that call this with the
+       * series key — wire it to a series-toggle hook for show/hide.
+       */
+      onLegendClick?: (key: string) => void
+      /** Keys currently hidden — rendered dimmed + struck through. */
+      hiddenKeys?: Set<string>
     }
 >(
   (
-    { className, hideIcon = false, payload, verticalAlign = "bottom", nameKey },
+    {
+      className,
+      hideIcon = false,
+      payload,
+      verticalAlign = "bottom",
+      nameKey,
+      onLegendClick,
+      hiddenKeys,
+    },
     ref
   ) => {
     const { config } = useChart()
@@ -282,7 +297,7 @@ const ChartLegendContent = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "flex items-center justify-center gap-4",
+          "flex flex-wrap items-center justify-center gap-4",
           verticalAlign === "top" ? "pb-3" : "pt-3",
           className
         )}
@@ -292,25 +307,42 @@ const ChartLegendContent = React.forwardRef<
           .map((item) => {
             const key = `${nameKey || item.dataKey || "value"}`
             const itemConfig = getPayloadConfigFromPayload(config, item, key)
+            const isHidden = hiddenKeys?.has(key) ?? false
+            const interactive = Boolean(onLegendClick)
 
-            return (
-              <div
-                key={item.value}
-                className={cn(
-                  "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
-                )}
-              >
+            const content = (
+              <>
                 {itemConfig?.icon && !hideIcon ? (
                   <itemConfig.icon />
                 ) : (
                   <div
                     className="h-2 w-2 shrink-0 rounded-[2px]"
-                    style={{
-                      backgroundColor: item.color,
-                    }}
+                    style={{ backgroundColor: item.color }}
                   />
                 )}
                 {itemConfig?.label}
+              </>
+            )
+
+            const cls = cn(
+              "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground",
+              interactive && "cursor-pointer select-none transition-opacity",
+              isHidden && "opacity-40 line-through"
+            )
+
+            return interactive ? (
+              <button
+                key={item.value}
+                type="button"
+                className={cls}
+                aria-pressed={!isHidden}
+                onClick={() => onLegendClick?.(key)}
+              >
+                {content}
+              </button>
+            ) : (
+              <div key={item.value} className={cls}>
+                {content}
               </div>
             )
           })}
@@ -319,6 +351,25 @@ const ChartLegendContent = React.forwardRef<
   }
 )
 ChartLegendContent.displayName = "ChartLegend"
+
+// Re-export so consumers can add thresholds without importing recharts directly.
+const ChartReferenceLine = RechartsPrimitive.ReferenceLine
+
+export type ChartThresholdColor =
+  | "success"
+  | "warning"
+  | "info"
+  | "destructive"
+  | "chart-1"
+  | "chart-2"
+  | "chart-3"
+  | "chart-4"
+  | "chart-5"
+
+/** Map a semantic threshold color to its stellify-base CSS variable. */
+function getThresholdColor(color?: ChartThresholdColor): string {
+  return color ? `var(--${color})` : "var(--muted-foreground)"
+}
 
 // Helper to extract item config from a payload.
 function getPayloadConfigFromPayload(
@@ -366,4 +417,6 @@ export {
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
+  ChartReferenceLine,
+  getThresholdColor,
 }

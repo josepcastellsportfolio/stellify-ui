@@ -76,6 +76,38 @@ inside its file — copy it in and edit freely.
 npx shadcn@latest add @stellify/chart @stellify/chart-area
 ```
 
+The `chart-area` / `chart-bar` / `chart-line` blocks are **data-driven** (pass
+`data` + `config`, or render with no props for the demo).
+
+#### PowerChart — dashboard-grade chart
+
+`@stellify/power-chart` is a single configurable component (Grafana-ish) over the
+chart primitive. One `type` prop (`area|bar|line|pie|radar|radial`) + options:
+
+- **Reference lines / thresholds** with semantic colors (`success|warning|info|destructive`).
+- **Interactive legend** — click a series to show/hide (`legend.interactive`).
+- **Intl tooltips + axes** via `formatters` (`currency|number|date`).
+- **Brush + time-range selector** (7d/30d/90d/All) for time series.
+- **Loading / empty / error** states (reuses `chart-card`).
+
+```tsx
+<PowerChart
+  type="bar" title="Spend vs budget" data={rows} xKey="month"
+  series={[{ key: "spend", color: "var(--chart-3)" }]}
+  referenceLines={[{ value: 250, label: "Budget", color: "warning" }]}
+  legend={{ interactive: true }}
+  formatters={{ value: { kind: "currency", currency: "EUR", locale: "es-ES" } }}
+/>
+```
+
+Supporting items pulled in automatically: `chart-formatters` (lib),
+`use-series-toggle` (hook), `time-range-selector` (ui). Brush/reference lines
+apply to cartesian charts only. Install:
+
+```bash
+npx shadcn@latest add @stellify/power-chart
+```
+
 ### shadcn primitives
 
 The registry also ships the standard shadcn primitives under `@stellify`, so an

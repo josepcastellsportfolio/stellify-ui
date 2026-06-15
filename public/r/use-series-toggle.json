@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-series-toggle",
+  "title": "useSeriesToggle",
+  "description": "Visibility state for an interactive chart legend (click series to show/hide).",
+  "files": [
+    {
+      "path": "registry/stellify/use-series-toggle.ts",
+      "content": "import { useCallback, useMemo, useState } from \"react\"\n\nexport interface UseSeriesToggle {\n  /** Keys currently hidden. */\n  hidden: Set<string>\n  /** Toggle a series key on/off. */\n  toggle: (key: string) => void\n  /** Whether a key is hidden. */\n  isHidden: (key: string) => boolean\n  /** Show everything again. */\n  reset: () => void\n  /** Keys still visible, in the original order. */\n  visibleKeys: string[]\n}\n\n/**\n * Visibility state for an interactive chart legend: click a series to hide it,\n * click again to show. Stateless components (the chart primitive's legend) read\n * `hidden` and call `toggle`; the chart hides each `<Area/Bar/Line hide=… />`.\n */\nexport function useSeriesToggle(seriesKeys: string[]): UseSeriesToggle {\n  const [hidden, setHidden] = useState<Set<string>>(() => new Set())\n\n  const toggle = useCallback((key: string) => {\n    setHidden((prev) => {\n      const next = new Set(prev)\n      if (next.has(key)) next.delete(key)\n      else next.add(key)\n      return next\n    })\n  }, [])\n\n  const isHidden = useCallback((key: string) => hidden.has(key), [hidden])\n  const reset = useCallback(() => setHidden(new Set()), [])\n\n  const visibleKeys = useMemo(\n    () => seriesKeys.filter((k) => !hidden.has(k)),\n    [seriesKeys, hidden]\n  )\n\n  return { hidden, toggle, isHidden, reset, visibleKeys }\n}\n\nexport default useSeriesToggle\n",
+      "type": "registry:hook",
+      "target": "hooks/use-series-toggle.ts"
+    }
+  ],
+  "type": "registry:hook"
+}

@@ -14,11 +14,14 @@
     "paths": {
       "@/lib/utils": ["./lib/utils.ts"],
       "@/lib/week-dates": ["./lib/week-dates.ts"],
+      "@/lib/chart-formatters": ["./lib/chart-formatters.ts"],
+      "@/hooks/use-series-toggle": ["./hooks/use-series-toggle.ts"],
       "@/components/ui/*": ["./components/ui/*"],
       "@/components/data-table": ["../registry/stellify/data-table.tsx"],
       "lucide-react": ["./node_modules/lucide-react"],
       "class-variance-authority": ["./node_modules/class-variance-authority"],
-      "@radix-ui/react-slot": ["./node_modules/@radix-ui/react-slot"]
+      "@radix-ui/react-slot": ["./node_modules/@radix-ui/react-slot"],
+      "recharts": ["../node_modules/recharts"]
     },
     "typeRoots": [
       "../../stellifyit-global/apps/web-app/node_modules/@types"

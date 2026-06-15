@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "time-range-selector",
+  "title": "TimeRangeSelector",
+  "description": "Segmented time-range control (7d/30d/90d/All) + getRangeBounds() helper. i18n-agnostic. For chart headers.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/time-range-selector.tsx",
+      "content": "import { Button } from \"@/components/ui/button\"\nimport { cn } from \"@/lib/utils\"\n\nexport type TimeRange = \"7d\" | \"30d\" | \"90d\" | \"all\"\n\nexport const TIME_RANGES: TimeRange[] = [\"7d\", \"30d\", \"90d\", \"all\"]\n\nconst DEFAULT_LABELS: Record<TimeRange, string> = {\n  \"7d\": \"7d\",\n  \"30d\": \"30d\",\n  \"90d\": \"90d\",\n  all: \"All\",\n}\n\nconst RANGE_DAYS: Record<TimeRange, number | null> = {\n  \"7d\": 7,\n  \"30d\": 30,\n  \"90d\": 90,\n  all: null,\n}\n\n/**\n * Lower/upper bounds for a range, relative to `now`. `all` returns no bounds.\n * Use to filter time-series data by the selected range.\n */\nexport function getRangeBounds(\n  range: TimeRange,\n  now: Date = new Date()\n): { from?: Date; to?: Date } {\n  const days = RANGE_DAYS[range]\n  if (days === null) return {}\n  const from = new Date(now)\n  from.setDate(from.getDate() - days)\n  return { from, to: now }\n}\n\nexport interface TimeRangeSelectorProps {\n  value: TimeRange\n  onChange: (range: TimeRange) => void\n  /** Which ranges to show. Defaults to all four. */\n  ranges?: TimeRange[]\n  /** Override labels (consumer owns copy/i18n). */\n  labels?: Partial<Record<TimeRange, string>>\n  className?: string\n}\n\n/**\n * Segmented time-range control (7d / 30d / 90d / All). Presentational and\n * i18n-agnostic — pass `labels` to localize. Generalized from StellifyIT's\n * StatsRangeSelector; drop it into a chart card's header.\n */\nexport function TimeRangeSelector({\n  value,\n  onChange,\n  ranges = TIME_RANGES,\n  labels,\n  className,\n}: TimeRangeSelectorProps) {\n  return (\n    <div\n      className={cn(\n        \"inline-flex items-center gap-0.5 rounded-md border border-border bg-muted/40 p-0.5\",\n        className\n      )}\n      role=\"group\"\n    >\n      {ranges.map((r) => (\n        <Button\n          key={r}\n          type=\"button\"\n          size=\"sm\"\n          variant={value === r ? \"primary\" : \"base\"}\n          className=\"h-7 px-2.5 text-xs\"\n          aria-pressed={value === r}\n          onClick={() => onChange(r)}\n        >\n          {labels?.[r] ?? DEFAULT_LABELS[r]}\n        </Button>\n      ))}\n    </div>\n  )\n}\n\nexport default TimeRangeSelector\n",
+      "type": "registry:ui",
+      "target": "components/ui/time-range-selector.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "./lib/chart-formatters.ts",
+    "./hooks/use-series-toggle.ts",
+    "./components/ui/chart.tsx",
+    "./components/ui/chart-card.tsx",
+    "./components/ui/time-range-selector.tsx",
+    "../registry/stellify/chart.tsx",
+    "../registry/stellify/chart-card.tsx",
+    "../registry/stellify/chart-formatters.ts",
+    "../registry/stellify/use-series-toggle.ts",
+    "../registry/stellify/time-range-selector.tsx",
+    "../registry/stellify/chart-area.tsx",
+    "../registry/stellify/chart-bar.tsx",
+    "../registry/stellify/chart-line.tsx",
+    "../registry/stellify/chart-pie.tsx",
+    "../registry/stellify/chart-radar.tsx",
+    "../registry/stellify/chart-radial.tsx",
+    "../registry/stellify/power-chart.tsx"
+  ]
+}
