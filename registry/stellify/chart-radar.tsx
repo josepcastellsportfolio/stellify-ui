@@ -1,23 +1,24 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
+import type { ReactNode } from "react"
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts"
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
+import { type ChartFormat, makeFormatter } from "@/lib/chart-formatters"
+
+const DEFAULT_DATA = [
   { month: "January", desktop: 186 },
   { month: "February", desktop: 305 },
   { month: "March", desktop: 237 },
@@ -26,47 +27,67 @@ const chartData = [
   { month: "June", desktop: 214 },
 ]
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "var(--chart-1)",
-  },
+const DEFAULT_CONFIG = {
+  desktop: { label: "Desktop", color: "var(--chart-1)" },
 } satisfies ChartConfig
 
-export default function Component() {
+export interface ChartRadarProps {
+  data?: Record<string, string | number>[]
+  config?: ChartConfig
+  /** Angle/category key. Defaults to "month". */
+  angleKey?: string
+  /** Series keys to plot. Defaults to the config keys. */
+  seriesKeys?: string[]
+  valueFormat?: ChartFormat
+  title?: string
+  description?: string
+  footer?: ReactNode
+  className?: string
+}
+
+/** Radar chart. Data-driven; renders a demo dataset with no props. */
+export default function Component({
+  data = DEFAULT_DATA,
+  config = DEFAULT_CONFIG,
+  angleKey = "month",
+  seriesKeys,
+  valueFormat,
+  title = "Radar Chart",
+  description = "Showing data for the last 6 months",
+  footer,
+  className,
+}: ChartRadarProps = {}) {
+  const keys = seriesKeys ?? Object.keys(config)
+  const valueFormatter = makeFormatter(valueFormat)
+
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader className="items-center pb-4">
-        <CardTitle>Radar Chart</CardTitle>
-        <CardDescription>
-          Showing total visitors for the last 6 months
-        </CardDescription>
+        <CardTitle>{title}</CardTitle>
+        {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent className="pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
-          <RadarChart data={chartData}>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <PolarAngleAxis dataKey="month" />
-            <PolarGrid />
-            <Radar
-              dataKey="desktop"
-              fill="var(--color-desktop)"
-              fillOpacity={0.6}
+        <ChartContainer config={config} className="mx-auto aspect-square max-h-[250px]">
+          <RadarChart data={data}>
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent formatter={(value) => valueFormatter(value)} />}
             />
+            <PolarAngleAxis dataKey={angleKey} />
+            <PolarGrid />
+            {keys.map((key) => (
+              <Radar
+                key={key}
+                dataKey={key}
+                fill={`var(--color-${key})`}
+                fillOpacity={0.6}
+                stroke={`var(--color-${key})`}
+              />
+            ))}
           </RadarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="flex items-center gap-2 leading-none text-muted-foreground">
-          January - June 2024
-        </div>
-      </CardFooter>
+      {footer}
     </Card>
   )
 }

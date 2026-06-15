@@ -875,6 +875,7 @@
       "registryDependencies": [
         "card",
         "chart",
+        "chart-formatters",
         "utils"
       ],
       "files": [
@@ -896,6 +897,7 @@
       "registryDependencies": [
         "card",
         "chart",
+        "chart-formatters",
         "utils"
       ],
       "files": [
@@ -917,6 +919,7 @@
       "registryDependencies": [
         "card",
         "chart",
+        "chart-formatters",
         "utils"
       ],
       "files": [
