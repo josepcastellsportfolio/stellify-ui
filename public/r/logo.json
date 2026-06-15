@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "logo",
+  "title": "Logo",
+  "description": "StellifyIT wordmark (SVG, currentColor). height/width/title/ariaHidden props.",
+  "files": [
+    {
+      "path": "registry/stellify/logo.tsx",
+      "content": "import { type FC } from \"react\"\n\nexport interface LogoProps {\n  /** Height in px. Defaults to 32. */\n  height?: number\n  /** Optional width; if larger than the natural width the mark stretches. */\n  width?: number\n  className?: string\n  /** Accessible title (and brand name). Defaults to \"StellifyIT\". */\n  title?: string\n  /** Hide from a11y tree (decorative use). Defaults to false. */\n  ariaHidden?: boolean\n}\n\n/**\n * StellifyIT wordmark — a stylized \"Z\" monogram drawn in `currentColor`, so it\n * inherits text color (theme it with `text-primary`, etc.). Pure SVG.\n */\nconst Logo: FC<LogoProps> = ({\n  height = 32,\n  width,\n  className,\n  title = \"StellifyIT\",\n  ariaHidden = false,\n}) => {\n  const unit = height / 100\n  const naturalWidth = 100 * unit\n  const totalWidth =\n    typeof width === \"number\" && width > naturalWidth ? width : naturalWidth\n  const ext = totalWidth / unit - 100\n\n  const topArc = `0,29.3 29.3,0 ${70.7 + ext},0 ${100 + ext},29.3 ${88.6 + ext},34 ${66 + ext},11.4 34,11.4 11.4,34`\n  const connectorZ = `0,29.3 11.4,29.3 11.4,44.3 ${100 + ext},44.3 ${100 + ext},70.7 ${88.6 + ext},70.7 ${88.6 + ext},55.7 0,55.7`\n  const bottomArc = `${100 + ext},70.7 ${70.7 + ext},100 29.3,100 0,70.7 11.4,65.7 34,88.6 ${66 + ext},88.6 ${88.6 + ext},65.7`\n\n  return (\n    <svg\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width={totalWidth}\n      height={height}\n      viewBox={`0 0 ${100 + ext} 100`}\n      preserveAspectRatio=\"xMidYMid meet\"\n      className={className}\n      aria-hidden={ariaHidden || undefined}\n      role={ariaHidden ? undefined : \"img\"}\n      style={{ display: \"block\" }}\n    >\n      {!ariaHidden && <title>{title}</title>}\n      <polygon fill=\"currentColor\" points={topArc} />\n      <polygon fill=\"currentColor\" points={connectorZ} />\n      <polygon fill=\"currentColor\" points={bottomArc} />\n    </svg>\n  )\n}\n\nexport default Logo\nexport { Logo }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

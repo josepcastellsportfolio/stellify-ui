@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "loading-spinner",
+  "title": "LoadingSpinner",
+  "description": "Centered spinner; fullScreen option for route-level loading. size/label props.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/loading-spinner.tsx",
+      "content": "import type { FC } from \"react\"\nimport { Loader2 } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface LoadingSpinnerProps {\n  /** Icon size in px. Defaults to 24. */\n  size?: number\n  /** Fill the viewport height (centered full-screen). Defaults to false. */\n  fullScreen?: boolean\n  /** Accessible label. Defaults to \"Loading\". */\n  label?: string\n  className?: string\n}\n\n/**\n * Centered spinner. `fullScreen` centers it in the viewport (route-level\n * loading); otherwise it centers within its container.\n */\nconst LoadingSpinner: FC<LoadingSpinnerProps> = ({\n  size = 24,\n  fullScreen = false,\n  label = \"Loading\",\n  className,\n}) => (\n  <div\n    className={cn(\n      \"flex items-center justify-center\",\n      fullScreen ? \"h-screen\" : \"h-full w-full py-8\",\n      className\n    )}\n    role=\"status\"\n    aria-label={label}\n  >\n    <Loader2 className=\"animate-spin text-muted-foreground\" style={{ width: size, height: size }} />\n    <span className=\"sr-only\">{label}</span>\n  </div>\n)\n\nexport default LoadingSpinner\nexport { LoadingSpinner }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

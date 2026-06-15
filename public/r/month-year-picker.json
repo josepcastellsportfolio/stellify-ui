@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "month-year-picker",
+  "title": "MonthYearPicker",
+  "description": "Native month input (YYYY-MM) wrapper, themed. Controlled via month (1-12) + year.",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/month-year-picker.tsx",
+      "content": "import type { FC, ChangeEvent } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface MonthYearPickerProps {\n  /** Month, 1-12. */\n  month: number\n  /** Full year, e.g. 2026. */\n  year: number\n  onChange: (month: number, year: number) => void\n  className?: string\n}\n\n/**\n * Native `<input type=\"month\">` wrapper, themed like the other inputs.\n * Controlled via `month` (1-12) + `year`.\n */\nconst MonthYearPicker: FC<MonthYearPickerProps> = ({\n  month,\n  year,\n  onChange,\n  className,\n}) => {\n  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {\n    const value = e.target.value // \"YYYY-MM\"\n    if (value) {\n      const [y, m] = value.split(\"-\").map(Number)\n      onChange(m, y)\n    }\n  }\n\n  const inputValue = `${year}-${String(month).padStart(2, \"0\")}`\n\n  return (\n    <input\n      type=\"month\"\n      value={inputValue}\n      onChange={handleChange}\n      className={cn(\n        \"flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2\",\n        className\n      )}\n    />\n  )\n}\n\nexport default MonthYearPicker\nexport { MonthYearPicker }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

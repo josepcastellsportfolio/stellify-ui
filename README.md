@@ -55,6 +55,12 @@ the registry; `shadcn build` is unaffected.
 | `week-dates` | lib | Date helpers for weekly grids (no date library). |
 | `week-grid` | component | 7-day week grid + day columns (generalized planner). |
 | `carousel` | component | Generic card carousel: autoplay, hover-pause, drag/swipe, responsive slides-per-view, arrows + dots. Pass `items` + `renderItem`. |
+| `form-modal` | component | Reusable CRUD form modal (react-hook-form + zod): text/number/date/select/color/switch fields, two-column layout, create/update handlers. Copy via props; `onNotify` for toasts. |
+| `date-picker-field` | component | Button + calendar popover; emits ISO `YYYY-MM-DD`. Locale via prop. |
+| `month-year-picker` | component | Native month input (`YYYY-MM`) wrapper, controlled via month/year. |
+| `loading-spinner` | component | Centered spinner; `fullScreen` for route-level loading. |
+| `category-tag` | component | Colored badge resolving Parent / Child category hierarchy. |
+| `logo` | component | StellifyIT wordmark (SVG, `currentColor`). |
 
 ### Charts
 

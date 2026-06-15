@@ -999,6 +999,113 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "month-year-picker",
+      "type": "registry:component",
+      "title": "MonthYearPicker",
+      "description": "Native month input (YYYY-MM) wrapper, themed. Controlled via month (1-12) + year.",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/month-year-picker.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "date-picker-field",
+      "type": "registry:component",
+      "title": "DatePickerField",
+      "description": "Button + calendar popover date field. Emits ISO YYYY-MM-DD. Locale via prop.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "popover",
+        "calendar",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/date-picker-field.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "loading-spinner",
+      "type": "registry:component",
+      "title": "LoadingSpinner",
+      "description": "Centered spinner; fullScreen option for route-level loading. size/label props.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/loading-spinner.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "category-tag",
+      "type": "registry:component",
+      "title": "CategoryTag",
+      "description": "Colored badge resolving Parent / Child category hierarchy from a list. Copy via props.",
+      "registryDependencies": [
+        "badge"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/category-tag.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "logo",
+      "type": "registry:component",
+      "title": "Logo",
+      "description": "StellifyIT wordmark (SVG, currentColor). height/width/title/ariaHidden props.",
+      "files": [
+        {
+          "path": "registry/stellify/logo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "form-modal",
+      "type": "registry:component",
+      "title": "FormModal",
+      "description": "Reusable CRUD form modal (react-hook-form + zod): text/number/date/select/color/switch fields, two-column layout, create/update handlers. Copy via props; onNotify for toasts.",
+      "dependencies": [
+        "react-hook-form",
+        "@hookform/resolvers",
+        "zod"
+      ],
+      "registryDependencies": [
+        "dialog",
+        "button",
+        "input",
+        "select",
+        "switch",
+        "form",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/form-modal.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

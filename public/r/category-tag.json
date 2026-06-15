@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "category-tag",
+  "title": "CategoryTag",
+  "description": "Colored badge resolving Parent / Child category hierarchy from a list. Copy via props.",
+  "registryDependencies": [
+    "badge"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/category-tag.tsx",
+      "content": "import type { FC } from \"react\"\n\nimport { Badge } from \"@/components/ui/badge\"\n\nexport interface CategoryTagCategory {\n  id: number\n  name: string\n  /** Optional background color (any CSS color). */\n  color?: string\n  /** Parent category id for \"Parent / Child\" labels. */\n  parent_id?: number | null\n}\n\nexport interface CategoryTagProps {\n  categoryId: number\n  /** All categories, used to resolve the name + parent hierarchy. */\n  categories: CategoryTagCategory[]\n  /** Label when the category isn't found. Defaults to \"No category\". */\n  noLabel?: string\n}\n\n/**\n * Renders a category as a colored badge, resolving \"Parent / Child\" hierarchy\n * from the provided list. Copy via props (no hardcoded language).\n */\nconst CategoryTag: FC<CategoryTagProps> = ({\n  categoryId,\n  categories,\n  noLabel = \"No category\",\n}) => {\n  const category = categories.find((c) => c.id === categoryId)\n\n  if (!category) {\n    return <Badge variant=\"secondary\">{noLabel}</Badge>\n  }\n\n  const parent =\n    category.parent_id != null\n      ? categories.find((c) => c.id === category.parent_id)\n      : null\n\n  const label = parent ? `${parent.name} / ${category.name}` : category.name\n\n  return (\n    <Badge style={{ backgroundColor: category.color || undefined }} variant=\"secondary\">\n      {label}\n    </Badge>\n  )\n}\n\nexport default CategoryTag\nexport { CategoryTag }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
