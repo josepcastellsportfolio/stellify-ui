@@ -193,7 +193,7 @@ export default function Carousel<T>({
               type="button"
               onClick={prev}
               aria-label="Previous slide"
-              className="absolute left-0 top-1/2 hidden h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background shadow-md transition-colors hover:bg-accent md:inline-flex"
+              className="absolute left-0 top-1/2 hidden h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-background shadow-md transition-colors hover:bg-accent md:inline-flex"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -201,7 +201,7 @@ export default function Carousel<T>({
               type="button"
               onClick={next}
               aria-label="Next slide"
-              className="absolute right-0 top-1/2 hidden h-9 w-9 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border border-border bg-background shadow-md transition-colors hover:bg-accent md:inline-flex"
+              className="absolute right-0 top-1/2 hidden h-9 w-9 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border border-border/60 bg-background shadow-md transition-colors hover:bg-accent md:inline-flex"
             >
               <ChevronRight className="h-5 w-5" />
             </button>

@@ -6,26 +6,30 @@ import { Check, Loader2, Pencil, Plus, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-[color,background-color,box-shadow,transform] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 active:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         // StellifyIT hierarchy: primary (main) / secondary (soft) / base (neutral).
-        primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+        primary:
+          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 hover:shadow-sm",
         secondary:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         base: "hover:bg-accent hover:text-accent-foreground",
         // Semantic actions:
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        success: "bg-success text-success-foreground hover:bg-success/90",
-        warning: "bg-warning text-warning-foreground hover:bg-warning/90",
-        info: "bg-info text-info-foreground hover:bg-info/90",
+          "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 hover:shadow-sm",
+        success:
+          "bg-success text-success-foreground shadow-xs hover:bg-success/90 hover:shadow-sm",
+        warning:
+          "bg-warning text-warning-foreground shadow-xs hover:bg-warning/90 hover:shadow-sm",
+        info: "bg-info text-info-foreground shadow-xs hover:bg-info/90 hover:shadow-sm",
         link: "text-primary underline-offset-4 hover:underline",
         // Back-compat aliases with the standard shadcn names so overwriting
         // ui/button never breaks existing usages (outline === secondary,
         // ghost === base, default === primary).
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default:
+          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 hover:shadow-sm",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         ghost: "hover:bg-accent hover:text-accent-foreground",

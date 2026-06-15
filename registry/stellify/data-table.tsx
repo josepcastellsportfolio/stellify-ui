@@ -94,7 +94,7 @@ export default function DataTable<T>({
     <div className={cn("space-y-3", className)}>
       {toolbar}
 
-      <div className="rounded-lg border border-border">
+      <div className="rounded-lg border border-border/60">
         <Table>
           <TableHeader>
             <TableRow>

@@ -94,7 +94,7 @@ export default function DataTableMobile<T>({
             )}
 
             {actions && (
-              <div className="mt-1 flex justify-end gap-1 border-t border-border pt-2">
+              <div className="mt-1 flex justify-end gap-1 border-t border-border/60 pt-2">
                 {actions(row)}
               </div>
             )}

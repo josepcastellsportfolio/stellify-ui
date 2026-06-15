@@ -96,9 +96,9 @@ const MetricCard: FC<MetricCardProps> = ({
   return (
     <div
       className={cn(
-        "flex h-full flex-col gap-3 rounded-lg border border-border bg-card p-5 text-card-foreground shadow-md",
+        "flex h-full flex-col gap-3 rounded-lg border border-border/60 bg-card p-5 text-card-foreground shadow-sm transition-all",
         interactive &&
-          "cursor-pointer transition-colors hover:border-primary/40",
+          "cursor-pointer hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md hover:ring-1 hover:ring-primary/20",
         className
       )}
       onClick={onClick}

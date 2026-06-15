@@ -40,7 +40,7 @@ export function DayColumn<E>({
   return (
     <div
       className={cn(
-        "flex min-h-40 flex-col border-l border-border first:border-l-0",
+        "flex min-h-40 flex-col border-l border-border/60 first:border-l-0",
         today && "bg-accent/30",
         className
       )}
@@ -48,7 +48,7 @@ export function DayColumn<E>({
       {label !== undefined && (
         <div
           className={cn(
-            "border-b border-border px-2 py-1.5 text-center text-xs font-medium",
+            "border-b border-border/60 px-2 py-1.5 text-center text-xs font-medium",
             today ? "text-primary" : "text-muted-foreground"
           )}
         >
@@ -108,7 +108,7 @@ export default function WeekGrid<E>({
   return (
     <div
       className={cn(
-        "grid grid-cols-7 overflow-hidden rounded-lg border border-border",
+        "grid grid-cols-7 overflow-hidden rounded-lg border border-border/60",
         className
       )}
     >
