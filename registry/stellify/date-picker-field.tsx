@@ -69,16 +69,22 @@ export default function DatePickerField({
           {label}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent
+        className="w-auto overflow-hidden rounded-lg p-0 shadow-lg"
+        align="start"
+        sideOffset={6}
+      >
         <Calendar
           mode="single"
           selected={selected}
+          defaultMonth={selected}
           onSelect={(next) => {
             if (next) {
               onChange(toISODate(next))
               setOpen(false)
             }
           }}
+          autoFocus
         />
       </PopoverContent>
     </Popover>
