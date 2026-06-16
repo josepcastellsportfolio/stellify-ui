@@ -90,9 +90,6 @@ export const DateRange: Story = {
     return (
       <div className="max-w-md">
         <DateRangePicker value={v} onChange={setV} placeholder="Pick a range" />
-        <p className="mt-2 text-sm text-muted-foreground">
-          {v.from || "—"} → {v.to || "—"}
-        </p>
       </div>
     )
   },
