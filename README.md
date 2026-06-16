@@ -57,6 +57,9 @@ the registry; `shadcn build` is unaffected.
 | `carousel` | component | Generic card carousel: autoplay, hover-pause, drag/swipe, responsive slides-per-view, arrows + dots. Pass `items` + `renderItem`. |
 | `form-modal` | component | Reusable CRUD form modal (react-hook-form + zod): text/number/date/select/color/switch fields, two-column layout, create/update handlers. Copy via props; `onNotify` for toasts. |
 | `date-picker-field` | component | Button + calendar popover; emits ISO `YYYY-MM-DD`. Locale via prop. |
+| `date-range-picker` | component | Range calendar in a popover with quick presets (Today, last 7/30/90 days, this month). Emits ISO `{ from, to }`. |
+| `time-picker` | component | Hour + minute selects (+ AM/PM unless `use24Hour`). Emits 24h `HH:mm`. |
+| `number-compare` | component | Operator select (=, <, ≤, >, ≥) + numeric input. Emits `{ operator, value }`. |
 | `month-year-picker` | component | Native month input (`YYYY-MM`) wrapper, controlled via month/year. |
 | `loading-spinner` | component | Centered spinner; `fullScreen` for route-level loading. |
 | `category-tag` | component | Colored badge resolving Parent / Child category hierarchy. |

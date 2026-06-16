@@ -1106,6 +1106,61 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "date-range-picker",
+      "type": "registry:component",
+      "title": "DateRangePicker",
+      "description": "Range calendar in a popover with quick presets (Today, last 7/30/90 days, this month). Emits ISO { from, to }.",
+      "dependencies": [
+        "lucide-react",
+        "react-day-picker"
+      ],
+      "registryDependencies": [
+        "button",
+        "popover",
+        "calendar",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/date-range-picker.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "time-picker",
+      "type": "registry:component",
+      "title": "TimePicker",
+      "description": "Hour + minute selects (+ AM/PM unless use24Hour). Controlled, emits 24h 'HH:mm'. minuteStep configurable.",
+      "registryDependencies": [
+        "select",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/time-picker.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "number-compare",
+      "type": "registry:component",
+      "title": "NumberCompare",
+      "description": "Operator select (=, <, \u2264, >, \u2265) + numeric input. Emits { operator, value }. For filters / query builders.",
+      "registryDependencies": [
+        "select",
+        "input",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/number-compare.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

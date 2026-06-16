@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "number-compare",
+  "title": "NumberCompare",
+  "description": "Operator select (=, <, ≤, >, ≥) + numeric input. Emits { operator, value }. For filters / query builders.",
+  "registryDependencies": [
+    "select",
+    "input",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/number-compare.tsx",
+      "content": "import {\n  Select,\n  SelectContent,\n  SelectItem,\n  SelectTrigger,\n  SelectValue,\n} from \"@/components/ui/select\"\nimport { Input } from \"@/components/ui/input\"\nimport { cn } from \"@/lib/utils\"\n\nexport type NumberOperator = \"eq\" | \"lt\" | \"lte\" | \"gt\" | \"gte\"\n\nexport const NUMBER_OPERATOR_SYMBOL: Record<NumberOperator, string> = {\n  eq: \"=\",\n  lt: \"<\",\n  lte: \"≤\",\n  gt: \">\",\n  gte: \"≥\",\n}\n\nexport interface NumberCompareValue {\n  operator: NumberOperator\n  /** The compared value, or null when empty. */\n  value: number | null\n}\n\nexport interface NumberCompareProps {\n  value: NumberCompareValue\n  onChange: (value: NumberCompareValue) => void\n  /** Operators to offer. Defaults to all five. */\n  operators?: NumberOperator[]\n  placeholder?: string\n  step?: number\n  min?: number\n  max?: number\n  disabled?: boolean\n  className?: string\n  \"aria-label\"?: string\n}\n\nconst ALL: NumberOperator[] = [\"eq\", \"lt\", \"lte\", \"gt\", \"gte\"]\n\n/**\n * Numeric comparison input: an operator select (=, <, ≤, >, ≥) + a number\n * field. Controlled; emits `{ operator, value }` (value is null when blank).\n * Useful for filters and query builders.\n */\nexport default function NumberCompare({\n  value,\n  onChange,\n  operators = ALL,\n  placeholder,\n  step,\n  min,\n  max,\n  disabled,\n  className,\n  \"aria-label\": ariaLabel,\n}: NumberCompareProps) {\n  return (\n    <div className={cn(\"flex items-center gap-2\", className)}>\n      <Select\n        value={value.operator}\n        onValueChange={(op) => onChange({ ...value, operator: op as NumberOperator })}\n        disabled={disabled}\n      >\n        <SelectTrigger className=\"w-[4.25rem]\" aria-label=\"Operator\">\n          <SelectValue />\n        </SelectTrigger>\n        <SelectContent>\n          {operators.map((op) => (\n            <SelectItem key={op} value={op}>\n              <span className=\"font-mono\">{NUMBER_OPERATOR_SYMBOL[op]}</span>\n            </SelectItem>\n          ))}\n        </SelectContent>\n      </Select>\n\n      <Input\n        type=\"number\"\n        inputMode=\"decimal\"\n        step={step}\n        min={min}\n        max={max}\n        disabled={disabled}\n        placeholder={placeholder}\n        aria-label={ariaLabel}\n        value={value.value ?? \"\"}\n        onChange={(e) =>\n          onChange({\n            ...value,\n            value: e.target.value === \"\" ? null : Number(e.target.value),\n          })\n        }\n      />\n    </div>\n  )\n}\n\nexport { NumberCompare }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
