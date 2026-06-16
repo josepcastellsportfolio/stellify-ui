@@ -29,7 +29,7 @@ function Calendar({
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn(
-        "group/calendar bg-background p-3 [--cell-size:2.5rem]",
+        "group/calendar bg-background p-4 [--cell-size:2.75rem]",
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className
@@ -156,7 +156,7 @@ function CalendarDayButton({
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        "flex size-full items-center justify-center rounded-md p-0 text-sm font-normal leading-none transition-colors",
+        "flex size-full! min-w-0 items-center justify-center rounded-md px-0! text-sm font-normal leading-none transition-colors",
         "hover:bg-accent hover:text-accent-foreground",
         "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[selected-single=true]:shadow-sm data-[selected-single=true]:shadow-primary/30",
         "data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground",
