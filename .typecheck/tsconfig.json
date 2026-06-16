@@ -17,7 +17,8 @@
       "@/lib/chart-formatters": ["./lib/chart-formatters.ts"],
       "@/hooks/use-series-toggle": ["./hooks/use-series-toggle.ts"],
       "@/components/ui/*": ["./components/ui/*"],
-      "@/components/data-table": ["../registry/stellify/data-table.tsx"]
+      "@/components/data-table": ["../registry/stellify/data-table.tsx"],
+      "@/components/time-picker": ["../registry/stellify/time-picker.tsx"]
     }
   },
   "include": [

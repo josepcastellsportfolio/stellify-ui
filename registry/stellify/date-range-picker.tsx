@@ -9,12 +9,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import { TimePicker } from "@/components/time-picker"
 import { cn } from "@/lib/utils"
 
 export interface DateRangeValue {
-  /** ISO date (YYYY-MM-DD) or "". */
+  /**
+   * Start bound: `YYYY-MM-DD`, or `YYYY-MM-DDTHH:mm` when time is included.
+   * Empty string when unset.
+   */
   from: string
-  /** ISO date (YYYY-MM-DD) or "". */
+  /** End bound, same format as `from`. */
   to: string
 }
 
@@ -39,6 +45,18 @@ export interface DateRangePickerProps {
   applyLabel?: string
   /** Cancel button label. Defaults to "Cancel". */
   cancelLabel?: string
+  /** Default state of the time switch when the popover opens. Defaults to false. */
+  defaultIncludeTime?: boolean
+  /** Hide the date/time switch entirely (force date-only). Defaults to false. */
+  hideTimeToggle?: boolean
+  /** Use 24-hour time inputs. Defaults to false (12h + AM/PM). */
+  use24Hour?: boolean
+  /** Label for the time switch. Defaults to "Include time". */
+  timeToggleLabel?: string
+  /** Label for the start-time field. Defaults to "Start time". */
+  startTimeLabel?: string
+  /** Label for the end-time field. Defaults to "End time". */
+  endTimeLabel?: string
 }
 
 function toISODate(d: Date): string {
@@ -49,7 +67,20 @@ function toISODate(d: Date): string {
 }
 
 function fromISO(s: string): Date | undefined {
-  return s ? new Date(`${s}T00:00:00`) : undefined
+  if (!s) return undefined
+  const datePart = s.slice(0, 10)
+  return new Date(`${datePart}T00:00:00`)
+}
+
+/** Extract "HH:mm" from an ISO string, or "00:00" if absent. */
+function timeOf(s: string): string {
+  const match = /T(\d{2}:\d{2})/.exec(s)
+  return match ? match[1] : "00:00"
+}
+
+/** Whether either bound carries a time component. */
+function hasTime(v: DateRangeValue): boolean {
+  return v.from.includes("T") || v.to.includes("T")
 }
 
 function shift(today: Date, days: number): Date {
@@ -88,26 +119,43 @@ export default function DateRangePicker({
   className,
   applyLabel = "Apply",
   cancelLabel = "Cancel",
+  defaultIncludeTime = false,
+  hideTimeToggle = false,
+  use24Hour = false,
+  timeToggleLabel = "Include time",
+  startTimeLabel = "Start time",
+  endTimeLabel = "End time",
 }: DateRangePickerProps) {
   const [open, setOpen] = useState(false)
-  // Draft range — edits stay local until the user clicks Apply.
+  // Draft state — edits stay local until the user clicks Apply.
   const [draft, setDraft] = useState<DateRange | undefined>(undefined)
+  const [withTime, setWithTime] = useState(defaultIncludeTime)
+  const [startTime, setStartTime] = useState("00:00")
+  const [endTime, setEndTime] = useState("00:00")
 
   const toRange = (v: DateRangeValue): DateRange | undefined =>
     v.from ? { from: fromISO(v.from), to: fromISO(v.to) } : undefined
 
-  // Reset the draft to the committed value whenever the popover opens.
+  // Reset the draft (range + time fields + toggle) when the popover opens.
   useEffect(() => {
-    if (open) setDraft(toRange(value))
+    if (!open) return
+    setDraft(toRange(value))
+    setWithTime(hasTime(value) || defaultIncludeTime)
+    setStartTime(value.from ? timeOf(value.from) : "00:00")
+    setEndTime(value.to ? timeOf(value.to) : "00:00")
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
-  const fmt = (s: string) =>
-    fromISO(s)?.toLocaleDateString(locale, {
+  const fmt = (s: string) => {
+    const d = fromISO(s)
+    if (!d) return ""
+    const datePart = d.toLocaleDateString(locale, {
       day: "numeric",
       month: "short",
       year: "numeric",
-    }) ?? ""
+    })
+    return s.includes("T") ? `${datePart} ${timeOf(s)}` : datePart
+  }
 
   const label =
     value.from && value.to
@@ -117,9 +165,11 @@ export default function DateRangePicker({
         : (placeholder ?? "")
 
   const apply = () => {
+    const fromDate = draft?.from ? toISODate(draft.from) : ""
+    const toDate = draft?.to ? toISODate(draft.to) : ""
     onChange({
-      from: draft?.from ? toISODate(draft.from) : "",
-      to: draft?.to ? toISODate(draft.to) : "",
+      from: fromDate && withTime ? `${fromDate}T${startTime}` : fromDate,
+      to: toDate && withTime ? `${toDate}T${endTime}` : toDate,
     })
     setOpen(false)
   }
@@ -146,6 +196,20 @@ export default function DateRangePicker({
         align="start"
         sideOffset={6}
       >
+        {/* Header: time toggle */}
+        {!hideTimeToggle && (
+          <div className="flex items-center justify-end gap-2 border-b border-border/60 px-3 py-2">
+            <Label htmlFor="drp-time" className="text-xs text-muted-foreground">
+              {timeToggleLabel}
+            </Label>
+            <Switch
+              id="drp-time"
+              checked={withTime}
+              onCheckedChange={setWithTime}
+            />
+          </div>
+        )}
+
         <div className="flex">
           {presets.length > 0 && (
             <div className="flex flex-col gap-1 border-r border-border/60 p-2">
@@ -176,6 +240,20 @@ export default function DateRangePicker({
             autoFocus
           />
         </div>
+
+        {/* Time fields — unlocked by the header switch */}
+        {withTime && (
+          <div className="flex flex-wrap items-end gap-4 border-t border-border/60 px-3 py-3">
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">{startTimeLabel}</Label>
+              <TimePicker value={startTime} onChange={setStartTime} use24Hour={use24Hour} />
+            </div>
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">{endTimeLabel}</Label>
+              <TimePicker value={endTime} onChange={setEndTime} use24Hour={use24Hour} />
+            </div>
+          </div>
+        )}
 
         <div className="flex items-center justify-end gap-2 border-t border-border/60 p-3">
           <Button type="button" variant="secondary" size="sm" onClick={() => setOpen(false)}>

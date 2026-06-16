@@ -1111,7 +1111,7 @@
       "name": "date-range-picker",
       "type": "registry:component",
       "title": "DateRangePicker",
-      "description": "Range calendar in a popover with quick presets (Today, last 7/30/90 days, this month). Emits ISO { from, to }.",
+      "description": "Range calendar popover with presets, Apply/Cancel, side-by-side months, and an optional date\u2194datetime switch that unlocks start/end time pickers (default 00:00). Emits ISO { from, to } (with THH:mm when time is on).",
       "dependencies": [
         "lucide-react",
         "react-day-picker"
@@ -1120,6 +1120,9 @@
         "button",
         "popover",
         "calendar",
+        "switch",
+        "label",
+        "time-picker",
         "utils"
       ],
       "files": [
