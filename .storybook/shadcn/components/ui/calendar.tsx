@@ -74,12 +74,12 @@ function Calendar({
         dropdown: cn("absolute inset-0 bg-popover opacity-0", defaultClassNames.dropdown),
         caption_label: cn("select-none font-semibold", defaultClassNames.caption_label),
         // Grid: each weekday/day cell is exactly --cell-size wide.
-        weekdays: cn("flex", defaultClassNames.weekdays),
+        weekdays: cn("flex gap-1", defaultClassNames.weekdays),
         weekday: cn(
           "flex size-[--cell-size] items-center justify-center text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground",
           defaultClassNames.weekday
         ),
-        week: cn("mt-0.5 flex w-full", defaultClassNames.week),
+        week: cn("mt-1.5 flex w-full gap-1", defaultClassNames.week),
         week_number_header: cn("size-[--cell-size] select-none", defaultClassNames.week_number_header),
         week_number: cn(
           "flex size-[--cell-size] items-center justify-center text-[0.7rem] text-muted-foreground",
