@@ -1149,7 +1149,7 @@
       "name": "number-compare",
       "type": "registry:component",
       "title": "NumberCompare",
-      "description": "Operator select (=, <, \u2264, >, \u2265) + numeric input. Emits { operator, value }. For filters / query builders.",
+      "description": "Two-sided numeric comparison: lower bound (>, \u2265) AND upper bound (<, \u2264), e.g. '> 2 and < 10'. Either side optional. Emits { lower, upper }.",
       "registryDependencies": [
         "select",
         "input",

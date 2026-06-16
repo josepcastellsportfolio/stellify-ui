@@ -8,91 +8,129 @@ import {
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
-export type NumberOperator = "eq" | "lt" | "lte" | "gt" | "gte"
+/** Lower-bound operators (greater-than family). */
+export type LowerOperator = "gt" | "gte"
+/** Upper-bound operators (less-than family). */
+export type UpperOperator = "lt" | "lte"
 
-export const NUMBER_OPERATOR_SYMBOL: Record<NumberOperator, string> = {
-  eq: "=",
-  lt: "<",
-  lte: "≤",
+export const OPERATOR_SYMBOL: Record<
+  LowerOperator | UpperOperator,
+  string
+> = {
   gt: ">",
   gte: "≥",
+  lt: "<",
+  lte: "≤",
+}
+
+export interface NumberBound<Op extends string> {
+  operator: Op
+  /** Bound value, or null when that side is unconstrained. */
+  value: number | null
 }
 
 export interface NumberCompareValue {
-  operator: NumberOperator
-  /** The compared value, or null when empty. */
-  value: number | null
+  /** Lower bound, e.g. { operator: "gt", value: 2 } → "> 2". */
+  lower: NumberBound<LowerOperator>
+  /** Upper bound, e.g. { operator: "lt", value: 10 } → "< 10". */
+  upper: NumberBound<UpperOperator>
 }
 
 export interface NumberCompareProps {
   value: NumberCompareValue
   onChange: (value: NumberCompareValue) => void
-  /** Operators to offer. Defaults to all five. */
-  operators?: NumberOperator[]
+  /** Label between the two bounds. Defaults to "and". */
+  conjunction?: string
+  /** Stack the two bounds vertically instead of inline. Defaults to false. */
+  vertical?: boolean
   placeholder?: string
   step?: number
-  min?: number
-  max?: number
   disabled?: boolean
   className?: string
-  "aria-label"?: string
 }
 
-const ALL: NumberOperator[] = ["eq", "lt", "lte", "gt", "gte"]
+const LOWER_OPS: LowerOperator[] = ["gt", "gte"]
+const UPPER_OPS: UpperOperator[] = ["lt", "lte"]
+
+/** A sensible empty value: ">" lower, "<" upper, both blank. */
+export const EMPTY_NUMBER_COMPARE: NumberCompareValue = {
+  lower: { operator: "gt", value: null },
+  upper: { operator: "lt", value: null },
+}
 
 /**
- * Numeric comparison input: an operator select (=, <, ≤, >, ≥) + a number
- * field. Controlled; emits `{ operator, value }` (value is null when blank).
- * Useful for filters and query builders.
+ * Two-sided numeric comparison: a lower bound (>, ≥) AND an upper bound (<, ≤),
+ * e.g. "> 2 and < 10". Either side can be left blank for an open range.
+ * Controlled; emits `{ lower, upper }`. Useful for range filters.
  */
 export default function NumberCompare({
   value,
   onChange,
-  operators = ALL,
+  conjunction = "and",
+  vertical = false,
   placeholder,
   step,
-  min,
-  max,
   disabled,
   className,
-  "aria-label": ariaLabel,
 }: NumberCompareProps) {
-  return (
-    <div className={cn("flex items-center gap-2", className)}>
-      <Select
-        value={value.operator}
-        onValueChange={(op) => onChange({ ...value, operator: op as NumberOperator })}
-        disabled={disabled}
-      >
-        <SelectTrigger className="w-[4.25rem]" aria-label="Operator">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {operators.map((op) => (
-            <SelectItem key={op} value={op}>
-              <span className="font-mono">{NUMBER_OPERATOR_SYMBOL[op]}</span>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+  const bound = <Op extends LowerOperator | UpperOperator>(
+    side: "lower" | "upper",
+    ops: Op[]
+  ) => {
+    const current = value[side] as NumberBound<Op>
+    return (
+      <div className="flex items-center gap-2">
+        <Select
+          value={current.operator}
+          onValueChange={(op) =>
+            onChange({ ...value, [side]: { ...current, operator: op } })
+          }
+          disabled={disabled}
+        >
+          <SelectTrigger className="w-[4.25rem]" aria-label={`${side} operator`}>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {ops.map((op) => (
+              <SelectItem key={op} value={op}>
+                <span className="font-mono">{OPERATOR_SYMBOL[op]}</span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Input
+          type="number"
+          inputMode="decimal"
+          step={step}
+          disabled={disabled}
+          placeholder={placeholder}
+          aria-label={`${side} value`}
+          value={current.value ?? ""}
+          onChange={(e) =>
+            onChange({
+              ...value,
+              [side]: {
+                ...current,
+                value: e.target.value === "" ? null : Number(e.target.value),
+              },
+            })
+          }
+        />
+      </div>
+    )
+  }
 
-      <Input
-        type="number"
-        inputMode="decimal"
-        step={step}
-        min={min}
-        max={max}
-        disabled={disabled}
-        placeholder={placeholder}
-        aria-label={ariaLabel}
-        value={value.value ?? ""}
-        onChange={(e) =>
-          onChange({
-            ...value,
-            value: e.target.value === "" ? null : Number(e.target.value),
-          })
-        }
-      />
+  return (
+    <div
+      className={cn(
+        "flex gap-2",
+        vertical ? "flex-col items-stretch" : "flex-row items-center",
+        className
+      )}
+    >
+      {bound("lower", LOWER_OPS)}
+      <span className="shrink-0 text-sm text-muted-foreground">{conjunction}</span>
+      {bound("upper", UPPER_OPS)}
     </div>
   )
 }

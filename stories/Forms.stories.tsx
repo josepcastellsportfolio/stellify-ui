@@ -116,13 +116,13 @@ export const Time: Story = {
 
 export const NumberComparison: Story = {
   render: () => {
-    const [v, setV] = useState<NumberCompareValue>({ operator: "gte", value: 100 })
+    const [v, setV] = useState<NumberCompareValue>({
+      lower: { operator: "gt", value: 2 },
+      upper: { operator: "lt", value: 10 },
+    })
     return (
-      <div className="max-w-xs">
-        <NumberCompare value={v} onChange={setV} placeholder="Amount" />
-        <p className="mt-2 text-sm text-muted-foreground">
-          {v.operator} {v.value ?? "—"}
-        </p>
+      <div className="max-w-lg">
+        <NumberCompare value={v} onChange={setV} placeholder="0" />
       </div>
     )
   },
