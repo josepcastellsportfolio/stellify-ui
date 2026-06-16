@@ -43,7 +43,8 @@ function Calendar({
       classNames={{
         root: cn("w-fit", defaultClassNames.root),
         months: cn("relative flex flex-col gap-4", defaultClassNames.months),
-        month: cn("flex w-full flex-col gap-3", defaultClassNames.month),
+        // Fixed width = 7 cells + 6 gaps, so grid-cols-7 columns are square.
+        month: "flex flex-col gap-3 w-[calc(7*var(--cell-size)+6*0.25rem)]",
         // Header row: prev | caption | next, evenly spaced.
         nav: cn(
           "flex items-center justify-between",
@@ -73,29 +74,22 @@ function Calendar({
         ),
         dropdown: cn("absolute inset-0 bg-popover opacity-0", defaultClassNames.dropdown),
         caption_label: cn("select-none font-semibold", defaultClassNames.caption_label),
-        // Grid: each weekday/day cell is exactly --cell-size wide.
-        weekdays: cn("flex gap-1", defaultClassNames.weekdays),
-        weekday: cn(
-          "flex size-[--cell-size] items-center justify-center text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground",
-          defaultClassNames.weekday
-        ),
-        week: cn("mt-1.5 flex w-full gap-1", defaultClassNames.week),
-        week_number_header: cn("size-[--cell-size] select-none", defaultClassNames.week_number_header),
-        week_number: cn(
-          "flex size-[--cell-size] items-center justify-center text-[0.7rem] text-muted-foreground",
-          defaultClassNames.week_number
-        ),
-        day: cn(
-          "group/day size-[--cell-size] select-none p-0 text-center",
-          defaultClassNames.day
-        ),
-        range_start: cn("rounded-l-md bg-accent", defaultClassNames.range_start),
-        range_middle: cn("rounded-none bg-accent", defaultClassNames.range_middle),
-        range_end: cn("rounded-r-md bg-accent", defaultClassNames.range_end),
-        today: cn(
+        // Force an explicit 7-column grid (overrides react-day-picker's default
+        // table layout, which was collapsing the days). Each cell is a square.
+        month_grid: "w-full border-collapse",
+        weekdays: "grid grid-cols-7 gap-1",
+        weekday:
+          "flex h-8 items-center justify-center text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground",
+        week: "mt-1 grid grid-cols-7 gap-1",
+        week_number_header: "h-[--cell-size] select-none",
+        week_number:
+          "flex h-[--cell-size] items-center justify-center text-[0.7rem] text-muted-foreground",
+        day: "group/day relative aspect-square w-full select-none p-0 text-center",
+        range_start: "rounded-l-md bg-accent",
+        range_middle: "rounded-none bg-accent",
+        range_end: "rounded-r-md bg-accent",
+        today:
           "rounded-md font-semibold text-primary ring-1 ring-inset ring-primary/40 data-[selected=true]:ring-0",
-          defaultClassNames.today
-        ),
         outside: cn(
           "text-muted-foreground/50 aria-selected:text-muted-foreground",
           defaultClassNames.outside
@@ -156,7 +150,7 @@ function CalendarDayButton({
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        "flex size-full! min-w-0 items-center justify-center rounded-md px-0! text-sm font-normal leading-none transition-colors",
+        "flex size-full! min-w-0 items-center justify-center rounded-md p-0! text-sm font-normal leading-none transition-colors",
         "hover:bg-accent hover:text-accent-foreground",
         "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[selected-single=true]:shadow-sm data-[selected-single=true]:shadow-primary/30",
         "data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground",
