@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "intelui-conversation-list",
+  "title": "InteluiConversationList",
+  "description": "Selectable conversation history list with per-row delete cross (reveals on hover). Props-only, i18n-agnostic.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "intelui-types"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/intelui-conversation-list.tsx",
+      "content": "import { type FC, type MouseEvent } from \"react\"\nimport { MessageSquare, X } from \"lucide-react\"\nimport { cn } from \"@/lib/utils\"\nimport type { InteluiConversation } from \"@/components/intelui/intelui-types\"\n\nexport interface InteluiConversationListProps {\n  conversations: InteluiConversation[]\n  /** Localized empty-state text. */\n  emptyLabel: string\n  /** Localized aria-label for the per-row delete button. */\n  deleteLabel: string\n  onSelect?: (id: string) => void\n  onDelete?: (id: string) => void\n}\n\n/**\n * History list of conversations. Each row is selectable; hovering reveals a\n * delete cross. Engine- and i18n-agnostic (copy via props).\n */\nconst InteluiConversationList: FC<InteluiConversationListProps> = ({\n  conversations,\n  emptyLabel,\n  deleteLabel,\n  onSelect,\n  onDelete,\n}) => {\n  if (conversations.length === 0) {\n    return <p className=\"px-1 py-2 text-xs text-muted-foreground\">{emptyLabel}</p>\n  }\n\n  const handleDelete = (e: MouseEvent, id: string) => {\n    e.stopPropagation()\n    onDelete?.(id)\n  }\n\n  return (\n    <ul className=\"flex flex-col gap-0.5\">\n      {conversations.map((conv) => (\n        <li key={conv.id} className=\"group/item relative\">\n          <button\n            type=\"button\"\n            onClick={() => onSelect?.(conv.id)}\n            className={cn(\n              \"flex w-full items-center gap-2 rounded-md py-1.5 pl-2 pr-8 text-left text-sm\",\n              \"text-foreground transition-colors hover:bg-accent hover:text-accent-foreground\",\n              \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring\",\n            )}\n          >\n            <MessageSquare className=\"h-4 w-4 shrink-0 text-muted-foreground\" aria-hidden />\n            <span className=\"truncate\">{conv.title}</span>\n          </button>\n          {onDelete && (\n            <button\n              type=\"button\"\n              onClick={(e) => handleDelete(e, conv.id)}\n              aria-label={deleteLabel}\n              className={cn(\n                \"absolute right-1 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-md\",\n                \"text-muted-foreground opacity-0 transition-opacity\",\n                \"hover:bg-destructive hover:text-destructive-foreground\",\n                \"group-hover/item:opacity-100 focus-visible:opacity-100\",\n                \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring\",\n              )}\n            >\n              <X className=\"h-3.5 w-3.5\" aria-hidden />\n            </button>\n          )}\n        </li>\n      ))}\n    </ul>\n  )\n}\n\nexport default InteluiConversationList\nexport { InteluiConversationList }\n",
+      "type": "registry:component",
+      "target": "components/intelui/intelui-conversation-list.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

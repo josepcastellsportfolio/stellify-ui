@@ -18,7 +18,11 @@
       "@/hooks/use-series-toggle": ["./hooks/use-series-toggle.ts"],
       "@/components/ui/*": ["./components/ui/*"],
       "@/components/data-table": ["../registry/stellify/data-table.tsx"],
-      "@/components/time-picker": ["../registry/stellify/time-picker.tsx"]
+      "@/components/time-picker": ["../registry/stellify/time-picker.tsx"],
+      "@/components/intelui/intelui-types": ["../registry/stellify/intelui-types.ts"],
+      "@/components/intelui/intelui-tabs": ["../registry/stellify/intelui-tabs.tsx"],
+      "@/components/intelui/intelui-conversation-list": ["../registry/stellify/intelui-conversation-list.tsx"],
+      "@/components/intelui/intelui-chat-panel": ["../registry/stellify/intelui-chat-panel.tsx"]
     }
   },
   "include": [

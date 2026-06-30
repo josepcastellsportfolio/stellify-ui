@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "intelui-pill",
+  "title": "InteluiPill",
+  "description": "Bottom-of-sidebar assistant pill: nav-item styling, fading label, highlighted when intelUI is active. Opens the assistant dropdown. Props-only.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/intelui-pill.tsx",
+      "content": "import { forwardRef } from \"react\"\nimport { MessageSquareText } from \"lucide-react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface InteluiPillProps {\n  /** Localized label (also the title when collapsed). */\n  label: string\n  /** Localized aria-label for the trigger. */\n  openLabel: string\n  /** Sidebar expanded — controls the fading label (matches nav items). */\n  expanded: boolean\n  /** intelUI mode active — pill stays highlighted. */\n  active: boolean\n  /** Dropdown open. */\n  open: boolean\n  /** intelUI not available here — render muted/non-interactive. */\n  disabled?: boolean\n  /** Tooltip shown when disabled (e.g. \"available only in Planner\"). */\n  disabledHint?: string\n  onClick: () => void\n}\n\n/**\n * Bottom-of-sidebar assistant pill. Styled to match nav items (icon h-5 w-5 +\n * fading label). It opens the assistant dropdown; highlighted when intelUI is\n * active. Engine-agnostic — all state and copy come from props.\n */\nconst InteluiPill = forwardRef<HTMLButtonElement, InteluiPillProps>(\n  (\n    { label, openLabel, expanded, active, open, disabled = false, disabledHint, onClick },\n    ref,\n  ) => (\n    <button\n      ref={ref}\n      type=\"button\"\n      onClick={onClick}\n      disabled={disabled}\n      aria-label={disabled ? (disabledHint ?? label) : openLabel}\n      title={disabled ? disabledHint : expanded ? undefined : label}\n      aria-haspopup={disabled ? undefined : \"dialog\"}\n      aria-expanded={disabled ? undefined : open}\n      className={cn(\n        \"flex h-10 w-full items-center gap-3 rounded-md border border-transparent px-2\",\n        \"text-foreground transition-colors\",\n        \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring\",\n        disabled\n          ? \"cursor-not-allowed opacity-40\"\n          : active\n            ? \"border-primary bg-primary text-primary-foreground\"\n            : \"hover:border-primary hover:bg-primary hover:text-primary-foreground\",\n      )}\n    >\n      <MessageSquareText className=\"h-5 w-5 shrink-0\" strokeWidth={1.75} aria-hidden />\n      <span\n        className={cn(\n          \"whitespace-nowrap text-sm font-medium transition-opacity duration-150\",\n          expanded ? \"opacity-100\" : \"pointer-events-none opacity-0\",\n        )}\n      >\n        {label}\n      </span>\n    </button>\n  ),\n)\n\nInteluiPill.displayName = \"InteluiPill\"\n\nexport default InteluiPill\nexport { InteluiPill }\n",
+      "type": "registry:component",
+      "target": "components/intelui/intelui-pill.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -277,7 +277,7 @@
       "name": "data-table",
       "type": "registry:component",
       "title": "DataTable",
-      "description": "Presentational paginated table (columns, rows, sort, loading skeleton, empty state). Fetching is the consumer's job \u2014 see toolbar/pagination slots.",
+      "description": "Presentational paginated table (columns, rows, sort, loading skeleton, empty state). Fetching is the consumer's job — see toolbar/pagination slots.",
       "registryDependencies": [
         "table",
         "utils"
@@ -801,7 +801,7 @@
       "name": "chart-area",
       "type": "registry:component",
       "title": "Area chart",
-      "description": "Area chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "description": "Area chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely.",
       "dependencies": [
         "recharts",
         "lucide-react"
@@ -823,7 +823,7 @@
       "name": "chart-bar",
       "type": "registry:component",
       "title": "Bar chart",
-      "description": "Bar chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "description": "Bar chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely.",
       "dependencies": [
         "recharts",
         "lucide-react"
@@ -845,7 +845,7 @@
       "name": "chart-line",
       "type": "registry:component",
       "title": "Line chart",
-      "description": "Line chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "description": "Line chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely.",
       "dependencies": [
         "recharts",
         "lucide-react"
@@ -867,7 +867,7 @@
       "name": "chart-pie",
       "type": "registry:component",
       "title": "Pie / donut chart",
-      "description": "Pie / donut chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "description": "Pie / donut chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely.",
       "dependencies": [
         "recharts",
         "lucide-react"
@@ -889,7 +889,7 @@
       "name": "chart-radar",
       "type": "registry:component",
       "title": "Radar chart",
-      "description": "Radar chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "description": "Radar chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely.",
       "dependencies": [
         "recharts",
         "lucide-react"
@@ -911,7 +911,7 @@
       "name": "chart-radial",
       "type": "registry:component",
       "title": "Radial chart",
-      "description": "Radial chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside \u2014 edit freely.",
+      "description": "Radial chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely.",
       "dependencies": [
         "recharts",
         "lucide-react"
@@ -1111,7 +1111,7 @@
       "name": "date-range-picker",
       "type": "registry:component",
       "title": "DateRangePicker",
-      "description": "Range calendar popover with presets, Apply/Cancel, side-by-side months, and an optional date\u2194datetime switch that unlocks start/end time pickers (default 00:00). Emits ISO { from, to } (with THH:mm when time is on).",
+      "description": "Range calendar popover with presets, Apply/Cancel, side-by-side months, and an optional date↔datetime switch that unlocks start/end time pickers (default 00:00). Emits ISO { from, to } (with THH:mm when time is on).",
       "dependencies": [
         "lucide-react",
         "react-day-picker"
@@ -1152,7 +1152,7 @@
       "name": "number-compare",
       "type": "registry:component",
       "title": "NumberCompare",
-      "description": "Two-sided numeric comparison: lower bound (>, \u2265) AND upper bound (<, \u2264), e.g. '> 2 and < 10'. Either side optional. Emits { lower, upper }.",
+      "description": "Two-sided numeric comparison: lower bound (>, ≥) AND upper bound (<, ≤), e.g. '> 2 and < 10'. Either side optional. Emits { lower, upper }.",
       "registryDependencies": [
         "select",
         "input",
@@ -1162,6 +1162,142 @@
         {
           "path": "registry/stellify/number-compare.tsx",
           "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "intelui-types",
+      "type": "registry:file",
+      "title": "intelUI types",
+      "description": "Shared presentational types for the intelUI assistant pieces (messages, tabs, conversations, actions). Engine-agnostic.",
+      "files": [
+        {
+          "path": "registry/stellify/intelui-types.ts",
+          "type": "registry:file",
+          "target": "components/intelui/intelui-types.ts"
+        }
+      ]
+    },
+    {
+      "name": "intelui-pill",
+      "type": "registry:component",
+      "title": "InteluiPill",
+      "description": "Bottom-of-sidebar assistant pill: nav-item styling, fading label, highlighted when intelUI is active. Opens the assistant dropdown. Props-only.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/intelui-pill.tsx",
+          "type": "registry:component",
+          "target": "components/intelui/intelui-pill.tsx"
+        }
+      ]
+    },
+    {
+      "name": "intelui-conversation-list",
+      "type": "registry:component",
+      "title": "InteluiConversationList",
+      "description": "Selectable conversation history list with per-row delete cross (reveals on hover). Props-only, i18n-agnostic.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils",
+        "intelui-types"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/intelui-conversation-list.tsx",
+          "type": "registry:component",
+          "target": "components/intelui/intelui-conversation-list.tsx"
+        }
+      ]
+    },
+    {
+      "name": "intelui-tabs",
+      "type": "registry:component",
+      "title": "InteluiTabs",
+      "description": "Horizontal scrollable tab strip for open conversations: per-tab close cross + a new-conversation button. Props-only.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils",
+        "intelui-types"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/intelui-tabs.tsx",
+          "type": "registry:component",
+          "target": "components/intelui/intelui-tabs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "intelui-chat-panel",
+      "type": "registry:component",
+      "title": "InteluiChatPanel",
+      "description": "Upward-expanding transcript panel: context header, tab strip, suggestion chips and message log. max-height transition. Props-only.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils",
+        "intelui-types",
+        "intelui-tabs"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/intelui-chat-panel.tsx",
+          "type": "registry:component",
+          "target": "components/intelui/intelui-chat-panel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "intelui-floating-bar",
+      "type": "registry:component",
+      "title": "InteluiFloatingBar",
+      "description": "Floating assistant input bar: portaled, anchored to the sidebar edge via --intelui-sidebar-w, grows from the icon. Send/stop (spinner+cancel), focus suggestions, caret-up chat panel. Props-only.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils",
+        "intelui-types",
+        "intelui-chat-panel"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/intelui-floating-bar.tsx",
+          "type": "registry:component",
+          "target": "components/intelui/intelui-floating-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "intelui-dropdown",
+      "type": "registry:component",
+      "title": "InteluiDropdown",
+      "description": "Assistant popover content in two groups: Actions (Sparkles/Zap) and Conversations (Clock, deletable history), plus the intelUI switch. Props-only.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils",
+        "switch",
+        "intelui-types",
+        "intelui-conversation-list"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/intelui-dropdown.tsx",
+          "type": "registry:component",
+          "target": "components/intelui/intelui-dropdown.tsx"
         }
       ]
     }

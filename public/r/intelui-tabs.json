@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "intelui-tabs",
+  "title": "InteluiTabs",
+  "description": "Horizontal scrollable tab strip for open conversations: per-tab close cross + a new-conversation button. Props-only.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "intelui-types"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/intelui-tabs.tsx",
+      "content": "import { type FC, type MouseEvent } from \"react\"\nimport { Plus, X } from \"lucide-react\"\nimport { cn } from \"@/lib/utils\"\nimport type { InteluiTab } from \"@/components/intelui/intelui-types\"\n\nexport interface InteluiTabsProps {\n  tabs: InteluiTab[]\n  activeId: string | null\n  /** Localized aria-labels. */\n  tabsLabel: string\n  closeLabel: string\n  newLabel: string\n  onSelect: (id: string) => void\n  onClose: (id: string) => void\n  onNew: () => void\n}\n\n/**\n * Horizontal, scrollable tab strip for open conversations. Each tab has a\n * close cross; a trailing button opens a new conversation. Closing a tab does\n * not delete the conversation (the host decides that). Engine-/i18n-agnostic.\n */\nconst InteluiTabs: FC<InteluiTabsProps> = ({\n  tabs,\n  activeId,\n  tabsLabel,\n  closeLabel,\n  newLabel,\n  onSelect,\n  onClose,\n  onNew,\n}) => {\n  const handleClose = (e: MouseEvent, id: string) => {\n    e.stopPropagation()\n    onClose(id)\n  }\n\n  return (\n    <div className=\"flex items-center gap-1 border-b border-border px-2 py-1\">\n      <div\n        className=\"flex min-w-0 flex-1 items-center gap-1 overflow-x-auto\"\n        role=\"tablist\"\n        aria-label={tabsLabel}\n      >\n        {tabs.map((tab) => {\n          const active = tab.id === activeId\n          return (\n            <div\n              key={tab.id}\n              role=\"tab\"\n              aria-selected={active}\n              tabIndex={0}\n              onClick={() => onSelect(tab.id)}\n              onKeyDown={(e) => {\n                if (e.key === \"Enter\" || e.key === \" \") {\n                  e.preventDefault()\n                  onSelect(tab.id)\n                }\n              }}\n              className={cn(\n                \"group/tab flex shrink-0 cursor-pointer items-center gap-1 rounded-md border px-2 py-1 text-xs\",\n                \"max-w-[10rem] transition-colors\",\n                \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring\",\n                active\n                  ? \"border-primary bg-primary/10 text-foreground\"\n                  : \"border-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground\",\n              )}\n            >\n              <span className=\"truncate\">{tab.title}</span>\n              <button\n                type=\"button\"\n                onClick={(e) => handleClose(e, tab.id)}\n                aria-label={closeLabel}\n                className={cn(\n                  \"flex h-4 w-4 shrink-0 items-center justify-center rounded\",\n                  \"text-muted-foreground hover:bg-destructive hover:text-destructive-foreground\",\n                  \"focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring\",\n                )}\n              >\n                <X className=\"h-3 w-3\" aria-hidden />\n              </button>\n            </div>\n          )\n        })}\n      </div>\n      <button\n        type=\"button\"\n        onClick={onNew}\n        aria-label={newLabel}\n        className={cn(\n          \"flex h-6 w-6 shrink-0 items-center justify-center rounded-md\",\n          \"text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground\",\n          \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring\",\n        )}\n      >\n        <Plus className=\"h-4 w-4\" aria-hidden />\n      </button>\n    </div>\n  )\n}\n\nexport default InteluiTabs\nexport { InteluiTabs }\n",
+      "type": "registry:component",
+      "target": "components/intelui/intelui-tabs.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "intelui-types",
+  "title": "intelUI types",
+  "description": "Shared presentational types for the intelUI assistant pieces (messages, tabs, conversations, actions). Engine-agnostic.",
+  "files": [
+    {
+      "path": "registry/stellify/intelui-types.ts",
+      "content": "/**\n * intelUI — shared presentational types.\n *\n * These describe the data the intelUI UI pieces render. They are i18n-agnostic\n * and engine-agnostic: the host app owns the assistant engine (registry,\n * client, conversation state) and feeds these plain shapes + labels in as\n * props. The library never imports the app's context or i18n.\n */\n\nexport type InteluiChatRole = \"user\" | \"assistant\"\n\nexport interface InteluiChatMessage {\n  id: string\n  role: InteluiChatRole\n  text: string\n  /** True while a reply is in flight (renders the \"thinking\" placeholder). */\n  pending?: boolean\n}\n\nexport interface InteluiTab {\n  id: string\n  title: string\n}\n\nexport interface InteluiConversation {\n  id: string\n  title: string\n}\n\n/** A predefined quick action / suggestion the assistant can run in a module. */\nexport interface InteluiAction {\n  /** Stable key (the host maps it back to a real action / message). */\n  id: string\n  /** Already-localized label to display. */\n  label: string\n}\n",
+      "type": "registry:file",
+      "target": "components/intelui/intelui-types.ts"
+    }
+  ],
+  "type": "registry:file"
+}
