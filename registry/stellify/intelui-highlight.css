@@ -1,0 +1,55 @@
+/**
+ * intelui-highlight — assistant-actionable highlight layer.
+ *
+ * This file is the human-readable source of truth for the intelUI highlight
+ * styling. The machine-consumable version lives in `registry.json` under the
+ * `intelui-highlight` item's `cssVars` + `css`, which is what
+ * `shadcn add @stellify/intelui-highlight` applies.
+ *
+ * Model: a selectable domain entity carries `data-intelui-actionable="true"`.
+ * When the assistant is active the root carries `data-intelui="on"`. Every
+ * actionable then shows a SOFT, persistent outline; the FULL halo is reinforced
+ * on hover / keyboard focus and when the entity is selected
+ * (`data-selected="true"`). Movement is reserved for the action moment — the
+ * resting state is calm. Respects `prefers-reduced-motion`.
+ *
+ * `--intelui-accent` defaults to the StellifyIT brand green (primary). Colors
+ * are oklch. See README for Tailwind v3 vs v4 wiring.
+ */
+
+:root {
+  --intelui-accent: oklch(0.525 0.095 126);
+}
+
+.dark {
+  --intelui-accent: oklch(0.72 0.095 126);
+}
+
+/* Resting actionable (assistant active): SOFT, always visible, no hover gate. */
+[data-intelui="on"] [data-intelui-actionable="true"] {
+  outline: 1px solid color-mix(in oklch, var(--intelui-accent) 35%, transparent);
+  outline-offset: 1px;
+  border-radius: var(--radius, 0.375rem);
+  transition:
+    outline-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+/* Hover / keyboard focus: reinforce to the FULL halo. */
+[data-intelui="on"] [data-intelui-actionable="true"]:hover,
+[data-intelui="on"] [data-intelui-actionable="true"]:focus-visible {
+  outline-color: var(--intelui-accent);
+  box-shadow: 0 0 0 4px color-mix(in oklch, var(--intelui-accent) 15%, transparent);
+}
+
+/* Selected: persistent full halo, strongest of the three states. */
+[data-intelui="on"] [data-intelui-actionable="true"][data-selected="true"] {
+  outline: 2px solid var(--intelui-accent);
+  box-shadow: 0 0 0 4px color-mix(in oklch, var(--intelui-accent) 22%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-intelui="on"] [data-intelui-actionable="true"] {
+    transition: none;
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "intelui-chip",
+  "title": "InteluiChip",
+  "description": "Removable selected-entity chip for the assistant input: label + trailing ✕, --intelui-accent border, data-intelui-type accent. Props-only.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/intelui-chip.tsx",
+      "content": "import { forwardRef } from \"react\"\nimport { X } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface InteluiChipProps {\n  /** Selected entity's human-readable label. */\n  label: string\n  /** Remove the selection (the trailing ✕). */\n  onRemove: () => void\n  /** Localized aria-label for the remove button. */\n  removeLabel: string\n  /**\n   * Domain entity kind (e.g. \"evento\", \"tarea\"). Emitted as `data-intelui-type`\n   * for optional per-type accents. Opaque to this component.\n   */\n  type?: string\n  /** Host reduced-motion preference — drops the color transition. */\n  reducedMotion?: boolean\n}\n\n/**\n * InteluiChip — the selected-entity chip shown in the assistant input.\n *\n * Clicking a selectable entity attaches it here so the assistant resolves\n * \"muévela / esto\" against it. Presentational and engine-agnostic: label and\n * handlers come from props; the border uses `--intelui-accent` to match the\n * highlight layer.\n */\nconst InteluiChip = forwardRef<HTMLSpanElement, InteluiChipProps>(\n  ({ label, onRemove, removeLabel, type, reducedMotion }, ref) => (\n    <span\n      ref={ref}\n      data-intelui-type={type}\n      className={cn(\n        \"inline-flex h-6 shrink-0 items-center gap-1 rounded-full border px-2\",\n        \"bg-accent/40 text-xs font-medium text-foreground\",\n        \"max-w-[10rem]\",\n      )}\n      style={{ borderColor: \"var(--intelui-accent)\" }}\n    >\n      <span className=\"truncate\">{label}</span>\n      <button\n        type=\"button\"\n        onClick={onRemove}\n        aria-label={removeLabel}\n        title={removeLabel}\n        className={cn(\n          \"flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-muted-foreground\",\n          \"hover:bg-accent hover:text-foreground\",\n          \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring\",\n          !reducedMotion && \"transition-colors\",\n        )}\n      >\n        <X className=\"h-3 w-3\" aria-hidden />\n      </button>\n    </span>\n  ),\n)\n\nInteluiChip.displayName = \"InteluiChip\"\n\nexport default InteluiChip\nexport { InteluiChip }\n",
+      "type": "registry:component",
+      "target": "components/intelui/intelui-chip.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

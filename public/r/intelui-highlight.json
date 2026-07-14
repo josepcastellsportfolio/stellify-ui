@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "intelui-highlight",
+  "title": "intelUI highlight layer",
+  "description": "Assistant-actionable highlight: --intelui-accent token + a soft persistent outline on [data-intelui-actionable], reinforced on hover/focus and when [data-selected]. Respects reduced motion. Pairs with the Actionable wrapper.",
+  "registryDependencies": [],
+  "files": [],
+  "cssVars": {
+    "theme": {},
+    "light": {
+      "intelui-accent": "oklch(0.525 0.095 126)"
+    },
+    "dark": {
+      "intelui-accent": "oklch(0.72 0.095 126)"
+    }
+  },
+  "css": {
+    "[data-intelui=\"on\"] [data-intelui-actionable=\"true\"]": {
+      "outline": "1px solid color-mix(in oklch, var(--intelui-accent) 35%, transparent)",
+      "outline-offset": "1px",
+      "border-radius": "var(--radius, 0.375rem)",
+      "transition": "outline-color 150ms ease, box-shadow 150ms ease"
+    },
+    "[data-intelui=\"on\"] [data-intelui-actionable=\"true\"]:hover, [data-intelui=\"on\"] [data-intelui-actionable=\"true\"]:focus-visible": {
+      "outline-color": "var(--intelui-accent)",
+      "box-shadow": "0 0 0 4px color-mix(in oklch, var(--intelui-accent) 15%, transparent)"
+    },
+    "[data-intelui=\"on\"] [data-intelui-actionable=\"true\"][data-selected=\"true\"]": {
+      "outline": "2px solid var(--intelui-accent)",
+      "box-shadow": "0 0 0 4px color-mix(in oklch, var(--intelui-accent) 22%, transparent)"
+    },
+    "@media (prefers-reduced-motion: reduce)": {
+      "[data-intelui=\"on\"] [data-intelui-actionable=\"true\"]": {
+        "transition": "none"
+      }
+    }
+  },
+  "type": "registry:style"
+}
