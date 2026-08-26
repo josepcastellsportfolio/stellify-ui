@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "site-footer",
+  "title": "SiteFooter",
+  "description": "Site footer with grouped link columns and a legal line. Real anchors — it doubles as the crawlable link graph.",
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/site-footer.tsx",
+      "content": "import type { FC, ReactNode } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface SiteFooterLink {\n  href: string\n  label: string\n  /** Opens in a new tab with the usual rel hardening. */\n  external?: boolean\n}\n\nexport interface SiteFooterGroup {\n  title: string\n  links: SiteFooterLink[]\n}\n\nexport interface SiteFooterProps {\n  groups: SiteFooterGroup[]\n  /** Copyright / legal line under the groups. */\n  legal?: ReactNode\n  renderLink?: (link: SiteFooterLink, props: { className: string }) => ReactNode\n  className?: string\n}\n\n/**\n * Site footer.\n *\n * Because it renders on every public page it doubles as the site's crawlable\n * link graph — real anchors, never `onClick={navigate()}`.\n */\nexport const SiteFooter: FC<SiteFooterProps> = ({\n  groups,\n  legal,\n  renderLink,\n  className,\n}) => {\n  const linkClass =\n    \"text-sm text-muted-foreground underline-offset-4 transition-colors \" +\n    \"hover:text-foreground hover:underline focus-visible:outline-none \" +\n    \"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm\"\n\n  return (\n    <footer className={cn(\"border-t border-border py-12\", className)}>\n      <div className=\"grid gap-10 sm:grid-cols-2 lg:grid-cols-4\">\n        {groups.map(group => (\n          <nav key={group.title} aria-label={group.title}>\n            <h2 className=\"text-sm font-semibold text-foreground\">{group.title}</h2>\n            <ul className=\"mt-4 space-y-3\">\n              {group.links.map(link => (\n                <li key={link.href}>\n                  {renderLink?.(link, { className: linkClass }) ?? (\n                    <a\n                      href={link.href}\n                      className={linkClass}\n                      {...(link.external\n                        ? { target: \"_blank\", rel: \"noopener noreferrer\" }\n                        : {})}\n                    >\n                      {link.label}\n                    </a>\n                  )}\n                </li>\n              ))}\n            </ul>\n          </nav>\n        ))}\n      </div>\n\n      {legal ? (\n        <p className=\"mt-12 border-t border-border pt-8 text-sm text-muted-foreground\">\n          {legal}\n        </p>\n      ) : null}\n    </footer>\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

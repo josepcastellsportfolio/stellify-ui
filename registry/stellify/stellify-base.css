@@ -9,7 +9,13 @@
  * Colors are oklch. See README for Tailwind v3 vs v4 wiring.
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+/*
+ * Inter is NOT imported from Google here on purpose. Consumers self-host it
+ * (`@fontsource/inter`, latin subset), because loading fonts from Google sends
+ * the visitor's IP to a third party on first paint — a GDPR concern with no
+ * legal basis for a plain marketing site — and puts a third-party connection
+ * on the LCP critical path. See apps/web-app/src/styles/fonts.css.
+ */
 
 :root {
   --radius: 0.625rem;
@@ -52,6 +58,42 @@
   --warning-foreground: oklch(0.279 0.077 45.635);
   --info: oklch(0.511 0.096 186.391);
   --info-foreground: oklch(1 0 0);
+
+  /* ---------------------------------------------------------------------
+   * Marketing layout scale.
+   *
+   * Extracted from the approved home design (docs/design in stellifyit-global)
+   * so public pages compose from tokens instead of hardcoding pixel values.
+   * Only the geometry and motion are adopted; the design's palette is not —
+   * color always comes from the tokens above.
+   * ------------------------------------------------------------------- */
+  --container-max: 1180px;
+  --container-pad: 28px;
+
+  /* Vertical rhythm */
+  --space-hero-top: 96px;
+  --space-hero-bottom: 72px;
+  --space-section: 92px;
+
+  /* Radii. --radius stays the app-wide default; these are the marketing set. */
+  --radius-card: 22px;
+  --radius-pill: 999px;
+  --radius-icon: 16px;
+
+  /* Shadows: wide and diffuse, never hard. */
+  --shadow-card: 0 26px 60px -38px oklch(0.208 0.042 265.755 / 0.35);
+  --shadow-card-hover: 0 34px 80px -46px oklch(0.208 0.042 265.755 / 0.45);
+  --shadow-button: 0 12px 30px -14px oklch(0.525 0.095 126 / 0.65);
+
+  /* Motion. Every transition uses this pair; respect prefers-reduced-motion. */
+  --ease-out: cubic-bezier(.2, .8, .25, 1);
+  --duration: 300ms;
+
+  /* Typography */
+  --tracking-display: -0.03em;
+  --leading-body: 1.65;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
 }
 
 .dark {

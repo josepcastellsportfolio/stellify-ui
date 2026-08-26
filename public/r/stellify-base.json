@@ -15,8 +15,24 @@
   "files": [],
   "cssVars": {
     "theme": {
-      "font-sans": "Inter, system-ui, sans-serif",
-      "radius": "0.625rem"
+      "font-sans": "'Inter', system-ui, -apple-system, sans-serif",
+      "radius": "0.625rem",
+      "container-max": "1180px",
+      "container-pad": "28px",
+      "space-hero-top": "96px",
+      "space-hero-bottom": "72px",
+      "space-section": "92px",
+      "radius-card": "22px",
+      "radius-pill": "999px",
+      "radius-icon": "16px",
+      "shadow-card": "0 26px 60px -38px oklch(0.208 0.042 265.755 / 0.35)",
+      "shadow-card-hover": "0 34px 80px -46px oklch(0.208 0.042 265.755 / 0.45)",
+      "shadow-button": "0 12px 30px -14px oklch(0.525 0.095 126 / 0.65)",
+      "ease-out": "cubic-bezier(.2, .8, .25, 1)",
+      "duration": "300ms",
+      "tracking-display": "-0.03em",
+      "leading-body": "1.65",
+      "font-mono": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace"
     },
     "light": {
       "background": "oklch(0.98 0.002 264.536)",
@@ -98,9 +114,6 @@
       "info": "oklch(0.704 0.14 182.503)",
       "info-foreground": "oklch(0.277 0.046 192.524)"
     }
-  },
-  "css": {
-    "@import": "url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap')"
   },
   "type": "registry:style"
 }
