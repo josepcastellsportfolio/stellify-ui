@@ -23,15 +23,15 @@ export const ProcessSteps: FC<ProcessStepsProps> = ({ steps, className }) => (
     {steps.map((step, index) => (
       <li key={step.title} className="flex flex-col gap-3">
         <span
-          className="inline-flex h-10 w-10 items-center justify-center rounded-[--radius-pill] bg-primary text-sm font-semibold text-primary-foreground"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-pill bg-primary text-sm font-semibold text-primary-foreground"
           aria-hidden="true"
         >
           {index + 1}
         </span>
-        <h3 className="text-lg font-semibold tracking-[--tracking-display]">
+        <h3 className="text-lg font-semibold tracking-display">
           {step.title}
         </h3>
-        <p className="text-sm leading-[--leading-body] text-muted-foreground">
+        <p className="text-sm leading-body text-muted-foreground">
           {step.description}
         </p>
       </li>

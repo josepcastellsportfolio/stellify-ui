@@ -42,12 +42,12 @@ export const ProfileIntro: FC<ProfileIntroProps> = ({
       height={photoHeight}
       loading="lazy"
       decoding="async"
-      className="h-40 w-40 shrink-0 rounded-[--radius-card] object-cover shadow-[--shadow-card]"
+      className="h-40 w-40 shrink-0 rounded-card object-cover shadow-card"
     />
     <div className="min-w-0">
-      <h2 className="text-3xl font-semibold tracking-[--tracking-display]">{name}</h2>
+      <h2 className="text-3xl font-semibold tracking-display">{name}</h2>
       <p className="mt-2 text-muted-foreground">{role}</p>
-      <div className="mt-6 space-y-4 leading-[--leading-body] text-muted-foreground">
+      <div className="mt-6 space-y-4 leading-body text-muted-foreground">
         {children}
       </div>
     </div>

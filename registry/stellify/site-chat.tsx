@@ -103,11 +103,11 @@ export const SiteChat: FC<SiteChatProps> = ({
   return (
     <section
       className={cn(
-        "rounded-[--radius-card] border border-border bg-card p-8 shadow-[--shadow-card]",
+        "rounded-card border border-border bg-card p-8 shadow-card",
         className,
       )}
     >
-      <h2 className="text-2xl font-semibold tracking-[--tracking-display] text-card-foreground">
+      <h2 className="text-2xl font-semibold tracking-display text-card-foreground">
         {title}
       </h2>
       {description ? (
@@ -126,7 +126,7 @@ export const SiteChat: FC<SiteChatProps> = ({
             <div
               key={index}
               className={cn(
-                "rounded-[--radius-icon] px-4 py-3 text-sm",
+                "rounded-icon px-4 py-3 text-sm",
                 message.role === "user"
                   ? "bg-muted text-foreground"
                   : "bg-accent text-accent-foreground",
@@ -160,10 +160,10 @@ export const SiteChat: FC<SiteChatProps> = ({
         {faqs.map(faq => (
           <li
             key={faq.question}
-            className="rounded-[--radius-icon] border border-border/60 p-4"
+            className="rounded-icon border border-border/60 p-4"
           >
             <p className="font-medium text-card-foreground">{faq.question}</p>
-            <p className="mt-2 text-sm leading-[--leading-body] text-muted-foreground">
+            <p className="mt-2 text-sm leading-body text-muted-foreground">
               {faq.answer}
             </p>
             <a
@@ -192,7 +192,7 @@ export const SiteChat: FC<SiteChatProps> = ({
               disabled={exhausted || phase !== "idle"}
               placeholder="Escribe tu pregunta…"
               className={cn(
-                "flex-1 rounded-[--radius-pill] border border-input bg-background px-4 py-2.5 text-sm",
+                "flex-1 rounded-pill border border-input bg-background px-4 py-2.5 text-sm",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               )}
             />
@@ -200,7 +200,7 @@ export const SiteChat: FC<SiteChatProps> = ({
               type="submit"
               disabled={!canSend}
               className={cn(
-                "inline-flex items-center gap-2 rounded-[--radius-pill] bg-primary px-5 py-2.5",
+                "inline-flex items-center gap-2 rounded-pill bg-primary px-5 py-2.5",
                 "text-sm font-medium text-primary-foreground disabled:opacity-50",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               )}

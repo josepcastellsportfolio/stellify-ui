@@ -43,28 +43,28 @@ export const OfferCard: FC<OfferCardProps> = ({
   return (
     <article
       className={cn(
-        "flex h-full flex-col rounded-[--radius-card] border border-border bg-card p-7",
-        "shadow-[--shadow-card] transition-[transform,box-shadow] duration-[--duration] ease-[--ease-out]",
-        "hover:-translate-y-1 hover:shadow-[--shadow-card-hover]",
+        "flex h-full flex-col rounded-card border border-border bg-card p-7",
+        "shadow-card transition-[transform,box-shadow] duration-base ease-out-soft",
+        "hover:-translate-y-1 hover:shadow-card-hover",
         "motion-reduce:transform-none motion-reduce:transition-none",
         className,
       )}
     >
       {icon ? (
-        <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-[--radius-icon] bg-accent text-accent-foreground">
+        <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-icon bg-accent text-accent-foreground">
           {icon}
         </div>
       ) : null}
 
-      <h3 className="text-xl font-semibold tracking-[--tracking-display] text-card-foreground">
+      <h3 className="text-xl font-semibold tracking-display text-card-foreground">
         {title}
       </h3>
 
-      <p className="mt-4 text-sm leading-[--leading-body] text-muted-foreground">
+      <p className="mt-4 text-sm leading-body text-muted-foreground">
         {deliverable}
       </p>
 
-      <p className="mt-4 text-sm leading-[--leading-body] text-muted-foreground">
+      <p className="mt-4 text-sm leading-body text-muted-foreground">
         <span className="font-medium text-card-foreground">Cuándo tiene sentido: </span>
         {fit}
       </p>
