@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-table-active-filters",
+  "title": "DataTableActiveFilters",
+  "description": "Chips showing which filters are applied; each reopens its filter for editing and clears itself.",
+  "registryDependencies": [
+    "popover",
+    "utils",
+    "data-table-filters",
+    "data-table-filter-widget"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/data-table-active-filters.tsx",
+      "content": "// Active-filter chips — what is currently narrowing the table, above it.\n//\n// With the filter controls moved into per-column popovers, nothing on screen\n// would otherwise say a filter is applied except a tinted icon in a header\n// that may be scrolled out of view. Each chip names its column, shows the\n// value, reopens that column's popover when clicked, and clears itself with\n// the ✕.\n\nimport { X } from 'lucide-react';\nimport { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';\nimport { cn } from '@/lib/utils';\nimport { FilterWidget } from './data-table-filter-widget';\nimport {\n  describeFilter,\n  defaultFilterValue,\n  isFilterActive,\n  type ActiveFilters,\n  type ActiveFilterValue,\n  type FilterDef,\n} from './data-table-filters';\n\n/**\n * The part of a column definition these chips need.\n *\n * Deliberately narrower than any particular table's ColumnDef so this\n * composes with whatever column shape the consumer already has: structural\n * typing means a richer definition satisfies it as-is.\n */\nexport interface FilterableColumn {\n  key: string;\n  header: string;\n  filter?: FilterDef;\n}\n\ninterface DataTableActiveFiltersProps {\n  columns: FilterableColumn[];\n  filters: ActiveFilters;\n  onChange: (key: string, value: ActiveFilterValue) => void;\n}\n\nexport function DataTableActiveFilters({\n  columns,\n  filters,\n  onChange,\n}: DataTableActiveFiltersProps) {\n  const applied = columns.filter(\n    col => col.filter && isFilterActive(filters[col.key]),\n  );\n\n  if (applied.length === 0) return null;\n\n  return (\n    <div className=\"flex items-center gap-1.5 flex-wrap\">\n      {applied.map(col => (\n        <Popover key={col.key}>\n          <span\n            className={cn(\n              'inline-flex items-center rounded-full border border-primary/30',\n              'bg-primary/10 text-primary text-xs h-7 pl-2.5 pr-1 gap-1',\n            )}\n          >\n            <PopoverTrigger asChild>\n              <button\n                className=\"max-w-[220px] truncate hover:underline\"\n                title=\"Editar este filtro\"\n              >\n                <span className=\"font-medium\">{col.header}:</span>{' '}\n                {describeFilter(filters[col.key], col.filter)}\n              </button>\n            </PopoverTrigger>\n            <button\n              onClick={() => onChange(col.key, defaultFilterValue(col.filter!))}\n              className=\"rounded-full p-0.5 hover:bg-primary/20 shrink-0\"\n              aria-label={`Quitar el filtro de ${col.header}`}\n            >\n              <X className=\"h-3 w-3\" />\n            </button>\n          </span>\n          <PopoverContent className=\"w-[300px] max-w-[90vw] p-3\" align=\"start\">\n            <p className=\"text-xs font-medium mb-2\">{col.header}</p>\n            <FilterWidget\n              columnKey={col.key}\n              def={col.filter!}\n              value={filters[col.key]}\n              onChange={onChange}\n            />\n          </PopoverContent>\n        </Popover>\n      ))}\n    </div>\n  );\n}\n\nexport default DataTableActiveFilters;\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

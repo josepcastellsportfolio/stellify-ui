@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-table-column-filter",
+  "title": "DataTableColumnFilter",
+  "description": "Filter trigger for a column header: an icon that opens the column's filter in a popover, so a wide control is not bound to the column's width.",
+  "registryDependencies": [
+    "button",
+    "popover",
+    "utils",
+    "data-table-filters",
+    "data-table-filter-widget"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/data-table-column-filter.tsx",
+      "content": "// Column-header filter trigger — ListFilter icon + Popover with FilterWidget.\n// Shown only on filterable columns; icon turns text-primary when filter is active.\n\nimport { ListFilter } from 'lucide-react';\nimport { Button } from '@/components/ui/button';\nimport { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';\nimport { cn } from '@/lib/utils';\nimport { isFilterActive } from './data-table-filters';\nimport { FilterWidget } from './data-table-filter-widget';\nimport type { FilterWidgetProps } from './data-table-filter-widget';\n\ntype DataTableColumnFilterProps = FilterWidgetProps;\n\nexport function DataTableColumnFilter({ columnKey, def, value, onChange }: DataTableColumnFilterProps) {\n  const active = isFilterActive(value);\n\n  return (\n    <Popover>\n      <PopoverTrigger asChild>\n        <Button\n          variant=\"ghost\"\n          size=\"icon\"\n          className={cn(\n            'h-6 w-6 ml-1 shrink-0',\n            active ? 'text-primary' : 'text-muted-foreground hover:text-foreground',\n          )}\n          aria-label={`Filtrar columna`}\n        >\n          <ListFilter className=\"h-3.5 w-3.5\" />\n        </Button>\n      </PopoverTrigger>\n      {/* 300px, not the popover default: the date-range presets (Hoy, Ayer,\n          7 días, Este mes, Mes pasado) need about 290px to sit on one line,\n          and wrapping them was half of what made the old inline filter row\n          look broken. Width here is independent of the column's width, which\n          is the whole point of moving the widget out of the table. */}\n      <PopoverContent className=\"w-[300px] max-w-[90vw] p-3\" align=\"start\" side=\"bottom\">\n        <FilterWidget\n          columnKey={columnKey}\n          def={def}\n          value={value}\n          onChange={onChange}\n        />\n      </PopoverContent>\n    </Popover>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

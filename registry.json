@@ -1512,6 +1512,77 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "data-table-filters",
+      "type": "registry:lib",
+      "title": "DataTableFilters",
+      "description": "Filter type system for DataTable: 10 filter kinds, operators, state shapes, type guards and factory helpers. No UI.",
+      "files": [
+        {
+          "path": "registry/stellify/data-table-filters.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "data-table-filter-widget",
+      "type": "registry:component",
+      "title": "DataTableFilterWidget",
+      "description": "Renders the control for one filter definition — text, number, ranges, date, datetime, select, multiselect and async column values.",
+      "registryDependencies": [
+        "input",
+        "select",
+        "calendar",
+        "popover",
+        "button",
+        "checkbox",
+        "utils",
+        "data-table-filters"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/data-table-filter-widget.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "data-table-column-filter",
+      "type": "registry:component",
+      "title": "DataTableColumnFilter",
+      "description": "Filter trigger for a column header: an icon that opens the column's filter in a popover, so a wide control is not bound to the column's width.",
+      "registryDependencies": [
+        "button",
+        "popover",
+        "utils",
+        "data-table-filters",
+        "data-table-filter-widget"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/data-table-column-filter.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "data-table-active-filters",
+      "type": "registry:component",
+      "title": "DataTableActiveFilters",
+      "description": "Chips showing which filters are applied; each reopens its filter for editing and clears itself.",
+      "registryDependencies": [
+        "popover",
+        "utils",
+        "data-table-filters",
+        "data-table-filter-widget"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/data-table-active-filters.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
