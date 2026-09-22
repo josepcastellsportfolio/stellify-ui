@@ -4,7 +4,7 @@
   "title": "OfferCard",
   "description": "Service card: deliverable, when it fits, and a link to the work that backs it. No hover-to-reveal.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

@@ -7,7 +7,7 @@
     "class-variance-authority"
   ],
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

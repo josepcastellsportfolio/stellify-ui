@@ -4,7 +4,7 @@
   "title": "SiteChat",
   "description": "Public chat panel, degraded-first: renders a FAQ block by default and gains a composer when a service is available. Never shows a raw error or an indefinite spinner.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

@@ -8,13 +8,13 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "chart",
-    "chart-card",
-    "time-range-selector",
-    "chart-formatters",
-    "use-series-toggle",
-    "card",
-    "utils"
+    "@stellify/chart",
+    "@stellify/chart-card",
+    "@stellify/time-range-selector",
+    "@stellify/chart-formatters",
+    "@stellify/use-series-toggle",
+    "@stellify/card",
+    "@stellify/utils"
   ],
   "files": [
     {

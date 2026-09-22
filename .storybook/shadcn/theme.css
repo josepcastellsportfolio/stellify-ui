@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 /* StellifyIT design tokens (oklch, light + dark) — the same file the registry
    ships as `stellify-base`. Defines :root and .dark CSS variables + Inter. */

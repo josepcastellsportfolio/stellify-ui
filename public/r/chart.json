@@ -8,8 +8,8 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "card",
-    "utils"
+    "@stellify/card",
+    "@stellify/utils"
   ],
   "files": [
     {

@@ -7,10 +7,10 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "button",
-    "popover",
-    "calendar",
-    "utils"
+    "@stellify/button",
+    "@stellify/popover",
+    "@stellify/calendar",
+    "@stellify/utils"
   ],
   "files": [
     {

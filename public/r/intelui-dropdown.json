@@ -7,10 +7,10 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "utils",
-    "switch",
-    "intelui-types",
-    "intelui-conversation-list"
+    "@stellify/utils",
+    "@stellify/switch",
+    "@stellify/intelui-types",
+    "@stellify/intelui-conversation-list"
   ],
   "files": [
     {

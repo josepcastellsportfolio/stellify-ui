@@ -4,8 +4,8 @@
   "title": "WeekGrid / DayColumn",
   "description": "Presentational 7-day week grid with day columns. Events and rendering passed via props; no scheduling business logic.",
   "registryDependencies": [
-    "utils",
-    "week-dates"
+    "@stellify/utils",
+    "@stellify/week-dates"
   ],
   "files": [
     {

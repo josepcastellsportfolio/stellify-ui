@@ -4,8 +4,8 @@
   "title": "SectionCard",
   "description": "Card with a titled header, optional description, header actions slot and content area. Common panel shell.",
   "registryDependencies": [
-    "card",
-    "utils"
+    "@stellify/card",
+    "@stellify/utils"
   ],
   "files": [
     {

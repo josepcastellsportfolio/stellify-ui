@@ -4,7 +4,7 @@
   "title": "ProgressRing",
   "description": "SVG circular progress indicator. value/max/size/strokeWidth via props, themed with currentColor + muted track.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

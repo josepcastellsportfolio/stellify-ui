@@ -4,8 +4,8 @@
   "title": "DataTable",
   "description": "Presentational paginated table (columns, rows, sort, loading skeleton, empty state). Fetching is the consumer's job — see toolbar/pagination slots.",
   "registryDependencies": [
-    "table",
-    "utils"
+    "@stellify/table",
+    "@stellify/utils"
   ],
   "files": [
     {

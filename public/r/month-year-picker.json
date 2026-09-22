@@ -4,7 +4,7 @@
   "title": "MonthYearPicker",
   "description": "Native month input (YYYY-MM) wrapper, themed. Controlled via month (1-12) + year.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

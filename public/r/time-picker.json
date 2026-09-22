@@ -4,8 +4,8 @@
   "title": "TimePicker",
   "description": "Hour + minute selects (+ AM/PM unless use24Hour). Controlled, emits 24h 'HH:mm'. minuteStep configurable.",
   "registryDependencies": [
-    "select",
-    "utils"
+    "@stellify/select",
+    "@stellify/utils"
   ],
   "files": [
     {

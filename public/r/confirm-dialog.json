@@ -4,9 +4,9 @@
   "title": "ConfirmDialog",
   "description": "Controlled confirmation dialog over AlertDialog. All copy via props; destructive flag for dangerous actions.",
   "registryDependencies": [
-    "alert-dialog",
-    "button",
-    "utils"
+    "@stellify/alert-dialog",
+    "@stellify/button",
+    "@stellify/utils"
   ],
   "files": [
     {

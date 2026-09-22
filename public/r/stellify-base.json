@@ -4,13 +4,13 @@
   "title": "StellifyIT design system base",
   "description": "Canonical StellifyIT theme: emerald/teal/slate tokens (light + dark, oklch), Inter font, radius. Install first.",
   "dependencies": [
-    "tailwindcss-animate",
     "class-variance-authority",
     "clsx",
-    "tailwind-merge"
+    "tailwind-merge",
+    "tw-animate-css"
   ],
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [],
   "cssVars": {
@@ -114,6 +114,9 @@
       "info": "oklch(0.704 0.14 182.503)",
       "info-foreground": "oklch(0.277 0.046 192.524)"
     }
+  },
+  "css": {
+    "@import \"tw-animate-css\"": {}
   },
   "type": "registry:style"
 }

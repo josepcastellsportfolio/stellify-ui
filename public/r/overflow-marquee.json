@@ -4,7 +4,7 @@
   "title": "OverflowMarquee",
   "description": "Truncates with an ellipsis at rest and, only when the text actually overflows, slides horizontally on hover/focus to reveal the full string, easing back on leave. Self-contained (measures its own overflow, pure CSS transform, no Tailwind config). Honors reduced motion; keeps a native title fallback.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

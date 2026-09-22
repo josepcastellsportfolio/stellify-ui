@@ -4,7 +4,7 @@
   "title": "SiteNav",
   "description": "Public site navigation with an accessible mobile menu (focus trap, Escape to close). Links are real anchors so they stay crawlable.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

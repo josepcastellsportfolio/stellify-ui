@@ -125,7 +125,8 @@ app **without** shadcn can install everything from one place (they overwrite
 
 `badge`, `card`, `dialog`, `select`, `tabs`, `checkbox`, `switch`, `tooltip`,
 `dropdown-menu`, `popover`, `calendar`, `textarea`, `separator`, `label`,
-`progress`, `form` (plus the customized `button` / `input` above).
+`progress`, `form`, `alert-dialog`, `table` (plus the customized `button` / `input` above), and
+`utils` (`cn()` = clsx + tailwind-merge).
 
 ```bash
 npx shadcn@latest add @stellify/card @stellify/dialog @stellify/select --overwrite
@@ -146,8 +147,23 @@ CLI fetches) lives in [`public/r/`](public/r/).
    npm install        # first time only, installs the shadcn CLI
    npm run registry:build   # = shadcn build  → writes public/r/*.json
    ```
-4. Commit **both** the source and the regenerated `public/r/*.json`, then push.
+4. Add a test in [`tests/`](tests/) and run `npm test` (vitest + Testing Library).
+   Tests import the published sources via `@stellify/<file>`; the `@/…` imports
+   inside them resolve to `registry/stellify/` first (see `vitest.config.ts`).
+5. Commit **both** the source and the regenerated `public/r/*.json`, then push.
+   CI (`.github/workflows/tests.yml`) fails if `public/r` is out of sync.
    Consumers pull the change by re-running `shadcn add @stellify/<item>`.
+
+### Rules for `registryDependencies`
+
+- **Always namespace internal dependencies: `@stellify/button`, never `button`.**
+  A bare name resolves against shadcn's upstream registry, so `chart-card` used
+  to install upstream's `button`/`card` and shadcn's current `utils` (which
+  rewrites `lib/utils.ts` to `export { cn } from "cn"` and adds the `cn` npm
+  package). `tests/registry.test.ts` enforces this.
+- If an item needs a primitive the registry doesn't ship, vendor it here first.
+- New items emit `data-slot` on every part (like current shadcn primitives).
+- Animations use `tw-animate-css` (Tailwind 4), imported by `stellify-base`.
 
 > `homepage` in `registry.json` points at
 > `https://github.com/josepcastellsportfolio/stellify-ui`.
@@ -176,7 +192,9 @@ npx shadcn@latest add @stellify/stellify-base
 npx shadcn@latest add @stellify/metric-card
 ```
 
-`stellify-base` writes the StellifyIT tokens into your CSS. Components land in
+`stellify-base` writes the StellifyIT tokens and `@import "tw-animate-css"` into
+your CSS. If the app already has a `lib/utils.ts`, shadcn asks before replacing
+it with `@stellify/utils` (same `cn()`); pass `--overwrite` to accept. Components land in
 `@/components/...` and import `@/lib/utils` (`cn`) and `@/components/ui/*` exactly
 like any other shadcn component — re-using the ones you already have.
 

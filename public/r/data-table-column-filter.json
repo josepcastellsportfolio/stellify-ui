@@ -4,11 +4,11 @@
   "title": "DataTableColumnFilter",
   "description": "Filter trigger for a column header: an icon that opens the column's filter in a popover, so a wide control is not bound to the column's width.",
   "registryDependencies": [
-    "button",
-    "popover",
-    "utils",
-    "data-table-filters",
-    "data-table-filter-widget"
+    "@stellify/button",
+    "@stellify/popover",
+    "@stellify/utils",
+    "@stellify/data-table-filters",
+    "@stellify/data-table-filter-widget"
   ],
   "files": [
     {

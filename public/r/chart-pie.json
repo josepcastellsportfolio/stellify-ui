@@ -8,10 +8,10 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "card",
-    "chart",
-    "chart-formatters",
-    "utils"
+    "@stellify/card",
+    "@stellify/chart",
+    "@stellify/chart-formatters",
+    "@stellify/utils"
   ],
   "files": [
     {

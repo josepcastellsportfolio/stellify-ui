@@ -4,10 +4,10 @@
   "title": "DataTableActiveFilters",
   "description": "Chips showing which filters are applied; each reopens its filter for editing and clears itself.",
   "registryDependencies": [
-    "popover",
-    "utils",
-    "data-table-filters",
-    "data-table-filter-widget"
+    "@stellify/popover",
+    "@stellify/utils",
+    "@stellify/data-table-filters",
+    "@stellify/data-table-filter-widget"
   ],
   "files": [
     {

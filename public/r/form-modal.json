@@ -9,13 +9,13 @@
     "zod"
   ],
   "registryDependencies": [
-    "dialog",
-    "button",
-    "input",
-    "select",
-    "switch",
-    "form",
-    "utils"
+    "@stellify/dialog",
+    "@stellify/button",
+    "@stellify/input",
+    "@stellify/select",
+    "@stellify/switch",
+    "@stellify/form",
+    "@stellify/utils"
   ],
   "files": [
     {
