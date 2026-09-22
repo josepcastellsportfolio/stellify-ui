@@ -15,6 +15,10 @@
     "types": ["vitest/globals", "@testing-library/jest-dom"],
     "baseUrl": ".",
     "paths": {
+      "@/components/ui/*": ["./registry/stellify/*", "./.storybook/shadcn/components/ui/*"],
+      "@/components/*": ["./registry/stellify/*", "./.storybook/shadcn/components/*"],
+      "@/lib/*": ["./registry/stellify/*", "./.storybook/shadcn/lib/*"],
+      "@/hooks/*": ["./registry/stellify/*", "./.storybook/shadcn/hooks/*"],
       "@/*": ["./.storybook/shadcn/*"],
       "@stellify/*": ["./registry/stellify/*"]
     }

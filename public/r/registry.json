@@ -525,7 +525,7 @@
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge (StellifyIT)",
-      "description": "Standard shadcn badge primitive, shipped under @stellify for apps without shadcn. Overwrites ui/badge.",
+      "description": "Badge with variants plus `size` (default | xs) and `uppercase`. Emits data-slot.",
       "registryDependencies": [
         "@stellify/utils"
       ],
@@ -733,7 +733,7 @@
       "name": "textarea",
       "type": "registry:ui",
       "title": "Textarea (StellifyIT)",
-      "description": "Standard shadcn textarea primitive, shipped under @stellify for apps without shadcn. Overwrites ui/textarea.",
+      "description": "Textarea with `autoResize` (grows with content). Emits data-slot.",
       "registryDependencies": [
         "@stellify/utils"
       ],
@@ -787,7 +787,7 @@
       "name": "progress",
       "type": "registry:ui",
       "title": "Progress (StellifyIT)",
-      "description": "Standard shadcn progress primitive, shipped under @stellify for apps without shadcn. Overwrites ui/progress.",
+      "description": "Standard shadcn progress primitive, shipped under @stellify for apps without shadcn. Overwrites ui/progress. `size=\"sm\"`: thin bar on a neutral track.",
       "registryDependencies": [
         "@stellify/utils"
       ],
@@ -799,7 +799,8 @@
         }
       ],
       "dependencies": [
-        "@radix-ui/react-progress"
+        "@radix-ui/react-progress",
+        "class-variance-authority"
       ]
     },
     {
@@ -1633,6 +1634,198 @@
       "files": [
         {
           "path": "registry/stellify/data-table-active-filters.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "step-heading",
+      "type": "registry:component",
+      "title": "StepHeading",
+      "description": "Onboarding step title (h1) + grey subtitle.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/step-heading.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "onboarding-shell",
+      "type": "registry:component",
+      "title": "OnboardingShell",
+      "description": "Multi-step onboarding frame: logo + \"Paso n de N\", thin progress bar, centered ~580 px column.",
+      "registryDependencies": [
+        "@stellify/logo",
+        "@stellify/progress",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/onboarding-shell.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "nav-footer",
+      "type": "registry:component",
+      "title": "NavFooter",
+      "description": "\"← Atrás\" link + primary \"Siguiente →\" for step flows; labels, disabled, loading and submit type as props.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/nav-footer.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "number-input",
+      "type": "registry:component",
+      "title": "NumberInput",
+      "description": "Controlled numeric input (empty = null) with a vertical ± stepper, min/max clamping and translatable button labels.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/label",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/number-input.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "choice-card",
+      "type": "registry:component",
+      "title": "ChoiceCard",
+      "description": "Single-choice block options (Radix radio group): title + description, selected = primary border + check.",
+      "dependencies": [
+        "@radix-ui/react-radio-group",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/choice-card.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "textarea-field",
+      "type": "registry:component",
+      "title": "TextareaField",
+      "description": "Labeled textarea with required asterisk, error and helper text (multi-line sibling of text-field).",
+      "registryDependencies": [
+        "@stellify/label",
+        "@stellify/textarea",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/textarea-field.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "quadrant-grid",
+      "type": "registry:component",
+      "title": "QuadrantGrid",
+      "description": "2×2 grid with column headers and vertical row labels; exactly four children.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/quadrant-grid.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "quadrant-cell",
+      "type": "registry:component",
+      "title": "QuadrantCell",
+      "description": "Quadrant cell: icon, uppercase code, title, description; `active` adds a primary border and a \"Tu vía\" badge.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/badge",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/quadrant-cell.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "reason-list",
+      "type": "registry:component",
+      "title": "ReasonList",
+      "description": "List of short justifications, each with a primary check.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/reason-list.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "app-shell",
+      "type": "registry:component",
+      "title": "AppShell",
+      "description": "App frame: fixed left sidebar (collapsible), optional top bar, scrollable main.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/app-shell.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:component",
+      "title": "Sidebar",
+      "description": "Vertical app nav: Sidebar, SidebarGroup, SidebarGroupLabel, SidebarItem (icon, active = aria-current, trailing slot, asChild for router links).",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/sidebar.tsx",
           "type": "registry:component"
         }
       ]

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "number-input",
+  "title": "NumberInput",
+  "description": "Controlled numeric input (empty = null) with a vertical ± stepper, min/max clamping and translatable button labels.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/label",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/number-input.tsx",
+      "content": "import * as React from \"react\"\nimport { ChevronDown, ChevronUp } from \"lucide-react\"\n\nimport { Label } from \"@/components/ui/label\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface NumberInputProps\n  extends Omit<React.ComponentProps<\"input\">, \"value\" | \"onChange\" | \"type\" | \"min\" | \"max\" | \"step\"> {\n  value: number | null\n  onChange: (value: number | null) => void\n  label?: string\n  min?: number\n  max?: number\n  step?: number\n  incrementLabel?: string\n  decrementLabel?: string\n}\n\nconst clamp = (n: number, min?: number, max?: number) =>\n  Math.min(max ?? Number.POSITIVE_INFINITY, Math.max(min ?? Number.NEGATIVE_INFINITY, n))\n\n/** Numeric input with a vertical ± stepper on the right. Controlled; empty = null. */\nconst NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(\n  (\n    {\n      value,\n      onChange,\n      label,\n      min,\n      max,\n      step = 1,\n      incrementLabel = \"Aumentar\",\n      decrementLabel = \"Disminuir\",\n      id,\n      className,\n      disabled,\n      ...props\n    },\n    ref\n  ) => {\n    const generatedId = React.useId()\n    const inputId = id ?? generatedId\n    const bump = (delta: number) => onChange(clamp((value ?? min ?? 0) + delta, min, max))\n    const atMax = value !== null && max !== undefined && value >= max\n    const atMin = value !== null && min !== undefined && value <= min\n    const stepperButton =\n      \"flex h-1/2 w-7 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-40 [&_svg]:size-3.5\"\n\n    return (\n      <div data-slot=\"number-input\" className=\"space-y-1.5\">\n        {label && <Label htmlFor={inputId}>{label}</Label>}\n        <div className=\"relative\">\n          <input\n            ref={ref}\n            id={inputId}\n            type=\"number\"\n            inputMode=\"numeric\"\n            value={value ?? \"\"}\n            min={min}\n            max={max}\n            step={step}\n            disabled={disabled}\n            onChange={(e) => {\n              const raw = e.target.value\n              onChange(raw === \"\" ? null : clamp(Number(raw), min, max))\n            }}\n            className={cn(\n              \"flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pr-9 text-base [appearance:textfield] focus-visible:border-primary/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none\",\n              className\n            )}\n            {...props}\n          />\n          <div className=\"absolute inset-y-1 right-1 flex flex-col\">\n            <button\n              type=\"button\"\n              tabIndex={-1}\n              aria-label={incrementLabel}\n              disabled={disabled || atMax}\n              onClick={() => bump(step)}\n              className={stepperButton}\n            >\n              <ChevronUp />\n            </button>\n            <button\n              type=\"button\"\n              tabIndex={-1}\n              aria-label={decrementLabel}\n              disabled={disabled || atMin}\n              onClick={() => bump(-step)}\n              className={stepperButton}\n            >\n              <ChevronDown />\n            </button>\n          </div>\n        </div>\n      </div>\n    )\n  }\n)\nNumberInput.displayName = \"NumberInput\"\n\nexport { NumberInput }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "app-shell",
+  "title": "AppShell",
+  "description": "App frame: fixed left sidebar (collapsible), optional top bar, scrollable main.",
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/app-shell.tsx",
+      "content": "import type { ReactNode } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface AppShellProps {\n  sidebar: ReactNode\n  /** Top bar content (niche, API keys, sign out…). */\n  topbar?: ReactNode\n  children: ReactNode\n  sidebarOpen?: boolean\n  className?: string\n}\n\n/** Fixed left sidebar + optional top bar + scrollable content. */\nfunction AppShell({ sidebar, topbar, children, sidebarOpen = true, className }: AppShellProps) {\n  return (\n    <div\n      data-slot=\"app-shell\"\n      className={cn(\"flex h-screen overflow-hidden bg-background text-foreground\", className)}\n    >\n      {sidebarOpen && (\n        <aside className=\"hidden w-60 shrink-0 overflow-y-auto border-r border-border/60 md:block\">\n          {sidebar}\n        </aside>\n      )}\n      <div className=\"flex min-w-0 flex-1 flex-col\">\n        {topbar && (\n          <header className=\"flex h-14 shrink-0 items-center gap-4 border-b border-border/60 px-6\">\n            {topbar}\n          </header>\n        )}\n        <main className=\"flex-1 overflow-y-auto px-6 py-8\">{children}</main>\n      </div>\n    </div>\n  )\n}\n\nexport { AppShell }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

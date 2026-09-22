@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "step-heading",
+  "title": "StepHeading",
+  "description": "Onboarding step title (h1) + grey subtitle.",
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/step-heading.tsx",
+      "content": "import type { ReactNode } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface StepHeadingProps {\n  title: ReactNode\n  description?: ReactNode\n  className?: string\n}\n\n/** Title + grey subtitle at the top of an onboarding step. */\nfunction StepHeading({ title, description, className }: StepHeadingProps) {\n  return (\n    <div data-slot=\"step-heading\" className={cn(\"space-y-1.5\", className)}>\n      <h1 className=\"text-2xl font-bold tracking-tight text-foreground\">{title}</h1>\n      {description && <p className=\"text-sm text-muted-foreground\">{description}</p>}\n    </div>\n  )\n}\n\nexport { StepHeading }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

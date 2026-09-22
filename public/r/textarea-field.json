@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textarea-field",
+  "title": "TextareaField",
+  "description": "Labeled textarea with required asterisk, error and helper text (multi-line sibling of text-field).",
+  "registryDependencies": [
+    "@stellify/label",
+    "@stellify/textarea",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/textarea-field.tsx",
+      "content": "import * as React from \"react\"\n\nimport { Label } from \"@/components/ui/label\"\nimport { Textarea, type TextareaProps } from \"@/components/ui/textarea\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface TextareaFieldProps extends Omit<TextareaProps, \"id\"> {\n  label?: string\n  error?: string\n  helperText?: string\n  id?: string\n  wrapperClassName?: string\n}\n\n/** Labeled textarea with error/helper text; the multi-line sibling of `TextField`. */\nconst TextareaField = React.forwardRef<HTMLTextAreaElement, TextareaFieldProps>(\n  ({ label, error, helperText, required, id, wrapperClassName, ...props }, ref) => {\n    const generatedId = React.useId()\n    const fieldId = id ?? generatedId\n    const describedById = error\n      ? `${fieldId}-error`\n      : helperText\n        ? `${fieldId}-helper`\n        : undefined\n    return (\n      <div data-slot=\"textarea-field\" className={cn(\"space-y-1.5\", wrapperClassName)}>\n        {label && (\n          <Label htmlFor={fieldId}>\n            {label}\n            {required && <span className=\"ml-0.5 text-destructive\">*</span>}\n          </Label>\n        )}\n        <Textarea\n          ref={ref}\n          id={fieldId}\n          required={required}\n          aria-invalid={error ? true : undefined}\n          aria-describedby={describedById}\n          {...props}\n        />\n        {error ? (\n          <p id={`${fieldId}-error`} className=\"text-xs text-destructive\">\n            {error}\n          </p>\n        ) : helperText ? (\n          <p id={`${fieldId}-helper`} className=\"text-xs text-muted-foreground\">\n            {helperText}\n          </p>\n        ) : null}\n      </div>\n    )\n  }\n)\nTextareaField.displayName = \"TextareaField\"\n\nexport { TextareaField }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

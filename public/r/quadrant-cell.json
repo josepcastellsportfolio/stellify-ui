@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "quadrant-cell",
+  "title": "QuadrantCell",
+  "description": "Quadrant cell: icon, uppercase code, title, description; `active` adds a primary border and a \"Tu vía\" badge.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/badge",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/quadrant-cell.tsx",
+      "content": "import type { LucideIcon } from \"lucide-react\"\nimport { Sparkles } from \"lucide-react\"\n\nimport { Badge } from \"@/components/ui/badge\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface QuadrantCellProps {\n  icon: LucideIcon\n  /** Uppercase grey code line, e.g. \"C3 · Búsqueda activa · Tiempo\". */\n  code: string\n  title: string\n  description: string\n  /** The user's recommended path: primary border + badge. */\n  active?: boolean\n  activeLabel?: string\n  className?: string\n}\n\n/** One cell of the 2×2 acquisition grid. */\nfunction QuadrantCell({\n  icon: Icon,\n  code,\n  title,\n  description,\n  active = false,\n  activeLabel = \"Tu vía\",\n  className,\n}: QuadrantCellProps) {\n  return (\n    <div\n      data-slot=\"quadrant-cell\"\n      data-active={active}\n      aria-current={active ? \"true\" : undefined}\n      className={cn(\n        \"relative flex flex-col gap-2 rounded-xl border border-transparent p-5 transition-colors hover:border-border\",\n        active && \"border-primary/60 hover:border-primary/60\",\n        className\n      )}\n    >\n      <div className=\"flex items-start justify-between\">\n        <Icon className=\"size-5 text-primary\" aria-hidden />\n        {active && (\n          <Badge size=\"xs\" uppercase>\n            <Sparkles aria-hidden />\n            {activeLabel}\n          </Badge>\n        )}\n      </div>\n      <p className=\"text-[11px] font-medium uppercase tracking-wide text-muted-foreground\">{code}</p>\n      <p className=\"text-lg font-bold leading-tight text-foreground\">{title}</p>\n      <p className=\"text-sm text-muted-foreground\">{description}</p>\n    </div>\n  )\n}\n\nexport { QuadrantCell }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
