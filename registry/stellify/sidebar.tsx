@@ -72,7 +72,7 @@ const SidebarItem = React.forwardRef<HTMLAnchorElement, SidebarItemProps>(
         data-active={active}
         aria-current={active ? "page" : undefined}
         className={cn(
-          "flex items-center gap-3 rounded-md px-2 py-2 text-sm text-foreground/80 transition-colors hover:bg-muted hover:text-foreground",
+          "flex items-center gap-3 whitespace-nowrap rounded-md px-2 py-2 text-sm text-foreground/80 transition-colors hover:bg-muted hover:text-foreground",
           active && "bg-primary/5 font-semibold text-primary hover:bg-primary/10 hover:text-primary",
           className
         )}
@@ -80,7 +80,7 @@ const SidebarItem = React.forwardRef<HTMLAnchorElement, SidebarItemProps>(
       >
         <Icon className="size-4 shrink-0" aria-hidden />
         <Slottable>{children}</Slottable>
-        {trailing && <span className="ml-auto flex items-center">{trailing}</span>}
+        {trailing && <span className="ml-auto flex shrink-0 items-center">{trailing}</span>}
       </Comp>
     )
   }

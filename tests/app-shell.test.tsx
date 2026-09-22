@@ -70,3 +70,12 @@ describe("AppShell", () => {
     expect(screen.queryByRole("navigation")).not.toBeInTheDocument()
   })
 })
+
+describe("Sidebar layout", () => {
+  it("keeps labels and the trailing badge on one line", () => {
+    render(<Nav active="c3" />)
+    const item = screen.getByRole("link", { name: /C3 · Prospección/ })
+    expect(item).toHaveClass("whitespace-nowrap")
+    expect(item.lastElementChild).toHaveClass("shrink-0")
+  })
+})
