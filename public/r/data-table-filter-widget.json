@@ -4,14 +4,14 @@
   "title": "DataTableFilterWidget",
   "description": "Renders the control for one filter definition — text, number, ranges, date, datetime, select, multiselect and async column values.",
   "registryDependencies": [
-    "input",
-    "select",
-    "calendar",
-    "popover",
-    "button",
-    "checkbox",
-    "utils",
-    "data-table-filters"
+    "@stellify/input",
+    "@stellify/select",
+    "@stellify/calendar",
+    "@stellify/popover",
+    "@stellify/button",
+    "@stellify/checkbox",
+    "@stellify/utils",
+    "@stellify/data-table-filters"
   ],
   "files": [
     {

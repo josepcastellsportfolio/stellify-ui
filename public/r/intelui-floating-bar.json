@@ -7,9 +7,9 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "utils",
-    "intelui-types",
-    "intelui-chat-panel"
+    "@stellify/utils",
+    "@stellify/intelui-types",
+    "@stellify/intelui-chat-panel"
   ],
   "files": [
     {

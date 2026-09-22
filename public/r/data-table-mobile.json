@@ -4,9 +4,9 @@
   "title": "DataTableMobile",
   "description": "Card-per-row mobile view reusing data-table's columns. Pair with data-table behind a breakpoint. Includes loading skeletons + empty slot.",
   "registryDependencies": [
-    "card",
-    "utils",
-    "data-table"
+    "@stellify/card",
+    "@stellify/utils",
+    "@stellify/data-table"
   ],
   "files": [
     {

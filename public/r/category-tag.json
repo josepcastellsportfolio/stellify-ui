@@ -4,7 +4,7 @@
   "title": "CategoryTag",
   "description": "Colored badge resolving Parent / Child category hierarchy from a list. Copy via props.",
   "registryDependencies": [
-    "badge"
+    "@stellify/badge"
   ],
   "files": [
     {

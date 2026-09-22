@@ -7,9 +7,9 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "input",
-    "button",
-    "utils"
+    "@stellify/input",
+    "@stellify/button",
+    "@stellify/utils"
   ],
   "files": [
     {

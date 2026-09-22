@@ -4,8 +4,8 @@
   "title": "MoneyInput",
   "description": "Numeric input for monetary amounts with a currency adornment. Controlled, emits number values.",
   "registryDependencies": [
-    "input",
-    "utils"
+    "@stellify/input",
+    "@stellify/utils"
   ],
   "files": [
     {

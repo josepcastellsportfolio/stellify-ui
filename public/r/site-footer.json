@@ -4,7 +4,7 @@
   "title": "SiteFooter",
   "description": "Site footer with grouped link columns and a legal line. Real anchors — it doubles as the crawlable link graph.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

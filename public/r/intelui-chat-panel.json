@@ -7,9 +7,9 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "utils",
-    "intelui-types",
-    "intelui-tabs"
+    "@stellify/utils",
+    "@stellify/intelui-types",
+    "@stellify/intelui-tabs"
   ],
   "files": [
     {

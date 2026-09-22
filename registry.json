@@ -9,13 +9,13 @@
       "title": "StellifyIT design system base",
       "description": "Canonical StellifyIT theme: emerald/teal/slate tokens (light + dark, oklch), Inter font, radius. Install first.",
       "dependencies": [
-        "tailwindcss-animate",
         "class-variance-authority",
         "clsx",
-        "tailwind-merge"
+        "tailwind-merge",
+        "tw-animate-css"
       ],
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "cssVars": {
         "theme": {
@@ -119,7 +119,10 @@
           "info-foreground": "oklch(0.277 0.046 192.524)"
         }
       },
-      "files": []
+      "files": [],
+      "css": {
+        "@import \"tw-animate-css\"": {}
+      }
     },
     {
       "name": "metric-card",
@@ -130,7 +133,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -148,9 +151,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "card",
-        "button",
-        "utils"
+        "@stellify/card",
+        "@stellify/button",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -165,7 +168,7 @@
       "title": "CurrencyDisplay",
       "description": "Formats a number as currency via Intl.NumberFormat. locale + currency via props, no hardcoded language.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -180,8 +183,8 @@
       "title": "MoneyInput",
       "description": "Numeric input for monetary amounts with a currency adornment. Controlled, emits number values.",
       "registryDependencies": [
-        "input",
-        "utils"
+        "@stellify/input",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -196,7 +199,7 @@
       "title": "ProgressRing",
       "description": "SVG circular progress indicator. value/max/size/strokeWidth via props, themed with currentColor + muted track.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -211,7 +214,7 @@
       "title": "PageHeader",
       "description": "Page title + optional description + actions slot. Presentational only (no auth/theme/locale logic).",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -226,8 +229,8 @@
       "title": "SectionCard",
       "description": "Card with a titled header, optional description, header actions slot and content area. Common panel shell.",
       "registryDependencies": [
-        "card",
-        "utils"
+        "@stellify/card",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -260,7 +263,7 @@
         "class-variance-authority"
       ],
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -275,9 +278,9 @@
       "title": "ConfirmDialog",
       "description": "Controlled confirmation dialog over AlertDialog. All copy via props; destructive flag for dangerous actions.",
       "registryDependencies": [
-        "alert-dialog",
-        "button",
-        "utils"
+        "@stellify/alert-dialog",
+        "@stellify/button",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -292,8 +295,8 @@
       "title": "DataTable",
       "description": "Presentational paginated table (columns, rows, sort, loading skeleton, empty state). Fetching is the consumer's job — see toolbar/pagination slots.",
       "registryDependencies": [
-        "table",
-        "utils"
+        "@stellify/table",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -344,13 +347,63 @@
       "title": "WeekGrid / DayColumn",
       "description": "Presentational 7-day week grid with day columns. Events and rendering passed via props; no scheduling business logic.",
       "registryDependencies": [
-        "utils",
-        "week-dates"
+        "@stellify/utils",
+        "@stellify/week-dates"
       ],
       "files": [
         {
           "path": "registry/stellify/week-grid.tsx",
           "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "cn utility",
+      "description": "`cn()` = clsx + tailwind-merge. Owned by this registry so installs never pull shadcn's upstream `utils`.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "AlertDialog",
+      "description": "Radix alert dialog (vendored from shadcn so `confirm-dialog` never resolves upstream). Emits data-slot.",
+      "dependencies": [
+        "@radix-ui/react-alert-dialog"
+      ],
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/alert-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "Table primitives (vendored from shadcn so `data-table` never resolves upstream). Emits data-slot.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/table.tsx",
+          "type": "registry:ui"
         }
       ]
     },
@@ -365,7 +418,7 @@
         "@radix-ui/react-slot"
       ],
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -381,7 +434,7 @@
       "title": "Input (StellifyIT)",
       "description": "Standard shadcn input plus an invalid state (aria-invalid turns the border destructive). API-compatible; overwrites ui/input.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -400,9 +453,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "input",
-        "label",
-        "utils"
+        "@stellify/input",
+        "@stellify/label",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -420,9 +473,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "button",
-        "select",
-        "utils"
+        "@stellify/button",
+        "@stellify/select",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -440,9 +493,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "input",
-        "button",
-        "utils"
+        "@stellify/input",
+        "@stellify/button",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -457,9 +510,9 @@
       "title": "DataTableMobile",
       "description": "Card-per-row mobile view reusing data-table's columns. Pair with data-table behind a breakpoint. Includes loading skeletons + empty slot.",
       "registryDependencies": [
-        "card",
-        "utils",
-        "data-table"
+        "@stellify/card",
+        "@stellify/utils",
+        "@stellify/data-table"
       ],
       "files": [
         {
@@ -474,7 +527,7 @@
       "title": "Badge (StellifyIT)",
       "description": "Standard shadcn badge primitive, shipped under @stellify for apps without shadcn. Overwrites ui/badge.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -493,7 +546,7 @@
       "title": "Card (StellifyIT)",
       "description": "Standard shadcn card primitive, shipped under @stellify for apps without shadcn. Overwrites ui/card.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -509,7 +562,7 @@
       "title": "Dialog (StellifyIT)",
       "description": "Standard shadcn dialog primitive, shipped under @stellify for apps without shadcn. Overwrites ui/dialog.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -528,7 +581,7 @@
       "title": "Select (StellifyIT)",
       "description": "Standard shadcn select primitive, shipped under @stellify for apps without shadcn. Overwrites ui/select.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -547,7 +600,7 @@
       "title": "Tabs (StellifyIT)",
       "description": "Standard shadcn tabs primitive, shipped under @stellify for apps without shadcn. Overwrites ui/tabs.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -566,7 +619,7 @@
       "title": "Checkbox (StellifyIT)",
       "description": "Standard shadcn checkbox primitive, shipped under @stellify for apps without shadcn. Overwrites ui/checkbox.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -585,7 +638,7 @@
       "title": "Switch (StellifyIT)",
       "description": "Standard shadcn switch primitive, shipped under @stellify for apps without shadcn. Overwrites ui/switch.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -604,7 +657,7 @@
       "title": "Tooltip (StellifyIT)",
       "description": "Standard shadcn tooltip primitive, shipped under @stellify for apps without shadcn. Overwrites ui/tooltip.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -623,7 +676,7 @@
       "title": "DropdownMenu (StellifyIT)",
       "description": "Standard shadcn dropdown-menu primitive, shipped under @stellify for apps without shadcn. Overwrites ui/dropdown-menu.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -642,7 +695,7 @@
       "title": "Popover (StellifyIT)",
       "description": "Standard shadcn popover primitive, shipped under @stellify for apps without shadcn. Overwrites ui/popover.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -661,8 +714,8 @@
       "title": "Calendar (StellifyIT)",
       "description": "Standard shadcn calendar primitive, shipped under @stellify for apps without shadcn. Overwrites ui/calendar.",
       "registryDependencies": [
-        "utils",
-        "button"
+        "@stellify/utils",
+        "@stellify/button"
       ],
       "files": [
         {
@@ -682,7 +735,7 @@
       "title": "Textarea (StellifyIT)",
       "description": "Standard shadcn textarea primitive, shipped under @stellify for apps without shadcn. Overwrites ui/textarea.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -698,7 +751,7 @@
       "title": "Separator (StellifyIT)",
       "description": "Standard shadcn separator primitive, shipped under @stellify for apps without shadcn. Overwrites ui/separator.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -717,7 +770,7 @@
       "title": "Label (StellifyIT)",
       "description": "Standard shadcn label primitive, shipped under @stellify for apps without shadcn. Overwrites ui/label.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -736,7 +789,7 @@
       "title": "Progress (StellifyIT)",
       "description": "Standard shadcn progress primitive, shipped under @stellify for apps without shadcn. Overwrites ui/progress.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -755,8 +808,8 @@
       "title": "Form (StellifyIT)",
       "description": "Standard shadcn form primitive, shipped under @stellify for apps without shadcn. Overwrites ui/form.",
       "registryDependencies": [
-        "utils",
-        "label"
+        "@stellify/utils",
+        "@stellify/label"
       ],
       "files": [
         {
@@ -780,7 +833,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -799,8 +852,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "card",
-        "utils"
+        "@stellify/card",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -820,10 +873,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "card",
-        "chart",
-        "chart-formatters",
-        "utils"
+        "@stellify/card",
+        "@stellify/chart",
+        "@stellify/chart-formatters",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -842,10 +895,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "card",
-        "chart",
-        "chart-formatters",
-        "utils"
+        "@stellify/card",
+        "@stellify/chart",
+        "@stellify/chart-formatters",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -864,10 +917,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "card",
-        "chart",
-        "chart-formatters",
-        "utils"
+        "@stellify/card",
+        "@stellify/chart",
+        "@stellify/chart-formatters",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -886,10 +939,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "card",
-        "chart",
-        "chart-formatters",
-        "utils"
+        "@stellify/card",
+        "@stellify/chart",
+        "@stellify/chart-formatters",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -908,10 +961,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "card",
-        "chart",
-        "chart-formatters",
-        "utils"
+        "@stellify/card",
+        "@stellify/chart",
+        "@stellify/chart-formatters",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -930,10 +983,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "card",
-        "chart",
-        "chart-formatters",
-        "utils"
+        "@stellify/card",
+        "@stellify/chart",
+        "@stellify/chart-formatters",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -977,8 +1030,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "button",
-        "utils"
+        "@stellify/button",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -998,13 +1051,13 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "chart",
-        "chart-card",
-        "time-range-selector",
-        "chart-formatters",
-        "use-series-toggle",
-        "card",
-        "utils"
+        "@stellify/chart",
+        "@stellify/chart-card",
+        "@stellify/time-range-selector",
+        "@stellify/chart-formatters",
+        "@stellify/use-series-toggle",
+        "@stellify/card",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1019,7 +1072,7 @@
       "title": "MonthYearPicker",
       "description": "Native month input (YYYY-MM) wrapper, themed. Controlled via month (1-12) + year.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1037,10 +1090,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "button",
-        "popover",
-        "calendar",
-        "utils"
+        "@stellify/button",
+        "@stellify/popover",
+        "@stellify/calendar",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1058,7 +1111,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1073,7 +1126,7 @@
       "title": "CategoryTag",
       "description": "Colored badge resolving Parent / Child category hierarchy from a list. Copy via props.",
       "registryDependencies": [
-        "badge"
+        "@stellify/badge"
       ],
       "files": [
         {
@@ -1105,13 +1158,13 @@
         "zod"
       ],
       "registryDependencies": [
-        "dialog",
-        "button",
-        "input",
-        "select",
-        "switch",
-        "form",
-        "utils"
+        "@stellify/dialog",
+        "@stellify/button",
+        "@stellify/input",
+        "@stellify/select",
+        "@stellify/switch",
+        "@stellify/form",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1130,13 +1183,13 @@
         "react-day-picker"
       ],
       "registryDependencies": [
-        "button",
-        "popover",
-        "calendar",
-        "switch",
-        "label",
-        "time-picker",
-        "utils"
+        "@stellify/button",
+        "@stellify/popover",
+        "@stellify/calendar",
+        "@stellify/switch",
+        "@stellify/label",
+        "@stellify/time-picker",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1151,8 +1204,8 @@
       "title": "TimePicker",
       "description": "Hour + minute selects (+ AM/PM unless use24Hour). Controlled, emits 24h 'HH:mm'. minuteStep configurable.",
       "registryDependencies": [
-        "select",
-        "utils"
+        "@stellify/select",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1167,7 +1220,7 @@
       "title": "OverflowMarquee",
       "description": "Truncates with an ellipsis at rest and, only when the text actually overflows, slides horizontally on hover/focus to reveal the full string, easing back on leave. Self-contained (measures its own overflow, pure CSS transform, no Tailwind config). Honors reduced motion; keeps a native title fallback.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1182,9 +1235,9 @@
       "title": "NumberCompare",
       "description": "Two-sided numeric comparison: lower bound (>, ≥) AND upper bound (<, ≤), e.g. '> 2 and < 10'. Either side optional. Emits { lower, upper }.",
       "registryDependencies": [
-        "select",
-        "input",
-        "utils"
+        "@stellify/select",
+        "@stellify/input",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1215,7 +1268,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1234,8 +1287,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils",
-        "intelui-types"
+        "@stellify/utils",
+        "@stellify/intelui-types"
       ],
       "files": [
         {
@@ -1254,8 +1307,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils",
-        "intelui-types"
+        "@stellify/utils",
+        "@stellify/intelui-types"
       ],
       "files": [
         {
@@ -1274,9 +1327,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils",
-        "intelui-types",
-        "intelui-tabs"
+        "@stellify/utils",
+        "@stellify/intelui-types",
+        "@stellify/intelui-tabs"
       ],
       "files": [
         {
@@ -1295,9 +1348,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils",
-        "intelui-types",
-        "intelui-chat-panel"
+        "@stellify/utils",
+        "@stellify/intelui-types",
+        "@stellify/intelui-chat-panel"
       ],
       "files": [
         {
@@ -1316,10 +1369,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils",
-        "switch",
-        "intelui-types",
-        "intelui-conversation-list"
+        "@stellify/utils",
+        "@stellify/switch",
+        "@stellify/intelui-types",
+        "@stellify/intelui-conversation-list"
       ],
       "files": [
         {
@@ -1376,8 +1429,8 @@
         "@radix-ui/react-slot"
       ],
       "registryDependencies": [
-        "utils",
-        "intelui-highlight"
+        "@stellify/utils",
+        "@stellify/intelui-highlight"
       ],
       "files": [
         {
@@ -1396,7 +1449,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1412,7 +1465,7 @@
       "title": "SiteNav",
       "description": "Public site navigation with an accessible mobile menu (focus trap, Escape to close). Links are real anchors so they stay crawlable.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1427,7 +1480,7 @@
       "title": "SiteChat",
       "description": "Public chat panel, degraded-first: renders a FAQ block by default and gains a composer when a service is available. Never shows a raw error or an indefinite spinner.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1442,7 +1495,7 @@
       "title": "SiteFooter",
       "description": "Site footer with grouped link columns and a legal line. Real anchors — it doubles as the crawlable link graph.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1457,7 +1510,7 @@
       "title": "ProfileIntro",
       "description": "\"Who\" block: photo with explicit dimensions, name, role and track record.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1472,7 +1525,7 @@
       "title": "OfferCard",
       "description": "Service card: deliverable, when it fits, and a link to the work that backs it. No hover-to-reveal.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1487,7 +1540,7 @@
       "title": "ProcessSteps",
       "description": "Numbered steps rendered as an ordered list.",
       "registryDependencies": [
-        "utils"
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1502,9 +1555,9 @@
       "title": "LongFormArticle",
       "description": "Long-form page body: intro, optional status badge and figures, h2 sections with pull-outs, stack chips and related links. Content is plain strings, never markup.",
       "registryDependencies": [
-        "badge",
-        "metric-card",
-        "utils"
+        "@stellify/badge",
+        "@stellify/metric-card",
+        "@stellify/utils"
       ],
       "files": [
         {
@@ -1531,14 +1584,14 @@
       "title": "DataTableFilterWidget",
       "description": "Renders the control for one filter definition — text, number, ranges, date, datetime, select, multiselect and async column values.",
       "registryDependencies": [
-        "input",
-        "select",
-        "calendar",
-        "popover",
-        "button",
-        "checkbox",
-        "utils",
-        "data-table-filters"
+        "@stellify/input",
+        "@stellify/select",
+        "@stellify/calendar",
+        "@stellify/popover",
+        "@stellify/button",
+        "@stellify/checkbox",
+        "@stellify/utils",
+        "@stellify/data-table-filters"
       ],
       "files": [
         {
@@ -1553,11 +1606,11 @@
       "title": "DataTableColumnFilter",
       "description": "Filter trigger for a column header: an icon that opens the column's filter in a popover, so a wide control is not bound to the column's width.",
       "registryDependencies": [
-        "button",
-        "popover",
-        "utils",
-        "data-table-filters",
-        "data-table-filter-widget"
+        "@stellify/button",
+        "@stellify/popover",
+        "@stellify/utils",
+        "@stellify/data-table-filters",
+        "@stellify/data-table-filter-widget"
       ],
       "files": [
         {
@@ -1572,10 +1625,10 @@
       "title": "DataTableActiveFilters",
       "description": "Chips showing which filters are applied; each reopens its filter for editing and clears itself.",
       "registryDependencies": [
-        "popover",
-        "utils",
-        "data-table-filters",
-        "data-table-filter-widget"
+        "@stellify/popover",
+        "@stellify/utils",
+        "@stellify/data-table-filters",
+        "@stellify/data-table-filter-widget"
       ],
       "files": [
         {

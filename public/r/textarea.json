@@ -4,7 +4,7 @@
   "title": "Textarea (StellifyIT)",
   "description": "Standard shadcn textarea primitive, shipped under @stellify for apps without shadcn. Overwrites ui/textarea.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

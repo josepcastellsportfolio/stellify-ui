@@ -4,7 +4,7 @@
   "title": "ProfileIntro",
   "description": "\"Who\" block: photo with explicit dimensions, name, role and track record.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

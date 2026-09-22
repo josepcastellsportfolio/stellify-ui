@@ -4,7 +4,7 @@
   "title": "Card (StellifyIT)",
   "description": "Standard shadcn card primitive, shipped under @stellify for apps without shadcn. Overwrites ui/card.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

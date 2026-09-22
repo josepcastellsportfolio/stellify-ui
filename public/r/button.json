@@ -9,7 +9,7 @@
     "@radix-ui/react-slot"
   ],
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

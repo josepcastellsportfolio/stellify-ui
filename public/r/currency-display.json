@@ -4,7 +4,7 @@
   "title": "CurrencyDisplay",
   "description": "Formats a number as currency via Intl.NumberFormat. locale + currency via props, no hardcoded language.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

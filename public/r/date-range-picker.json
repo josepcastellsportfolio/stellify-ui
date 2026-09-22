@@ -8,13 +8,13 @@
     "react-day-picker"
   ],
   "registryDependencies": [
-    "button",
-    "popover",
-    "calendar",
-    "switch",
-    "label",
-    "time-picker",
-    "utils"
+    "@stellify/button",
+    "@stellify/popover",
+    "@stellify/calendar",
+    "@stellify/switch",
+    "@stellify/label",
+    "@stellify/time-picker",
+    "@stellify/utils"
   ],
   "files": [
     {

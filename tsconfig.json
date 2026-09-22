@@ -12,6 +12,7 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./.storybook/shadcn/*"],
@@ -24,6 +25,8 @@
     "stories/**/*.ts",
     "stories/**/*.tsx",
     "registry/stellify/**/*.ts",
-    "registry/stellify/**/*.tsx"
+    "registry/stellify/**/*.tsx",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
   ]
 }

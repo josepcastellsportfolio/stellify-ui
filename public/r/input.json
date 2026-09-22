@@ -4,7 +4,7 @@
   "title": "Input (StellifyIT)",
   "description": "Standard shadcn input plus an invalid state (aria-invalid turns the border destructive). API-compatible; overwrites ui/input.",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {

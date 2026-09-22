@@ -4,9 +4,9 @@
   "title": "LongFormArticle",
   "description": "Long-form page body: intro, optional status badge and figures, h2 sections with pull-outs, stack chips and related links. Content is plain strings, never markup.",
   "registryDependencies": [
-    "badge",
-    "metric-card",
-    "utils"
+    "@stellify/badge",
+    "@stellify/metric-card",
+    "@stellify/utils"
   ],
   "files": [
     {

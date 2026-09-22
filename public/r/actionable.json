@@ -7,8 +7,8 @@
     "@radix-ui/react-slot"
   ],
   "registryDependencies": [
-    "utils",
-    "intelui-highlight"
+    "@stellify/utils",
+    "@stellify/intelui-highlight"
   ],
   "files": [
     {

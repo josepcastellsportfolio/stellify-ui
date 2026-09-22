@@ -4,9 +4,9 @@
   "title": "NumberCompare",
   "description": "Two-sided numeric comparison: lower bound (>, ≥) AND upper bound (<, ≤), e.g. '> 2 and < 10'. Either side optional. Emits { lower, upper }.",
   "registryDependencies": [
-    "select",
-    "input",
-    "utils"
+    "@stellify/select",
+    "@stellify/input",
+    "@stellify/utils"
   ],
   "files": [
     {

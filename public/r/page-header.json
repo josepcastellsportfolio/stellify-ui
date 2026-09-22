@@ -4,7 +4,7 @@
   "title": "PageHeader",
   "description": "Page title + optional description + actions slot. Presentational only (no auth/theme/locale logic).",
   "registryDependencies": [
-    "utils"
+    "@stellify/utils"
   ],
   "files": [
     {
