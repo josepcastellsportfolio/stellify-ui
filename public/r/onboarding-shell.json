@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "onboarding-shell",
+  "title": "OnboardingShell",
+  "description": "Multi-step onboarding frame: logo + \"Paso n de N\", thin progress bar, centered ~580 px column.",
+  "registryDependencies": [
+    "@stellify/logo",
+    "@stellify/progress",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/onboarding-shell.tsx",
+      "content": "import type { ReactNode } from \"react\"\n\nimport { Logo } from \"@/components/logo\"\nimport { Progress } from \"@/components/ui/progress\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface OnboardingShellProps {\n  step: number\n  totalSteps: number\n  children: ReactNode\n  /** Brand mark on the left. Defaults to the StellifyIT logo. */\n  logo?: ReactNode\n  /** Step counter copy; defaults to Spanish (\"Paso n de N\"). */\n  stepLabel?: (step: number, total: number) => string\n  className?: string\n}\n\n/**\n * Full-page frame for a multi-step onboarding: logo + \"Paso n de N\" header, a\n * thin progress bar, and a centered content column (~580 px).\n */\nfunction OnboardingShell({\n  step,\n  totalSteps,\n  children,\n  logo,\n  stepLabel = (s, t) => `Paso ${s} de ${t}`,\n  className,\n}: OnboardingShellProps) {\n  const label = stepLabel(step, totalSteps)\n  return (\n    <div\n      data-slot=\"onboarding-shell\"\n      className={cn(\"min-h-screen bg-background text-foreground\", className)}\n    >\n      <header className=\"mx-auto w-full max-w-[640px] px-4 pt-10\">\n        <div className=\"flex items-center justify-between pb-4\">\n          {logo ?? <Logo height={28} className=\"text-foreground\" />}\n          <span className=\"text-xs font-medium uppercase tracking-wide text-muted-foreground\">\n            {label}\n          </span>\n        </div>\n        <Progress size=\"sm\" value={(step / totalSteps) * 100} aria-label={label} />\n      </header>\n      <main className=\"mx-auto w-full max-w-[580px] px-4 py-10\">{children}</main>\n    </div>\n  )\n}\n\nexport { OnboardingShell }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

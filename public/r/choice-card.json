@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "choice-card",
+  "title": "ChoiceCard",
+  "description": "Single-choice block options (Radix radio group): title + description, selected = primary border + check.",
+  "dependencies": [
+    "@radix-ui/react-radio-group",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/choice-card.tsx",
+      "content": "import * as React from \"react\"\nimport * as RadioGroupPrimitive from \"@radix-ui/react-radio-group\"\nimport { Check } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/**\n * Single-choice group of block options (radiogroup semantics, arrow-key\n * navigation). Name it with `aria-label` or `aria-labelledby`.\n */\nconst ChoiceCardGroup = React.forwardRef<\n  React.ElementRef<typeof RadioGroupPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>\n>(({ className, ...props }, ref) => (\n  <RadioGroupPrimitive.Root\n    ref={ref}\n    data-slot=\"choice-card-group\"\n    className={cn(\"grid gap-3\", className)}\n    {...props}\n  />\n))\nChoiceCardGroup.displayName = \"ChoiceCardGroup\"\n\nexport interface ChoiceCardProps\n  extends Omit<React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>, \"title\"> {\n  title: React.ReactNode\n  description?: React.ReactNode\n}\n\n/** Selectable block: title + description; selected = primary border + check. */\nconst ChoiceCard = React.forwardRef<\n  React.ElementRef<typeof RadioGroupPrimitive.Item>,\n  ChoiceCardProps\n>(({ className, title, description, ...props }, ref) => (\n  <RadioGroupPrimitive.Item\n    ref={ref}\n    data-slot=\"choice-card\"\n    className={cn(\n      \"group flex w-full items-start justify-between gap-4 rounded-lg border border-transparent bg-muted/40 px-4 py-3 text-left transition-colors\",\n      \"hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40\",\n      \"data-[state=checked]:border-primary/60 data-[state=checked]:bg-background\",\n      \"disabled:cursor-not-allowed disabled:opacity-50\",\n      className\n    )}\n    {...props}\n  >\n    <span className=\"space-y-0.5\">\n      <span className=\"block text-sm font-medium text-foreground\">{title}</span>\n      {description && <span className=\"block text-sm text-muted-foreground\">{description}</span>}\n    </span>\n    <RadioGroupPrimitive.Indicator data-slot=\"choice-card-check\" className=\"mt-0.5 text-primary\">\n      <Check className=\"size-4\" />\n    </RadioGroupPrimitive.Indicator>\n  </RadioGroupPrimitive.Item>\n))\nChoiceCard.displayName = \"ChoiceCard\"\n\nexport { ChoiceCard, ChoiceCardGroup }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
