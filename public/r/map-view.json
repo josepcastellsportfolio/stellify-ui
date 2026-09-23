@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "map-view",
+  "title": "MapView",
+  "description": "Leaflet map (react-leaflet) with circle markers; selected = primary, others grey; fits to markers; OSM tiles with attribution by default (OSM only paints, no business data).",
+  "dependencies": [
+    "leaflet",
+    "react-leaflet"
+  ],
+  "devDependencies": [
+    "@types/leaflet"
+  ],
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/map-view.tsx",
+      "content": "import \"leaflet/dist/leaflet.css\"\nimport { useEffect } from \"react\"\nimport { CircleMarker, MapContainer, TileLayer, Tooltip, useMap } from \"react-leaflet\"\nimport { latLngBounds } from \"leaflet\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface MapMarker {\n  id: number | string\n  lat: number\n  lng: number\n  label: string\n}\n\nexport interface MapViewProps {\n  markers: MapMarker[]\n  selectedIds: ReadonlySet<number | string>\n  onMarkerClick: (id: MapMarker[\"id\"]) => void\n  /** Initial view when there are no markers (defaults to Spain). */\n  center?: [number, number]\n  zoom?: number\n  /** OpenStreetMap by default. OSM only paints the map: it provides no business data. */\n  tileUrl?: string\n  attribution?: string\n  className?: string\n}\n\nconst OSM_TILES = \"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png\"\nconst OSM_ATTRIBUTION = '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>'\n\nfunction FitToMarkers({ markers }: { markers: MapMarker[] }) {\n  const map = useMap()\n  const key = markers.map((m) => m.id).join(\",\")\n  useEffect(() => {\n    if (markers.length > 0) {\n      map.fitBounds(latLngBounds(markers.map((m) => [m.lat, m.lng] as [number, number])), { padding: [32, 32], maxZoom: 14 })\n    }\n    // Refit only when the set of markers changes, not on selection changes.\n    // eslint-disable-next-line react-hooks/exhaustive-deps\n  }, [key, map])\n  return null\n}\n\n/** Leaflet map with one circle marker per item; selected = primary, others = grey. */\nfunction MapView({\n  markers,\n  selectedIds,\n  onMarkerClick,\n  center = [40.2, -3.7],\n  zoom = 6,\n  tileUrl = OSM_TILES,\n  attribution = OSM_ATTRIBUTION,\n  className,\n}: MapViewProps) {\n  return (\n    <div data-slot=\"map-view\" className={cn(\"isolate h-80 overflow-hidden rounded-xl border\", className)}>\n      <MapContainer center={center} zoom={zoom} scrollWheelZoom={false} className=\"h-full w-full\">\n        <TileLayer url={tileUrl} attribution={attribution} />\n        <FitToMarkers markers={markers} />\n        {markers.map((m) => {\n          const selected = selectedIds.has(m.id)\n          return (\n            <CircleMarker\n              key={`${m.id}-${selected}`}\n              center={[m.lat, m.lng]}\n              radius={selected ? 9 : 7}\n              className={selected ? \"cc-marker-selected\" : \"cc-marker\"}\n              pathOptions={{\n                color: selected ? \"var(--primary)\" : \"var(--muted-foreground)\",\n                fillColor: selected ? \"var(--primary)\" : \"var(--muted-foreground)\",\n                fillOpacity: selected ? 0.9 : 0.45,\n                weight: 2,\n              }}\n              eventHandlers={{ click: () => onMarkerClick(m.id) }}\n            >\n              <Tooltip>{m.label}</Tooltip>\n            </CircleMarker>\n          )\n        })}\n      </MapContainer>\n    </div>\n  )\n}\n\nexport { MapView }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -41,3 +41,11 @@ describe("registry.json integrity", () => {
     expect(Object.keys(base.css ?? {})).toContain('@import "tw-animate-css"')
   })
 })
+
+describe("typed dependencies", () => {
+  it("items that depend on leaflet also ship its types to consumers", () => {
+    for (const item of items as (Item & { devDependencies?: string[] })[]) {
+      if (item.dependencies?.includes("leaflet")) expect(item.devDependencies).toContain("@types/leaflet")
+    }
+  })
+})
