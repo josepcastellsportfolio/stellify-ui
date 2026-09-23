@@ -96,6 +96,15 @@ Extended (backwards compatible): `progress` (`size="sm"`), `textarea` (`autoResi
 
 Extended (backwards compatible): `page-header` (`eyebrow`), `status-badge` (`icon`, `appearance="plain"`).
 
+### Generated messages
+
+| Item | Type | Summary |
+|---|---|---|
+| `outreach-card` | component | Diagnosis, channel tab, editable subject/body + save, copy to clipboard, objections tab for call scripts; generating/queued/failed states. |
+| `loading-state` | component | Title + text + spinner with optional "n de N" progress (`role="status"`). |
+
+Extended (backwards compatible): `tabs` (`TabsList variant="plain"`).
+
 > Inter: `stellify-base` sets the family but doesn't load it. Self-host it in the app
 > (e.g. `@fontsource/inter` 400/500/600/700).
 
