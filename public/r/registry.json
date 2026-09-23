@@ -599,7 +599,7 @@
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs (StellifyIT)",
-      "description": "Standard shadcn tabs primitive, shipped under @stellify for apps without shadcn. Overwrites ui/tabs.",
+      "description": "Standard shadcn tabs primitive, shipped under @stellify for apps without shadcn. Overwrites ui/tabs. `TabsList variant=\"plain\"`: text tabs with an underline, no pill background. Emits data-slot.",
       "registryDependencies": [
         "@stellify/utils"
       ],
@@ -1940,6 +1940,47 @@
       ],
       "devDependencies": [
         "@types/leaflet"
+      ]
+    },
+    {
+      "name": "loading-state",
+      "type": "registry:component",
+      "title": "LoadingState",
+      "description": "Long-running work: title + text + spinner, optional \"n de N\" progress (role=status).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/progress",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/loading-state.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "outreach-card",
+      "type": "registry:component",
+      "title": "OutreachCard",
+      "description": "Generated message: diagnosis, channel tab, editable subject/body with save, copy to clipboard, objections tab for call scripts, generating/queued/failed states.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/text-field",
+        "@stellify/textarea-field",
+        "@stellify/button",
+        "@stellify/tabs",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/outreach-card.tsx",
+          "type": "registry:component"
+        }
       ]
     }
   ]
