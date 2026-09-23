@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "business-card",
+  "title": "BusinessCard",
+  "description": "Selectable business row: checkbox, name + score, address, rating · phone · web (\"Sin página web\"), signal chips.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/chip",
+    "@stellify/score-badge",
+    "@stellify/checkbox",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/business-card.tsx",
+      "content": "import { useId } from \"react\"\nimport { Globe, MapPin, Phone, Star } from \"lucide-react\"\n\nimport { Chip } from \"@/components/chip\"\nimport { ScoreBadge } from \"@/components/score-badge\"\nimport { Checkbox } from \"@/components/ui/checkbox\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface BusinessCardProps {\n  name: string\n  score: number\n  address?: string | null\n  rating?: number | null\n  reviewCount?: number | null\n  phone?: string | null\n  website?: string | null\n  chips?: string[]\n  selected: boolean\n  onSelectedChange: (selected: boolean) => void\n  noWebsiteLabel?: string\n  selectLabel?: string\n  scoreLabel?: string\n  className?: string\n}\n\nconst displayHost = (url: string) => {\n  try {\n    return new URL(url).host.replace(/^www\\./, \"\")\n  } catch {\n    return url\n  }\n}\n\n/** Selectable business row: checkbox, name + score, address, rating · phone · web, signal chips. */\nfunction BusinessCard({\n  name,\n  score,\n  address,\n  rating,\n  reviewCount,\n  phone,\n  website,\n  chips = [],\n  selected,\n  onSelectedChange,\n  noWebsiteLabel = \"Sin página web\",\n  selectLabel = \"Seleccionar\",\n  scoreLabel = \"Oportunidad\",\n  className,\n}: BusinessCardProps) {\n  const titleId = useId()\n  const fact = \"inline-flex items-center gap-1 [&_svg]:size-3.5 [&_svg]:shrink-0\"\n  return (\n    <article\n      data-slot=\"business-card\"\n      data-selected={selected}\n      aria-labelledby={titleId}\n      className={cn(\n        \"flex gap-3 rounded-lg border bg-background p-4 transition-colors\",\n        selected ? \"border-primary/60\" : \"border-border hover:border-primary/30\",\n        className\n      )}\n    >\n      <Checkbox\n        className=\"mt-0.5\"\n        checked={selected}\n        onCheckedChange={(v) => onSelectedChange(v === true)}\n        aria-label={`${selectLabel} ${name}`}\n      />\n      <div className=\"min-w-0 flex-1 space-y-1.5\">\n        <div className=\"flex items-center gap-2\">\n          <h3 id={titleId} className=\"truncate text-base font-semibold text-foreground\">\n            {name}\n          </h3>\n          <ScoreBadge score={score} label={scoreLabel} />\n        </div>\n        {address && (\n          <p className={cn(fact, \"text-sm text-muted-foreground\")}>\n            <MapPin aria-hidden />\n            {address}\n          </p>\n        )}\n        <p className=\"flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground\">\n          {rating != null && (\n            <span className={fact}>\n              <Star aria-hidden />\n              {`${rating.toLocaleString(\"es-ES\")} (${reviewCount ?? 0})`}\n            </span>\n          )}\n          {phone && (\n            <span className={fact}>\n              <Phone aria-hidden />\n              {phone}\n            </span>\n          )}\n          <span className={fact}>\n            <Globe aria-hidden />\n            {website ? (\n              <a href={website} target=\"_blank\" rel=\"noreferrer noopener\" className=\"hover:text-foreground hover:underline\">\n                {displayHost(website)}\n              </a>\n            ) : (\n              noWebsiteLabel\n            )}\n          </span>\n        </p>\n        {chips.length > 0 && (\n          <div className=\"flex flex-wrap gap-2 pt-1\">\n            {chips.map((c) => (\n              <Chip key={c}>{c}</Chip>\n            ))}\n          </div>\n        )}\n      </div>\n    </article>\n  )\n}\n\nexport { BusinessCard }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
