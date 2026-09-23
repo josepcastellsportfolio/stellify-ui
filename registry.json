@@ -1850,7 +1850,7 @@
       "name": "chip",
       "type": "registry:component",
       "title": "Chip",
-      "description": "Small neutral read-only tag (e.g. a detected signal).",
+      "description": "Small neutral tag (e.g. a detected signal); optional `onRemove` adds an accessible remove button.",
       "registryDependencies": [
         "@stellify/utils"
       ],
@@ -1859,6 +1859,9 @@
           "path": "registry/stellify/chip.tsx",
           "type": "registry:component"
         }
+      ],
+      "dependencies": [
+        "lucide-react"
       ]
     },
     {
