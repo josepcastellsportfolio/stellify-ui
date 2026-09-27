@@ -65,6 +65,29 @@ the registry; `shadcn build` is unaffected.
 | `category-tag` | component | Colored badge resolving Parent / Child category hierarchy. |
 | `logo` | component | StellifyIT wordmark (SVG, `currentColor`). |
 
+### Step flows and app layout
+
+Built for captationcenter, generic enough for any onboarding or back-office app.
+All copy is passed in (Spanish defaults), every part emits `data-slot`.
+
+| Item | Type | Summary |
+|---|---|---|
+| `onboarding-shell` | component | Multi-step frame: logo + "Paso n de N", thin `progress`, centered ~580 px column. |
+| `step-heading` | component | Step title (h1) + grey subtitle. |
+| `choice-card` | component | `ChoiceCardGroup` + `ChoiceCard`: single-choice block options (Radix radio group, arrow keys). |
+| `nav-footer` | component | "← Atrás" + primary "Siguiente →"; disabled / loading / submit. |
+| `number-input` | component | Controlled number (empty = `null`) with a vertical ± stepper and min/max clamping. |
+| `textarea-field` | component | Labeled `textarea` with required, error and helper text. |
+| `quadrant-grid` / `quadrant-cell` | component | 2×2 grid with column headers and vertical row labels; `active` cell gets a primary border + "Tu vía" badge. |
+| `reason-list` | component | Justifications with a primary check. |
+| `app-shell` | component | Fixed sidebar (collapsible) + optional top bar + scrollable main. |
+| `sidebar` | component | `Sidebar`, `SidebarGroup`, `SidebarGroupLabel`, `SidebarItem` (`aria-current`, trailing slot, `asChild` for router links). |
+
+Extended (backwards compatible): `progress` (`size="sm"`), `textarea` (`autoResize`), `badge` (`size="xs"`, `uppercase`).
+
+> Inter: `stellify-base` sets the family but doesn't load it. Self-host it in the app
+> (e.g. `@fontsource/inter` 400/500/600/700).
+
 ### Charts
 
 Vendored from shadcn/ui and re-themed with the stellify-base `--chart-*` tokens

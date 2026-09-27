@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "quadrant-grid",
+  "title": "QuadrantGrid",
+  "description": "2×2 grid with column headers and vertical row labels; exactly four children.",
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/quadrant-grid.tsx",
+      "content": "import { Children, type ReactNode } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface QuadrantGridProps {\n  /** Column headers, left to right. */\n  columns: [ReactNode, ReactNode]\n  /** Row labels, top to bottom (rendered vertically). */\n  rows: [ReactNode, ReactNode]\n  /** Exactly four cells in reading order: row 1 left, row 1 right, row 2 left, row 2 right. */\n  children: ReactNode\n  \"aria-label\"?: string\n  className?: string\n}\n\nconst header =\n  \"rounded-md bg-muted/60 px-3 py-2 text-center text-xs font-medium uppercase tracking-widest text-muted-foreground\"\nconst rowLabel =\n  \"flex items-center justify-center text-[11px] font-medium uppercase tracking-widest text-muted-foreground [writing-mode:vertical-rl] rotate-180\"\n\n/** 2×2 grid with column headers and vertical row labels. */\nfunction QuadrantGrid({ columns, rows, children, className, ...aria }: QuadrantGridProps) {\n  const cells = Children.toArray(children)\n  if (cells.length !== 4) {\n    throw new Error(`QuadrantGrid needs exactly 4 cells, got ${cells.length}`)\n  }\n  return (\n    <div\n      role=\"group\"\n      data-slot=\"quadrant-grid\"\n      className={cn(\"grid grid-cols-[2rem_1fr_1fr] gap-3\", className)}\n      {...aria}\n    >\n      <span />\n      <div className={header}>{columns[0]}</div>\n      <div className={header}>{columns[1]}</div>\n      <div className={rowLabel}>{rows[0]}</div>\n      {cells[0]}\n      {cells[1]}\n      <div className={rowLabel}>{rows[1]}</div>\n      {cells[2]}\n      {cells[3]}\n    </div>\n  )\n}\n\nexport { QuadrantGrid }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

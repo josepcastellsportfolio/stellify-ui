@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "nav-footer",
+  "title": "NavFooter",
+  "description": "\"← Atrás\" link + primary \"Siguiente →\" for step flows; labels, disabled, loading and submit type as props.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/button",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/nav-footer.tsx",
+      "content": "import { ArrowLeft, ArrowRight } from \"lucide-react\"\n\nimport { Button } from \"@/components/ui/button\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface NavFooterProps {\n  /** Omit on the first step to hide \"Atrás\". */\n  onBack?: () => void\n  onNext?: () => void\n  backLabel?: string\n  nextLabel?: string\n  nextDisabled?: boolean\n  nextLoading?: boolean\n  /** Use \"submit\" when the footer lives inside a <form>. */\n  nextType?: \"button\" | \"submit\"\n  className?: string\n}\n\n/** \"← Atrás\" link on the left, primary \"Siguiente →\" on the right. */\nfunction NavFooter({\n  onBack,\n  onNext,\n  backLabel = \"Atrás\",\n  nextLabel = \"Siguiente\",\n  nextDisabled = false,\n  nextLoading = false,\n  nextType = \"button\",\n  className,\n}: NavFooterProps) {\n  return (\n    <div data-slot=\"nav-footer\" className={cn(\"flex items-center justify-between pt-6\", className)}>\n      {onBack ? (\n        <Button type=\"button\" variant=\"base\" onClick={onBack}>\n          <ArrowLeft />\n          {backLabel}\n        </Button>\n      ) : (\n        <span />\n      )}\n      <Button\n        type={nextType}\n        variant=\"primary\"\n        onClick={onNext}\n        disabled={nextDisabled}\n        loading={nextLoading}\n      >\n        {nextLabel}\n        <ArrowRight />\n      </Button>\n    </div>\n  )\n}\n\nexport { NavFooter }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

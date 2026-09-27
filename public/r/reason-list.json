@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "reason-list",
+  "title": "ReasonList",
+  "description": "List of short justifications, each with a primary check.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/reason-list.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { Check } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface ReasonListProps {\n  reasons: ReactNode[]\n  className?: string\n}\n\n/** Short justifications, each with a primary check. */\nfunction ReasonList({ reasons, className }: ReasonListProps) {\n  if (reasons.length === 0) return null\n  return (\n    <ul data-slot=\"reason-list\" className={cn(\"space-y-3\", className)}>\n      {reasons.map((reason, i) => (\n        <li key={i} className=\"flex items-start gap-3 text-sm text-foreground\">\n          <Check className=\"mt-0.5 size-4 shrink-0 text-primary\" aria-hidden />\n          <span>{reason}</span>\n        </li>\n      ))}\n    </ul>\n  )\n}\n\nexport { ReasonList }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

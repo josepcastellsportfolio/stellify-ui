@@ -2,9 +2,10 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "progress",
   "title": "Progress (StellifyIT)",
-  "description": "Standard shadcn progress primitive, shipped under @stellify for apps without shadcn. Overwrites ui/progress.",
+  "description": "Standard shadcn progress primitive, shipped under @stellify for apps without shadcn. Overwrites ui/progress. `size=\"sm\"`: thin bar on a neutral track.",
   "dependencies": [
-    "@radix-ui/react-progress"
+    "@radix-ui/react-progress",
+    "class-variance-authority"
   ],
   "registryDependencies": [
     "@stellify/utils"
@@ -12,7 +13,7 @@
   "files": [
     {
       "path": "registry/stellify/progress.tsx",
-      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as ProgressPrimitive from \"@radix-ui/react-progress\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst Progress = React.forwardRef<\n  React.ElementRef<typeof ProgressPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>\n>(({ className, value, ...props }, ref) => (\n  <ProgressPrimitive.Root\n    ref={ref}\n    className={cn(\n      \"relative h-4 w-full overflow-hidden rounded-full bg-secondary\",\n      className\n    )}\n    {...props}\n  >\n    <ProgressPrimitive.Indicator\n      className=\"h-full w-full flex-1 bg-primary transition-all\"\n      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}\n    />\n  </ProgressPrimitive.Root>\n))\nProgress.displayName = ProgressPrimitive.Root.displayName\n\nexport { Progress }\n",
+      "content": "import * as React from \"react\"\nimport * as ProgressPrimitive from \"@radix-ui/react-progress\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst progressVariants = cva(\"relative w-full overflow-hidden rounded-full\", {\n  variants: {\n    size: {\n      default: \"h-4 bg-secondary\",\n      /** Thin bar on a neutral track, e.g. under an onboarding header. */\n      sm: \"h-1 bg-muted\",\n    },\n  },\n  defaultVariants: { size: \"default\" },\n})\n\nexport interface ProgressProps\n  extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>,\n    VariantProps<typeof progressVariants> {}\n\nconst Progress = React.forwardRef<\n  React.ElementRef<typeof ProgressPrimitive.Root>,\n  ProgressProps\n>(({ className, value, size, ...props }, ref) => (\n  <ProgressPrimitive.Root\n    ref={ref}\n    data-slot=\"progress\"\n    value={value}\n    className={cn(progressVariants({ size }), className)}\n    {...props}\n  >\n    <ProgressPrimitive.Indicator\n      data-slot=\"progress-indicator\"\n      className=\"h-full w-full flex-1 bg-primary transition-all\"\n      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}\n    />\n  </ProgressPrimitive.Root>\n))\nProgress.displayName = ProgressPrimitive.Root.displayName\n\nexport { Progress, progressVariants }\n",
       "type": "registry:ui",
       "target": "components/ui/progress.tsx"
     }
