@@ -212,7 +212,7 @@
       "name": "page-header",
       "type": "registry:component",
       "title": "PageHeader",
-      "description": "Page title + optional description + actions slot. Presentational only (no auth/theme/locale logic).",
+      "description": "Page title + optional description + actions slot. Presentational only (no auth/theme/locale logic). Optional `eyebrow` line above the title.",
       "registryDependencies": [
         "@stellify/utils"
       ],
@@ -258,9 +258,10 @@
       "name": "status-badge",
       "type": "registry:component",
       "title": "StatusBadge",
-      "description": "Badge with semantic status variants (success/warning/danger/info/neutral). Label via children.",
+      "description": "Badge with semantic status variants (success/warning/danger/info/neutral). Label via children. `icon` and `appearance=\"plain\"` (icon + text, no background) for status pills.",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority",
+        "lucide-react"
       ],
       "registryDependencies": [
         "@stellify/utils"
@@ -1828,6 +1829,117 @@
           "path": "registry/stellify/sidebar.tsx",
           "type": "registry:component"
         }
+      ]
+    },
+    {
+      "name": "score-badge",
+      "type": "registry:component",
+      "title": "ScoreBadge",
+      "description": "Compact numeric pill (primary) for a 0–100 score, with an accessible \"label: n de max\" name.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/score-badge.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "chip",
+      "type": "registry:component",
+      "title": "Chip",
+      "description": "Small neutral read-only tag (e.g. a detected signal).",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/chip.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "collapse-toggle",
+      "type": "registry:component",
+      "title": "CollapseToggle",
+      "description": "Text button that collapses/expands a region (aria-expanded, aria-controls).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/collapse-toggle.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "search-form",
+      "type": "registry:component",
+      "title": "SearchForm",
+      "description": "Inline required text fields + primary search button; submits trimmed values; loading state.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/text-field",
+        "@stellify/button",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/search-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "business-card",
+      "type": "registry:component",
+      "title": "BusinessCard",
+      "description": "Selectable business row: checkbox, name + score, address, rating · phone · web (\"Sin página web\"), signal chips.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/chip",
+        "@stellify/score-badge",
+        "@stellify/checkbox",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/business-card.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "map-view",
+      "type": "registry:component",
+      "title": "MapView",
+      "description": "Leaflet map (react-leaflet) with circle markers; selected = primary, others grey; fits to markers; OSM tiles with attribution by default (OSM only paints, no business data).",
+      "dependencies": [
+        "leaflet",
+        "react-leaflet"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/map-view.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "devDependencies": [
+        "@types/leaflet"
       ]
     }
   ]

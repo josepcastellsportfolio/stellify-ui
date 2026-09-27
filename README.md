@@ -85,6 +85,17 @@ All copy is passed in (Spanish defaults), every part emits `data-slot`.
 
 Extended (backwards compatible): `progress` (`size="sm"`), `textarea` (`autoResize`), `badge` (`size="xs"`, `uppercase`).
 
+### Prospecting (search results on a map)
+
+| Item | Type | Summary |
+|---|---|---|
+| `search-form` | component | Inline required text fields + primary search button (trimmed values, loading). |
+| `map-view` | component | Leaflet map with circle markers (selected = primary), fits to markers, OSM tiles + attribution. Ships `@types/leaflet`. |
+| `business-card` | component | Selectable business row: checkbox, name + `score-badge`, address, rating · phone · web, `chip`s. |
+| `score-badge` / `chip` / `collapse-toggle` | component | Numeric score pill · neutral tag · "^ Contraer la lista" toggle. |
+
+Extended (backwards compatible): `page-header` (`eyebrow`), `status-badge` (`icon`, `appearance="plain"`).
+
 > Inter: `stellify-base` sets the family but doesn't load it. Self-host it in the app
 > (e.g. `@fontsource/inter` 400/500/600/700).
 

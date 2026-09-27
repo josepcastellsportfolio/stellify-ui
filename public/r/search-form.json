@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "search-form",
+  "title": "SearchForm",
+  "description": "Inline required text fields + primary search button; submits trimmed values; loading state.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/text-field",
+    "@stellify/button",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/search-form.tsx",
+      "content": "import { useState, type FormEvent } from \"react\"\nimport { Search } from \"lucide-react\"\n\nimport { TextField } from \"@/components/text-field\"\nimport { Button } from \"@/components/ui/button\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface SearchFormField {\n  name: string\n  label: string\n  placeholder?: string\n  defaultValue?: string\n}\n\nexport interface SearchFormProps {\n  fields: SearchFormField[]\n  submitLabel: string\n  onSubmit: (values: Record<string, string>) => void\n  loading?: boolean\n  className?: string\n}\n\n/** Inline text fields + primary search button; submits trimmed values, all required. */\nfunction SearchForm({ fields, submitLabel, onSubmit, loading = false, className }: SearchFormProps) {\n  const [values, setValues] = useState<Record<string, string>>(() =>\n    Object.fromEntries(fields.map((f) => [f.name, f.defaultValue ?? \"\"]))\n  )\n  const trimmed = Object.fromEntries(Object.entries(values).map(([k, v]) => [k, v.trim()]))\n  const valid = fields.every((f) => trimmed[f.name])\n  const submit = (event: FormEvent) => {\n    event.preventDefault()\n    if (valid && !loading) onSubmit(trimmed)\n  }\n  return (\n    <form\n      data-slot=\"search-form\"\n      onSubmit={submit}\n      className={cn(\"grid items-end gap-4 sm:grid-flow-col sm:auto-cols-fr\", className)}\n    >\n      {fields.map((f) => (\n        <TextField\n          key={f.name}\n          label={f.label}\n          placeholder={f.placeholder}\n          value={values[f.name]}\n          onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.value }))}\n        />\n      ))}\n      <Button type=\"submit\" variant=\"primary\" disabled={!valid} loading={loading}>\n        <Search />\n        {submitLabel}\n      </Button>\n    </form>\n  )\n}\n\nexport { SearchForm }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

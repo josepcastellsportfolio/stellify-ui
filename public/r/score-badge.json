@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "score-badge",
+  "title": "ScoreBadge",
+  "description": "Compact numeric pill (primary) for a 0–100 score, with an accessible \"label: n de max\" name.",
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/score-badge.tsx",
+      "content": "import { cn } from \"@/lib/utils\"\n\nexport interface ScoreBadgeProps {\n  score: number\n  /** Accessible name prefix, e.g. \"Oportunidad\" → \"Oportunidad: 78 de 100\". */\n  label?: string\n  max?: number\n  className?: string\n}\n\n/** Compact numeric pill (primary) for a 0–100 score. */\nfunction ScoreBadge({ score, label = \"Puntuación\", max = 100, className }: ScoreBadgeProps) {\n  return (\n    <span\n      data-slot=\"score-badge\"\n      aria-label={`${label}: ${score} de ${max}`}\n      className={cn(\n        \"inline-flex h-5 min-w-7 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold tabular-nums text-primary-foreground\",\n        className\n      )}\n    >\n      {score}\n    </span>\n  )\n}\n\nexport { ScoreBadge }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
