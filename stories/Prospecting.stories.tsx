@@ -77,3 +77,29 @@ export const LimitReached: Story = {
     </StatusBadge>
   ),
 }
+
+export const LanguagePerBusiness: Story = {
+  render: () => {
+    const [catalan, setCatalan] = useState<Set<number>>(new Set([1]))
+    const set = (id: number, on: boolean) =>
+      setCatalan((prev) => {
+        const next = new Set(prev)
+        if (on) next.add(id)
+        else next.delete(id)
+        return next
+      })
+    return (
+      <div className="max-w-3xl space-y-3">
+        {BUSINESSES.slice(0, 2).map((b) => (
+          <BusinessCard
+            key={b.id}
+            {...b}
+            selected
+            onSelectedChange={() => {}}
+            toggle={{ label: "Català", checked: catalan.has(b.id), onCheckedChange: (on) => set(b.id, on) }}
+          />
+        ))}
+      </div>
+    )
+  },
+}
