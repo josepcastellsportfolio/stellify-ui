@@ -103,3 +103,37 @@ describe("OutreachCard", () => {
     expect(screen.queryByLabelText("Mensaje")).not.toBeInTheDocument()
   })
 })
+
+describe("OutreachCard badges, warning and actions", () => {
+  it("shows badges and a visible warning on a ready draft", () => {
+    render(<OutreachCard status="ready" {...email} badges={["CA"]} warning="Idioma: castellanismos: «reservas»." onSave={() => {}} />)
+    const card = screen.getByRole("article", { name: email.name })
+    expect(within(card).getByText("CA")).toHaveAttribute("data-slot", "badge")
+    expect(within(card).getByRole("note")).toHaveTextContent("castellanismos")
+  })
+
+  it("runs an action and can disable it", async () => {
+    const clicks: string[] = []
+    render(
+      <OutreachCard
+        status="failed"
+        name="Pádel Sangonera"
+        error="El mensaje no se guarda."
+        actions={[
+          { label: "Regenerar en català", onClick: () => clicks.push("ca") },
+          { label: "Otra", onClick: () => clicks.push("x"), disabled: true },
+        ]}
+        onSave={() => {}}
+      />
+    )
+    await userEvent.click(screen.getByRole("button", { name: "Regenerar en català" }))
+    expect(clicks).toEqual(["ca"])
+    expect(screen.getByRole("button", { name: "Otra" })).toBeDisabled()
+  })
+
+  it("shows no badge, warning or action unless given", () => {
+    render(<OutreachCard status="ready" {...email} onSave={() => {}} />)
+    expect(screen.queryByRole("note")).not.toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: /Regenerar/ })).not.toBeInTheDocument()
+  })
+})
