@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "notification-item",
+  "title": "NotificationItem",
+  "description": "One notification row: severity icon, title, optional body, relative time and unread dot.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/notification-item.tsx",
+      "content": "import * as React from \"react\"\nimport { AlertTriangle, Info, OctagonAlert } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport type NotificationSeverity = \"info\" | \"aviso\" | \"critica\"\n\nconst SEVERITY = {\n  info: { icon: Info, className: \"text-info\", label: \"Información\" },\n  aviso: { icon: AlertTriangle, className: \"text-warning\", label: \"Aviso\" },\n  critica: { icon: OctagonAlert, className: \"text-destructive\", label: \"Crítica\" },\n} as const\n\nexport interface NotificationItemProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, \"title\"> {\n  severity: NotificationSeverity\n  title: React.ReactNode\n  body?: React.ReactNode\n  /** Already formatted, e.g. \"hace 5 min\". */\n  time: React.ReactNode\n  unread?: boolean\n  unreadLabel?: string\n}\n\n/** One notification row: severity icon, title, optional body, relative time and unread dot. */\nfunction NotificationItem({\n  severity,\n  title,\n  body,\n  time,\n  unread = false,\n  unreadLabel = \"No leída\",\n  className,\n  ...props\n}: NotificationItemProps) {\n  const { icon: Icon, className: tone, label } = SEVERITY[severity]\n  return (\n    <button\n      type=\"button\"\n      data-slot=\"notification-item\"\n      data-unread={unread || undefined}\n      className={cn(\n        \"flex w-full items-start gap-3 rounded-md px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring\",\n        unread && \"bg-primary/5\",\n        className\n      )}\n      {...props}\n    >\n      <Icon className={cn(\"mt-0.5 size-4 shrink-0\", tone)} aria-label={label} />\n      <span className=\"flex min-w-0 flex-1 flex-col gap-0.5\">\n        <span className={cn(\"text-sm\", unread ? \"font-semibold\" : \"font-medium\")}>{title}</span>\n        {body && <span className=\"line-clamp-2 text-xs text-muted-foreground\">{body}</span>}\n        <span className=\"text-xs text-muted-foreground\">{time}</span>\n      </span>\n      {unread && <span className=\"mt-1.5 size-2 shrink-0 rounded-full bg-primary\" aria-label={unreadLabel} role=\"img\" />}\n    </button>\n  )\n}\n\nexport default NotificationItem\nexport { NotificationItem }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

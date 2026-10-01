@@ -67,6 +67,26 @@ describe("OutreachCard", () => {
     expect(onSave).toHaveBeenCalledWith({ subject: "Nuevo asunto", body: email.body })
   })
 
+  it("offers to track a ready message only when onTrack is given", async () => {
+    const onTrack = vi.fn()
+    const { rerender } = render(<OutreachCard status="ready" {...email} onSave={() => {}} />)
+    expect(screen.queryByRole("button", { name: "Guardar en seguimiento" })).not.toBeInTheDocument()
+    rerender(<OutreachCard status="ready" {...email} onSave={() => {}} onTrack={onTrack} />)
+    await userEvent.click(screen.getByRole("button", { name: "Guardar en seguimiento" }))
+    expect(onTrack).toHaveBeenCalledOnce()
+  })
+
+  it("shows a tracked message as already in the pipeline", () => {
+    render(<OutreachCard status="ready" {...email} onSave={() => {}} onTrack={() => {}} tracked />)
+    expect(screen.getByRole("button", { name: "En seguimiento" })).toBeDisabled()
+    expect(screen.queryByRole("button", { name: "Guardar en seguimiento" })).not.toBeInTheDocument()
+  })
+
+  it("does not offer tracking while the message is not ready", () => {
+    render(<OutreachCard status="generating" name="PádelOn Murcia" onSave={() => {}} onTrack={() => {}} />)
+    expect(screen.queryByRole("button", { name: "Guardar en seguimiento" })).not.toBeInTheDocument()
+  })
+
   it("copies subject and body to the clipboard", async () => {
     const user = userEvent.setup()
     const writeText = vi.spyOn(navigator.clipboard, "writeText")

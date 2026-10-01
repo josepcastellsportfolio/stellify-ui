@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { LoadingState } from "@stellify/loading-state"
 import { OutreachCard } from "@stellify/outreach-card"
 
-const meta = { title: "Components/Outreach (C3 step 3)", parameters: { layout: "padded" } } satisfies Meta
+const meta = { title: "Prospección/Outreach", parameters: { layout: "padded" } } satisfies Meta
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -80,6 +80,25 @@ export const LanguageWarningAndRegenerate: Story = {
         actions={[{ label: "Regenerar en català", onClick: () => {} }]}
         onSave={() => {}}
       />
+    </div>
+  ),
+}
+
+const tracking = {
+  status: "ready" as const,
+  channelLabel: "Correo en frío",
+  subject: "Reservas para PádelOn",
+  body: "Vuestra valoración de 4,7 con 219 reseñas indica mucha actividad en PádelOn. …",
+  onSave: () => {},
+  onTrack: () => {},
+}
+
+/** "Guardar en seguimiento" (task 4.4) and the same card once the business is in the pipeline. */
+export const Tracking: Story = {
+  render: () => (
+    <div className="max-w-3xl divide-y">
+      <OutreachCard {...tracking} name="PádelOn Murcia" />
+      <OutreachCard {...tracking} name="Pádel Churra" tracked />
     </div>
   ),
 }

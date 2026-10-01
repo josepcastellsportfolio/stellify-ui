@@ -1,5 +1,5 @@
 import { useEffect, useId, useState } from "react"
-import { AlertCircle, AlertTriangle, Check, Clock, Copy, Loader2 } from "lucide-react"
+import { AlertCircle, AlertTriangle, Check, Clock, Copy, Loader2, SquareKanban } from "lucide-react"
 
 import { TextField } from "@/components/text-field"
 import { TextareaField } from "@/components/textarea-field"
@@ -27,7 +27,14 @@ export interface OutreachCardProps {
   retryLabel?: string
   onSave: (edit: { subject: string | null; body: string }) => void
   saving?: boolean
-  labels?: Partial<Record<"subject" | "body" | "save" | "copy" | "copied" | "objections" | "generating", string>>
+  /** "Guardar en seguimiento": shown on a ready message only when given. */
+  onTrack?: () => void
+  tracking?: boolean
+  /** The business is already in the pipeline: the button turns into a disabled "En seguimiento". */
+  tracked?: boolean
+  labels?: Partial<
+    Record<"subject" | "body" | "save" | "copy" | "copied" | "objections" | "generating" | "track" | "tracked", string>
+  >
   className?: string
 }
 
@@ -39,6 +46,8 @@ const DEFAULT_LABELS = {
   copied: "Copiado",
   objections: "Objeciones",
   generating: "Redactando…",
+  track: "Guardar en seguimiento",
+  tracked: "En seguimiento",
 }
 
 /** One generated message: diagnosis, channel tab, editable subject/body, copy; P2 objections tab. */
@@ -57,6 +66,9 @@ function OutreachCard({
   retryLabel,
   onSave,
   saving = false,
+  onTrack,
+  tracking = false,
+  tracked = false,
   labels,
   className,
 }: OutreachCardProps) {
@@ -135,6 +147,12 @@ function OutreachCard({
               {copied ? <Check /> : <Copy />}
               {copied ? t.copied : t.copy}
             </Button>
+            {onTrack && status === "ready" && (
+              <Button type="button" variant="base" size="sm" disabled={tracked} loading={tracking} onClick={onTrack}>
+                {tracked ? <Check /> : <SquareKanban />}
+                {tracked ? t.tracked : t.track}
+              </Button>
+            )}
           </div>
           <TabsContent value="message" className="space-y-3">
             {hasSubject && <TextField label={t.subject} value={draftSubject} onChange={(e) => setDraftSubject(e.target.value)} />}
