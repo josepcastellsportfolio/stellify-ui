@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "vat-toggle",
+  "title": "VatToggle",
+  "description": "Two-option switch between amounts without VAT (base) and with VAT.",
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/vat-toggle.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface VatToggleProps extends Omit<React.HTMLAttributes<HTMLDivElement>, \"onChange\"> {\n  /** true = amounts shown with VAT. */\n  withVat: boolean\n  onChange: (withVat: boolean) => void\n  baseLabel?: string\n  vatLabel?: string\n}\n\n/** Two-option switch between amounts without VAT (base) and with VAT. */\nfunction VatToggle({\n  withVat,\n  onChange,\n  baseLabel = \"Base\",\n  vatLabel = \"Con IVA\",\n  className,\n  ...props\n}: VatToggleProps) {\n  const option = (active: boolean, label: string, value: boolean) => (\n    <button\n      type=\"button\"\n      role=\"radio\"\n      aria-checked={active}\n      onClick={() => onChange(value)}\n      className={cn(\n        \"rounded-md px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring\",\n        active ? \"bg-background text-foreground shadow-sm\" : \"text-muted-foreground hover:text-foreground\"\n      )}\n    >\n      {label}\n    </button>\n  )\n  return (\n    <div\n      data-slot=\"vat-toggle\"\n      role=\"radiogroup\"\n      aria-label=\"Importes\"\n      className={cn(\"inline-flex items-center gap-1 rounded-lg bg-muted p-1\", className)}\n      {...props}\n    >\n      {option(!withVat, baseLabel, false)}\n      {option(withVat, vatLabel, true)}\n    </div>\n  )\n}\n\nexport default VatToggle\nexport { VatToggle }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
