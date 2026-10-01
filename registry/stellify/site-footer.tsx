@@ -41,7 +41,9 @@ export const SiteFooter: FC<SiteFooterProps> = ({
 
   return (
     <footer className={cn("border-t border-border py-12", className)}>
-      <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Two groups per row from the smallest screens: one column stacked
+          every list end to end and made the footer longer than the page. */}
+      <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
         {groups.map(group => (
           <nav key={group.title} aria-label={group.title}>
             <h2 className="text-sm font-semibold text-foreground">{group.title}</h2>
