@@ -634,6 +634,25 @@
       ]
     },
     {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider (StellifyIT)",
+      "description": "Standard shadcn slider primitive (Radix), single or range thumbs, shipped under @stellify. Overwrites ui/slider.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/slider.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/slider.tsx"
+        }
+      ],
+      "dependencies": [
+        "@radix-ui/react-slider"
+      ]
+    },
+    {
       "name": "switch",
       "type": "registry:ui",
       "title": "Switch (StellifyIT)",
