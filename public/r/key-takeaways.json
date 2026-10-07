@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "key-takeaways",
+  "title": "KeyTakeaways",
+  "description": "\"En resumen\" callout: an aside labelled by its h2 with a list of self-contained takeaways. Fits between the h1 intro and the first h2. Renders nothing when empty.",
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/key-takeaways.tsx",
+      "content": "import { useId } from \"react\"\nimport type { FC } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface KeyTakeawaysProps {\n  /**\n   * One short, self-contained sentence per item. Plain strings, not markup:\n   * these are the lines search engines and answer engines lift verbatim, so\n   * each should make sense without the rest of the page.\n   */\n  items: string[]\n  /**\n   * Rendered as an h2 so the box can sit between the page's h1 intro and its\n   * first h2 section without skipping a level.\n   */\n  title?: string\n  className?: string\n}\n\n/**\n * \"En resumen\" box for the top of a long page.\n *\n * An `<aside>` labelled by its own heading: assistive tech announces it as a\n * named complementary region, and readers who only want the gist can stop\n * here. Renders nothing when there is nothing to summarise, so pages can pass\n * an optional array without guarding.\n */\nexport const KeyTakeaways: FC<KeyTakeawaysProps> = ({\n  items,\n  title = \"En resumen\",\n  className,\n}) => {\n  const headingId = useId()\n\n  if (items.length === 0) return null\n\n  return (\n    <aside\n      data-slot=\"key-takeaways\"\n      aria-labelledby={headingId}\n      className={cn(\"border-l-2 border-primary bg-muted/40 py-5 pl-6 pr-5\", className)}\n    >\n      <h2\n        id={headingId}\n        data-slot=\"key-takeaways-title\"\n        className=\"text-base font-semibold tracking-display text-foreground\"\n      >\n        {title}\n      </h2>\n      <ul\n        data-slot=\"key-takeaways-list\"\n        className=\"mt-3 flex list-disc flex-col gap-2 pl-5 leading-body text-foreground marker:text-primary\"\n      >\n        {items.map(item => (\n          <li key={item}>{item}</li>\n        ))}\n      </ul>\n    </aside>\n  )\n}\n\nexport default KeyTakeaways\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

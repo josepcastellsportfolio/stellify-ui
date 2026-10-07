@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "inline-cta",
+  "title": "InlineCta",
+  "description": "Compact bordered card with one sentence and a primary button-styled link. Meant to sit after a page's first paragraph.",
+  "registryDependencies": [
+    "@stellify/button",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/inline-cta.tsx",
+      "content": "import type { FC, ReactNode } from \"react\"\n\nimport { buttonVariants } from \"@/components/ui/button\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface InlineCtaLink {\n  href: string\n  label: string\n}\n\nexport interface InlineCtaProps {\n  /** One sentence: what the reader gets by acting now. */\n  text: string\n  /** Says exactly what happens on click (\"Pide presupuesto\", not \"Enviar\"). */\n  actionLabel: string\n  href: string\n  /**\n   * Renders the action link. Apps with a client router pass their own Link so\n   * navigation stays client-side; the default is a plain anchor.\n   */\n  renderLink?: (link: InlineCtaLink, props: { className: string }) => ReactNode\n  className?: string\n}\n\n/**\n * Compact call to action meant to sit right after a page's first paragraph.\n *\n * A real link styled as a button, not a `<button onClick={navigate}>`, so it\n * works in the prerendered HTML and crawlers can follow it. Stacks on mobile,\n * one row from `sm` up.\n */\nexport const InlineCta: FC<InlineCtaProps> = ({\n  text,\n  actionLabel,\n  href,\n  renderLink,\n  className,\n}) => {\n  const actionClass = cn(buttonVariants({ variant: \"primary\" }), \"shrink-0\")\n  const link = { href, label: actionLabel }\n\n  return (\n    <div\n      data-slot=\"inline-cta\"\n      className={cn(\n        \"flex flex-col gap-4 rounded-card border border-border bg-card p-5\",\n        \"sm:flex-row sm:items-center sm:justify-between sm:gap-6\",\n        className,\n      )}\n    >\n      <p data-slot=\"inline-cta-text\" className=\"leading-body text-card-foreground\">\n        {text}\n      </p>\n      {renderLink?.(link, { className: actionClass }) ?? (\n        <a href={href} className={actionClass}>\n          {actionLabel}\n        </a>\n      )}\n    </div>\n  )\n}\n\nexport default InlineCta\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

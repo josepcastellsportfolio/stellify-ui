@@ -46,6 +46,17 @@ export interface LongFormArticleProps {
    * navigation stays client-side; the default is a plain anchor.
    */
   renderLink?: (link: LongFormLink, props: { className: string }) => ReactNode
+  /**
+   * Rendered right after the intro (and the status badge), before the
+   * figures — e.g. a KeyTakeaways box and an InlineCta. Not wrapped, so the
+   * caller owns the spacing.
+   */
+  afterIntro?: ReactNode
+  /**
+   * Rendered after the stack and before the related links — e.g. a share
+   * button. Not wrapped, so the caller owns the spacing.
+   */
+  afterContent?: ReactNode
   className?: string
 }
 
@@ -67,6 +78,8 @@ export const LongFormArticle: FC<LongFormArticleProps> = ({
   content: page,
   before,
   renderLink,
+  afterIntro,
+  afterContent,
   className,
 }) => (
   <article className={cn("mx-auto w-full max-w-3xl px-[--container-pad] py-16", className)}>
@@ -83,6 +96,8 @@ export const LongFormArticle: FC<LongFormArticleProps> = ({
         {page.status}
       </Badge>
     ) : null}
+
+    {afterIntro}
 
     {page.stats?.length ? (
       <div className="mt-12 grid gap-4 sm:grid-cols-3">
@@ -122,6 +137,8 @@ export const LongFormArticle: FC<LongFormArticleProps> = ({
         </ul>
       </section>
     ) : null}
+
+    {afterContent}
 
     {page.related?.length ? (
       <nav className="mt-14 border-t border-border pt-8" aria-label="Enlaces relacionados">

@@ -1588,6 +1588,107 @@
       ]
     },
     {
+      "name": "key-takeaways",
+      "type": "registry:component",
+      "title": "KeyTakeaways",
+      "description": "\"En resumen\" callout: an aside labelled by its h2 with a list of self-contained takeaways. Fits between the h1 intro and the first h2. Renders nothing when empty.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/key-takeaways.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "faq-list",
+      "type": "registry:component",
+      "title": "FaqList",
+      "description": "FAQ section built on native details/summary (zero JS, answers present in the HTML for crawlers) plus a faqPageJsonLd() helper for schema.org FAQPage.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/faq-list.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "inline-cta",
+      "type": "registry:component",
+      "title": "InlineCta",
+      "description": "Compact bordered card with one sentence and a primary button-styled link. Meant to sit after a page's first paragraph.",
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/inline-cta.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "sticky-cta",
+      "type": "registry:component",
+      "title": "StickyCta",
+      "description": "Mobile-only fixed bottom CTA bar (z-40, safe-area aware) with an optional secondary action (e.g. tel:) and an in-flow spacer so it never covers the footer.",
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/sticky-cta.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "share-button",
+      "type": "registry:component",
+      "title": "ShareButton",
+      "description": "Share button: native share sheet when available (checked on click), otherwise a popover with copy-link and LinkedIn/WhatsApp/X/email intent links. No third-party scripts.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/popover",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/share-button.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "cookie-consent",
+      "type": "registry:component",
+      "title": "CookieConsent",
+      "description": "Presentational, non-modal analytics-cookie banner (z-50). Accept and Reject have equal weight; no close button that implies consent.",
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/cookie-consent.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "data-table-filters",
       "type": "registry:lib",
       "title": "DataTableFilters",

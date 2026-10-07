@@ -65,6 +65,22 @@ the registry; `shadcn build` is unaffected.
 | `category-tag` | component | Colored badge resolving Parent / Child category hierarchy. |
 | `logo` | component | StellifyIT wordmark (SVG, `currentColor`). |
 
+### Public pages (SEO, conversion, consent)
+
+Prerender-safe: nothing reads `window`/`navigator`/`document` during render.
+Links go through an optional `renderLink` so apps keep client-side routing.
+
+| Item | Type | Summary |
+|---|---|---|
+| `key-takeaways` | component | "En resumen" `<aside>` labelled by its h2 + list; sits between the h1 intro and the first h2. Renders nothing when empty. |
+| `faq-list` | component | FAQ on native `<details>`/`<summary>` (zero JS, answers in the HTML for crawlers) + `faqPageJsonLd(items)` (schema.org FAQPage, no `@context`, for an `@graph`). |
+| `inline-cta` | component | Compact card: one sentence + a primary button-styled link. Goes after the first paragraph. |
+| `sticky-cta` | component | Mobile-only fixed bottom bar (z-40, safe-area) with optional icon secondary (e.g. `tel:`) and an in-flow spacer so the footer is never covered. |
+| `share-button` | component | Native share sheet when available (checked on click), else a popover: copy link + LinkedIn/WhatsApp/X/email intents. No third-party scripts. |
+| `cookie-consent` | component | Presentational, non-modal analytics consent banner (z-50). Accept and Reject with equal weight; no close button. |
+
+Extended (backwards compatible): `long-form-article` (`afterIntro` / `afterContent` slots).
+
 ### Step flows and app layout
 
 Built for captationcenter, generic enough for any onboarding or back-office app.
