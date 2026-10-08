@@ -92,8 +92,8 @@ Extended (backwards compatible): `progress` (`size="sm"`), `textarea` (`autoResi
 |---|---|---|
 | `search-form` | component | Inline required text fields + primary search button (trimmed values, loading). |
 | `map-view` | component | Leaflet map with circle markers (selected = primary), fits to markers, OSM tiles + attribution. Ships `@types/leaflet`. |
-| `business-card` | component | Selectable business row: checkbox, name + `score-badge`, address, rating · phone · web, `chip`s. |
-| `score-badge` / `chip` / `collapse-toggle` | component | Numeric score pill · neutral tag · "^ Contraer la lista" toggle. |
+| `business-card` | component | Selectable business row: checkbox, name + `score-badge`, address, rating · phone · web, `chip`s; optional `toggle` slot. |
+| `score-badge` / `chip` / `collapse-toggle` | component | Numeric score pill · neutral tag (optional `onRemove`) · "^ Contraer la lista" toggle. |
 
 Extended (backwards compatible): `page-header` (`eyebrow`), `status-badge` (`icon`, `appearance="plain"`).
 
@@ -101,7 +101,8 @@ Extended (backwards compatible): `page-header` (`eyebrow`), `status-badge` (`ico
 
 | Item | Type | Summary |
 |---|---|---|
-| `outreach-card` | component | Diagnosis, channel tab, editable subject/body + save, copy to clipboard, objections tab for call scripts; generating/queued/failed states. |
+| `outreach-card` | component | Diagnosis, channel tab, editable subject/body + save, copy to clipboard, objections tab for call scripts; generating/queued/failed states; badges, warning and `onTrack`. |
+| `coverage-matrix` | component | Rows × columns of done / planned / untouched cells with legend; every word via props (`stateLabels`, `actionLabels`, `cellLabel`, `legendLabel`). Back `getCell` with a Map. |
 | `loading-state` | component | Title + text + spinner with optional "n de N" progress (`role="status"`). |
 
 Extended (backwards compatible): `tabs` (`TabsList variant="plain"`).

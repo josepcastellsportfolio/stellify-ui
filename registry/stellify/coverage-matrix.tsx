@@ -31,6 +31,13 @@ export interface CoverageMatrixProps {
   stateLabels?: Record<CoverageState, string>
   /** Accessible action per state, appended to the cell's name ("Filtrar", "Añadir al plan"). */
   actionLabels?: Partial<Record<CoverageState, string>>
+  /**
+   * Accessible name of a cell, before its description and action. Defaults to
+   * Spanish: "<row> en <column>: <state>".
+   */
+  cellLabel?: (row: string, column: string, state: string) => string
+  /** Accessible name of the legend list. Defaults to "Leyenda". */
+  legendLabel?: string
   "aria-label"?: string
   className?: string
 }
@@ -40,6 +47,9 @@ const DEFAULT_STATE_LABELS: Record<CoverageState, string> = {
   planned: "En el plan",
   empty: "Sin tocar",
 }
+
+const defaultCellLabel = (row: string, column: string, state: string) =>
+  `${row} en ${column}: ${state.toLowerCase()}`
 
 const CELL_CLASS: Record<CoverageState, string> = {
   done: "border-primary bg-primary text-primary-foreground hover:bg-primary/90",
@@ -54,7 +64,10 @@ const SWATCH_CLASS: Record<CoverageState, string> = {
 }
 
 /** Rows × columns of three-state cells (done / planned / untouched): where you have already
- * been and what is next. Scrolls sideways on narrow screens with the row labels pinned. */
+ * been and what is next. Scrolls sideways on narrow screens with the row labels pinned.
+ *
+ * `getCell` runs once per cell on every render: back it with a Map (or an
+ * object keyed by "row|column") built in a `useMemo`, not an array `find`. */
 function CoverageMatrix({
   rows,
   columns,
@@ -65,6 +78,8 @@ function CoverageMatrix({
   rowHeader = "Fila",
   stateLabels = DEFAULT_STATE_LABELS,
   actionLabels,
+  cellLabel = defaultCellLabel,
+  legendLabel = "Leyenda",
   "aria-label": ariaLabel,
   className,
 }: CoverageMatrixProps) {
@@ -103,7 +118,7 @@ function CoverageMatrix({
                   const dimmed = isDimmed?.(row.key, col.key) ?? false
                   const isSelected = selected?.row === row.key && selected?.column === col.key
                   const name = [
-                    `${row.label} en ${col.label}: ${stateLabels[cell.state].toLowerCase()}`,
+                    cellLabel(row.label, col.label, stateLabels[cell.state]),
                     cell.description,
                     actionLabels?.[cell.state],
                   ]
@@ -135,7 +150,7 @@ function CoverageMatrix({
           </tbody>
         </table>
       </div>
-      <ul className="flex flex-wrap gap-4 text-xs text-muted-foreground" aria-label="Leyenda">
+      <ul className="flex flex-wrap gap-4 text-xs text-muted-foreground" aria-label={legendLabel}>
         {(Object.keys(SWATCH_CLASS) as CoverageState[]).map((state) => (
           <li key={state} className="inline-flex items-center gap-2">
             <span aria-hidden className={cn("inline-block size-3.5 rounded border", SWATCH_CLASS[state])} />

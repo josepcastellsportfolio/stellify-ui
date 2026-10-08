@@ -71,4 +71,16 @@ describe("CoverageMatrix", () => {
       "Sin tocar",
     ])
   })
+
+  it("takes every visible and accessible word from props (other languages)", () => {
+    render(
+      <Matrix
+        stateLabels={{ done: "Feta", planned: "Al pla", empty: "Sense tocar" }}
+        cellLabel={(row, column, state) => `${row} a ${column}: ${state.toLowerCase()}`}
+        legendLabel="Llegenda"
+      />
+    )
+    expect(screen.getByRole("button", { name: /^Club de pádel a Tortosa: sense tocar/ })).toBeInTheDocument()
+    expect(screen.getByRole("list", { name: "Llegenda" })).toBeInTheDocument()
+  })
 })
