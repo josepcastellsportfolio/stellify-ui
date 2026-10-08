@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kpi-card",
+  "title": "KpiCard",
+  "description": "One key figure: label, big value (a node, formatted by the caller), optional hint, icon, tone and progress bar.",
+  "dependencies": [
+    "class-variance-authority",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/kpi-card.tsx",
+      "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport type { LucideIcon } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst kpiCardVariants = cva(\n  \"flex flex-col gap-1 rounded-[var(--radius-card,var(--radius))] border bg-card p-4 text-card-foreground shadow-[var(--shadow-card,none)]\",\n  {\n    variants: {\n      tone: {\n        default: \"\",\n        success: \"border-success/40\",\n        warning: \"border-warning/50\",\n        danger: \"border-destructive/50\",\n      },\n    },\n    defaultVariants: { tone: \"default\" },\n  }\n)\n\nexport interface KpiCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\">,\n    VariantProps<typeof kpiCardVariants> {\n  /** What is measured, e.g. \"Gastado este mes\". */\n  label: React.ReactNode\n  /** The figure, already formatted by the caller (currency, percent…). */\n  value: React.ReactNode\n  /** Secondary line under the value, e.g. \"de 10,00 € de tope\". */\n  hint?: React.ReactNode\n  icon?: LucideIcon\n  /** 0–100: shows a thin bar under the value (e.g. share of the monthly cap). */\n  progress?: number\n}\n\n/**\n * One key figure: label, big value, optional hint and progress bar. The value is a node so\n * formatting (locale, currency, \"no recupera\") stays with the caller.\n */\nfunction KpiCard({ className, tone, label, value, hint, icon: Icon, progress, ...props }: KpiCardProps) {\n  const pct = progress === undefined ? undefined : Math.max(0, Math.min(100, progress))\n  return (\n    <div data-slot=\"kpi-card\" className={cn(kpiCardVariants({ tone }), className)} {...props}>\n      <div className=\"flex items-center gap-2 text-sm text-muted-foreground\">\n        {Icon && <Icon className=\"size-4\" aria-hidden />}\n        <span>{label}</span>\n      </div>\n      <div className=\"text-2xl font-semibold tabular-nums\">{value}</div>\n      {pct !== undefined && (\n        <div\n          role=\"progressbar\"\n          aria-valuemin={0}\n          aria-valuemax={100}\n          aria-valuenow={Math.round(pct)}\n          aria-label={typeof label === \"string\" ? label : undefined}\n          className=\"h-1.5 w-full overflow-hidden rounded-full bg-muted\"\n        >\n          <div\n            className={cn(\n              \"h-full rounded-full\",\n              pct >= 100 ? \"bg-destructive\" : pct >= 80 ? \"bg-warning\" : \"bg-primary\"\n            )}\n            style={{ width: `${pct}%` }}\n          />\n        </div>\n      )}\n      {hint && <div className=\"text-xs text-muted-foreground\">{hint}</div>}\n    </div>\n  )\n}\n\nexport default KpiCard\nexport { KpiCard, kpiCardVariants }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

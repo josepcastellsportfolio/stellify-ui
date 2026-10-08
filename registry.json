@@ -2005,6 +2005,124 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "coverage-matrix",
+      "type": "registry:component",
+      "title": "CoverageMatrix",
+      "description": "Rows × columns of three-state cells (done / planned / untouched); scrolls sideways with pinned row labels on narrow screens.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/coverage-matrix.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "kpi-card",
+      "type": "registry:component",
+      "title": "KpiCard",
+      "description": "One key figure: label, big value (a node, formatted by the caller), optional hint, icon, tone and progress bar.",
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/kpi-card.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "vat-toggle",
+      "type": "registry:component",
+      "title": "VatToggle",
+      "description": "Two-option switch between amounts without VAT (base) and with VAT.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/vat-toggle.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "stacked-timeline",
+      "type": "registry:component",
+      "title": "StackedTimeline",
+      "description": "Stacked bars per bucket in plain SVG with an optional cap line, side bars for series outside the cap and a visually hidden table for screen readers.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/stacked-timeline.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "timer-control",
+      "type": "registry:component",
+      "title": "TimerControl",
+      "description": "Compact sidebar time tracker: type, target, elapsed clock, start/stop and a long-running warning.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/timer-control.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "notification-bell",
+      "type": "registry:component",
+      "title": "NotificationBell",
+      "description": "Bell button with an unread badge and a controlled dropdown panel that closes on Escape or an outside click.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/notification-bell.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "notification-item",
+      "type": "registry:component",
+      "title": "NotificationItem",
+      "description": "One notification row: severity icon, title, optional body, relative time and unread dot.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/notification-item.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
