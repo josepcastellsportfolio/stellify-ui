@@ -1,8 +1,9 @@
 import { useEffect, useId, useState } from "react"
-import { AlertCircle, Check, Clock, Copy, Loader2 } from "lucide-react"
+import { AlertCircle, AlertTriangle, Check, Clock, Copy, Loader2 } from "lucide-react"
 
 import { TextField } from "@/components/text-field"
 import { TextareaField } from "@/components/textarea-field"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
@@ -17,6 +18,12 @@ export interface OutreachCardProps {
   body?: string | null
   objections?: { objecion: string; respuesta: string }[]
   error?: string | null
+  /** Short tags next to the name (e.g. the language: "ES", "CA"). */
+  badges?: string[]
+  /** Something to check before sending a ready draft; always visible. */
+  warning?: string | null
+  /** Extra buttons for this message (e.g. "Regenerar en català"). */
+  actions?: { label: string; onClick: () => void; disabled?: boolean }[]
   retryLabel?: string
   onSave: (edit: { subject: string | null; body: string }) => void
   saving?: boolean
@@ -44,6 +51,9 @@ function OutreachCard({
   body = "",
   objections,
   error,
+  badges = [],
+  warning,
+  actions = [],
   retryLabel,
   onSave,
   saving = false,
@@ -68,10 +78,32 @@ function OutreachCard({
 
   return (
     <article data-slot="outreach-card" data-status={status} aria-labelledby={titleId} className={cn("space-y-3 py-4", className)}>
-      <h3 id={titleId} className="text-base font-semibold text-foreground">
-        {name}
-      </h3>
+      <div className="flex flex-wrap items-center gap-2">
+        <h3 id={titleId} className="text-base font-semibold text-foreground">
+          {name}
+        </h3>
+        {badges.map((b) => (
+          <Badge key={b} variant="outline" size="xs" uppercase>
+            {b}
+          </Badge>
+        ))}
+        {actions.length > 0 && (
+          <div className="ml-auto flex flex-wrap gap-2">
+            {actions.map((a) => (
+              <Button key={a.label} type="button" variant="base" size="sm" disabled={a.disabled} onClick={a.onClick}>
+                {a.label}
+              </Button>
+            ))}
+          </div>
+        )}
+      </div>
       {diagnosis && <p className="text-sm text-muted-foreground">{diagnosis}</p>}
+      {warning && (
+        <p role="note" className="inline-flex items-center gap-2 text-sm text-warning">
+          <AlertTriangle className="size-4 shrink-0" aria-hidden />
+          {warning}
+        </p>
+      )}
 
       {(status === "pending" || status === "generating") && (
         <p role="status" aria-label={t.generating} className="inline-flex items-center gap-2 text-sm text-muted-foreground">

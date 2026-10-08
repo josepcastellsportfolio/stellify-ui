@@ -56,3 +56,30 @@ export const CallScript: Story = {
     </div>
   ),
 }
+
+export const LanguageWarningAndRegenerate: Story = {
+  render: () => (
+    <div className="max-w-3xl divide-y">
+      <OutreachCard
+        status="ready"
+        name="Perruqueria Montse"
+        badges={["CA"]}
+        warning="Idioma: castellanismos: «reservas»."
+        diagnosis="Peluquería con muchas reseñas y sin web; la propuesta cubre la atención de citas."
+        channelLabel="Correo en frío"
+        subject="Un assistent de cites per a Perruqueria Montse"
+        body="He vist Perruqueria Montse a Google, amb 4,6 de valoració i 128 ressenyes…"
+        actions={[{ label: "Regenerar en castellano", onClick: () => {} }]}
+        onSave={() => {}}
+      />
+      <OutreachCard
+        status="failed"
+        name="Barberia Delta"
+        badges={["ES"]}
+        error="El mensaje no se guarda: palabra vetada: «potencial»."
+        actions={[{ label: "Regenerar en català", onClick: () => {} }]}
+        onSave={() => {}}
+      />
+    </div>
+  ),
+}
