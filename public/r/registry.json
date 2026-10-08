@@ -1869,7 +1869,7 @@
       "name": "chip",
       "type": "registry:component",
       "title": "Chip",
-      "description": "Small neutral read-only tag (e.g. a detected signal).",
+      "description": "Small neutral tag (e.g. a detected signal); optional `onRemove` adds an accessible remove button.",
       "registryDependencies": [
         "@stellify/utils"
       ],
@@ -1878,6 +1878,9 @@
           "path": "registry/stellify/chip.tsx",
           "type": "registry:component"
         }
+      ],
+      "dependencies": [
+        "lucide-react"
       ]
     },
     {
@@ -1922,7 +1925,7 @@
       "name": "business-card",
       "type": "registry:component",
       "title": "BusinessCard",
-      "description": "Selectable business row: checkbox, name + score, address, rating · phone · web (\"Sin página web\"), signal chips.",
+      "description": "Selectable business row: checkbox, name + score, address, rating · phone · web (\"Sin página web\"), signal chips; optional second labelled checkbox (e.g. \"Català\").",
       "dependencies": [
         "lucide-react"
       ],
@@ -1984,7 +1987,7 @@
       "name": "outreach-card",
       "type": "registry:component",
       "title": "OutreachCard",
-      "description": "Generated message: diagnosis, channel tab, editable subject/body with save, copy to clipboard, objections tab for call scripts, generating/queued/failed states.",
+      "description": "Generated message: diagnosis, channel tab, editable subject/body with save, copy to clipboard, objections tab for call scripts, generating/queued/failed states; optional badges (e.g. language), a visible warning and extra actions (e.g. regenerate).",
       "dependencies": [
         "lucide-react"
       ],
@@ -1993,11 +1996,27 @@
         "@stellify/textarea-field",
         "@stellify/button",
         "@stellify/tabs",
+        "@stellify/badge",
         "@stellify/utils"
       ],
       "files": [
         {
           "path": "registry/stellify/outreach-card.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "coverage-matrix",
+      "type": "registry:component",
+      "title": "CoverageMatrix",
+      "description": "Rows × columns of three-state cells (done / planned / untouched); scrolls sideways with pinned row labels on narrow screens.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/coverage-matrix.tsx",
           "type": "registry:component"
         }
       ]

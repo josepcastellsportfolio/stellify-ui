@@ -1,8 +1,9 @@
 import { useEffect, useId, useState } from "react"
-import { AlertCircle, Check, Clock, Copy, Loader2 } from "lucide-react"
+import { AlertCircle, AlertTriangle, Check, Clock, Copy, Loader2, SquareKanban } from "lucide-react"
 
 import { TextField } from "@/components/text-field"
 import { TextareaField } from "@/components/textarea-field"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
@@ -17,10 +18,23 @@ export interface OutreachCardProps {
   body?: string | null
   objections?: { objecion: string; respuesta: string }[]
   error?: string | null
+  /** Short tags next to the name (e.g. the language: "ES", "CA"). */
+  badges?: string[]
+  /** Something to check before sending a ready draft; always visible. */
+  warning?: string | null
+  /** Extra buttons for this message (e.g. "Regenerar en català"). */
+  actions?: { label: string; onClick: () => void; disabled?: boolean }[]
   retryLabel?: string
   onSave: (edit: { subject: string | null; body: string }) => void
   saving?: boolean
-  labels?: Partial<Record<"subject" | "body" | "save" | "copy" | "copied" | "objections" | "generating", string>>
+  /** "Guardar en seguimiento": shown on a ready message only when given. */
+  onTrack?: () => void
+  tracking?: boolean
+  /** The business is already in the pipeline: the button turns into a disabled "En seguimiento". */
+  tracked?: boolean
+  labels?: Partial<
+    Record<"subject" | "body" | "save" | "copy" | "copied" | "objections" | "generating" | "track" | "tracked", string>
+  >
   className?: string
 }
 
@@ -32,6 +46,8 @@ const DEFAULT_LABELS = {
   copied: "Copiado",
   objections: "Objeciones",
   generating: "Redactando…",
+  track: "Guardar en seguimiento",
+  tracked: "En seguimiento",
 }
 
 /** One generated message: diagnosis, channel tab, editable subject/body, copy; P2 objections tab. */
@@ -44,9 +60,15 @@ function OutreachCard({
   body = "",
   objections,
   error,
+  badges = [],
+  warning,
+  actions = [],
   retryLabel,
   onSave,
   saving = false,
+  onTrack,
+  tracking = false,
+  tracked = false,
   labels,
   className,
 }: OutreachCardProps) {
@@ -68,10 +90,32 @@ function OutreachCard({
 
   return (
     <article data-slot="outreach-card" data-status={status} aria-labelledby={titleId} className={cn("space-y-3 py-4", className)}>
-      <h3 id={titleId} className="text-base font-semibold text-foreground">
-        {name}
-      </h3>
+      <div className="flex flex-wrap items-center gap-2">
+        <h3 id={titleId} className="text-base font-semibold text-foreground">
+          {name}
+        </h3>
+        {badges.map((b) => (
+          <Badge key={b} variant="outline" size="xs" uppercase>
+            {b}
+          </Badge>
+        ))}
+        {actions.length > 0 && (
+          <div className="ml-auto flex flex-wrap gap-2">
+            {actions.map((a) => (
+              <Button key={a.label} type="button" variant="base" size="sm" disabled={a.disabled} onClick={a.onClick}>
+                {a.label}
+              </Button>
+            ))}
+          </div>
+        )}
+      </div>
       {diagnosis && <p className="text-sm text-muted-foreground">{diagnosis}</p>}
+      {warning && (
+        <p role="note" className="inline-flex items-center gap-2 text-sm text-warning">
+          <AlertTriangle className="size-4 shrink-0" aria-hidden />
+          {warning}
+        </p>
+      )}
 
       {(status === "pending" || status === "generating") && (
         <p role="status" aria-label={t.generating} className="inline-flex items-center gap-2 text-sm text-muted-foreground">
@@ -103,6 +147,12 @@ function OutreachCard({
               {copied ? <Check /> : <Copy />}
               {copied ? t.copied : t.copy}
             </Button>
+            {onTrack && status === "ready" && (
+              <Button type="button" variant="base" size="sm" disabled={tracked} loading={tracking} onClick={onTrack}>
+                {tracked ? <Check /> : <SquareKanban />}
+                {tracked ? t.tracked : t.track}
+              </Button>
+            )}
           </div>
           <TabsContent value="message" className="space-y-3">
             {hasSubject && <TextField label={t.subject} value={draftSubject} onChange={(e) => setDraftSubject(e.target.value)} />}
