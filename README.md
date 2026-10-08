@@ -36,7 +36,7 @@ the registry; `shadcn build` is unaffected.
 | `button` | ui | **Overwrites `ui/button`.** Hierarchy `primary`/`secondary`/`base` (+ `destructive`/`success`/`warning`/`info`/`link`, plus `default`/`outline`/`ghost` back-compat aliases), `loading` spinner, and a CRUD `mode` (`create`/`edit`/`finish`) → semantic color + icon. |
 | `input` | ui | **Overwrites `ui/input`.** Standard shadcn input + invalid state (`aria-invalid` → destructive border). API-compatible. |
 | `text-field` | component | Labeled input with error/helper text + leading/trailing icons (wraps `input`). |
-| `metric-card` | component | KPI card (label, value, unit, delta, accent icon, `invertDelta`). |
+| `metric-card` | component | KPI card (label, value, unit, delta, accent icon, `invertDelta`, `hint`, value `tone`, `size="compact"` for dense rows). |
 | `chart-card` | component | Card shell for charts: loading / empty / error states + header actions. |
 | `currency-display` | component | Number → localized currency via `Intl.NumberFormat`. |
 | `money-input` | component | Controlled numeric input with a currency adornment. |
@@ -77,6 +77,7 @@ All copy is passed in (Spanish defaults), every part emits `data-slot`.
 | `choice-card` | component | `ChoiceCardGroup` + `ChoiceCard`: single-choice block options (Radix radio group, arrow keys). |
 | `nav-footer` | component | "← Atrás" + primary "Siguiente →"; disabled / loading / submit. |
 | `number-input` | component | Controlled number (empty = `null`) with a vertical ± stepper and min/max clamping. |
+| `slider` | ui | Radix slider: one thumb per entry of `value`/`defaultValue` (single value or `[min, max]` range), disabled state. |
 | `textarea-field` | component | Labeled `textarea` with required, error and helper text. |
 | `quadrant-grid` / `quadrant-cell` | component | 2×2 grid with column headers and vertical row labels; `active` cell gets a primary border + "Tu vía" badge. |
 | `reason-list` | component | Justifications with a primary check. |
