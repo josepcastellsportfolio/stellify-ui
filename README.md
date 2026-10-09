@@ -358,13 +358,12 @@ the base UI primitives), then add the `@stellify` registry and install items.
 
 ## Local development
 
-`tsc --noEmit` over the registry sources (uses web-app's `node_modules` and
-shims for the `@/` aliases):
+Type-check registry sources, stories and tests (CI runs it on every push/PR):
 
 ```bash
-cd .typecheck
-node node_modules/typescript/bin/tsc -p tsconfig.json
+npm run typecheck   # = tsc --noEmit, with the @/ aliases mapped in tsconfig.json
 ```
 
-The `.typecheck/` folder is a validation harness only — it is not part of the
-published registry.
+`@/components/ui/*`, `@/components/intelui/*`, `@/components/*`, `@/lib/*` and
+`@/hooks/*` resolve to `registry/stellify/` first and fall back to the consumer
+tree in `.storybook/shadcn/` (same order as `registry-resolver.ts` for Vite).

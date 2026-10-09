@@ -78,37 +78,35 @@ export const Stacked: Story = {
   },
 }
 
-function BrushDemo() {
-  const [range, setRange] = useState<TimeRange>("30d")
-  // Daily series across ~90 days so the range filter + brush are meaningful.
-  const data = Array.from({ length: 90 }, (_, i) => {
-    const d = new Date()
-    d.setDate(d.getDate() - (89 - i))
-    return {
-      date: d.toISOString().slice(0, 10),
-      desktop: 120 + Math.round(60 * Math.sin(i / 6)) + (i % 7) * 5,
-    }
-  })
-  return (
-    <PowerChart
-      type="area"
-      title="Daily visitors"
-      data={data}
-      xKey="date"
-      series={[{ key: "desktop", label: "Desktop" }]}
-      brush
-      timeRange={{ value: range, onChange: setRange }}
-      formatters={{
-        label: { kind: "date", locale: "en-US", options: { month: "short", day: "numeric" } },
-      }}
-      height={260}
-    />
-  )
-}
+// Daily series across ~90 days so the range filter + brush are meaningful.
+const DAILY = Array.from({ length: 90 }, (_, i) => {
+  const d = new Date()
+  d.setDate(d.getDate() - (89 - i))
+  return {
+    date: d.toISOString().slice(0, 10),
+    desktop: 120 + Math.round(60 * Math.sin(i / 6)) + (i % 7) * 5,
+  }
+})
 
 export const BrushAndTimeRange: Story = {
   name: "Brush + time-range selector",
-  render: () => <BrushDemo />,
+  args: {
+    type: "area",
+    title: "Daily visitors",
+    data: DAILY,
+    xKey: "date",
+    series: [{ key: "desktop", label: "Desktop" }],
+    brush: true,
+    formatters: {
+      label: { kind: "date", locale: "en-US", options: { month: "short", day: "numeric" } },
+    },
+    height: 260,
+  },
+  // The time range is controlled: keep it in story state.
+  render: function Render(args) {
+    const [range, setRange] = useState<TimeRange>("30d")
+    return <PowerChart {...args} timeRange={{ value: range, onChange: setRange }} />
+  },
 }
 
 export const Loading: Story = {

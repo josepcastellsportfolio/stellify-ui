@@ -15,6 +15,8 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Typecheck (registry, stories, tests)
+        run: npm run typecheck
       - run: npm test
       - name: Built registry (public/r) is in sync with registry.json
         run: |

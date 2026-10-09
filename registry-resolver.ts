@@ -3,8 +3,9 @@ import path from "node:path"
 import type { Plugin } from "vite"
 
 /**
- * Registry sources import `@/components/ui/x`, `@/components/x`, `@/lib/x`,
- * `@/hooks/x` (the paths they get after `shadcn add`). Resolve those to
+ * Registry sources import `@/components/ui/x`, `@/components/intelui/x`,
+ * `@/components/x`, `@/lib/x`, `@/hooks/x` (the paths they get after
+ * `shadcn add`). Resolve those to
  * registry/stellify/x first, so Storybook and tests exercise the code we
  * publish, and only fall back to the consumer tree (.storybook/shadcn) for
  * files the registry doesn't ship. Replaces a plain `@` alias: Vite applies
@@ -21,7 +22,8 @@ export function registryFirst(root: string): Plugin {
     enforce: "pre",
     async resolveId(source, importer) {
       if (!source.startsWith("@/")) return null
-      const m = source.match(/^@\/(?:components\/ui|components|lib|hooks)\/(.+)$/)
+      // `components/intelui` is the install target of the intelui-* items.
+      const m = source.match(/^@\/(?:components\/ui|components\/intelui|components|lib|hooks)\/(.+)$/)
       const hit = m ? find(registry, m[1]) : undefined
       if (hit) return hit
       // Anything else under `@/` (e.g. `@/components/ui/table` before it was

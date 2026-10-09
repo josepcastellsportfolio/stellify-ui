@@ -25,6 +25,14 @@ const meta = {
   component: Carousel,
   tags: ["autodocs"],
   parameters: { layout: "padded" },
+  args: {
+    items: KPIS,
+    getItemKey: (k) => k.id,
+    ariaLabel: "KPI carousel",
+    renderItem: (k) => (
+      <MetricCard label={k.label} value={k.value} unit={k.unit} accent={k.accent} icon={k.icon} />
+    ),
+  },
 } satisfies Meta<typeof Carousel<Kpi>>
 
 export default meta
@@ -32,29 +40,9 @@ type Story = StoryObj<typeof meta>
 
 export const KpiCards: Story = {
   name: "KPI cards (autoplay)",
-  render: () => (
-    <Carousel
-      items={KPIS}
-      getItemKey={(k) => k.id}
-      cardsPerView={{ base: 1, md: 2, lg: 3 }}
-      ariaLabel="KPI carousel"
-      renderItem={(k) => (
-        <MetricCard label={k.label} value={k.value} unit={k.unit} accent={k.accent} icon={k.icon} />
-      )}
-    />
-  ),
+  args: { cardsPerView: { base: 1, md: 2, lg: 3 } },
 }
 
 export const NoAutoplay: Story = {
-  render: () => (
-    <Carousel
-      items={KPIS}
-      getItemKey={(k) => k.id}
-      autoPlay={false}
-      cardsPerView={{ base: 1, md: 2, lg: 2 }}
-      renderItem={(k) => (
-        <MetricCard label={k.label} value={k.value} unit={k.unit} accent={k.accent} icon={k.icon} />
-      )}
-    />
-  ),
+  args: { autoPlay: false, cardsPerView: { base: 1, md: 2, lg: 2 } },
 }

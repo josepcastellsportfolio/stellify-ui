@@ -54,6 +54,7 @@ const meta = {
   component: DataTable,
   tags: ["autodocs"],
   parameters: { layout: "padded" },
+  args: { columns, rows: ALL, getRowKey: (r) => r.id },
 } satisfies Meta<typeof DataTable<Expense>>
 
 export default meta
@@ -137,12 +138,5 @@ export const Composed: Story = {
 }
 
 export const Loading: Story = {
-  render: () => (
-    <DataTable
-      columns={columns}
-      rows={[]}
-      getRowKey={(r) => r.id}
-      loading
-    />
-  ),
+  args: { rows: [], loading: true },
 }
