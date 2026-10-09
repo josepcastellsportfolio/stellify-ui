@@ -2,6 +2,7 @@ import type { FC, KeyboardEvent, ReactNode } from "react"
 import { ArrowDownRight, ArrowUpRight, type LucideIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { Progress } from "@/components/ui/progress"
 
 export type MetricCardAccent =
   | "amber"
@@ -35,8 +36,16 @@ export type MetricCardTone = "default" | "positive" | "negative"
 export interface MetricCardDelta {
   /** Display string for the change, e.g. "+12%" or "-3.4 kg". */
   value: string
-  /** Whether the delta is a positive change (drives the arrow + default color). */
+  /**
+   * Direction of the change: true → up arrow, false → down arrow (colored
+   * good/bad, see `invertDelta`). Left undefined, the delta is neutral.
+   */
   positive?: boolean
+  /**
+   * "neutral" renders the delta without an arrow, in muted text (e.g. "sin
+   * cambios", "= mes anterior"), even if `positive` is set.
+   */
+  tone?: "neutral"
 }
 
 export interface MetricCardProps {
@@ -65,8 +74,13 @@ export interface MetricCardProps {
    * color (e.g. a negative balance). Defaults to "default".
    */
   tone?: MetricCardTone
-  /** "compact" packs many cards in a row (smaller padding and type). */
+  /** "compact" packs many cards in a row (smaller padding and type; the hint truncates to one line). */
   size?: "default" | "compact"
+  /**
+   * Optional progress towards a target, 0–100 (clamped). Renders a thin bar
+   * exposed as a progressbar labelled by `label`. Non-finite values are ignored.
+   */
+  progress?: number
   /** Makes the card interactive. */
   onClick?: () => void
   className?: string
@@ -89,6 +103,7 @@ const MetricCard: FC<MetricCardProps> = ({
   hint,
   tone = "default",
   size = "default",
+  progress,
   onClick,
   className,
 }) => {
@@ -96,9 +111,15 @@ const MetricCard: FC<MetricCardProps> = ({
   const compact = size === "compact"
 
   // `positive` describes the raw direction; `good` decides the color, so that
-  // `invertDelta` can flip the meaning for metrics where up is bad.
+  // `invertDelta` can flip the meaning for metrics where up is bad. A delta
+  // with no direction (or tone "neutral") gets no arrow and no good/bad color.
+  const neutral = delta?.tone === "neutral" || delta?.positive === undefined
   const positive = delta?.positive ?? false
   const good = invertDelta ? !positive : positive
+  const progressValue =
+    typeof progress === "number" && Number.isFinite(progress)
+      ? Math.min(100, Math.max(0, progress))
+      : undefined
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!onClick) return
@@ -166,25 +187,46 @@ const MetricCard: FC<MetricCardProps> = ({
       </div>
 
       {hint && (
-        <div className={cn("text-muted-foreground", compact ? "text-[11px]" : "text-xs")}>
+        <div
+          data-slot="metric-card-hint"
+          title={compact && typeof hint === "string" ? hint : undefined}
+          className={cn(
+            "min-w-0 text-muted-foreground",
+            compact ? "truncate text-[11px]" : "text-xs"
+          )}
+        >
           {hint}
         </div>
       )}
 
+      {progressValue !== undefined && (
+        <Progress
+          data-slot="metric-card-progress"
+          size="sm"
+          value={progressValue}
+          aria-label={label}
+        />
+      )}
+
       {delta && (
         <div
+          data-slot="metric-card-delta"
+          data-tone={neutral ? "neutral" : good ? "good" : "bad"}
           className={cn(
             "inline-flex items-center gap-1 text-xs font-medium",
-            good
-              ? "text-emerald-600 dark:text-emerald-400"
-              : "text-rose-600 dark:text-rose-400"
+            neutral
+              ? "text-muted-foreground"
+              : good
+                ? "text-emerald-600 dark:text-emerald-400"
+                : "text-rose-600 dark:text-rose-400"
           )}
         >
-          {positive ? (
-            <ArrowUpRight className="h-3 w-3" />
-          ) : (
-            <ArrowDownRight className="h-3 w-3" />
-          )}
+          {!neutral &&
+            (positive ? (
+              <ArrowUpRight className="h-3 w-3" aria-hidden />
+            ) : (
+              <ArrowDownRight className="h-3 w-3" aria-hidden />
+            ))}
           {delta.value}
         </div>
       )}

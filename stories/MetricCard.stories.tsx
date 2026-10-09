@@ -43,6 +43,31 @@ export const InvertedDelta: Story = {
   },
 }
 
+export const NeutralDelta: Story = {
+  name: "Neutral delta (no arrow)",
+  args: {
+    label: "Leads",
+    value: "12",
+    unit: undefined,
+    icon: Target,
+    accent: "slate",
+    delta: { value: "= mes anterior", tone: "neutral" },
+  },
+}
+
+export const WithProgress: Story = {
+  name: "Progress towards a target",
+  args: {
+    label: "Objetivo mensual",
+    value: "7 / 10",
+    unit: "reuniones",
+    icon: Target,
+    accent: "teal",
+    hint: "70 % del objetivo",
+    progress: 70,
+  },
+}
+
 export const Grid: Story = {
   render: () => (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -61,6 +86,8 @@ export const CompactRow: Story = {
       <MetricCard size="compact" label="Meses en negativo" value="3 / 24" tone="negative" accent="rose" icon={AlertTriangle} />
       <MetricCard size="compact" label="Facturación necesaria" value="2.400 €/mes" hint="para no bajar de 0" accent="slate" icon={Target} />
       <MetricCard size="compact" label="Saldo final" value="8.900 €" tone="positive" accent="emerald" icon={Wallet} />
+      <MetricCard size="compact" label="Hint largo" value="42" hint="Un texto de contexto demasiado largo para una tarjeta compacta" accent="slate" icon={Target} />
+      <MetricCard size="compact" label="Contactados" value="18 / 40" progress={45} delta={{ value: "sin cambios", tone: "neutral" }} accent="teal" icon={Target} />
     </div>
   ),
 }

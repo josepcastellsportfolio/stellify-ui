@@ -30,6 +30,56 @@ describe("metric-card", () => {
     expect(screen.getByText("+3%")).toHaveClass("text-rose-600")
   })
 
+  it("keeps the arrow for an explicit direction (back-compat)", () => {
+    const { container, rerender } = render(<MetricCard label="Ingresos" value="1" delta={{ value: "-2%", positive: false }} />)
+    expect(screen.getByText("-2%")).toHaveClass("text-rose-600")
+    expect(container.querySelector('[data-slot="metric-card-delta"] svg')).toBeInTheDocument()
+    rerender(<MetricCard label="Ingresos" value="1" delta={{ value: "+2%", positive: true }} />)
+    expect(container.querySelector('[data-slot="metric-card-delta"] svg')).toBeInTheDocument()
+  })
+
+  it("renders a neutral delta with no arrow in muted text", () => {
+    const { container, rerender } = render(
+      <MetricCard label="Leads" value="12" delta={{ value: "= mes anterior", tone: "neutral", positive: true }} />
+    )
+    const delta = screen.getByText("= mes anterior")
+    expect(delta).toHaveClass("text-muted-foreground")
+    expect(delta).not.toHaveClass("text-emerald-600")
+    expect(container.querySelector('[data-slot="metric-card-delta"] svg')).not.toBeInTheDocument()
+    // No direction at all is neutral too (it used to render a red down arrow).
+    rerender(<MetricCard label="Leads" value="12" delta={{ value: "sin cambios" }} />)
+    expect(screen.getByText("sin cambios")).toHaveClass("text-muted-foreground")
+    expect(screen.getByText("sin cambios")).not.toHaveClass("text-rose-600")
+    expect(container.querySelector('[data-slot="metric-card-delta"] svg')).not.toBeInTheDocument()
+  })
+
+  it("truncates the hint only in compact size", () => {
+    const long = "para no bajar de 0 durante los próximos veinticuatro meses"
+    const { rerender } = render(<MetricCard label="Facturación" value="2.400 €" hint={long} size="compact" />)
+    expect(screen.getByText(long)).toHaveClass("truncate")
+    expect(screen.getByText(long)).toHaveAttribute("title", long)
+    rerender(<MetricCard label="Facturación" value="2.400 €" hint={long} />)
+    expect(screen.getByText(long)).not.toHaveClass("truncate")
+  })
+
+  it("exposes progress as a labelled progressbar, clamped to 0–100", () => {
+    const { rerender } = render(<MetricCard label="Objetivo mensual" value="7 / 10" progress={70} />)
+    const bar = screen.getByRole("progressbar", { name: "Objetivo mensual" })
+    expect(bar).toHaveAttribute("aria-valuenow", "70")
+    expect(bar).toHaveAttribute("aria-valuemax", "100")
+    rerender(<MetricCard label="Objetivo mensual" value="14 / 10" progress={140} />)
+    expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "100")
+    rerender(<MetricCard label="Objetivo mensual" value="-" progress={-5} />)
+    expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "0")
+  })
+
+  it("renders no progressbar without a finite progress", () => {
+    const { rerender } = render(<MetricCard label="Objetivo" value="7" />)
+    expect(screen.queryByRole("progressbar")).not.toBeInTheDocument()
+    rerender(<MetricCard label="Objetivo" value="7" progress={Number.NaN} />)
+    expect(screen.queryByRole("progressbar")).not.toBeInTheDocument()
+  })
+
   it("is a keyboard-operable button when clickable", async () => {
     const onClick = vi.fn()
     render(<MetricCard label="Ingresos" value="8.420" onClick={onClick} />)

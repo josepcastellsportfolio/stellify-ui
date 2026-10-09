@@ -36,7 +36,7 @@ the registry; `shadcn build` is unaffected.
 | `button` | ui | **Overwrites `ui/button`.** Hierarchy `primary`/`secondary`/`base` (+ `destructive`/`success`/`warning`/`info`/`link`, plus `default`/`outline`/`ghost` back-compat aliases), `loading` spinner, and a CRUD `mode` (`create`/`edit`/`finish`) → semantic color + icon. |
 | `input` | ui | **Overwrites `ui/input`.** Standard shadcn input + invalid state (`aria-invalid` → destructive border). API-compatible. |
 | `text-field` | component | Labeled input with error/helper text + leading/trailing icons (wraps `input`). |
-| `metric-card` | component | KPI card (label, value, unit, delta, accent icon, `invertDelta`, `hint`, value `tone`, `size="compact"` for dense rows). |
+| `metric-card` | component | KPI card (label, value, unit, delta — up/down arrow, or no arrow and muted when `delta.tone="neutral"` or no `positive` —, accent icon, `invertDelta`, `hint` (one truncated line in compact), value `tone`, `size="compact"` for dense rows, optional `progress` 0–100 bar). |
 | `chart-card` | component | Card shell for charts: loading / empty / error states + header actions. |
 | `currency-display` | component | Number → localized currency via `Intl.NumberFormat`. |
 | `money-input` | component | Controlled numeric input with a currency adornment. |

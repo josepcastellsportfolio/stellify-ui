@@ -128,12 +128,13 @@
       "name": "metric-card",
       "type": "registry:component",
       "title": "MetricCard",
-      "description": "KPI card: label, value, unit, delta with trend arrow, accent icon chip. invertDelta flips good/bad colors (for expenses).",
+      "description": "KPI card: label, value, unit, delta with trend arrow (or neutral, no arrow), accent icon chip, optional hint and progress bar (0-100). invertDelta flips good/bad colors (for expenses).",
       "dependencies": [
         "lucide-react"
       ],
       "registryDependencies": [
-        "@stellify/utils"
+        "@stellify/utils",
+        "@stellify/progress"
       ],
       "files": [
         {
