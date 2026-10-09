@@ -111,9 +111,14 @@ function OutreachCard({
       </div>
       {diagnosis && <p className="text-sm text-muted-foreground">{diagnosis}</p>}
       {warning && (
-        <p role="note" className="inline-flex items-center gap-2 text-sm text-warning">
-          <AlertTriangle className="size-4 shrink-0" aria-hidden />
-          {warning}
+        <p
+          role="note"
+          data-slot="outreach-card-warning"
+          className="flex items-start gap-2 rounded-md bg-warning/15 px-3 py-2 text-sm text-foreground dark:bg-warning/20"
+        >
+          {/* text-warning on white is ~2:1, so the colour only marks the icon; the text stays text-foreground. */}
+          <AlertTriangle className="mt-0.5 size-4 shrink-0 text-warning" aria-hidden />
+          <span>{warning}</span>
         </p>
       )}
 

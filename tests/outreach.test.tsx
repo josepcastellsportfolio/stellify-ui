@@ -129,7 +129,12 @@ describe("OutreachCard badges, warning and actions", () => {
     render(<OutreachCard status="ready" {...email} badges={["CA"]} warning="Idioma: castellanismos: «reservas»." onSave={() => {}} />)
     const card = screen.getByRole("article", { name: email.name })
     expect(within(card).getByText("CA")).toHaveAttribute("data-slot", "badge")
-    expect(within(card).getByRole("note")).toHaveTextContent("castellanismos")
+    const note = within(card).getByRole("note")
+    expect(note).toHaveTextContent("castellanismos")
+    // Contrast: the text is foreground on a tinted surface; only the icon is warning-coloured.
+    expect(note).toHaveClass("text-foreground", "bg-warning/15")
+    expect(note).not.toHaveClass("text-warning")
+    expect(note.querySelector("svg")).toHaveClass("text-warning")
   })
 
   it("runs an action and can disable it", async () => {
