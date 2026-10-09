@@ -67,6 +67,26 @@ describe("OutreachCard", () => {
     expect(onSave).toHaveBeenCalledWith({ subject: "Nuevo asunto", body: email.body })
   })
 
+  it("offers to track a ready message only when onTrack is given", async () => {
+    const onTrack = vi.fn()
+    const { rerender } = render(<OutreachCard status="ready" {...email} onSave={() => {}} />)
+    expect(screen.queryByRole("button", { name: "Guardar en seguimiento" })).not.toBeInTheDocument()
+    rerender(<OutreachCard status="ready" {...email} onSave={() => {}} onTrack={onTrack} />)
+    await userEvent.click(screen.getByRole("button", { name: "Guardar en seguimiento" }))
+    expect(onTrack).toHaveBeenCalledOnce()
+  })
+
+  it("shows a tracked message as already in the pipeline", () => {
+    render(<OutreachCard status="ready" {...email} onSave={() => {}} onTrack={() => {}} tracked />)
+    expect(screen.getByRole("button", { name: "En seguimiento" })).toBeDisabled()
+    expect(screen.queryByRole("button", { name: "Guardar en seguimiento" })).not.toBeInTheDocument()
+  })
+
+  it("does not offer tracking while the message is not ready", () => {
+    render(<OutreachCard status="generating" name="PádelOn Murcia" onSave={() => {}} onTrack={() => {}} />)
+    expect(screen.queryByRole("button", { name: "Guardar en seguimiento" })).not.toBeInTheDocument()
+  })
+
   it("copies subject and body to the clipboard", async () => {
     const user = userEvent.setup()
     const writeText = vi.spyOn(navigator.clipboard, "writeText")
@@ -101,5 +121,39 @@ describe("OutreachCard", () => {
     rerender(<OutreachCard status="failed" name="A" error="Sin forma de contacto." onSave={() => {}} />)
     expect(screen.getByRole("alert")).toHaveTextContent("Sin forma de contacto.")
     expect(screen.queryByLabelText("Mensaje")).not.toBeInTheDocument()
+  })
+})
+
+describe("OutreachCard badges, warning and actions", () => {
+  it("shows badges and a visible warning on a ready draft", () => {
+    render(<OutreachCard status="ready" {...email} badges={["CA"]} warning="Idioma: castellanismos: «reservas»." onSave={() => {}} />)
+    const card = screen.getByRole("article", { name: email.name })
+    expect(within(card).getByText("CA")).toHaveAttribute("data-slot", "badge")
+    expect(within(card).getByRole("note")).toHaveTextContent("castellanismos")
+  })
+
+  it("runs an action and can disable it", async () => {
+    const clicks: string[] = []
+    render(
+      <OutreachCard
+        status="failed"
+        name="Pádel Sangonera"
+        error="El mensaje no se guarda."
+        actions={[
+          { label: "Regenerar en català", onClick: () => clicks.push("ca") },
+          { label: "Otra", onClick: () => clicks.push("x"), disabled: true },
+        ]}
+        onSave={() => {}}
+      />
+    )
+    await userEvent.click(screen.getByRole("button", { name: "Regenerar en català" }))
+    expect(clicks).toEqual(["ca"])
+    expect(screen.getByRole("button", { name: "Otra" })).toBeDisabled()
+  })
+
+  it("shows no badge, warning or action unless given", () => {
+    render(<OutreachCard status="ready" {...email} onSave={() => {}} />)
+    expect(screen.queryByRole("note")).not.toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: /Regenerar/ })).not.toBeInTheDocument()
   })
 })
