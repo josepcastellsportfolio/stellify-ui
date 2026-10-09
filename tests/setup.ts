@@ -8,6 +8,9 @@ if (!Element.prototype.hasPointerCapture) {
 if (!Element.prototype.scrollIntoView) {
   Element.prototype.scrollIntoView = () => {}
 }
+if (!Element.prototype.scrollTo) {
+  Element.prototype.scrollTo = () => {}
+}
 globalThis.ResizeObserver ??= class {
   observe() {}
   unobserve() {}

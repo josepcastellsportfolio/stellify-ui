@@ -208,9 +208,12 @@ CLI fetches) lives in [`public/r/`](public/r/).
    npm install        # first time only, installs the shadcn CLI
    npm run registry:build   # = shadcn build  → writes public/r/*.json
    ```
-4. Add a test in [`tests/`](tests/) and run `npm test` (vitest + Testing Library).
-   Tests import the published sources via `@stellify/<file>`; the `@/…` imports
-   inside them resolve to `registry/stellify/` first (see `vitest.config.ts`).
+4. Add a test in [`tests/`](tests/) and a story in [`stories/`](stories/), then
+   run `npm test` (vitest + Testing Library) and `npm run typecheck`.
+   Tests and stories import the published sources via `@stellify/<file>`; the
+   `@/…` imports inside them resolve to `registry/stellify/` first (see
+   `vitest.config.ts`). `tests/registry.test.ts` fails if a `registry:component`
+   is not imported by any `tests/*.test.tsx` and any `stories/*.stories.tsx`.
 5. Commit **both** the source and the regenerated `public/r/*.json`, then push.
    CI (`.github/workflows/tests.yml`) fails if `public/r` is out of sync.
    Consumers pull the change by re-running `shadcn add @stellify/<item>`.

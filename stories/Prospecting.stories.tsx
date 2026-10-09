@@ -5,6 +5,7 @@ import { BusinessCard } from "@stellify/business-card"
 import { CollapseToggle } from "@stellify/collapse-toggle"
 import { MapView } from "@stellify/map-view"
 import { PageHeader } from "@stellify/page-header"
+import { ScoreBadge } from "@stellify/score-badge"
 import { SearchForm } from "@stellify/search-form"
 import { StatusBadge } from "@stellify/status-badge"
 
@@ -102,4 +103,15 @@ export const LanguagePerBusiness: Story = {
       </div>
     )
   },
+}
+
+export const ScoreBadges: Story = {
+  name: "ScoreBadge",
+  render: () => (
+    <div className="flex items-center gap-2">
+      <ScoreBadge score={94} label="Oportunidad" />
+      <ScoreBadge score={71} label="Oportunidad" />
+      <ScoreBadge score={8} max={10} label="Encaje" />
+    </div>
+  ),
 }

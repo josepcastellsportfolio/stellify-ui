@@ -49,3 +49,37 @@ describe("typed dependencies", () => {
     }
   })
 })
+
+describe("component coverage", () => {
+  // Every registry:component ships with a story and a test (README → Publishing).
+  // "Reference" = an import from `@stellify/<file>` for each of the item's files.
+  const read = (dir: string, suffix: string) =>
+    fs
+      .readdirSync(path.join(root, dir))
+      .filter((f) => f.endsWith(suffix))
+      .map((f) => fs.readFileSync(path.join(root, dir, f), "utf8"))
+  const testSources = read("tests", ".test.tsx")
+  const storySources = read("stories", ".stories.tsx")
+
+  const importsItem = (sources: string[], item: Item) =>
+    (item.files ?? []).length > 0 &&
+    (item.files ?? []).every((file) => {
+      const base = path.basename(file.path).replace(/\.tsx?$/, "")
+      const specifier = new RegExp(`from\\s+["']@stellify/${base.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`)
+      return sources.some((src) => specifier.test(src))
+    })
+
+  const components = items.filter((i) => i.type === "registry:component")
+
+  it("there are components to check", () => {
+    expect(components.length).toBeGreaterThan(0)
+  })
+
+  it.each(components.map((i) => [i.name, i] as const))("%s: has a test in tests/*.test.tsx", (_, item) => {
+    expect(importsItem(testSources, item)).toBe(true)
+  })
+
+  it.each(components.map((i) => [i.name, i] as const))("%s: has a story in stories/*.stories.tsx", (_, item) => {
+    expect(importsItem(storySources, item)).toBe(true)
+  })
+})
