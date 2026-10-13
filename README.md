@@ -37,6 +37,7 @@ the registry; `shadcn build` is unaffected.
 | `input` | ui | **Overwrites `ui/input`.** Standard shadcn input + invalid state (`aria-invalid` → destructive border). API-compatible. |
 | `text-field` | component | Labeled input with error/helper text + leading/trailing icons (wraps `input`). |
 | `metric-card` | component | KPI card (label, value, unit, delta, accent icon, `invertDelta`, `hint`, value `tone`, `size="compact"` for dense rows). |
+| `trend-indicator` | component | Up / down / flat arrow + formatted change with a semantic tone (`inverted` for costs); direction from `direction` or a numeric `change` + `flatThreshold`. `label` is the screen-reader text. |
 | `chart-card` | component | Card shell for charts: loading / empty / error states + header actions. |
 | `currency-display` | component | Number → localized currency via `Intl.NumberFormat`. |
 | `money-input` | component | Controlled numeric input with a currency adornment. |
@@ -46,10 +47,11 @@ the registry; `shadcn build` is unaffected.
 | `empty-state` | ui | Icon + title + description + action placeholder. |
 | `status-badge` | component | Badge with semantic status colors. |
 | `confirm-dialog` | component | Confirmation dialog over AlertDialog. |
-| `data-table` | component | Controlled, presentational paginated table (sort, skeleton, empty; `toolbar`/`footer` slots). |
+| `data-table` | component | Controlled, presentational paginated table (sort, skeleton, empty; `toolbar`/`footer` slots). Sortable headers are buttons with `aria-sort`; the actions column header comes from `actionsLabel`. |
 | `data-table-pagination` | component | Pagination footer (page-size + prev/next) for `data-table`. |
 | `data-table-toolbar` | component | Search box + filters toggle for `data-table`'s toolbar slot. |
 | `data-table-mobile` | component | Card-per-row mobile view reusing `data-table` columns. |
+| `filter-bar` | component | Sticky filter form: `FilterBar` (grid column per field + clear button) with `FilterSelect` (first option = all → `""`) and `FilterText` (debounced search box). Copy via props. |
 | `use-currency-format` | hook | Memoized currency formatter. |
 | `use-persisted-state` | hook | `useState` synced to localStorage (SSR-safe). |
 | `week-dates` | lib | Date helpers for weekly grids (no date library). |
@@ -142,7 +144,8 @@ chart primitive. One `type` prop (`area|bar|line|pie|radar|radial`) + options:
 - **Interactive legend** — click a series to show/hide (`legend.interactive`).
 - **Intl tooltips + axes** via `formatters` (`currency|number|date`).
 - **Brush + time-range selector** (7d/30d/90d/All) for time series.
-- **Loading / empty / error** states (reuses `chart-card`).
+- **Loading / empty / error** states (reuses `chart-card`; `retryLabel` for the retry button).
+- **Screen-reader table** — `dataTable={{ caption, xHeader, seriesHeaders? }}` renders a visually hidden table of the plotted values, formatted with `formatters`.
 
 ```tsx
 <PowerChart
