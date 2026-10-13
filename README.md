@@ -36,7 +36,8 @@ the registry; `shadcn build` is unaffected.
 | `button` | ui | **Overwrites `ui/button`.** Hierarchy `primary`/`secondary`/`base` (+ `destructive`/`success`/`warning`/`info`/`link`, plus `default`/`outline`/`ghost` back-compat aliases), `loading` spinner, and a CRUD `mode` (`create`/`edit`/`finish`) → semantic color + icon. |
 | `input` | ui | **Overwrites `ui/input`.** Standard shadcn input + invalid state (`aria-invalid` → destructive border). API-compatible. |
 | `text-field` | component | Labeled input with error/helper text + leading/trailing icons (wraps `input`). |
-| `metric-card` | component | KPI card (label, value, unit, delta, accent icon, `invertDelta`). |
+| `metric-card` | component | KPI card (label, value, unit, delta, accent icon, `invertDelta`, `hint`, value `tone`, `size="compact"` for dense rows). |
+| `trend-indicator` | component | Up / down / flat arrow + formatted change with a semantic tone (`inverted` for costs); direction from `direction` or a numeric `change` + `flatThreshold`. `label` is the screen-reader text. |
 | `chart-card` | component | Card shell for charts: loading / empty / error states + header actions. |
 | `currency-display` | component | Number → localized currency via `Intl.NumberFormat`. |
 | `money-input` | component | Controlled numeric input with a currency adornment. |
@@ -46,10 +47,11 @@ the registry; `shadcn build` is unaffected.
 | `empty-state` | ui | Icon + title + description + action placeholder. |
 | `status-badge` | component | Badge with semantic status colors. |
 | `confirm-dialog` | component | Confirmation dialog over AlertDialog. |
-| `data-table` | component | Controlled, presentational paginated table (sort, skeleton, empty; `toolbar`/`footer` slots). |
+| `data-table` | component | Controlled, presentational paginated table (sort, skeleton, empty; `toolbar`/`footer` slots). Sortable headers are buttons with `aria-sort`; the actions column header comes from `actionsLabel`. |
 | `data-table-pagination` | component | Pagination footer (page-size + prev/next) for `data-table`. |
 | `data-table-toolbar` | component | Search box + filters toggle for `data-table`'s toolbar slot. |
 | `data-table-mobile` | component | Card-per-row mobile view reusing `data-table` columns. |
+| `filter-bar` | component | Sticky filter form: `FilterBar` (grid column per field + clear button) with `FilterSelect` (first option = all → `""`) and `FilterText` (debounced search box). Copy via props. |
 | `use-currency-format` | hook | Memoized currency formatter. |
 | `use-persisted-state` | hook | `useState` synced to localStorage (SSR-safe). |
 | `week-dates` | lib | Date helpers for weekly grids (no date library). |
@@ -93,6 +95,7 @@ All copy is passed in (Spanish defaults), every part emits `data-slot`.
 | `choice-card` | component | `ChoiceCardGroup` + `ChoiceCard`: single-choice block options (Radix radio group, arrow keys). |
 | `nav-footer` | component | "← Atrás" + primary "Siguiente →"; disabled / loading / submit. |
 | `number-input` | component | Controlled number (empty = `null`) with a vertical ± stepper and min/max clamping. |
+| `slider` | ui | Radix slider: one thumb per entry of `value`/`defaultValue` (single value or `[min, max]` range), disabled state. |
 | `textarea-field` | component | Labeled `textarea` with required, error and helper text. |
 | `quadrant-grid` / `quadrant-cell` | component | 2×2 grid with column headers and vertical row labels; `active` cell gets a primary border + "Tu vía" badge. |
 | `reason-list` | component | Justifications with a primary check. |
@@ -107,8 +110,8 @@ Extended (backwards compatible): `progress` (`size="sm"`), `textarea` (`autoResi
 |---|---|---|
 | `search-form` | component | Inline required text fields + primary search button (trimmed values, loading). |
 | `map-view` | component | Leaflet map with circle markers (selected = primary), fits to markers, OSM tiles + attribution. Ships `@types/leaflet`. |
-| `business-card` | component | Selectable business row: checkbox, name + `score-badge`, address, rating · phone · web, `chip`s. |
-| `score-badge` / `chip` / `collapse-toggle` | component | Numeric score pill · neutral tag · "^ Contraer la lista" toggle. |
+| `business-card` | component | Selectable business row: checkbox, name + `score-badge`, address, rating · phone · web, `chip`s; optional `toggle` slot. |
+| `score-badge` / `chip` / `collapse-toggle` | component | Numeric score pill · neutral tag (optional `onRemove`) · "^ Contraer la lista" toggle. |
 
 Extended (backwards compatible): `page-header` (`eyebrow`), `status-badge` (`icon`, `appearance="plain"`).
 
@@ -116,7 +119,8 @@ Extended (backwards compatible): `page-header` (`eyebrow`), `status-badge` (`ico
 
 | Item | Type | Summary |
 |---|---|---|
-| `outreach-card` | component | Diagnosis, channel tab, editable subject/body + save, copy to clipboard, objections tab for call scripts; generating/queued/failed states. |
+| `outreach-card` | component | Diagnosis, channel tab, editable subject/body + save, copy to clipboard, objections tab for call scripts; generating/queued/failed states; badges, warning and `onTrack`. |
+| `coverage-matrix` | component | Rows × columns of done / planned / untouched cells with legend; every word via props (`stateLabels`, `actionLabels`, `cellLabel`, `legendLabel`). Back `getCell` with a Map. |
 | `loading-state` | component | Title + text + spinner with optional "n de N" progress (`role="status"`). |
 
 Extended (backwards compatible): `tabs` (`TabsList variant="plain"`).
@@ -156,7 +160,8 @@ chart primitive. One `type` prop (`area|bar|line|pie|radar|radial`) + options:
 - **Interactive legend** — click a series to show/hide (`legend.interactive`).
 - **Intl tooltips + axes** via `formatters` (`currency|number|date`).
 - **Brush + time-range selector** (7d/30d/90d/All) for time series.
-- **Loading / empty / error** states (reuses `chart-card`).
+- **Loading / empty / error** states (reuses `chart-card`; `retryLabel` for the retry button).
+- **Screen-reader table** — `dataTable={{ caption, xHeader, seriesHeaders? }}` renders a visually hidden table of the plotted values, formatted with `formatters`.
 
 ```tsx
 <PowerChart

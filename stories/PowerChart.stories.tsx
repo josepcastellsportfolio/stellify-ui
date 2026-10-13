@@ -138,7 +138,26 @@ export const ErrorState: Story = {
     error: true,
     errorTitle: "Could not load data",
     errorDescription: "Check your connection and retry.",
+    retryLabel: "Retry",
     onRetry: () => alert("retry"),
+  },
+}
+
+/**
+ * `dataTable` renders a visually hidden table with the plotted values
+ * (formatted with `formatters`), so screen readers get the numbers. Inspect
+ * the DOM or use a screen reader to see it.
+ */
+export const ScreenReaderTable: Story = {
+  name: "Screen-reader data table",
+  args: {
+    type: "line",
+    title: "Visitors per month",
+    data: MONTHLY,
+    xKey: "month",
+    series: TWO_SERIES,
+    formatters: { value: { kind: "number", locale: "en-US" } },
+    dataTable: { caption: "Visitors per month, last 6 months", xHeader: "Month" },
   },
 }
 

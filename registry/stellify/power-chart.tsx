@@ -48,6 +48,7 @@ import {
   makeFormatter,
 } from "@/lib/chart-formatters"
 import { useSeriesToggle } from "@/hooks/use-series-toggle"
+import { cn } from "@/lib/utils"
 
 export type ChartType = "area" | "bar" | "line" | "pie" | "radar" | "radial"
 
@@ -88,6 +89,19 @@ export interface PowerChartTimeRange {
   labels?: Partial<Record<TimeRange, string>>
 }
 
+/**
+ * Visually hidden data table rendered next to the chart so screen readers get
+ * the numbers (one row per x value, one column per series). Copy is passed in.
+ */
+export interface PowerChartDataTable {
+  /** Table caption, e.g. "Búsquedas al mes, últimos 12 meses". */
+  caption: string
+  /** Header of the x / category column, e.g. "Mes". */
+  xHeader: string
+  /** Per-series header overrides by series key. Defaults to the series label. */
+  seriesHeaders?: Partial<Record<string, string>>
+}
+
 export interface PowerChartProps<Row = Record<string, unknown>> {
   type: ChartType
   data: Row[]
@@ -115,6 +129,8 @@ export interface PowerChartProps<Row = Record<string, unknown>> {
   empty?: boolean
   error?: boolean
   onRetry?: () => void
+  /** Label of the retry button in the error state. */
+  retryLabel?: string
   emptyIcon?: LucideIcon
   emptyTitle?: string
   emptyDescription?: string
@@ -124,6 +140,8 @@ export interface PowerChartProps<Row = Record<string, unknown>> {
   height?: number
   className?: string
   footer?: React.ReactNode
+  /** Screen-reader data table (x values formatted with `formatters.label`, values with `formatters.value`). */
+  dataTable?: PowerChartDataTable
 }
 
 function deriveConfig(series: SeriesDef[]): ChartConfig {
@@ -168,6 +186,7 @@ export default function PowerChart<Row extends Record<string, unknown>>({
   empty = false,
   error = false,
   onRetry,
+  retryLabel,
   emptyIcon,
   emptyTitle,
   emptyDescription,
@@ -176,6 +195,7 @@ export default function PowerChart<Row extends Record<string, unknown>>({
   height = 240,
   className,
   footer,
+  dataTable,
 }: PowerChartProps<Row>) {
   const chartConfig = config ?? deriveConfig(series)
   const seriesKeys = series.map((s) => s.key)
@@ -372,6 +392,7 @@ export default function PowerChart<Row extends Record<string, unknown>>({
       empty={!loading && (empty || filteredData.length === 0)}
       error={error}
       onRetry={onRetry}
+      retryLabel={retryLabel}
       emptyIcon={emptyIcon}
       emptyTitle={emptyTitle}
       emptyDescription={emptyDescription}
@@ -389,9 +410,40 @@ export default function PowerChart<Row extends Record<string, unknown>>({
         ) : undefined
       }
     >
-      <ChartContainer config={chartConfig} className={className} style={{ height }}>
+      {/* The container is aspect-video by default: with a fixed height that caps the width
+          (240 px → ~427 px). Fill the card instead. */}
+      <ChartContainer
+        config={chartConfig}
+        className={cn("aspect-auto w-full", className)}
+        style={{ height }}
+      >
         {renderChart()}
       </ChartContainer>
+      {dataTable && (
+        <table data-slot="power-chart-table" className="sr-only">
+          <caption>{dataTable.caption}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{dataTable.xHeader}</th>
+              {series.map((s) => (
+                <th key={s.key} scope="col">
+                  {dataTable.seriesHeaders?.[s.key] ?? s.label ?? s.key}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((row, i) => (
+              <tr key={i}>
+                <th scope="row">{labelFormatter(row[xKey])}</th>
+                {series.map((s) => (
+                  <td key={s.key}>{valueFormatter(row[s.key])}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
       {footer}
     </ChartCard>
   )

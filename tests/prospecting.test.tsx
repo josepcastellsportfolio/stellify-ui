@@ -157,3 +157,23 @@ describe("MapView", () => {
     expect(container.querySelector("[data-slot='map-view']")).not.toBeNull()
   })
 })
+
+describe("BusinessCard secondary toggle", () => {
+  const base = { name: "Perruqueria Montse", score: 70, selected: true, onSelectedChange: () => {} }
+
+  it("renders no toggle unless asked", () => {
+    render(<BusinessCard {...base} />)
+    expect(screen.getAllByRole("checkbox")).toHaveLength(1)
+  })
+
+  it("shows a labelled checkbox that reports its own changes", async () => {
+    const changes: boolean[] = []
+    render(<BusinessCard {...base} toggle={{ label: "Català", checked: true, onCheckedChange: (v) => changes.push(v) }} />)
+    const toggle = screen.getByRole("checkbox", { name: "Català: Perruqueria Montse" })
+    expect(toggle).toBeChecked()
+    expect(screen.getByText("Català")).toBeInTheDocument()
+    await userEvent.click(toggle)
+    expect(changes).toEqual([false])
+    expect(screen.getByRole("checkbox", { name: "Seleccionar Perruqueria Montse" })).toBeChecked() // selection untouched
+  })
+})

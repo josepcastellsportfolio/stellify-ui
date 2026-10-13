@@ -1,4 +1,4 @@
-import type { FC, KeyboardEvent } from "react"
+import type { FC, KeyboardEvent, ReactNode } from "react"
 import { ArrowDownRight, ArrowUpRight, type LucideIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -70,8 +70,12 @@ export interface MetricCardProps {
    * positive delta red and a negative one green.
    */
   invertDelta?: boolean
+  /** Secondary line under the value (context such as a date or a target). */
+  hint?: ReactNode
   /** Colors the main value, e.g. "negative" for a loss. Defaults to "default". */
   tone?: MetricCardTone
+  /** "compact" packs many cards in a row (smaller padding and type). */
+  size?: "default" | "compact"
   /** Secondary label/value rows under the main value. */
   details?: MetricCardDetail[]
   /** Makes the card interactive. */
@@ -93,12 +97,15 @@ const MetricCard: FC<MetricCardProps> = ({
   accent = "emerald",
   icon: Icon,
   invertDelta = false,
+  hint,
   tone = "default",
+  size = "default",
   details,
   onClick,
   className,
 }) => {
   const interactive = Boolean(onClick)
+  const compact = size === "compact"
 
   // `positive` describes the raw direction; `good` decides the color, so that
   // `invertDelta` can flip the meaning for metrics where up is bad.
@@ -116,7 +123,8 @@ const MetricCard: FC<MetricCardProps> = ({
   return (
     <div
       className={cn(
-        "flex h-full flex-col gap-3 rounded-lg border border-border/60 bg-card p-5 text-card-foreground shadow-sm transition-all",
+        "flex h-full min-w-0 flex-col rounded-lg border border-border/60 bg-card text-card-foreground shadow-sm transition-all",
+        compact ? "gap-1 p-3" : "gap-3 p-5",
         interactive &&
           "cursor-pointer hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md hover:ring-1 hover:ring-primary/20",
         className
@@ -126,12 +134,22 @@ const MetricCard: FC<MetricCardProps> = ({
       role={interactive ? "button" : undefined}
       tabIndex={interactive ? 0 : undefined}
     >
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-muted-foreground">{label}</span>
+      <div className="flex items-center justify-between gap-2">
+        <span
+          className={cn(
+            "text-muted-foreground",
+            compact
+              ? "text-[11px] uppercase leading-tight tracking-wide"
+              : "text-sm"
+          )}
+        >
+          {label}
+        </span>
         {Icon && (
           <span
             className={cn(
-              "inline-flex items-center justify-center rounded-md p-2",
+              "items-center justify-center rounded-md",
+              compact ? "hidden p-1.5 sm:inline-flex" : "inline-flex p-2",
               ACCENT_ICON_CLASS[accent]
             )}
           >
@@ -140,12 +158,26 @@ const MetricCard: FC<MetricCardProps> = ({
         )}
       </div>
 
-      <div className="flex items-baseline gap-2">
-        <span className={cn("text-3xl font-bold tabular-nums", TONE_VALUE_CLASS[tone])}>
+      <div className="flex min-w-0 items-baseline gap-2">
+        <span
+          className={cn(
+            "break-words tabular-nums",
+            compact
+              ? "text-base font-semibold leading-tight sm:text-lg"
+              : "text-3xl font-bold",
+            TONE_VALUE_CLASS[tone]
+          )}
+        >
           {value}
         </span>
         {unit && <span className="text-sm text-muted-foreground">{unit}</span>}
       </div>
+
+      {hint && (
+        <div className={cn("text-muted-foreground", compact ? "text-[11px]" : "text-xs")}>
+          {hint}
+        </div>
+      )}
 
       {delta && (
         <div

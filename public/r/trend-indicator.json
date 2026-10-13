@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "trend-indicator",
+  "title": "TrendIndicator",
+  "description": "Up/down/flat arrow with a formatted change and a semantic tone (up = success, down = danger; invertible for costs). Direction can be derived from a numeric change with a flat threshold. The required label is what screen readers read; copy via props.",
+  "dependencies": [
+    "class-variance-authority",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/trend-indicator.tsx",
+      "content": "import * as React from \"react\"\nimport { cva } from \"class-variance-authority\"\nimport { ArrowDown, ArrowRight, ArrowUp, type LucideIcon } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport type TrendDirection = \"up\" | \"down\" | \"flat\"\nexport type TrendTone = \"success\" | \"danger\" | \"neutral\"\n\nconst trendIndicatorVariants = cva(\n  \"inline-flex items-center gap-1 text-sm font-medium tabular-nums [&>svg]:size-3.5 [&>svg]:shrink-0\",\n  {\n    variants: {\n      tone: {\n        success: \"text-success\",\n        danger: \"text-destructive\",\n        neutral: \"text-muted-foreground\",\n      },\n    },\n    defaultVariants: { tone: \"neutral\" },\n  }\n)\n\nconst ICONS: Record<TrendDirection, LucideIcon> = {\n  up: ArrowUp,\n  down: ArrowDown,\n  flat: ArrowRight,\n}\n\n/**\n * Direction of a numeric change: above `flatThreshold` is up, below its\n * negative is down, anything in between (inclusive) is flat.\n */\nexport function trendDirection(change: number, flatThreshold = 0): TrendDirection {\n  if (change > flatThreshold) return \"up\"\n  if (change < -flatThreshold) return \"down\"\n  return \"flat\"\n}\n\n/** Semantic tone of a direction: up is good unless `inverted` (e.g. costs). */\nexport function trendTone(direction: TrendDirection, inverted = false): TrendTone {\n  if (direction === \"flat\") return \"neutral\"\n  return (direction === \"up\") !== inverted ? \"success\" : \"danger\"\n}\n\nexport interface TrendIndicatorProps\n  extends Omit<React.HTMLAttributes<HTMLSpanElement>, \"children\"> {\n  /** Explicit direction. When omitted it is derived from `change`. */\n  direction?: TrendDirection\n  /** Numeric change used to derive the direction (any unit: 0.12 or 12). */\n  change?: number\n  /** `|change| <= flatThreshold` counts as flat. Defaults to 0. */\n  flatThreshold?: number\n  /** Visible, already formatted text, e.g. \"+12 %\". Optional (icon only). */\n  value?: string\n  /**\n   * Text read by screen readers instead of the icon + value,\n   * e.g. \"Tendencia: sube 12 %\". Required: the arrow alone says nothing.\n   */\n  label: string\n  /** Swap the tones: down is good and up is bad (costs, churn…). */\n  inverted?: boolean\n  /** Force a tone, overriding the one derived from the direction. */\n  tone?: TrendTone\n}\n\n/**\n * Up / down / flat arrow with a formatted change and a semantic tone\n * (up = success, down = danger, flat = neutral; invertible). All copy comes\n * in via props, so it stays i18n-agnostic; `label` is what assistive tech\n * reads, while the arrow and the visible value are hidden from it.\n */\nfunction TrendIndicator({\n  direction,\n  change,\n  flatThreshold = 0,\n  value,\n  label,\n  inverted = false,\n  tone,\n  className,\n  ...props\n}: TrendIndicatorProps) {\n  const dir = direction ?? (change === undefined ? \"flat\" : trendDirection(change, flatThreshold))\n  const resolvedTone = tone ?? trendTone(dir, inverted)\n  const Icon = ICONS[dir]\n\n  return (\n    <span\n      data-slot=\"trend-indicator\"\n      data-direction={dir}\n      data-tone={resolvedTone}\n      className={cn(trendIndicatorVariants({ tone: resolvedTone }), className)}\n      {...props}\n    >\n      <Icon aria-hidden />\n      {value && <span aria-hidden>{value}</span>}\n      <span className=\"sr-only\">{label}</span>\n    </span>\n  )\n}\n\nexport default TrendIndicator\nexport { TrendIndicator, trendIndicatorVariants }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

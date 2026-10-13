@@ -7,6 +7,7 @@ import { DataTableToolbar } from "@stellify/data-table-toolbar"
 import { DataTableMobile } from "@stellify/data-table-mobile"
 import { EmptyState } from "@stellify/empty-state"
 import { StatusBadge } from "@stellify/status-badge"
+import { Button } from "@stellify/button"
 
 interface Expense {
   id: number
@@ -145,4 +146,51 @@ export const Loading: Story = {
       loading
     />
   ),
+}
+
+function SortableExample({ withActions }: { withActions?: boolean }) {
+  const [sort, setSort] = useState<DataTableSort | null>({ key: "amount", dir: "desc" })
+  const rows = useMemo(() => {
+    if (!sort) return ALL
+    return [...ALL].sort((a, b) => {
+      const av = a[sort.key as keyof Expense]
+      const bv = b[sort.key as keyof Expense]
+      const cmp = av < bv ? -1 : av > bv ? 1 : 0
+      return sort.dir === "asc" ? cmp : -cmp
+    })
+  }, [sort])
+  const toggleSort = (key: string) =>
+    setSort((s) =>
+      s?.key === key ? { key, dir: s.dir === "asc" ? "desc" : "asc" } : { key, dir: "asc" }
+    )
+  return (
+    <DataTable
+      columns={columns}
+      rows={rows}
+      getRowKey={(r) => r.id}
+      sort={sort}
+      onSortChange={toggleSort}
+      actionsLabel={withActions ? "Actions" : undefined}
+      actions={
+        withActions
+          ? () => (
+              <Button variant="base" size="sm">
+                Open
+              </Button>
+            )
+          : undefined
+      }
+    />
+  )
+}
+
+/** Sortable headers are real buttons (Tab, then Enter/Space); the header cell carries `aria-sort`. */
+export const KeyboardSort: StoryObj = {
+  name: "Sortable (keyboard + aria-sort)",
+  render: () => <SortableExample />,
+}
+
+/** Trailing actions column; its visually hidden header comes from `actionsLabel`. */
+export const WithActions: StoryObj = {
+  render: () => <SortableExample withActions />,
 }

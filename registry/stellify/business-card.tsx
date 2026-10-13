@@ -20,6 +20,8 @@ export interface BusinessCardProps {
   noWebsiteLabel?: string
   selectLabel?: string
   scoreLabel?: string
+  /** A second, labelled checkbox about the business (e.g. "Català"), independent of selection. */
+  toggle?: { label: string; checked: boolean; onCheckedChange: (checked: boolean) => void }
   className?: string
 }
 
@@ -46,9 +48,11 @@ function BusinessCard({
   noWebsiteLabel = "Sin página web",
   selectLabel = "Seleccionar",
   scoreLabel = "Oportunidad",
+  toggle,
   className,
 }: BusinessCardProps) {
   const titleId = useId()
+  const toggleId = useId()
   const fact = "inline-flex items-center gap-1 [&_svg]:size-3.5 [&_svg]:shrink-0"
   return (
     <article
@@ -73,6 +77,17 @@ function BusinessCard({
             {name}
           </h3>
           <ScoreBadge score={score} label={scoreLabel} />
+          {toggle && (
+            <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 text-sm text-muted-foreground">
+              <Checkbox
+                id={toggleId}
+                checked={toggle.checked}
+                onCheckedChange={(v) => toggle.onCheckedChange(v === true)}
+                aria-label={`${toggle.label}: ${name}`}
+              />
+              <label htmlFor={toggleId}>{toggle.label}</label>
+            </span>
+          )}
         </div>
         {address && (
           <p className={cn(fact, "text-sm text-muted-foreground")}>

@@ -2,14 +2,17 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "chip",
   "title": "Chip",
-  "description": "Small neutral read-only tag (e.g. a detected signal).",
+  "description": "Small neutral tag (e.g. a detected signal); optional `onRemove` adds an accessible remove button.",
+  "dependencies": [
+    "lucide-react"
+  ],
   "registryDependencies": [
     "@stellify/utils"
   ],
   "files": [
     {
       "path": "registry/stellify/chip.tsx",
-      "content": "import type { HTMLAttributes } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/** Small neutral tag (e.g. a detected signal). Read-only; not a filter or a button. */\nfunction Chip({ className, ...props }: HTMLAttributes<HTMLSpanElement>) {\n  return (\n    <span\n      data-slot=\"chip\"\n      className={cn(\n        \"inline-flex items-center whitespace-nowrap rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Chip }\n",
+      "content": "import type { HTMLAttributes } from \"react\"\nimport { X } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface ChipProps extends HTMLAttributes<HTMLSpanElement> {\n  /** Shows a small remove button (e.g. an editable list of topics). Read-only when omitted. */\n  onRemove?: () => void\n  /** Accessible name prefix for the remove button: \"Quitar <text>\". */\n  removeLabel?: string\n}\n\n/** Small neutral tag (e.g. a detected signal), optionally removable. */\nfunction Chip({ className, children, onRemove, removeLabel = \"Quitar\", ...props }: ChipProps) {\n  return (\n    <span\n      data-slot=\"chip\"\n      className={cn(\n        \"inline-flex items-center gap-1 whitespace-nowrap rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground\",\n        className\n      )}\n      {...props}\n    >\n      {children}\n      {onRemove && (\n        <button\n          type=\"button\"\n          onClick={onRemove}\n          aria-label={`${removeLabel} ${typeof children === \"string\" ? children : \"\"}`.trim()}\n          className=\"-mr-1 rounded p-0.5 hover:bg-foreground/10 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40\"\n        >\n          <X className=\"size-3\" aria-hidden />\n        </button>\n      )}\n    </span>\n  )\n}\n\nexport { Chip }\n",
       "type": "registry:component"
     }
   ],
