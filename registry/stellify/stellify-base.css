@@ -136,3 +136,14 @@
   --info: oklch(0.704 0.14 182.503);
   --info-foreground: oklch(0.277 0.046 192.524);
 }
+
+/*
+ * Tailwind v4 draws a bare `border` / `divide-*` in currentColor (near-black on
+ * light). Every border and divider takes the theme's --border unless a utility
+ * sets another colour.
+ */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+}
