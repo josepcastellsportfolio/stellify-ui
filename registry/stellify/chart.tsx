@@ -102,15 +102,32 @@ ${colorConfig
 
 const ChartTooltip = RechartsPrimitive.Tooltip
 
+// recharts 3 no longer lists the injected content props (payload, label…)
+// on <Tooltip>'s own props; they come in through TooltipContentProps.
+type TooltipInjectedProps = Partial<
+  Pick<
+    RechartsPrimitive.TooltipContentProps<TooltipValue, TooltipName>,
+    "active" | "payload" | "label"
+  >
+>
+type TooltipValue = number | string | Array<number | string>
+type TooltipName = number | string
+
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
+  Omit<React.ComponentProps<typeof RechartsPrimitive.Tooltip>, "payload" | "label" | "active"> &
+    TooltipInjectedProps &
     React.ComponentProps<"div"> & {
       hideLabel?: boolean
       hideIndicator?: boolean
       indicator?: "line" | "dot" | "dashed"
       nameKey?: string
       labelKey?: string
+      /**
+       * Formats each value but keeps the row's indicator and series label
+       * (unlike `formatter`, which replaces the whole row).
+       */
+      valueFormatter?: (value: unknown) => React.ReactNode
     }
 >(
   (
@@ -128,6 +145,7 @@ const ChartTooltipContent = React.forwardRef<
       color,
       nameKey,
       labelKey,
+      valueFormatter,
     },
     ref
   ) => {
@@ -194,7 +212,7 @@ const ChartTooltipContent = React.forwardRef<
 
               return (
                 <div
-                  key={item.dataKey}
+                  key={String(item.dataKey ?? index)}
                   className={cn(
                     "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
                     indicator === "dot" && "items-center"
@@ -240,9 +258,11 @@ const ChartTooltipContent = React.forwardRef<
                             {itemConfig?.label || item.name}
                           </span>
                         </div>
-                        {item.value && (
+                        {item.value !== undefined && item.value !== null && (
                           <span className="font-mono font-medium tabular-nums text-foreground">
-                            {item.value.toLocaleString()}
+                            {valueFormatter
+                              ? valueFormatter(item.value)
+                              : item.value.toLocaleString()}
                           </span>
                         )}
                       </div>
@@ -263,7 +283,9 @@ const ChartLegend = RechartsPrimitive.Legend
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> &
-    Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+    Pick<RechartsPrimitive.LegendProps, "verticalAlign"> & {
+      /** Injected by <ChartLegend content={…}> (recharts 3 dropped it from LegendProps). */
+      payload?: ReadonlyArray<RechartsPrimitive.LegendPayload>
       hideIcon?: boolean
       nameKey?: string
       /**

@@ -30,13 +30,25 @@ const ACCENT_ICON_CLASS: Record<MetricCardAccent, string> = {
     "bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-slate-100",
 }
 
-export type MetricCardTone = "default" | "positive" | "negative"
-
 export interface MetricCardDelta {
   /** Display string for the change, e.g. "+12%" or "-3.4 kg". */
   value: string
   /** Whether the delta is a positive change (drives the arrow + default color). */
   positive?: boolean
+}
+
+export type MetricCardTone = "default" | "positive" | "negative"
+
+const TONE_VALUE_CLASS: Record<MetricCardTone, string> = {
+  default: "text-foreground",
+  positive: "text-emerald-700 dark:text-emerald-400",
+  negative: "text-rose-700 dark:text-rose-400",
+}
+
+export interface MetricCardDetail {
+  label: string
+  /** Already-formatted value. */
+  value: string
 }
 
 export interface MetricCardProps {
@@ -60,13 +72,12 @@ export interface MetricCardProps {
   invertDelta?: boolean
   /** Secondary line under the value (context such as a date or a target). */
   hint?: ReactNode
-  /**
-   * Meaning of the value itself: "negative" paints it in the destructive
-   * color (e.g. a negative balance). Defaults to "default".
-   */
+  /** Colors the main value, e.g. "negative" for a loss. Defaults to "default". */
   tone?: MetricCardTone
   /** "compact" packs many cards in a row (smaller padding and type). */
   size?: "default" | "compact"
+  /** Secondary label/value rows under the main value. */
+  details?: MetricCardDetail[]
   /** Makes the card interactive. */
   onClick?: () => void
   className?: string
@@ -89,6 +100,7 @@ const MetricCard: FC<MetricCardProps> = ({
   hint,
   tone = "default",
   size = "default",
+  details,
   onClick,
   className,
 }) => {
@@ -153,11 +165,7 @@ const MetricCard: FC<MetricCardProps> = ({
             compact
               ? "text-base font-semibold leading-tight sm:text-lg"
               : "text-3xl font-bold",
-            tone === "negative"
-              ? "text-destructive"
-              : tone === "positive"
-                ? "text-emerald-600 dark:text-emerald-400"
-                : "text-foreground"
+            TONE_VALUE_CLASS[tone]
           )}
         >
           {value}
@@ -187,6 +195,17 @@ const MetricCard: FC<MetricCardProps> = ({
           )}
           {delta.value}
         </div>
+      )}
+
+      {details && details.length > 0 && (
+        <dl className="mt-auto grid gap-1 border-t border-border/60 pt-3 text-sm">
+          {details.map((detail) => (
+            <div key={detail.label} className="flex items-baseline justify-between gap-3">
+              <dt className="text-muted-foreground">{detail.label}</dt>
+              <dd className="font-medium tabular-nums text-foreground">{detail.value}</dd>
+            </div>
+          ))}
+        </dl>
       )}
     </div>
   )

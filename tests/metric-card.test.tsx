@@ -12,9 +12,9 @@ describe("metric-card", () => {
     expect(screen.getByText("mar 2027")).toBeInTheDocument()
   })
 
-  it("paints a negative value in the destructive color", () => {
+  it("paints a negative value in the negative tone color", () => {
     render(<MetricCard label="Saldo" value="−500 €" tone="negative" />)
-    expect(screen.getByText("−500 €")).toHaveClass("text-destructive")
+    expect(screen.getByText("−500 €")).toHaveClass("text-rose-700")
   })
 
   it("compact size uses the small type scale", () => {

@@ -128,7 +128,7 @@
       "name": "metric-card",
       "type": "registry:component",
       "title": "MetricCard",
-      "description": "KPI card: label, value, unit, delta with trend arrow, accent icon chip. invertDelta flips good/bad colors (for expenses).",
+      "description": "KPI card: label, value, unit, delta with trend arrow, accent icon chip. invertDelta flips good/bad colors (for expenses); tone colors the value (negative = red); details adds label/value rows.",
       "dependencies": [
         "lucide-react"
       ],
@@ -694,6 +694,23 @@
       ]
     },
     {
+      "name": "slider-field",
+      "type": "registry:component",
+      "title": "SliderField",
+      "description": "Labelled single-thumb slider with its formatted value always visible; controlled, accessible (aria-labelledby + aria-valuetext).",
+      "registryDependencies": [
+        "@stellify/slider",
+        "@stellify/label",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/slider-field.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "switch",
       "type": "registry:ui",
       "title": "Switch (StellifyIT)",
@@ -973,7 +990,7 @@
       "name": "chart-line",
       "type": "registry:component",
       "title": "Line chart",
-      "description": "Line chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely.",
+      "description": "Line chart built on the chart primitive + Recharts 3, using stellify-base chart-N tokens. Optional per-series dashes, linear curve, Y axis and X formatter. Demo data inside.",
       "dependencies": [
         "recharts",
         "lucide-react"
@@ -1624,6 +1641,107 @@
       "files": [
         {
           "path": "registry/stellify/long-form-article.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "key-takeaways",
+      "type": "registry:component",
+      "title": "KeyTakeaways",
+      "description": "\"En resumen\" callout: an aside labelled by its h2 with a list of self-contained takeaways. Fits between the h1 intro and the first h2. Renders nothing when empty.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/key-takeaways.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "faq-list",
+      "type": "registry:component",
+      "title": "FaqList",
+      "description": "FAQ section built on native details/summary (zero JS, answers present in the HTML for crawlers) plus a faqPageJsonLd() helper for schema.org FAQPage.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/faq-list.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "inline-cta",
+      "type": "registry:component",
+      "title": "InlineCta",
+      "description": "Compact bordered card with one sentence and a primary button-styled link. Meant to sit after a page's first paragraph.",
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/inline-cta.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "sticky-cta",
+      "type": "registry:component",
+      "title": "StickyCta",
+      "description": "Mobile-only fixed bottom CTA bar (z-40, safe-area aware) with an optional secondary action (e.g. tel:) and an in-flow spacer so it never covers the footer.",
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/sticky-cta.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "share-button",
+      "type": "registry:component",
+      "title": "ShareButton",
+      "description": "Share button: native share sheet when available (checked on click), otherwise a popover with copy-link and LinkedIn/WhatsApp/X/email intent links. No third-party scripts.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/popover",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/share-button.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "cookie-consent",
+      "type": "registry:component",
+      "title": "CookieConsent",
+      "description": "Presentational, non-modal analytics-cookie banner (z-50). Accept and Reject have equal weight; no close button that implies consent.",
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/cookie-consent.tsx",
           "type": "registry:component"
         }
       ]

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "slider-field",
+  "title": "SliderField",
+  "description": "Labelled single-thumb slider with its formatted value always visible; controlled, accessible (aria-labelledby + aria-valuetext).",
+  "registryDependencies": [
+    "@stellify/slider",
+    "@stellify/label",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/slider-field.tsx",
+      "content": "import * as React from \"react\"\n\nimport { Label } from \"@/components/ui/label\"\nimport { Slider } from \"@/components/ui/slider\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface SliderFieldProps {\n  label: string\n  value: number\n  onValueChange: (value: number) => void\n  min: number\n  max: number\n  step: number\n  /** Formats the visible value (and the screen-reader value text). */\n  format?: (value: number) => string\n  /** Small helper text under the slider, e.g. the range. */\n  hint?: React.ReactNode\n  disabled?: boolean\n  className?: string\n}\n\n/**\n * Labelled single-thumb slider with its current value always visible.\n * Controlled: pass `value` and `onValueChange`. No i18n, no business logic.\n */\nconst SliderField = ({\n  label,\n  value,\n  onValueChange,\n  min,\n  max,\n  step,\n  format = String,\n  hint,\n  disabled,\n  className,\n}: SliderFieldProps) => {\n  const id = React.useId()\n  const labelId = `${id}-label`\n  const formatted = format(value)\n\n  return (\n    <div className={cn(\"flex flex-col gap-2\", className)}>\n      <div className=\"flex items-baseline justify-between gap-3\">\n        <Label id={labelId} className=\"text-sm font-medium\">\n          {label}\n        </Label>\n        <output\n          aria-hidden=\"true\"\n          className=\"text-sm font-semibold tabular-nums text-foreground\"\n        >\n          {formatted}\n        </output>\n      </div>\n      <Slider\n        value={[value]}\n        onValueChange={([next]) => onValueChange(next)}\n        min={min}\n        max={max}\n        step={step}\n        disabled={disabled}\n        thumbProps={{ \"aria-labelledby\": labelId, \"aria-valuetext\": formatted }}\n      />\n      {hint && <p className=\"text-xs text-muted-foreground\">{hint}</p>}\n    </div>\n  )\n}\n\nexport default SliderField\nexport { SliderField }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

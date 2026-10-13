@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sticky-cta",
+  "title": "StickyCta",
+  "description": "Mobile-only fixed bottom CTA bar (z-40, safe-area aware) with an optional secondary action (e.g. tel:) and an in-flow spacer so it never covers the footer.",
+  "registryDependencies": [
+    "@stellify/button",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/sticky-cta.tsx",
+      "content": "import type { FC, ReactNode } from \"react\"\n\nimport { buttonVariants } from \"@/components/ui/button\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface StickyCtaLink {\n  href: string\n  label: string\n}\n\nexport interface StickyCtaSecondary extends StickyCtaLink {\n  /**\n   * When set, the secondary action becomes a square icon button and `label`\n   * moves to its accessible name — e.g. a phone icon for a `tel:` link.\n   */\n  icon?: ReactNode\n}\n\nexport interface StickyCtaProps {\n  label: string\n  href: string\n  /**\n   * Optional second action. Always a plain anchor: it is typically `tel:` or\n   * `mailto:`, which a client router cannot handle anyway.\n   */\n  secondary?: StickyCtaSecondary\n  /**\n   * Renders the primary link. Apps with a client router pass their own Link\n   * so navigation stays client-side; the default is a plain anchor.\n   */\n  renderLink?: (link: StickyCtaLink, props: { className: string }) => ReactNode\n  /**\n   * Render nothing — for pages that already end in the same CTA (the contact\n   * page itself) or while a modal flow is open.\n   */\n  hidden?: boolean\n  className?: string\n}\n\n/**\n * Mobile-only bottom bar with the page's main action.\n *\n * Fixed at z-40 (below `cookie-consent` at z-50, so the consent choice is\n * never covered) and padded by the safe-area inset for phones with a home\n * indicator. An in-flow spacer of the same height is rendered too, so the bar\n * never hides the end of the page or the footer. Hidden from `md` up, where\n * the header CTA is always visible.\n */\nexport const StickyCta: FC<StickyCtaProps> = ({\n  label,\n  href,\n  secondary,\n  renderLink,\n  hidden = false,\n  className,\n}) => {\n  if (hidden) return null\n\n  const primaryClass = cn(buttonVariants({ variant: \"primary\", size: \"lg\" }), \"flex-1 px-4\")\n  const secondaryClass = cn(\n    buttonVariants({ variant: \"secondary\", size: secondary?.icon ? \"icon\" : \"lg\" }),\n    secondary?.icon ? \"size-11 shrink-0\" : \"px-4\",\n  )\n\n  return (\n    <>\n      <div\n        aria-hidden=\"true\"\n        data-slot=\"sticky-cta-spacer\"\n        className=\"h-[calc(72px+env(safe-area-inset-bottom))] md:hidden\"\n      />\n      <div\n        data-slot=\"sticky-cta\"\n        className={cn(\n          \"fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur\",\n          \"px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:hidden\",\n          className,\n        )}\n      >\n        <div className=\"mx-auto flex max-w-xl items-center gap-3\">\n          {renderLink?.({ href, label }, { className: primaryClass }) ?? (\n            <a href={href} className={primaryClass}>\n              {label}\n            </a>\n          )}\n          {secondary ? (\n            <a\n              href={secondary.href}\n              className={secondaryClass}\n              aria-label={secondary.icon ? secondary.label : undefined}\n            >\n              {secondary.icon ? <span aria-hidden=\"true\">{secondary.icon}</span> : secondary.label}\n            </a>\n          ) : null}\n        </div>\n      </div>\n    </>\n  )\n}\n\nexport default StickyCta\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
