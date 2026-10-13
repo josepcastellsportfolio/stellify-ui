@@ -37,6 +37,20 @@ export interface MetricCardDelta {
   positive?: boolean
 }
 
+export type MetricCardTone = "default" | "positive" | "negative"
+
+const TONE_VALUE_CLASS: Record<MetricCardTone, string> = {
+  default: "text-foreground",
+  positive: "text-emerald-700 dark:text-emerald-400",
+  negative: "text-rose-700 dark:text-rose-400",
+}
+
+export interface MetricCardDetail {
+  label: string
+  /** Already-formatted value. */
+  value: string
+}
+
 export interface MetricCardProps {
   /** Caption above the value, e.g. "Total balance". */
   label: string
@@ -56,6 +70,10 @@ export interface MetricCardProps {
    * positive delta red and a negative one green.
    */
   invertDelta?: boolean
+  /** Colors the main value, e.g. "negative" for a loss. Defaults to "default". */
+  tone?: MetricCardTone
+  /** Secondary label/value rows under the main value. */
+  details?: MetricCardDetail[]
   /** Makes the card interactive. */
   onClick?: () => void
   className?: string
@@ -75,6 +93,8 @@ const MetricCard: FC<MetricCardProps> = ({
   accent = "emerald",
   icon: Icon,
   invertDelta = false,
+  tone = "default",
+  details,
   onClick,
   className,
 }) => {
@@ -121,7 +141,9 @@ const MetricCard: FC<MetricCardProps> = ({
       </div>
 
       <div className="flex items-baseline gap-2">
-        <span className="text-3xl font-bold text-foreground">{value}</span>
+        <span className={cn("text-3xl font-bold tabular-nums", TONE_VALUE_CLASS[tone])}>
+          {value}
+        </span>
         {unit && <span className="text-sm text-muted-foreground">{unit}</span>}
       </div>
 
@@ -141,6 +163,17 @@ const MetricCard: FC<MetricCardProps> = ({
           )}
           {delta.value}
         </div>
+      )}
+
+      {details && details.length > 0 && (
+        <dl className="mt-auto grid gap-1 border-t border-border/60 pt-3 text-sm">
+          {details.map((detail) => (
+            <div key={detail.label} className="flex items-baseline justify-between gap-3">
+              <dt className="text-muted-foreground">{detail.label}</dt>
+              <dd className="font-medium tabular-nums text-foreground">{detail.value}</dd>
+            </div>
+          ))}
+        </dl>
       )}
     </div>
   )

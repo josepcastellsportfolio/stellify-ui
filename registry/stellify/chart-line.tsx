@@ -1,7 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -36,7 +36,21 @@ export interface ChartLineProps {
   config?: ChartConfig
   xKey?: string
   seriesKeys?: string[]
+  /** Formats values in the tooltip (and the Y axis when `showYAxis`). */
   valueFormat?: ChartFormat
+  /** Formats X ticks and the tooltip label. Default: first 3 chars of strings. */
+  xFormat?: ChartFormat
+  /** Show a Y axis, formatted with `valueFormat`. */
+  showYAxis?: boolean
+  /**
+   * Per-series stroke dash (SVG strokeDasharray, e.g. "6 4", "2 3"), so lines
+   * stay distinguishable without relying on color alone.
+   */
+  dashes?: Record<string, string | undefined>
+  /** "linear" for piecewise-linear data, where a smoothed curve would lie. */
+  curve?: "natural" | "linear" | "monotone" | "step"
+  /** Chart area height in px. Default: the container's aspect-video ratio. */
+  height?: number
   title?: string
   description?: string
   footer?: ReactNode
@@ -50,6 +64,11 @@ export default function Component({
   xKey = "month",
   seriesKeys,
   valueFormat,
+  xFormat,
+  showYAxis = false,
+  dashes,
+  curve = "natural",
+  height,
   title = "Line Chart",
   description = "Showing data for the last 6 months",
   footer,
@@ -57,6 +76,10 @@ export default function Component({
 }: ChartLineProps = {}) {
   const keys = seriesKeys ?? Object.keys(config)
   const valueFormatter = makeFormatter(valueFormat)
+  const xFormatter = xFormat
+    ? makeFormatter(xFormat)
+    : (value: unknown) =>
+        typeof value === "string" ? value.slice(0, 3) : String(value)
 
   return (
     <Card className={className}>
@@ -65,7 +88,11 @@ export default function Component({
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>
-        <ChartContainer config={config}>
+        <ChartContainer
+          config={config}
+          className={height ? "aspect-auto w-full" : undefined}
+          style={height ? { height } : undefined}
+        >
           <LineChart accessibilityLayer data={data} margin={{ left: 12, right: 12 }}>
             <CartesianGrid vertical={false} />
             <XAxis
@@ -73,23 +100,38 @@ export default function Component({
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) =>
-                typeof value === "string" ? value.slice(0, 3) : String(value)
-              }
+              minTickGap={16}
+              tickFormatter={(value) => xFormatter(value)}
             />
+            {showYAxis && (
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                width={72}
+                tickFormatter={(value) => valueFormatter(value)}
+              />
+            )}
             <ChartTooltip
               cursor={false}
               content={
-                <ChartTooltipContent formatter={(value) => valueFormatter(value)} />
+                <ChartTooltipContent
+                  indicator="line"
+                  labelFormatter={(_, payload) =>
+                    xFormatter(payload?.[0]?.payload?.[xKey])
+                  }
+                  valueFormatter={(value) => valueFormatter(value)}
+                />
               }
             />
             {keys.map((key) => (
               <Line
                 key={key}
                 dataKey={key}
-                type="natural"
+                type={curve}
                 stroke={`var(--color-${key})`}
                 strokeWidth={2}
+                strokeDasharray={dashes?.[key]}
                 dot={false}
               />
             ))}

@@ -128,7 +128,7 @@
       "name": "metric-card",
       "type": "registry:component",
       "title": "MetricCard",
-      "description": "KPI card: label, value, unit, delta with trend arrow, accent icon chip. invertDelta flips good/bad colors (for expenses).",
+      "description": "KPI card: label, value, unit, delta with trend arrow, accent icon chip. invertDelta flips good/bad colors (for expenses); tone colors the value (negative = red); details adds label/value rows.",
       "dependencies": [
         "lucide-react"
       ],
@@ -653,6 +653,23 @@
       ]
     },
     {
+      "name": "slider-field",
+      "type": "registry:component",
+      "title": "SliderField",
+      "description": "Labelled single-thumb slider with its formatted value always visible; controlled, accessible (aria-labelledby + aria-valuetext).",
+      "registryDependencies": [
+        "@stellify/slider",
+        "@stellify/label",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/slider-field.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "switch",
       "type": "registry:ui",
       "title": "Switch (StellifyIT)",
@@ -932,7 +949,7 @@
       "name": "chart-line",
       "type": "registry:component",
       "title": "Line chart",
-      "description": "Line chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely.",
+      "description": "Line chart built on the chart primitive + Recharts 3, using stellify-base chart-N tokens. Optional per-series dashes, linear curve, Y axis and X formatter. Demo data inside.",
       "dependencies": [
         "recharts",
         "lucide-react"
