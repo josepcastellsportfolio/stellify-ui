@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "animated-text",
+  "title": "AnimatedText",
+  "description": "Text that rises out of a mask line by line or word by word when it enters the viewport (GSAP SplitText + ScrollTrigger). Markup is the final text; no motion under reduced motion.",
+  "dependencies": [
+    "gsap",
+    "@gsap/react"
+  ],
+  "registryDependencies": [
+    "@stellify/use-prefers-reduced-motion"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/animated-text.tsx",
+      "content": "import { useRef, type ElementType, type FC, type ReactNode } from \"react\"\nimport gsap from \"gsap\"\nimport { ScrollTrigger } from \"gsap/ScrollTrigger\"\nimport { SplitText } from \"gsap/SplitText\"\nimport { useGSAP } from \"@gsap/react\"\n\nimport { usePrefersReducedMotion } from \"@/hooks/use-prefers-reduced-motion\"\n\ngsap.registerPlugin(ScrollTrigger, SplitText, useGSAP)\n\nexport interface AnimatedTextProps {\n  /** Element to render. Defaults to `p`. */\n  as?: ElementType\n  children: ReactNode\n  className?: string\n  /** `\"lines\"` slides each line up out of a mask; `\"words\"` staggers word by word (headlines). */\n  split?: \"lines\" | \"words\"\n  /** Seconds before the reveal starts. */\n  delay?: number\n  /** Play on mount instead of when it scrolls into view (above-the-fold copy). */\n  immediate?: boolean\n}\n\n/**\n * Text that rises out of a mask, line by line or word by word, the first time\n * it enters the viewport.\n *\n * The markup is the finished text. SplitText only runs on the client and\n * re-splits on resize and font load (`autoSplit`), so wrapped lines stay\n * right. Under reduced motion nothing moves.\n */\nexport const AnimatedText: FC<AnimatedTextProps> = ({\n  as: Tag = \"p\",\n  children,\n  className,\n  split = \"lines\",\n  delay = 0,\n  immediate = false,\n}) => {\n  const ref = useRef<HTMLElement>(null)\n  const reducedMotion = usePrefersReducedMotion()\n\n  useGSAP(\n    () => {\n      const el = ref.current\n      if (!el || reducedMotion) return\n      // useGSAP's context reverts the split and its tween on cleanup.\n      SplitText.create(el, {\n        type: split === \"words\" ? \"words,lines\" : \"lines\",\n        mask: \"lines\",\n        autoSplit: true,\n        onSplit(self) {\n          return gsap.from(split === \"words\" ? self.words : self.lines, {\n            yPercent: 110,\n            duration: 0.9,\n            ease: \"expo.out\",\n            stagger: split === \"words\" ? 0.05 : 0.08,\n            delay,\n            scrollTrigger: immediate ? undefined : { trigger: el, start: \"top 88%\", once: true },\n          })\n        },\n      })\n    },\n    { scope: ref, dependencies: [reducedMotion, split, delay, immediate] },\n  )\n\n  return (\n    <Tag ref={ref} data-slot=\"animated-text\" className={className}>\n      {children}\n    </Tag>\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scroll-reveal",
+  "title": "ScrollReveal",
+  "description": "Section whose background widens from an inset rounded card to full width (top corners flattening) as it scrolls to the top. Only the background layer moves (GSAP ScrollTrigger).",
+  "dependencies": [
+    "gsap",
+    "@gsap/react"
+  ],
+  "registryDependencies": [
+    "@stellify/utils",
+    "@stellify/use-prefers-reduced-motion"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/scroll-reveal.tsx",
+      "content": "import { useRef, type FC, type ReactNode } from \"react\"\nimport gsap from \"gsap\"\nimport { ScrollTrigger } from \"gsap/ScrollTrigger\"\nimport { useGSAP } from \"@gsap/react\"\n\nimport { usePrefersReducedMotion } from \"@/hooks/use-prefers-reduced-motion\"\nimport { cn } from \"@/lib/utils\"\n\ngsap.registerPlugin(ScrollTrigger, useGSAP)\n\nexport interface ScrollRevealProps {\n  children: ReactNode\n  /** Classes of the widening background layer. Defaults to `bg-muted`. */\n  surface?: string\n  className?: string\n  id?: string\n  /** Gutter the background starts from on each side, in px. Defaults to 24 (12 below `md`). */\n  gutter?: { desktop: number; mobile: number }\n  /** Top corner radius the background starts with, in px. Defaults to 28. */\n  radius?: number\n}\n\nconst DEFAULT_GUTTER = { desktop: 24, mobile: 12 }\n\n/**\n * A section whose background starts as an inset rounded card and widens to\n * the full width, its top corners flattening, while the section scrolls up to\n * the top. Only the background layer moves; the content stays put, so nothing\n * reflows.\n *\n * The markup is the finished, full-width state. The inset is applied on the\n * client, on a scrub, and never under reduced motion.\n */\nexport const ScrollReveal: FC<ScrollRevealProps> = ({\n  children,\n  surface = \"bg-muted\",\n  className,\n  id,\n  gutter = DEFAULT_GUTTER,\n  radius = 28,\n}) => {\n  const rootRef = useRef<HTMLElement>(null)\n  const reducedMotion = usePrefersReducedMotion()\n  const { desktop, mobile } = gutter\n\n  useGSAP(\n    () => {\n      const root = rootRef.current\n      if (!root || reducedMotion) return\n      const layer = root.querySelector<HTMLElement>('[data-reveal=\"layer\"]')\n      if (!layer) return\n\n      const side = () => (window.innerWidth < 768 ? mobile : desktop)\n      gsap.fromTo(\n        layer,\n        {\n          scaleX: () => 1 - (2 * side()) / Math.max(root.offsetWidth, 1),\n          borderTopLeftRadius: radius,\n          borderTopRightRadius: radius,\n        },\n        {\n          scaleX: 1,\n          borderTopLeftRadius: 0,\n          borderTopRightRadius: 0,\n          ease: \"none\",\n          scrollTrigger: { trigger: root, start: \"top bottom\", end: \"top top\", scrub: true, invalidateOnRefresh: true },\n        },\n      )\n    },\n    { scope: rootRef, dependencies: [reducedMotion, desktop, mobile, radius] },\n  )\n\n  return (\n    <section id={id} ref={rootRef} data-slot=\"scroll-reveal\" className={cn(\"relative isolate scroll-mt-24\", className)}>\n      <div aria-hidden=\"true\" data-reveal=\"layer\" className={cn(\"absolute inset-0 -z-10 origin-top\", surface)} />\n      {children}\n    </section>\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

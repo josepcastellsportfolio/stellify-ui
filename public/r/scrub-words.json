@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scrub-words",
+  "title": "ScrubWords",
+  "description": "Large statement whose words light up one by one, scrubbed to the scroll (GSAP SplitText + ScrollTrigger). Markup is the lit text.",
+  "dependencies": [
+    "gsap",
+    "@gsap/react"
+  ],
+  "registryDependencies": [
+    "@stellify/utils",
+    "@stellify/use-prefers-reduced-motion"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/scrub-words.tsx",
+      "content": "import { useRef, type ElementType, type FC } from \"react\"\nimport gsap from \"gsap\"\nimport { ScrollTrigger } from \"gsap/ScrollTrigger\"\nimport { SplitText } from \"gsap/SplitText\"\nimport { useGSAP } from \"@gsap/react\"\n\nimport { usePrefersReducedMotion } from \"@/hooks/use-prefers-reduced-motion\"\nimport { cn } from \"@/lib/utils\"\n\ngsap.registerPlugin(ScrollTrigger, SplitText, useGSAP)\n\nexport interface ScrubWordsProps {\n  /** Element to render. Defaults to `p`. */\n  as?: ElementType\n  /** Plain text only: it is split into words on the client. */\n  children: string\n  className?: string\n  /** Opacity of a word before it lights up. Defaults to 0.12. */\n  dimOpacity?: number\n  /** ScrollTrigger start. Defaults to `\"top 80%\"`. */\n  start?: string\n  /** ScrollTrigger end. Defaults to `\"bottom 45%\"`. */\n  end?: string\n}\n\n/**\n * One large statement whose words light up one after another as it scrolls\n * through the viewport, scrubbed to the scroll position.\n *\n * The markup is the lit text; the dim start state is applied on the client\n * only (GSAP SplitText, re-split on resize and font load), never under\n * reduced motion.\n */\nexport const ScrubWords: FC<ScrubWordsProps> = ({\n  as: Tag = \"p\",\n  children,\n  className,\n  dimOpacity = 0.12,\n  start = \"top 80%\",\n  end = \"bottom 45%\",\n}) => {\n  const ref = useRef<HTMLElement>(null)\n  const reducedMotion = usePrefersReducedMotion()\n\n  useGSAP(\n    () => {\n      const el = ref.current\n      if (!el || reducedMotion) return\n      // useGSAP's context reverts the split and its tween on cleanup.\n      SplitText.create(el, {\n        type: \"words\",\n        autoSplit: true,\n        onSplit(self) {\n          return gsap.from(self.words, {\n            opacity: dimOpacity,\n            stagger: 0.1,\n            ease: \"none\",\n            scrollTrigger: { trigger: el, start, end, scrub: true },\n          })\n        },\n      })\n    },\n    { scope: ref, dependencies: [reducedMotion, children, dimOpacity, start, end] },\n  )\n\n  return (\n    <Tag ref={ref} data-slot=\"scrub-words\" className={cn(className)}>\n      {children}\n    </Tag>\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
