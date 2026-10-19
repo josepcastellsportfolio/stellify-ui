@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-prefers-reduced-motion",
+  "title": "usePrefersReducedMotion",
+  "description": "Reactive prefers-reduced-motion flag. Prerender-safe (false on the server, re-evaluated on the client).",
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/stellify/use-prefers-reduced-motion.ts",
+      "content": "import { useEffect, useState } from \"react\"\n\nconst QUERY = \"(prefers-reduced-motion: reduce)\"\n\n/**\n * The user's reduced-motion preference, reactively.\n *\n * Prerender-safe: returns `false` on the server (and wherever `matchMedia` is\n * missing) and re-evaluates on the client. Use it to decide whether to run an\n * animation, never to choose different markup, or the server and client\n * renders will disagree.\n */\nexport function usePrefersReducedMotion(): boolean {\n  const [reduced, setReduced] = useState<boolean>(() => {\n    if (typeof window === \"undefined\" || !window.matchMedia) return false\n    return window.matchMedia(QUERY).matches\n  })\n\n  useEffect(() => {\n    if (typeof window === \"undefined\" || !window.matchMedia) return\n    const mq = window.matchMedia(QUERY)\n    const handler = (event: MediaQueryListEvent) => setReduced(event.matches)\n    setReduced(mq.matches)\n    mq.addEventListener(\"change\", handler)\n    return () => mq.removeEventListener(\"change\", handler)\n  }, [])\n\n  return reduced\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}
