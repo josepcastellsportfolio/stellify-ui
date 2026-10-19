@@ -121,6 +121,7 @@ Extended (backwards compatible): `page-header` (`eyebrow`), `status-badge` (`ico
 |---|---|---|
 | `outreach-card` | component | Diagnosis, channel tab, editable subject/body + save, copy to clipboard, objections tab for call scripts; generating/queued/failed states; badges, warning and `onTrack`. |
 | `coverage-matrix` | component | Rows × columns of done / planned / untouched cells with legend; every word via props (`stateLabels`, `actionLabels`, `cellLabel`, `legendLabel`). Back `getCell` with a Map. |
+| `search-summary-card` | component | Borderless disclosure card for a done search: ring = `withEmail` / `total` (total in the centre), title, `meta` and `summary` lines; the whole header toggles the region (`open` / `onOpenChange`). Ring label via `ringLabel`. |
 | `loading-state` | component | Title + text + spinner with optional "n de N" progress (`role="status"`). |
 
 Extended (backwards compatible): `tabs` (`TabsList variant="plain"`).

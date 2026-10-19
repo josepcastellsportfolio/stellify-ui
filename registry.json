@@ -2179,6 +2179,24 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "search-summary-card",
+      "type": "registry:component",
+      "title": "SearchSummaryCard",
+      "description": "Borderless disclosure card for a done search: a ring filled by withEmail / total with the total in the centre, title, meta and summary lines; the whole header toggles the region below (button named by the title, aria-expanded). Controlled via open/onOpenChange; copy via props.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/search-summary-card.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
