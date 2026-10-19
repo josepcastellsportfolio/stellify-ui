@@ -22,7 +22,13 @@
       "@/components/intelui/intelui-types": ["../registry/stellify/intelui-types.ts"],
       "@/components/intelui/intelui-tabs": ["../registry/stellify/intelui-tabs.tsx"],
       "@/components/intelui/intelui-conversation-list": ["../registry/stellify/intelui-conversation-list.tsx"],
-      "@/components/intelui/intelui-chat-panel": ["../registry/stellify/intelui-chat-panel.tsx"]
+      "@/components/intelui/intelui-chat-panel": ["../registry/stellify/intelui-chat-panel.tsx"],
+      "@/components/ui/nav-preview-card": ["../registry/stellify/nav-preview-card.tsx"],
+      "@/components/ui/mega-menu-panel": ["../registry/stellify/mega-menu-panel.tsx"],
+      "@/components/ui/animated-text": ["../registry/stellify/animated-text.tsx"],
+      "@/hooks/use-focus-trap": ["../registry/stellify/use-focus-trap.ts"],
+      "@/hooks/use-mega-menu": ["../registry/stellify/use-mega-menu.ts"],
+      "@/hooks/use-prefers-reduced-motion": ["../registry/stellify/use-prefers-reduced-motion.ts"]
     }
   },
   "include": [

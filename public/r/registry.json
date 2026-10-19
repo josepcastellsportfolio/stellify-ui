@@ -1540,16 +1540,227 @@
     },
     {
       "name": "site-nav",
-      "type": "registry:component",
+      "type": "registry:ui",
       "title": "SiteNav",
-      "description": "Public site navigation with an accessible mobile menu (focus trap, Escape to close). Links are real anchors so they stay crawlable.",
+      "description": "Public site navigation with an accessible mobile menu (focus trap, Escape to close). Optional mega-menu: desktop triggers open MegaMenuPanels (hover, click, ArrowDown; Escape/outside/blur close), mobile becomes a full-screen drill-down sheet (portal, focus trap, scroll lock, inert off-screen pane, actions dock). Links are real anchors so they stay crawlable.",
+      "registryDependencies": [
+        "@stellify/utils",
+        "@stellify/mega-menu-panel",
+        "@stellify/nav-preview-card",
+        "@stellify/use-focus-trap",
+        "@stellify/use-mega-menu",
+        "@stellify/use-prefers-reduced-motion"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/site-nav.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "use-prefers-reduced-motion",
+      "type": "registry:hook",
+      "title": "usePrefersReducedMotion",
+      "description": "Reactive prefers-reduced-motion flag. Prerender-safe (false on the server, re-evaluated on the client).",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/stellify/use-prefers-reduced-motion.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-focus-trap",
+      "type": "registry:hook",
+      "title": "useFocusTrap",
+      "description": "Keeps focus inside an element while active: Tab/Shift+Tab wrap, escaped focus is pulled back, Escape callback, optional initial focus, body scroll lock and focus restore. Skips inert/hidden subtrees. Exports getFocusables.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/stellify/use-focus-trap.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-mega-menu",
+      "type": "registry:hook",
+      "title": "useMegaMenu",
+      "description": "Mega-menu open/close state: instant open, delayed close for diagonal mouse moves, and a closing state kept until the exit animation finishes. No animation library. Exports megaMenuPanelId.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/stellify/use-mega-menu.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-mega-menu-motion",
+      "type": "registry:hook",
+      "title": "useMegaMenuMotion",
+      "description": "GSAP motion for MegaMenuPanel: background grows down, content unclips, items stagger in; category switch re-staggers only; faster fold-up on close. Also a render-nothing MegaMenuMotion component for SiteNav's menuMotion prop. Honors reduced motion.",
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "@stellify/use-mega-menu"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/use-mega-menu-motion.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "nav-preview-card",
+      "type": "registry:ui",
+      "title": "NavPreviewCard",
+      "description": "Mega-menu preview card: photo with scrim or a dark panel with title, summary and an optional decoration (FacetGrid included). Out of the tab order and a11y tree; renderLink for client routers.",
       "registryDependencies": [
         "@stellify/utils"
       ],
       "files": [
         {
-          "path": "registry/stellify/site-nav.tsx",
-          "type": "registry:component"
+          "path": "registry/stellify/nav-preview-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "mega-menu-panel",
+      "type": "registry:ui",
+      "title": "MegaMenuPanel",
+      "description": "Full-width mega-menu panel: up to three labelled link columns, optional CTA, and preview cards that follow the hovered/focused link. Always in the DOM (hidden) so links prerender; data-nav-* hooks for useMegaMenuMotion or a CSS fade.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils",
+        "@stellify/nav-preview-card",
+        "@stellify/use-mega-menu"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/mega-menu-panel.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "animated-text",
+      "type": "registry:ui",
+      "title": "AnimatedText",
+      "description": "Text that rises out of a mask line by line or word by word when it enters the viewport (GSAP SplitText + ScrollTrigger). Markup is the final text; no motion under reduced motion.",
+      "dependencies": [
+        "gsap",
+        "@gsap/react"
+      ],
+      "registryDependencies": [
+        "@stellify/use-prefers-reduced-motion"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/animated-text.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "clip-reveal",
+      "type": "registry:ui",
+      "title": "ClipReveal",
+      "description": "Panel that opens from a rounded inset clip-path to full size as it scrolls in, scrubbed (GSAP ScrollTrigger). Markup is the open state; reduced motion shows it whole.",
+      "dependencies": [
+        "gsap",
+        "@gsap/react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils",
+        "@stellify/use-prefers-reduced-motion"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/clip-reveal.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "scroll-reveal",
+      "type": "registry:ui",
+      "title": "ScrollReveal",
+      "description": "Section whose background widens from an inset rounded card to full width (top corners flattening) as it scrolls to the top. Only the background layer moves (GSAP ScrollTrigger).",
+      "dependencies": [
+        "gsap",
+        "@gsap/react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils",
+        "@stellify/use-prefers-reduced-motion"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/scroll-reveal.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "scrub-words",
+      "type": "registry:ui",
+      "title": "ScrubWords",
+      "description": "Large statement whose words light up one by one, scrubbed to the scroll (GSAP SplitText + ScrollTrigger). Markup is the lit text.",
+      "dependencies": [
+        "gsap",
+        "@gsap/react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils",
+        "@stellify/use-prefers-reduced-motion"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/scrub-words.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "marquee",
+      "type": "registry:ui",
+      "title": "Marquee",
+      "description": "Infinite horizontal marquee of short entries: rendered twice for a seamless loop, read once by screen readers, Web Animations API (no keyframes to install), pauses on hover, off under reduced motion.",
+      "registryDependencies": [
+        "@stellify/utils",
+        "@stellify/use-prefers-reduced-motion"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/marquee.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "closing-panel",
+      "type": "registry:ui",
+      "title": "ClosingPanel",
+      "description": "Dark closing band for a landing page: headline revealed word by word, intro, one action slot, faded dot grid. Same colour in both themes, overridable via CSS variables.",
+      "registryDependencies": [
+        "@stellify/utils",
+        "@stellify/animated-text"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/closing-panel.tsx",
+          "type": "registry:ui"
         }
       ]
     },
