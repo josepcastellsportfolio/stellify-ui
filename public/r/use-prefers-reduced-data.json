@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-prefers-reduced-data",
+  "title": "usePrefersReducedData",
+  "description": "Whether the visitor asked to save data (Data Saver or prefers-reduced-data). Prerender-safe (false on the server, re-evaluated on the client).",
+  "files": [
+    {
+      "path": "registry/stellify/use-prefers-reduced-data.ts",
+      "content": "import { useEffect, useState } from \"react\"\n\nconst QUERY = \"(prefers-reduced-data: reduce)\"\n\ninterface NetworkInformationLike {\n  saveData?: boolean\n  addEventListener?: (type: \"change\", listener: () => void) => void\n  removeEventListener?: (type: \"change\", listener: () => void) => void\n}\n\nconst connection = (): NetworkInformationLike | undefined =>\n  typeof navigator === \"undefined\"\n    ? undefined\n    : (navigator as Navigator & { connection?: NetworkInformationLike }).connection\n\nfunction readPreference(): boolean {\n  if (typeof window === \"undefined\") return false\n  if (connection()?.saveData) return true\n  return Boolean(window.matchMedia?.(QUERY).matches)\n}\n\n/**\n * Whether the visitor asked to save data: the browser's Data Saver\n * (`navigator.connection.saveData`) or `prefers-reduced-data`.\n *\n * Prerender-safe like usePrefersReducedMotion: `false` on the server, then\n * re-evaluated on the client. Use it to skip a heavy download, never to\n * choose different markup.\n */\nexport function usePrefersReducedData(): boolean {\n  const [reduced, setReduced] = useState<boolean>(readPreference)\n\n  useEffect(() => {\n    const update = () => setReduced(readPreference())\n    update()\n    const net = connection()\n    net?.addEventListener?.(\"change\", update)\n    const mq = typeof window !== \"undefined\" ? window.matchMedia?.(QUERY) : undefined\n    mq?.addEventListener?.(\"change\", update)\n    return () => {\n      net?.removeEventListener?.(\"change\", update)\n      mq?.removeEventListener?.(\"change\", update)\n    }\n  }, [])\n\n  return reduced\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}
