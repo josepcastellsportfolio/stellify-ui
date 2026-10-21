@@ -2179,6 +2179,24 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "kanban",
+      "type": "registry:component",
+      "title": "Kanban",
+      "description": "KanbanBoard, KanbanColumn and KanbanCard: columns side by side (horizontal scroll on small screens) with counts and empty text; cards move by native HTML5 drag and drop or with a «Mover a…» select on each card (keyboard and touch). Only card drags are accepted; onMove(cardId, toColumnId) on the board. Copy via props.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/kanban.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
