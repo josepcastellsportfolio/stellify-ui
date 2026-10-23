@@ -2181,6 +2181,21 @@
       ]
     },
     {
+      "name": "heat-matrix",
+      "type": "registry:component",
+      "title": "HeatMatrix",
+      "description": "Rows × columns heat map: each cell is coloured in five primary steps between min and max, can be muted (grey, dashed) and carries a figure plus short lines; clickable via onCellClick (read-only without it), with legend, pinned row labels and an accessible name per cell. All copy via props.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/heat-matrix.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "kanban",
       "type": "registry:component",
       "title": "Kanban",
