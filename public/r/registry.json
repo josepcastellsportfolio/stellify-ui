@@ -1146,6 +1146,21 @@
       ]
     },
     {
+      "name": "stacked-timeline",
+      "type": "registry:component",
+      "title": "StackedTimeline",
+      "description": "Stacked bars per bucket in plain SVG with an amount axis, an optional cap line, side bars for series outside the cap, period totals in the legend, an empty state when nothing was spent and a visually hidden table for screen readers.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/stacked-timeline.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "month-year-picker",
       "type": "registry:component",
       "title": "MonthYearPicker",

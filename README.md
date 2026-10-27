@@ -121,6 +121,7 @@ Extended (backwards compatible): `page-header` (`eyebrow`), `status-badge` (`ico
 |---|---|---|
 | `outreach-card` | component | Diagnosis, channel tab, editable subject/body + save, copy to clipboard, objections tab for call scripts; generating/queued/failed states; badges, warning and `onTrack`. |
 | `coverage-matrix` | component | Rows × columns of done / planned / untouched cells with legend; every word via props (`stateLabels`, `actionLabels`, `cellLabel`, `legendLabel`). Back `getCell` with a Map. |
+| `stacked-timeline` | component | Stacked bars per bucket (plain SVG) with amount axis, cap line, side bars for series outside the cap and period totals in the legend; empty state when nothing was spent. Texts via props (`capLabel`, `emptyLabel`, `apartNote`, `periodHeader`). |
 | `kanban` | component | `KanbanBoard` (`columns`, `onMove`), `KanbanColumn` (count, empty text) and `KanbanCard` (title, subtitle, badges, actions): native drag and drop on desktop plus a «Mover a…» select per card for keyboard and touch. |
 | `loading-state` | component | Title + text + spinner with optional "n de N" progress (`role="status"`). |
 
