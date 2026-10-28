@@ -82,7 +82,7 @@ export const LongFormArticle: FC<LongFormArticleProps> = ({
   afterContent,
   className,
 }) => (
-  <article className={cn("mx-auto w-full max-w-3xl px-[--container-pad] py-16", className)}>
+  <article className={cn("mx-auto w-full max-w-3xl px-[var(--container-pad)] py-16", className)}>
     {before}
 
     <h1 className="text-balance text-3xl font-bold leading-[1.1] tracking-display md:text-5xl">

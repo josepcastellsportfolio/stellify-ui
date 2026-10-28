@@ -387,7 +387,7 @@ export const SiteNav: FC<SiteNavProps> = ({
           ref={panelRef}
           hidden={!open}
           className={cn(
-            "absolute inset-x-0 top-full z-50 border-b border-border bg-background px-[--container-pad] py-6 md:hidden",
+            "absolute inset-x-0 top-full z-50 border-b border-border bg-background px-[var(--container-pad)] py-6 md:hidden",
           )}
         >
           <ul className="flex flex-col gap-5">
