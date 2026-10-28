@@ -76,6 +76,20 @@ describe("OutreachCard", () => {
     expect(onTrack).toHaveBeenCalledOnce()
   })
 
+  it("shows sector probes in their own tab, as questions with a hypothesis note", async () => {
+    const probes = [{ pain: "Llamadas perdidas en clase", question: "¿Qué pasa con las llamadas en clase?" }]
+    const { rerender } = render(<OutreachCard status="ready" {...email} onSave={() => {}} />)
+    expect(screen.queryByRole("tab", { name: "Para explorar" })).not.toBeInTheDocument()
+    rerender(<OutreachCard status="ready" {...email} probes={probes} onSave={() => {}} />)
+    await userEvent.click(screen.getByRole("tab", { name: "Para explorar" }))
+    expect(screen.getByText("¿Qué pasa con las llamadas en clase?")).toBeInTheDocument()
+    expect(screen.getByText("Llamadas perdidas en clase")).toBeInTheDocument()
+    expect(screen.getByRole("note")).toHaveTextContent("no lo afirmes")
+    // The probes never join the message that gets copied.
+    await userEvent.click(screen.getByRole("tab", { name: "Correo en frío" }))
+    expect(screen.getByLabelText("Mensaje")).toHaveValue(email.body)
+  })
+
   it("shows a tracked message as already in the pipeline", () => {
     render(<OutreachCard status="ready" {...email} onSave={() => {}} onTrack={() => {}} tracked />)
     expect(screen.getByRole("button", { name: "En seguimiento" })).toBeDisabled()
