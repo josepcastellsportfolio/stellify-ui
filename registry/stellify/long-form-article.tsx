@@ -57,7 +57,21 @@ export interface LongFormArticleProps {
    * button. Not wrapped, so the caller owns the spacing.
    */
   afterContent?: ReactNode
+  /** The article's own words, for sites not in Spanish. Each falls back to its default. */
+  labels?: Partial<LongFormArticleLabels>
   className?: string
+}
+
+export interface LongFormArticleLabels {
+  /** Heading of the stack list. */
+  stack: string
+  /** Accessible name of the related-links navigation. */
+  related: string
+}
+
+export const DEFAULT_LONG_FORM_LABELS: LongFormArticleLabels = {
+  stack: "Stack",
+  related: "Enlaces relacionados",
 }
 
 const relatedLinkClass =
@@ -80,6 +94,7 @@ export const LongFormArticle: FC<LongFormArticleProps> = ({
   renderLink,
   afterIntro,
   afterContent,
+  labels,
   className,
 }) => (
   <article className={cn("mx-auto w-full max-w-3xl px-[var(--container-pad)] py-16", className)}>
@@ -92,7 +107,7 @@ export const LongFormArticle: FC<LongFormArticleProps> = ({
     <p className="mt-6 text-lg leading-body text-muted-foreground">{page.intro}</p>
 
     {page.status ? (
-      <Badge variant="secondary" className="mt-6">
+      <Badge variant="secondary" className="mt-6 whitespace-normal">
         {page.status}
       </Badge>
     ) : null}
@@ -125,7 +140,7 @@ export const LongFormArticle: FC<LongFormArticleProps> = ({
 
     {page.stack?.length ? (
       <section className="mt-14">
-        <h2 className="text-2xl font-semibold tracking-display">Stack</h2>
+        <h2 className="text-2xl font-semibold tracking-display">{labels?.stack ?? DEFAULT_LONG_FORM_LABELS.stack}</h2>
         <ul className="mt-6 flex flex-wrap gap-2">
           {page.stack.map(item => (
             <li key={item}>
@@ -141,7 +156,7 @@ export const LongFormArticle: FC<LongFormArticleProps> = ({
     {afterContent}
 
     {page.related?.length ? (
-      <nav className="mt-14 border-t border-border pt-8" aria-label="Enlaces relacionados">
+      <nav className="mt-14 border-t border-border pt-8" aria-label={labels?.related ?? DEFAULT_LONG_FORM_LABELS.related}>
         <ul className="flex flex-wrap gap-6">
           {page.related.map(link => (
             <li key={link.href}>
