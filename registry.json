@@ -1146,6 +1146,21 @@
       ]
     },
     {
+      "name": "stacked-timeline",
+      "type": "registry:component",
+      "title": "StackedTimeline",
+      "description": "Stacked bars per bucket in plain SVG with an amount axis, an optional cap line, side bars for series outside the cap, period totals in the legend, an empty state when nothing was spent and a visually hidden table for screen readers.",
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/stacked-timeline.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "month-year-picker",
       "type": "registry:component",
       "title": "MonthYearPicker",
@@ -2387,6 +2402,24 @@
       "files": [
         {
           "path": "registry/stellify/coverage-matrix.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "kanban",
+      "type": "registry:component",
+      "title": "Kanban",
+      "description": "KanbanBoard, KanbanColumn and KanbanCard: columns side by side (horizontal scroll on small screens) with counts and empty text; cards move by native HTML5 drag and drop or with a «Mover a…» select on each card (keyboard and touch). Only card drags are accepted; onMove(cardId, toColumnId) on the board. Copy via props.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/kanban.tsx",
           "type": "registry:component"
         }
       ]
