@@ -15,7 +15,25 @@ export interface ShareButtonProps {
   /** Short blurb for channels that carry text (WhatsApp, X, email). */
   text?: string
   label?: string
+  /** The menu's own words, for sites not in Spanish. Each one falls back to its Spanish default. */
+  labels?: Partial<ShareButtonLabels>
   className?: string
+}
+
+export interface ShareButtonLabels {
+  copy: string
+  copied: string
+  copyFailed: string
+  email: string
+  newTab: string
+}
+
+export const DEFAULT_SHARE_LABELS: ShareButtonLabels = {
+  copy: "Copiar enlace",
+  copied: "Enlace copiado",
+  copyFailed: "No se ha podido copiar. Copia la dirección desde el navegador.",
+  email: "Correo",
+  newTab: "(se abre en una pestaña nueva)",
 }
 
 export interface ShareTarget {
@@ -27,7 +45,12 @@ export interface ShareTarget {
  * Share-intent URLs for the fallback menu. Pure, so it can be tested and
  * reused (e.g. in a footer) without rendering the button.
  */
-export function buildShareLinks(url: string, title: string, text?: string): ShareTarget[] {
+export function buildShareLinks(
+  url: string,
+  title: string,
+  text?: string,
+  emailName: string = DEFAULT_SHARE_LABELS.email,
+): ShareTarget[] {
   const u = encodeURIComponent(url)
   const blurb = text ?? title
   return [
@@ -35,7 +58,7 @@ export function buildShareLinks(url: string, title: string, text?: string): Shar
     { name: "WhatsApp", href: `https://wa.me/?text=${encodeURIComponent(`${blurb} ${url}`)}` },
     { name: "X", href: `https://x.com/intent/post?url=${u}&text=${encodeURIComponent(blurb)}` },
     {
-      name: "Correo",
+      name: emailName,
       href: `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(
         text ? `${text}\n\n${url}` : url,
       )}`,
@@ -65,8 +88,10 @@ export const ShareButton: FC<ShareButtonProps> = ({
   title,
   text,
   label = "Compartir",
+  labels,
   className,
 }) => {
+  const words = { ...DEFAULT_SHARE_LABELS, ...labels }
   const [open, setOpen] = useState(false)
   const [copy, setCopy] = useState<CopyState>("idle")
   const resetTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
@@ -117,10 +142,10 @@ export const ShareButton: FC<ShareButtonProps> = ({
           <li>
             <button type="button" className={itemClass} onClick={handleCopy}>
               {copy === "copied" ? <Check aria-hidden="true" /> : <Link2 aria-hidden="true" />}
-              Copiar enlace
+              {words.copy}
             </button>
           </li>
-          {buildShareLinks(url, title, text).map(target => {
+          {buildShareLinks(url, title, text, words.email).map(target => {
             const isMail = target.href.startsWith("mailto:")
             return (
               <li key={target.name}>
@@ -131,7 +156,7 @@ export const ShareButton: FC<ShareButtonProps> = ({
                 >
                   {isMail ? <Mail aria-hidden="true" /> : <ExternalLink aria-hidden="true" />}
                   {target.name}
-                  {isMail ? null : <span className="sr-only"> (se abre en una pestaña nueva)</span>}
+                  {isMail ? null : <span className="sr-only"> {words.newTab}</span>}
                 </a>
               </li>
             )
@@ -145,8 +170,8 @@ export const ShareButton: FC<ShareButtonProps> = ({
             copy === "idle" ? "sr-only" : "pb-1 pt-2",
           )}
         >
-          {copy === "copied" ? "Enlace copiado" : null}
-          {copy === "failed" ? "No se ha podido copiar. Copia la dirección desde el navegador." : null}
+          {copy === "copied" ? words.copied : null}
+          {copy === "failed" ? words.copyFailed : null}
         </p>
       </PopoverContent>
     </Popover>
