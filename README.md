@@ -83,6 +83,42 @@ Links go through an optional `renderLink` so apps keep client-side routing.
 
 Extended (backwards compatible): `long-form-article` (`afterIntro` / `afterContent` slots).
 
+### Site header and scroll motion
+
+Promoted from the stellifyit-global home redesign. Content and copy come in
+through props (no i18n inside); links go through `renderLink`, whose props
+include `children` — `(link, props) => <Link to={link.href} {...props} />`.
+Without `renderLink` they render `NavAnchor`, a plain `<a>`.
+
+The components are `registry:ui`: `shadcn add` writes them to
+`components/ui/` and they import each other as `@/components/ui/<name>`; the
+hooks land in `hooks/`.
+
+| Item | Type | Summary |
+|---|---|---|
+| `mega-menu-panel` | ui | Full-width panel: up to 3 labelled link columns, optional CTA, preview cards that follow the hovered/focused link. Always in the DOM (`hidden`) so links prerender. `motion="css"` for a fade without GSAP. |
+| `nav-preview-card` | ui | Photo-with-scrim or dark-panel preview card, out of the tab order; `FacetGrid` decoration. Colours via `--nav-preview-bg/-fg/-muted`. |
+| `use-mega-menu` | hook | Open/close state: instant open, 120 ms grace close, closing state until the exit animation ends. `megaMenuPanelId`. |
+| `use-mega-menu-motion` | hook | GSAP motion for the panels (`useMegaMenuMotion`) + `MegaMenuMotion`, a render-nothing component for `SiteNav`'s `menuMotion`. |
+| `use-focus-trap` | hook | Tab/Shift+Tab cycle inside a root (skips `inert`/`hidden`), Escape callback, initial focus, scroll lock, optional focus restore. |
+| `use-prefers-reduced-motion` | hook | Reactive, prerender-safe reduced-motion flag. |
+| `animated-text` | ui | Text rising out of a mask line by line / word by word on first view (GSAP SplitText). |
+| `clip-reveal` | ui | Panel opening from a rounded inset `clip-path` as it scrolls in (scrub). |
+| `scroll-reveal` | ui | Section background widening from an inset card to full width as it scrolls up. |
+| `scrub-words` | ui | Statement whose words light up one by one with the scroll. |
+| `marquee` | ui | Infinite marquee (Web Animations API, no keyframes), read once by screen readers, pauses on hover. Not `overflow-marquee` (hover reveal of one truncated string). |
+| `closing-panel` | ui | Dark closing band: headline, intro, `action` slot, dot grid. Colours via `--closing-bg/-fg/-muted`. |
+
+GSAP items depend on `gsap` and `@gsap/react` (SplitText ships in `gsap` ≥ 3.13).
+All of them render their final state as markup and do nothing under reduced motion.
+
+Extended (backwards compatible): `site-nav` — `menu` (desktop mega-menu +
+mobile drill-down sheet with focus trap, scroll lock and an actions dock),
+`mobileVariant`, `mobileBrand`, `mobileActions`, `labels`, `menuMotion`,
+`previewDecoration`, `panelContainerClassName`, `idPrefix`, `onOpenChange`,
+`onNavigate`. Without `menu` it behaves as before. It is now a `registry:ui`
+item too, so a fresh `shadcn add @stellify/site-nav` writes `components/ui/site-nav.tsx`.
+
 ### Step flows and app layout
 
 Built for captationcenter, generic enough for any onboarding or back-office app.
