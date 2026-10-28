@@ -81,9 +81,9 @@ function Calendar({
         weekday:
           "flex h-8 items-center justify-center text-[0.7rem] font-medium uppercase tracking-wide text-muted-foreground",
         week: "mt-1 grid grid-cols-7 gap-1",
-        week_number_header: "h-[--cell-size] select-none",
+        week_number_header: "h-[var(--cell-size)] select-none",
         week_number:
-          "flex h-[--cell-size] items-center justify-center text-[0.7rem] text-muted-foreground",
+          "flex h-[var(--cell-size)] items-center justify-center text-[0.7rem] text-muted-foreground",
         day: "group/day relative aspect-square w-full select-none p-0 text-center",
         range_start: "rounded-l-md bg-accent",
         range_middle: "rounded-none bg-accent",
@@ -112,7 +112,7 @@ function Calendar({
         DayButton: CalendarDayButton,
         WeekNumber: ({ children, ...props }) => (
           <td {...props}>
-            <div className="flex size-[--cell-size] items-center justify-center">
+            <div className="flex size-[var(--cell-size)] items-center justify-center">
               {children}
             </div>
           </td>

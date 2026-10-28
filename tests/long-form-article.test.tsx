@@ -32,4 +32,11 @@ describe("LongFormArticle slots", () => {
     const { container } = render(<LongFormArticle content={content} />)
     expect(container.querySelector('[data-testid]')).toBeNull()
   })
+
+  it("lets the status wrap and takes its words from labels", () => {
+    render(<LongFormArticle content={content} labels={{ stack: "Tech stack", related: "Related links" }} />)
+    expect(screen.getByText("En producción").className).toContain("whitespace-normal")
+    expect(screen.getByRole("heading", { name: "Tech stack" })).toBeInTheDocument()
+    expect(screen.getByRole("navigation", { name: "Related links" })).toBeInTheDocument()
+  })
 })
