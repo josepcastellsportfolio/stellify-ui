@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "closing-panel",
+  "title": "ClosingPanel",
+  "description": "Dark closing band for a landing page: headline revealed word by word, intro, one action slot, faded dot grid. Same colour in both themes, overridable via CSS variables.",
+  "registryDependencies": [
+    "@stellify/utils",
+    "@stellify/animated-text"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/closing-panel.tsx",
+      "content": "import type { ElementType, FC, ReactNode } from \"react\"\n\nimport { AnimatedText } from \"@/components/animated-text\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface ClosingPanelProps {\n  title: string\n  intro?: string\n  /** The call to action (a button or link of your own). */\n  action?: ReactNode\n  /** Heading level of the title. Defaults to `h2`. */\n  titleAs?: ElementType\n  /** Reveal the title word by word and the intro line by line (GSAP). Defaults to true. */\n  animated?: boolean\n  /** Dotted grid behind the copy. Defaults to true. */\n  dotGrid?: boolean\n  className?: string\n  id?: string\n}\n\n/**\n * The dark closing panel at the end of a landing page: a big headline, one\n * line of intro and a single call to action over a faded dot grid.\n *\n * One colour in light and dark themes (like a dark band on a light page);\n * override it with the `--closing-bg`, `--closing-fg` and `--closing-muted`\n * CSS variables (any CSS colour). The markup is the final state, so it\n * prerenders whole; the reveal runs on the client and not under reduced motion.\n */\nexport const ClosingPanel: FC<ClosingPanelProps> = ({\n  title,\n  intro,\n  action,\n  titleAs = \"h2\",\n  animated = true,\n  dotGrid = true,\n  className,\n  id,\n}) => {\n  const titleClass =\n    \"mx-auto max-w-3xl text-balance text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[1] tracking-display\"\n  const introClass =\n    \"mx-auto mt-5 max-w-xl text-pretty text-lg leading-body text-[var(--closing-muted,oklch(0.78_0.02_265))]\"\n  const Title = titleAs\n\n  return (\n    <section\n      id={id}\n      data-slot=\"closing-panel\"\n      className={cn(\n        \"relative isolate mx-2 overflow-hidden rounded-[28px] md:mx-4\",\n        \"bg-[var(--closing-bg,oklch(0.16_0.02_265))] text-[var(--closing-fg,oklch(0.98_0_0))]\",\n        className,\n      )}\n    >\n      {dotGrid ? (\n        <div\n          aria-hidden=\"true\"\n          data-slot=\"closing-panel-grid\"\n          className={cn(\n            \"absolute inset-0 -z-10 [background-size:22px_22px]\",\n            \"[background-image:radial-gradient(oklch(1_0_0/0.14)_1px,transparent_1px)]\",\n            \"[mask-image:radial-gradient(ellipse_at_70%_40%,black_20%,transparent_70%)]\",\n          )}\n        />\n      ) : null}\n      <div className=\"mx-auto max-w-5xl px-6 py-20 text-center md:py-28\">\n        {animated ? (\n          <AnimatedText as={titleAs} split=\"words\" className={titleClass}>\n            {title}\n          </AnimatedText>\n        ) : (\n          <Title className={titleClass}>{title}</Title>\n        )}\n        {intro ? (\n          animated ? (\n            <AnimatedText className={introClass}>{intro}</AnimatedText>\n          ) : (\n            <p className={introClass}>{intro}</p>\n          )\n        ) : null}\n        {action ? <div className=\"mt-10 flex justify-center\">{action}</div> : null}\n      </div>\n    </section>\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

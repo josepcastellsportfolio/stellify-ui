@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "clip-reveal",
+  "title": "ClipReveal",
+  "description": "Panel that opens from a rounded inset clip-path to full size as it scrolls in, scrubbed (GSAP ScrollTrigger). Markup is the open state; reduced motion shows it whole.",
+  "dependencies": [
+    "gsap",
+    "@gsap/react"
+  ],
+  "registryDependencies": [
+    "@stellify/utils",
+    "@stellify/use-prefers-reduced-motion"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/clip-reveal.tsx",
+      "content": "import { useRef, type FC, type ReactNode } from \"react\"\nimport gsap from \"gsap\"\nimport { ScrollTrigger } from \"gsap/ScrollTrigger\"\nimport { useGSAP } from \"@gsap/react\"\n\nimport { usePrefersReducedMotion } from \"@/hooks/use-prefers-reduced-motion\"\nimport { cn } from \"@/lib/utils\"\n\ngsap.registerPlugin(ScrollTrigger, useGSAP)\n\nexport interface ClipRevealProps {\n  children: ReactNode\n  /** Classes for the clipped panel (its surface, e.g. a dark background). */\n  className?: string\n  /** Classes for the outer `<section>` (spacing around the panel). */\n  rootClassName?: string\n  id?: string\n  /** `clip-path` the panel starts from. Defaults to `inset(6% 8% round 48px)`. */\n  from?: string\n  /** `clip-path` the panel ends at. Defaults to `inset(0% 0% round 28px)`. */\n  to?: string\n  /** ScrollTrigger start. Defaults to `\"top bottom\"`. */\n  start?: string\n  /** ScrollTrigger end. Defaults to `\"top 25%\"`. */\n  end?: string\n}\n\n/**\n * A panel that opens from a rounded inset to its full size as it scrolls in,\n * scrubbed to the scroll position.\n *\n * The markup is the open state: the inset only exists while the scrub runs,\n * so prerendered HTML and reduced motion show the panel whole. Keep the final\n * radius of `to` in sync with the panel's own `rounded-*` class.\n */\nexport const ClipReveal: FC<ClipRevealProps> = ({\n  children,\n  className,\n  rootClassName,\n  id,\n  from = \"inset(6% 8% round 48px)\",\n  to = \"inset(0% 0% round 28px)\",\n  start = \"top bottom\",\n  end = \"top 25%\",\n}) => {\n  const rootRef = useRef<HTMLElement>(null)\n  const reducedMotion = usePrefersReducedMotion()\n\n  useGSAP(\n    () => {\n      if (reducedMotion || !rootRef.current) return\n      gsap.fromTo(\n        '[data-clip=\"panel\"]',\n        { clipPath: from },\n        {\n          clipPath: to,\n          ease: \"none\",\n          scrollTrigger: { trigger: rootRef.current, start, end, scrub: true },\n        },\n      )\n    },\n    { scope: rootRef, dependencies: [reducedMotion, from, to, start, end] },\n  )\n\n  return (\n    <section id={id} ref={rootRef} data-slot=\"clip-reveal\" className={cn(\"scroll-mt-24 px-2 md:px-4\", rootClassName)}>\n      <div data-clip=\"panel\" className={cn(\"overflow-hidden rounded-[28px]\", className)}>\n        {children}\n      </div>\n    </section>\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}
