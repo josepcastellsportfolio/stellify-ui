@@ -328,11 +328,16 @@ export const SiteNav: FC<SiteNavProps> = ({
                 onPointerEnter={onTriggerPointerEnter(category.id)}
                 onClick={onTriggerClick(category.id)}
                 onKeyDown={onTriggerKeyDown(category.id)}
+                // The other triggers dim while a panel is open. Dimmed means the
+                // muted-foreground token, never opacity: the token keeps text
+                // contrast at 4.5:1, opacity over muted text does not. Apps that
+                // recolour the triggers style `[data-dimmed]` the same way.
+                data-dimmed={openId && !expanded ? "" : undefined}
                 className={cn(
                   linkClass,
-                  "transition-[color,opacity] duration-200 motion-reduce:transition-none",
+                  "transition-colors duration-200 motion-reduce:transition-none",
                   expanded && "text-foreground",
-                  openId && !expanded && "opacity-30",
+                  "data-[dimmed]:text-muted-foreground",
                 )}
               >
                 {category.label}

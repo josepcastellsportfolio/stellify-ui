@@ -121,6 +121,21 @@ describe("SiteNav — mega-menu (desktop)", () => {
     expect(onOpenChange).toHaveBeenLastCalledWith(false)
   })
 
+  it("dims the other triggers with the muted token, not opacity, while a panel is open", async () => {
+    const user = userEvent.setup()
+    render(<SiteNav links={links} menu={menu} />)
+    const [open, ...others] = menu.map(category => screen.getByRole("button", { name: category.label }))
+    for (const trigger of [open, ...others]) expect(trigger).not.toHaveAttribute("data-dimmed")
+
+    await user.click(open)
+    expect(open).not.toHaveAttribute("data-dimmed")
+    for (const trigger of others) {
+      expect(trigger).toHaveAttribute("data-dimmed")
+      expect(trigger.className).toContain("data-[dimmed]:text-muted-foreground")
+      expect(trigger.className).not.toMatch(/\bopacity-/)
+    }
+  })
+
   it("opens on ArrowDown and moves focus to the first link", async () => {
     const user = userEvent.setup()
     render(<SiteNav links={links} menu={menu} />)
