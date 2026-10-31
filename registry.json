@@ -121,7 +121,12 @@
       },
       "files": [],
       "css": {
-        "@import \"tw-animate-css\"": {}
+        "@import \"tw-animate-css\"": {},
+        "@layer base": {
+          "*": {
+            "border-color": "var(--border)"
+          }
+        }
       }
     },
     {
