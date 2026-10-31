@@ -54,6 +54,7 @@ the registry; `shadcn build` is unaffected.
 | `filter-bar` | component | Sticky filter form: `FilterBar` (grid column per field + clear button) with `FilterSelect` (first option = all → `""`) and `FilterText` (debounced search box). Copy via props. |
 | `use-currency-format` | hook | Memoized currency formatter. |
 | `use-persisted-state` | hook | `useState` synced to localStorage (SSR-safe). |
+| `use-prefers-reduced-data` | hook | Data Saver or `prefers-reduced-data`, to skip heavy downloads (prerender-safe). |
 | `week-dates` | lib | Date helpers for weekly grids (no date library). |
 | `week-grid` | component | 7-day week grid + day columns (generalized planner). |
 | `carousel` | component | Generic card carousel: autoplay, hover-pause, drag/swipe, responsive slides-per-view, arrows + dots. Pass `items` + `renderItem`. |

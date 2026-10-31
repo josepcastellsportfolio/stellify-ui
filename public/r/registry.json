@@ -353,6 +353,18 @@
       ]
     },
     {
+      "name": "use-prefers-reduced-data",
+      "type": "registry:hook",
+      "title": "usePrefersReducedData",
+      "description": "Whether the visitor asked to save data (Data Saver or prefers-reduced-data). Prerender-safe (false on the server, re-evaluated on the client).",
+      "files": [
+        {
+          "path": "registry/stellify/use-prefers-reduced-data.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
       "name": "week-dates",
       "type": "registry:lib",
       "title": "week-dates",
