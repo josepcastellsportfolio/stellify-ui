@@ -17,6 +17,8 @@ export interface OutreachCardProps {
   subject?: string | null
   body?: string | null
   objections?: { objecion: string; respuesta: string }[]
+  /** Call scripts: open questions to explore, from hypotheses about the business's sector (not facts about it). */
+  probes?: { pain: string; question: string }[]
   error?: string | null
   /** Short tags next to the name (e.g. the language: "ES", "CA"). */
   badges?: string[]
@@ -33,7 +35,10 @@ export interface OutreachCardProps {
   /** The business is already in the pipeline: the button turns into a disabled "En seguimiento". */
   tracked?: boolean
   labels?: Partial<
-    Record<"subject" | "body" | "save" | "copy" | "copied" | "objections" | "generating" | "track" | "tracked", string>
+    Record<
+      "subject" | "body" | "save" | "copy" | "copied" | "objections" | "probes" | "probesNote" | "generating" | "track" | "tracked",
+      string
+    >
   >
   className?: string
 }
@@ -45,12 +50,14 @@ const DEFAULT_LABELS = {
   copy: "Copiar",
   copied: "Copiado",
   objections: "Objeciones",
+  probes: "Para explorar",
+  probesNote: "Hipótesis del sector, no datos de este negocio: pregúntalo, no lo afirmes.",
   generating: "Redactando…",
   track: "Guardar en seguimiento",
   tracked: "En seguimiento",
 }
 
-/** One generated message: diagnosis, channel tab, editable subject/body, copy; P2 objections tab. */
+/** One generated message: diagnosis, channel tab, editable subject/body, copy; P2 objections and probes tabs. */
 function OutreachCard({
   name,
   status,
@@ -59,6 +66,7 @@ function OutreachCard({
   subject = null,
   body = "",
   objections,
+  probes,
   error,
   badges = [],
   warning,
@@ -142,6 +150,7 @@ function OutreachCard({
             <TabsList variant="plain">
               <TabsTrigger value="message">{channelLabel}</TabsTrigger>
               {objections && objections.length > 0 && <TabsTrigger value="objections">{t.objections}</TabsTrigger>}
+              {probes && probes.length > 0 && <TabsTrigger value="probes">{t.probes}</TabsTrigger>}
             </TabsList>
             <Button type="button" variant="base" size="sm" onClick={copy}>
               {copied ? <Check /> : <Copy />}
@@ -175,6 +184,21 @@ function OutreachCard({
                   <div key={o.objecion}>
                     <dt className="font-medium text-foreground">{o.objecion}</dt>
                     <dd className="text-muted-foreground">{o.respuesta}</dd>
+                  </div>
+                ))}
+              </dl>
+            </TabsContent>
+          )}
+          {probes && probes.length > 0 && (
+            <TabsContent value="probes" className="space-y-3">
+              <p role="note" className="text-sm text-muted-foreground">
+                {t.probesNote}
+              </p>
+              <dl className="space-y-3 text-sm">
+                {probes.map((p) => (
+                  <div key={p.question}>
+                    <dt className="font-medium text-foreground">{p.question}</dt>
+                    <dd className="text-muted-foreground">{p.pain}</dd>
                   </div>
                 ))}
               </dl>
