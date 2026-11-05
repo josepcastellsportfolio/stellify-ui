@@ -51,6 +51,9 @@ export const CallScript: Story = {
           { objecion: "No tenemos presupuesto", respuesta: "El diagnóstico es gratuito y sin compromiso." },
           { objecion: "Ya lo llevamos bien", respuesta: "Perfecto; el diagnóstico os dice cuántas llamadas se pierden." },
         ]}
+        probes={[
+          { pain: "Llamadas perdidas en horas de clase", question: "¿Qué pasa con las llamadas que entran mientras dais clase?" },
+        ]}
         onSave={() => {}}
       />
     </div>

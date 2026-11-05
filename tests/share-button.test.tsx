@@ -61,4 +61,24 @@ describe("ShareButton", () => {
     expect(writeText).toHaveBeenCalledWith(props.url)
     await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Enlace copiado"))
   })
+
+  it("speaks the site's language through labels", async () => {
+    const user = userEvent.setup()
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, "clipboard", { value: { writeText }, configurable: true })
+    render(
+      <ShareButton
+        {...props}
+        label="Share"
+        labels={{ copy: "Copy link", copied: "Link copied", email: "Email", newTab: "(opens in a new tab)" }}
+      />,
+    )
+    await user.click(screen.getByRole("button", { name: "Share" }))
+
+    expect(screen.getByRole("link", { name: "Email" })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "LinkedIn (opens in a new tab)" })).toBeInTheDocument()
+    expect(screen.queryByText(/Copiar|Correo|pestaña/)).toBeNull()
+    await user.click(screen.getByRole("button", { name: "Copy link" }))
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Link copied"))
+  })
 })

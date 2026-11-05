@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useCurrencyFormat } from "@stellify/use-currency-format"
 import { usePersistedState } from "@stellify/use-persisted-state"
 import {
@@ -9,6 +9,9 @@ import {
   todayISO,
 } from "@stellify/week-dates"
 import { Button } from "@stellify/button"
+import { useFocusTrap } from "@stellify/use-focus-trap"
+import { useMegaMenu } from "@stellify/use-mega-menu"
+import { usePrefersReducedMotion } from "@stellify/use-prefers-reduced-motion"
 
 /**
  * Demos for the non-visual registry items (hooks + lib). They run the real
@@ -91,3 +94,52 @@ function WeekDatesDemo() {
 export const CurrencyFormat: Story = { render: () => <CurrencyFormatDemo /> }
 export const PersistedState: Story = { render: () => <PersistedStateDemo /> }
 export const WeekDates: Story = { render: () => <WeekDatesDemo /> }
+
+function FocusTrapDemo() {
+  const [active, setActive] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  useFocusTrap(ref, { active, onEscape: () => setActive(false) })
+  return (
+    <div className="space-y-3">
+      <Button onClick={() => setActive(true)}>Activar la trampa</Button>
+      <div ref={ref} className="flex gap-2 rounded-lg border border-border p-4" data-active={active}>
+        <Button variant="secondary">Uno</Button>
+        <Button variant="secondary">Dos</Button>
+        <Button variant="secondary" onClick={() => setActive(false)}>
+          Salir
+        </Button>
+      </div>
+      <p className="text-sm text-muted-foreground">
+        {active ? "Tab da la vuelta dentro del recuadro; Escape sale." : "Inactiva."}
+      </p>
+    </div>
+  )
+}
+
+function MegaMenuStateDemo() {
+  const menu = useMegaMenu()
+  return (
+    <div className="space-y-3" onMouseLeave={menu.scheduleClose} onMouseEnter={menu.cancelClose}>
+      <div className="flex gap-2">
+        {["a", "b"].map(id => (
+          <Button key={id} variant={menu.openId === id ? "primary" : "secondary"} onClick={() => menu.open(id)}>
+            Panel {id}
+          </Button>
+        ))}
+        <Button variant="base" onClick={() => menu.close({ animate: false })}>
+          Cerrar
+        </Button>
+      </div>
+      <p className="text-sm text-muted-foreground">openId: {String(menu.openId)} · visibleId: {String(menu.visibleId)}</p>
+    </div>
+  )
+}
+
+function ReducedMotionDemo() {
+  const reduced = usePrefersReducedMotion()
+  return <p className="text-sm">prefers-reduced-motion: {reduced ? "reduce" : "no-preference"}</p>
+}
+
+export const FocusTrap: Story = { render: () => <FocusTrapDemo /> }
+export const MegaMenuState: Story = { render: () => <MegaMenuStateDemo /> }
+export const PrefersReducedMotion: Story = { render: () => <ReducedMotionDemo /> }
