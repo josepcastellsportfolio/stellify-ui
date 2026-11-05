@@ -83,4 +83,20 @@ describe("useFocusTrap", () => {
     )
     expect(getFocusables(container).map(el => el.textContent)).toEqual(["a"])
   })
+
+  it("getFocusables skips elements taken out of the tab order with a negative tabindex", () => {
+    const { container } = render(
+      <div>
+        <a href="#a">a</a>
+        <a href="#card" tabIndex={-1} aria-hidden="true">
+          card
+        </a>
+        <button type="button" tabIndex={-1}>
+          b
+        </button>
+        <a href="#c">c</a>
+      </div>,
+    )
+    expect(getFocusables(container).map(el => el.textContent)).toEqual(["a", "c"])
+  })
 })
