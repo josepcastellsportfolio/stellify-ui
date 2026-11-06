@@ -7,7 +7,7 @@ type Item = {
   dependencies?: string[]
   registryDependencies?: string[]
   css?: Record<string, unknown>
-  files?: { path: string }[]
+  files?: { path: string; type?: string; target?: string }[]
 }
 
 const root = path.resolve(__dirname, "..")
@@ -33,6 +33,38 @@ describe("registry.json integrity", () => {
       expect(fs.existsSync(path.join(root, file.path))).toBe(true)
     }
   })
+
+  // Where `shadcn add` writes a file, as the `@/…` path other items import it by.
+  const INSTALL_DIR: Record<string, string> = {
+    "registry:ui": "components/ui",
+    "registry:component": "components",
+    "registry:hook": "hooks",
+    "registry:lib": "lib",
+  }
+  const importPath = (file: { path: string; type?: string; target?: string }) =>
+    (file.target ?? `${INSTALL_DIR[file.type ?? ""] ?? "components"}/${path.basename(file.path)}`).replace(
+      /\.(tsx?|css)$/,
+      ""
+    )
+  const owner = new Map<string, string>()
+  for (const item of items) for (const file of item.files ?? []) owner.set(importPath(file), item.name)
+
+  it.each(items.map((i) => [i.name, i] as const))(
+    "%s: every @/ import is a file the item or one of its registryDependencies installs there",
+    (_, item) => {
+      const deps = new Set((item.registryDependencies ?? []).map((d) => d.replace(/^@stellify\//, "")))
+      for (const file of item.files ?? []) {
+        const source = fs.readFileSync(path.join(root, file.path), "utf8")
+        for (const [, spec] of source.matchAll(/(?:from|import)\s+["']@\/([^"']+)["']/g)) {
+          // A registry:component lands in components/, not components/ui/: importing it from
+          // @/components/ui/<name> breaks in every app that keeps the two folders apart.
+          const provider = owner.get(spec)
+          expect(provider, `${file.path} imports @/${spec}`).toBeDefined()
+          if (provider !== item.name) expect([...deps], `${file.path} imports @/${spec}`).toContain(provider)
+        }
+      }
+    }
+  )
 
   it("stellify-base ships Tailwind 4 animations, not the Tailwind 3 plugin", () => {
     const base = items.find((i) => i.name === "stellify-base")!
