@@ -103,7 +103,7 @@ export const SiteChat: FC<SiteChatProps> = ({
   return (
     <section
       className={cn(
-        "rounded-card border border-border bg-card p-8 shadow-card",
+        "rounded-card border border-border bg-card p-5 shadow-card sm:p-8",
         className,
       )}
     >
