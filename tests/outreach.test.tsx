@@ -110,6 +110,17 @@ describe("OutreachCard", () => {
     expect(await screen.findByText("Copiado")).toBeInTheDocument()
   })
 
+  it("copies only the saved text: Copiar is off while the draft has unsaved edits", async () => {
+    const user = userEvent.setup()
+    const writeText = vi.spyOn(navigator.clipboard, "writeText")
+    render(<OutreachCard status="ready" {...email} onSave={() => {}} />)
+    const copy = screen.getByRole("button", { name: /Copiar/ })
+    await user.type(screen.getByLabelText("Mensaje"), " editado")
+    expect(copy).toBeDisabled()
+    await user.click(copy)
+    expect(writeText).not.toHaveBeenCalled()
+  })
+
   it("shows the objections of a call script in their own tab, without a subject", async () => {
     render(
       <OutreachCard

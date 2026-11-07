@@ -90,8 +90,9 @@ function OutreachCard({
   const dirty = draftBody !== (body ?? "") || (subject !== null && draftSubject !== subject)
   const hasSubject = subject !== null
 
+  // Only the saved text is copied: an unsaved edit has not been checked by onSave's owner.
   const copy = async () => {
-    await navigator.clipboard.writeText(hasSubject ? `${draftSubject}\n\n${draftBody}` : draftBody)
+    await navigator.clipboard.writeText(hasSubject ? `${subject}\n\n${body ?? ""}` : (body ?? ""))
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -152,7 +153,7 @@ function OutreachCard({
               {objections && objections.length > 0 && <TabsTrigger value="objections">{t.objections}</TabsTrigger>}
               {probes && probes.length > 0 && <TabsTrigger value="probes">{t.probes}</TabsTrigger>}
             </TabsList>
-            <Button type="button" variant="base" size="sm" onClick={copy}>
+            <Button type="button" variant="base" size="sm" disabled={dirty} onClick={copy}>
               {copied ? <Check /> : <Copy />}
               {copied ? t.copied : t.copy}
             </Button>
