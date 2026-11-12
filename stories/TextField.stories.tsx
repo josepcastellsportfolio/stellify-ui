@@ -3,7 +3,7 @@ import { Mail, Search } from "lucide-react"
 import { TextField } from "@stellify/text-field"
 
 const meta = {
-  title: "Components/TextField",
+  title: "UI/TextField",
   component: TextField,
   tags: ["autodocs"],
   args: { label: "Email", placeholder: "you@example.com" },

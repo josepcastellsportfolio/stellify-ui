@@ -14,5 +14,11 @@
       "type": "registry:lib"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "lib"
+  ],
   "type": "registry:lib"
 }

@@ -20,5 +20,11 @@
       "target": "components/intelui/intelui-dropdown.tsx"
     }
   ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "blocks/assistant"
+  ],
   "type": "registry:component"
 }

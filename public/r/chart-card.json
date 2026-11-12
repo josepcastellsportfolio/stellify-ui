@@ -18,5 +18,11 @@
       "type": "registry:component"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "charts"
+  ],
   "type": "registry:component"
 }

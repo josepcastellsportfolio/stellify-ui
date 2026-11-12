@@ -18,5 +18,11 @@
       "target": "components/ui/time-range-selector.tsx"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "ui"
+  ],
   "type": "registry:ui"
 }

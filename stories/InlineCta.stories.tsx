@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { InlineCta } from "@stellify/inline-cta"
 
 const meta = {
-  title: "Marketing/InlineCta",
+  title: "Blocks/Site/InlineCta",
   component: InlineCta,
   tags: ["autodocs"],
   args: {

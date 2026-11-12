@@ -19,5 +19,11 @@
       "target": "components/intelui/intelui-floating-bar.tsx"
     }
   ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "blocks/assistant"
+  ],
   "type": "registry:component"
 }

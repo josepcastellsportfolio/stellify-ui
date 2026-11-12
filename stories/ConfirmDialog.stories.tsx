@@ -3,7 +3,7 @@ import { Button } from "@stellify/button"
 import { ConfirmDialog } from "@stellify/confirm-dialog"
 
 const meta = {
-  title: "Components/ConfirmDialog",
+  title: "UI/ConfirmDialog",
   component: ConfirmDialog,
   tags: ["autodocs"],
 } satisfies Meta<typeof ConfirmDialog>

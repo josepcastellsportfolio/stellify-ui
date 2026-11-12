@@ -118,5 +118,11 @@
   "css": {
     "@import \"tw-animate-css\"": {}
   },
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "foundations"
+  ],
   "type": "registry:style"
 }

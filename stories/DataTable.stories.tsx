@@ -51,7 +51,7 @@ const columns: DataTableColumn<Expense>[] = [
 ]
 
 const meta = {
-  title: "Components/DataTable",
+  title: "Data table/DataTable",
   component: DataTable,
   tags: ["autodocs"],
   parameters: { layout: "padded" },

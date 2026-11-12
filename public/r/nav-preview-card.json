@@ -13,5 +13,11 @@
       "type": "registry:ui"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "blocks/site"
+  ],
   "type": "registry:ui"
 }

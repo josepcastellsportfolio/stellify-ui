@@ -19,5 +19,11 @@
       "target": "components/ui/chart.tsx"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "charts"
+  ],
   "type": "registry:ui"
 }

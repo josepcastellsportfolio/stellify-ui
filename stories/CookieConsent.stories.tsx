@@ -4,7 +4,7 @@ import { fn } from "storybook/test"
 import { CookieConsent } from "@stellify/cookie-consent"
 
 const meta = {
-  title: "Marketing/CookieConsent",
+  title: "Blocks/Site/CookieConsent",
   component: CookieConsent,
   tags: ["autodocs"],
   parameters: { layout: "fullscreen" },

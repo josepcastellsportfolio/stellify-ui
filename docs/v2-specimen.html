@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+.sx{
+  --page:oklch(0.985 0.002 106); --s2:oklch(0.962 0.004 106); --s3:oklch(0.935 0.005 106);
+  --ink:oklch(0.21 0.02 265); --ink2:oklch(0.47 0.02 265); --hair:oklch(0.21 0.02 265 / .08);
+  --brand:oklch(0.525 0.095 126); --brand-ink:#fff; --brand-tint:oklch(0.94 0.035 126);
+  --ok:oklch(0.58 0.12 160); --ok-t:oklch(0.94 0.04 160);
+  --warn:oklch(0.62 0.14 70); --warn-t:oklch(0.95 0.05 80);
+  --bad:oklch(0.56 0.19 27); --bad-t:oklch(0.95 0.035 27);
+  --info:oklch(0.56 0.13 245); --info-t:oklch(0.95 0.03 245);
+  --c1:var(--brand); --c2:oklch(0.58 0.13 245); --c3:oklch(0.68 0.15 50); --c4:oklch(0.55 0.13 305); --c5:oklch(0.65 0.1 190);
+  --overlay:0 1px 2px oklch(0 0 0 / .06), 0 10px 24px -12px oklch(0 0 0 / .18);
+  --r-ctl:4px; --r-box:8px;
+  --ease:cubic-bezier(.2,.8,.25,1); --dur:240ms;
+  font-family:Inter,system-ui,sans-serif; color:var(--ink); font-size:14px; line-height:1.5;
+  display:grid; gap:12px;
+}
+.sx.dark{
+  --page:oklch(0.17 0.012 265); --s2:oklch(0.215 0.014 265); --s3:oklch(0.26 0.016 265);
+  --ink:oklch(0.96 0.005 265); --ink2:oklch(0.72 0.015 265); --hair:oklch(1 0 0 / .08);
+  --brand:oklch(0.74 0.11 126); --brand-ink:oklch(0.2 0.04 126); --brand-tint:oklch(0.3 0.05 126);
+  --ok:oklch(0.74 0.12 160); --ok-t:oklch(0.3 0.05 160);
+  --warn:oklch(0.8 0.13 80); --warn-t:oklch(0.32 0.05 80);
+  --bad:oklch(0.72 0.16 27); --bad-t:oklch(0.32 0.06 27);
+  --info:oklch(0.74 0.12 245); --info-t:oklch(0.3 0.05 245);
+  --overlay:0 1px 2px oklch(0 0 0 / .3), 0 12px 28px -12px oklch(0 0 0 / .6);
+}
+.sx *{box-sizing:border-box}
+.sec{background:var(--page); border-radius:var(--r-box); padding:16px}
+.h{font-size:11px; font-family:'Geist Mono',monospace; text-transform:uppercase; letter-spacing:.06em; color:var(--ink2); margin:0 0 10px}
+.t{font-size:22px; font-weight:600; letter-spacing:-0.03em; margin:0 0 4px}
+.sub{color:var(--ink2); margin:0}
+.row{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.g2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.g3{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.mono{font-family:'Geist Mono',monospace; font-variant-numeric:tabular-nums}
+.lbl{font-size:12px; color:var(--ink2); margin-bottom:4px; display:block}
+:where(.sx) :focus-visible{outline:2px solid var(--ink); outline-offset:2px}
+
+/* topbar */
+.top{display:flex; justify-content:space-between; align-items:center; gap:12px}
+
+/* before/after */
+.old{font-family:Inter; background:#fff; color:#0f172a; border:1px solid #e2e8f0; border-radius:14px; padding:14px; box-shadow:0 10px 30px -10px rgba(16,185,129,.35)}
+.old input{width:100%; border:1px solid #e2e8f0; border-radius:8px; padding:7px 10px; font:inherit; box-shadow:0 0 0 3px rgba(16,185,129,.25); outline:none; border-color:#34d399}
+.old button{margin-top:10px; background:linear-gradient(180deg,#22c55e,#16a34a); color:#fff; border:1px solid #15803d; border-radius:999px; padding:7px 14px; font:inherit; font-weight:600; box-shadow:0 8px 20px -6px rgba(34,197,94,.7)}
+.old .b{display:inline-block; border:1px solid #bbf7d0; background:#f0fdf4; color:#15803d; border-radius:999px; padding:0 8px; font-size:12px}
+.new{background:var(--s2); border-radius:var(--r-box); padding:14px}
+.tag{font-size:11px; font-family:'Geist Mono'; padding:2px 6px; border-radius:var(--r-ctl)}
+.tag.bad{background:var(--bad-t); color:var(--bad)} .tag.ok{background:var(--ok-t); color:var(--ok)}
+
+/* controls */
+.btn{font:inherit; font-weight:500; border:0; border-radius:var(--r-ctl); padding:7px 14px; cursor:pointer; transition:background var(--dur) var(--ease)}
+.btn.p{background:var(--ink); color:var(--page)} .btn.p:hover{background:color-mix(in oklch,var(--ink) 85%,var(--page))}
+.btn.b{background:var(--brand); color:var(--brand-ink)}
+.btn.s{background:var(--s3); color:var(--ink)} .btn.s:hover{background:color-mix(in oklch,var(--s3) 80%,var(--ink))}
+.btn.g{background:transparent; color:var(--ink)} .btn.g:hover{background:var(--s2)}
+.btn.d{background:var(--bad-t); color:var(--bad)}
+.field input,.field select{width:100%; font:inherit; color:var(--ink); background:var(--s2); border:0; border-radius:var(--r-ctl); padding:8px 10px; transition:background var(--dur) var(--ease)}
+.field input:hover{background:var(--s3)}
+.field.inv input{background:var(--bad-t)}
+.field .err{font-size:12px; color:var(--bad); margin-top:4px}
+.field .help{font-size:12px; color:var(--ink2); margin-top:4px}
+
+/* segmented */
+.seg{position:relative; display:inline-grid; grid-auto-flow:column; grid-auto-columns:1fr; background:var(--s2); border-radius:999px; padding:3px}
+.seg button{position:relative; z-index:1; font:inherit; font-size:13px; font-weight:500; border:0; background:none; color:var(--ink2); padding:5px 16px; border-radius:999px; cursor:pointer; transition:color var(--dur) var(--ease)}
+.seg button[aria-checked=true]{color:var(--page)}
+.seg .ind{position:absolute; top:3px; bottom:3px; left:3px; border-radius:999px; background:var(--ink); transition:transform var(--segdur,260ms) var(--ease), width var(--segdur,260ms) var(--ease)}
+.chk{display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink2)}
+
+/* badges */
+.badge{font-size:12px; font-weight:500; padding:2px 8px; border-radius:var(--r-ctl)}
+.badge.n{background:var(--s3); color:var(--ink)} .badge.ok{background:var(--ok-t); color:var(--ok)} .badge.w{background:var(--warn-t); color:var(--warn)} .badge.x{background:var(--bad-t); color:var(--bad)} .badge.i{background:var(--info-t); color:var(--info)} .badge.br{background:var(--brand-tint); color:var(--brand)}
+.chip{display:inline-flex; align-items:center; gap:6px; font-size:12px; background:var(--s2); padding:3px 4px 3px 10px; border-radius:999px}
+.chip button{border:0; background:var(--s3); color:var(--ink2); width:18px; height:18px; border-radius:999px; cursor:pointer; font-size:11px; line-height:1}
+.spin{width:16px; height:16px; border-radius:50%; border:2px solid var(--s3); border-top-color:var(--ink); animation:sp .8s linear infinite} @keyframes sp{to{transform:rotate(1turn)}}
+
+/* swatches */
+.sw{border-radius:var(--r-ctl); height:44px; display:flex; align-items:flex-end; padding:4px 6px; font-size:10px; font-family:'Geist Mono'}
+
+/* data */
+.metric{background:var(--s2); border-radius:var(--r-box); padding:12px}
+.metric .v{font-family:'Geist Mono'; font-size:22px; font-weight:500; letter-spacing:-0.02em; font-variant-numeric:tabular-nums}
+.metric .d{font-family:'Geist Mono'; font-size:12px}
+table{width:100%; border-collapse:collapse; font-size:13px}
+th{font-family:'Geist Mono'; font-weight:400; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink2); text-align:left; padding:6px 8px}
+td{padding:8px; border-top:1px solid var(--hair)}
+tbody tr{transition:background var(--dur) var(--ease)} tbody tr:hover{background:var(--s2)}
+td.n{font-family:'Geist Mono'; text-align:right; font-variant-numeric:tabular-nums} th.n{text-align:right}
+.bars{display:flex; align-items:flex-end; gap:6px; height:90px; padding-top:6px}
+.bars div{flex:1; display:flex; flex-direction:column-reverse; gap:2px}
+.bars span{display:block; border-radius:2px}
+
+/* overlay */
+.ovwrap{position:relative; height:150px; background:var(--s2); border-radius:var(--r-box); padding:12px}
+.pop{position:absolute; left:28px; top:52px; width:220px; background:var(--page); border-radius:var(--r-box); box-shadow:var(--overlay); padding:4px}
+.pop div{padding:6px 10px; border-radius:var(--r-ctl); font-size:13px; display:flex; justify-content:space-between}
+.pop div:hover,.pop div.a{background:var(--s2)}
+.pop kbd{font-family:'Geist Mono'; font-size:11px; color:var(--ink2)}
+
+/* empty state */
+.empty{display:grid; grid-template-columns:150px 1fr; gap:16px; align-items:center; background:var(--s2); border-radius:var(--r-box); padding:16px}
+.duo{position:relative; height:150px; border-radius:var(--r-ctl); overflow:hidden; background:var(--brand)}
+.duo img{width:100%; height:100%; object-fit:cover; filter:grayscale(1) contrast(1.25) brightness(1.05); mix-blend-mode:multiply}
+.duo::after{content:""; position:absolute; inset:0; background:var(--page); mix-blend-mode:lighten; opacity:.0}
+.cap{font-family:'Geist Mono'; font-size:10px; color:var(--ink2); margin-top:6px}
+
+/* structure */
+.tree{font-family:'Geist Mono'; font-size:12px; line-height:1.7; background:var(--s2); border-radius:var(--r-box); padding:12px; margin:0; white-space:pre; overflow-x:auto}
+.out{font-size:12px; color:var(--ink2)} .out b{color:var(--ink); font-weight:500}
+@media (max-width:560px){.g2,.g3{grid-template-columns:1fr} .empty{grid-template-columns:1fr}}
+</style></head><body>
+<div class="sx" id="sx">
+
+<div class="sec top">
+  <div><p class="t">stellify-ui v2</p><p class="sub">Sin bordes, sin brillos. Tonos, filetes, tinta.</p></div>
+  <div class="seg" role="radiogroup" data-seg id="theme">
+    <span class="ind"></span>
+    <button role="radio" aria-checked="true" data-v="light">Claro</button>
+    <button role="radio" aria-checked="false" data-v="dark">Oscuro</button>
+  </div>
+</div>
+
+<div class="sec">
+  <p class="h">Antes → después</p>
+  <div class="g2">
+    <div>
+      <span class="tag bad">antes · shadcn de serie</span>
+      <div class="old" style="margin-top:8px">
+        <div style="font-weight:600;margin-bottom:8px">Nuevo contacto <span class="b">Activo</span></div>
+        <input value="ana@empresa.es">
+        <button>Guardar</button>
+      </div>
+      <p class="out" style="margin-top:6px">Borde en cada caja · halo de foco translúcido · sombra verde · degradado · píldora</p>
+    </div>
+    <div>
+      <span class="tag ok">después</span>
+      <div class="new" style="margin-top:8px">
+        <div style="font-weight:600;margin-bottom:8px">Nuevo contacto <span class="badge ok">Activo</span></div>
+        <div class="field"><input value="ana@empresa.es"></div>
+        <div class="row" style="margin-top:10px"><button class="btn p">Guardar</button><button class="btn g">Cancelar</button></div>
+      </div>
+      <p class="out" style="margin-top:6px">Superficie tonal · campo relleno · foco = contorno de tinta 2px (pulsa Tab) · radios 4/8</p>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <p class="h">Fundamentos · superficies y tinta</p>
+  <div class="g3" style="grid-template-columns:repeat(5,1fr)">
+    <div class="sw" style="background:var(--page);box-shadow:inset 0 0 0 1px var(--hair)">surface-1</div>
+    <div class="sw" style="background:var(--s2)">surface-2</div>
+    <div class="sw" style="background:var(--s3)">surface-3</div>
+    <div class="sw" style="background:var(--ink);color:var(--page)">ink</div>
+    <div class="sw" style="background:var(--brand);color:var(--brand-ink)">brand*</div>
+  </div>
+  <p class="h" style="margin-top:14px">Estado · tonos propios, no son la marca</p>
+  <div class="row"><span class="badge ok">success</span><span class="badge w">warning</span><span class="badge x">danger</span><span class="badge i">info</span><span class="badge n">neutral</span><span class="badge br">brand</span></div>
+  <p class="h" style="margin-top:14px">Charts · paleta categórica (c1 = marca)</p>
+  <div class="g3" style="grid-template-columns:repeat(5,1fr)">
+    <div class="sw" style="background:var(--c1);color:#fff">c1</div><div class="sw" style="background:var(--c2);color:#fff">c2</div><div class="sw" style="background:var(--c3);color:#fff">c3</div><div class="sw" style="background:var(--c4);color:#fff">c4</div><div class="sw" style="background:var(--c5);color:#fff">c5</div>
+  </div>
+  <div class="g2" style="margin-top:14px">
+    <div><p class="h">Tipo</p>
+      <div style="font-size:26px;font-weight:600;letter-spacing:-0.03em;line-height:1.1">Inter display</div>
+      <div style="margin-top:4px">Inter 14 · texto de interfaz</div>
+      <div class="mono" style="margin-top:4px;color:var(--ink2)">Geist Mono · 1.284,50 € · 2026-11-12</div></div>
+    <div><p class="h">Radios · foco · elevación</p>
+      <div class="row">
+        <div style="width:44px;height:44px;background:var(--s3);border-radius:4px"></div>
+        <div style="width:44px;height:44px;background:var(--s3);border-radius:8px"></div>
+        <div style="width:64px;height:28px;background:var(--s3);border-radius:999px"></div>
+        <div style="width:44px;height:44px;background:var(--s2);border-radius:4px;outline:2px solid var(--ink);outline-offset:2px"></div>
+        <div style="width:44px;height:44px;background:var(--page);border-radius:8px;box-shadow:var(--overlay)"></div>
+      </div>
+      <p class="out" style="margin-top:6px">4 controles · 8 contenedores · píldora solo chip/segmented · foco · única sombra (overlays)</p></div>
+  </div>
+  <p class="out" style="margin-top:10px">* brand es el único token que cada producto sobrescribe.</p>
+</div>
+
+<div class="sec">
+  <p class="h">Núcleo · acciones y campos</p>
+  <div class="row"><button class="btn p">Primario</button><button class="btn b">Marca</button><button class="btn s">Secundario</button><button class="btn g">Ghost</button><button class="btn d">Eliminar</button><span class="spin" aria-label="Cargando"></span></div>
+  <div class="g3" style="margin-top:14px">
+    <div class="field"><label class="lbl">Nombre</label><input placeholder="Ana García"><div class="help">Como aparece en la factura</div></div>
+    <div class="field inv"><label class="lbl">Email</label><input value="ana@"><div class="err">Falta el dominio</div></div>
+    <div class="field"><label class="lbl">Importe</label><input class="mono" value="1.284,50 €" style="text-align:right"></div>
+  </div>
+  <p class="h" style="margin-top:16px">segmented-control · interrumpible</p>
+  <div class="row">
+    <div class="seg" role="radiogroup" data-seg>
+      <span class="ind"></span>
+      <button role="radio" aria-checked="true">7d</button><button role="radio" aria-checked="false">30d</button><button role="radio" aria-checked="false">90d</button><button role="radio" aria-checked="false">Todo</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="slow"> cámara lenta: clica otra opción a mitad de viaje</label>
+  </div>
+  <p class="out" style="margin-top:6px">El indicador cambia de rumbo desde donde está; nunca termina el viaje anterior.</p>
+  <p class="h" style="margin-top:16px">Etiquetas</p>
+  <div class="row"><span class="badge n">Borrador</span><span class="badge ok">Pagado</span><span class="badge w">Pendiente</span><span class="badge x">Vencido</span><span class="chip">Restauración <button aria-label="Quitar">✕</button></span><span class="chip">Barcelona <button aria-label="Quitar">✕</button></span></div>
+</div>
+
+<div class="sec">
+  <p class="h">Datos</p>
+  <div class="g3">
+    <div class="metric"><div class="lbl">Ingresos</div><div class="v">48.210 €</div><div class="d" style="color:var(--ok)">▲ 12,4 %</div></div>
+    <div class="metric"><div class="lbl">Leads</div><div class="v">1.093</div><div class="d" style="color:var(--bad)">▼ 3,1 %</div></div>
+    <div class="metric"><div class="lbl">Conversión</div><div class="v">4,82 %</div><div class="d" style="color:var(--ink2)">— 0,0 %</div></div>
+  </div>
+  <div class="g2" style="margin-top:12px">
+    <table>
+      <thead><tr><th>Cliente</th><th>Estado</th><th class="n">Importe</th></tr></thead>
+      <tbody>
+        <tr><td>Fusteria Pla</td><td><span class="badge ok">Pagado</span></td><td class="n">1.240,00</td></tr>
+        <tr><td>Cal Ros</td><td><span class="badge w">Pendiente</span></td><td class="n">380,50</td></tr>
+        <tr><td>Estudi Mar</td><td><span class="badge x">Vencido</span></td><td class="n">2.915,00</td></tr>
+        <tr><td>Forn Vila</td><td><span class="badge n">Borrador</span></td><td class="n">96,20</td></tr>
+      </tbody>
+    </table>
+    <div><div class="bars" id="bars"></div>
+      <div class="row" style="margin-top:8px;font-size:11px;color:var(--ink2)"><span>■ <span style="color:var(--c1)">web</span></span><span style="color:var(--c2)">■ ads</span><span style="color:var(--c3)">■ email</span><span style="color:var(--c4)">■ ref.</span></div></div>
+  </div>
+  <p class="out" style="margin-top:8px">Filetes solo entre filas · números en mono tabular · hover por tono</p>
+</div>
+
+<div class="sec">
+  <div class="g2">
+    <div><p class="h">Overlay · la única sombra</p>
+      <div class="ovwrap"><button class="btn s">Acciones ▾</button>
+        <div class="pop"><div class="a">Editar <kbd>E</kbd></div><div>Duplicar <kbd>⌘D</kbd></div><div>Exportar CSV <kbd>⇧E</kbd></div><div style="color:var(--bad)">Eliminar <kbd>⌫</kbd></div></div>
+      </div></div>
+    <div><p class="h">Empty state · lámina dominio público, duotono</p>
+      <div class="empty" style="grid-template-columns:110px 1fr">
+        <div><div class="duo" style="height:120px"><img src="https://mdl.artvee.com/ft/951234il.jpg" alt=""></div></div>
+        <div><div style="font-weight:600">Aún no hay facturas</div><p class="sub" style="font-size:13px;margin:4px 0 10px">Crea la primera o importa un CSV.</p><button class="btn p">Nueva factura</button></div>
+      </div>
+      <p class="cap">Artvee · dominio público · tinte = token brand</p></div>
+  </div>
+</div>
+
+<div class="sec">
+  <p class="h">Estructura del registro</p>
+<pre class="tree">foundations/   tokens · tema · Inter + Geist Mono · motion · ilustraciones
+ui/            núcleo ~45-55  (Acciones · Formularios · Navegación · Feedback
+               · Overlays · Datos · Layout · Tipografía)
+               field · text-field · number-field · date-field · search-field
+               segmented-control · badge · chip · spinner · card(.Header/.Actions)
+charts/        chart + area · bar · line · pie · radar · radial
+data-table/    tabla · filtros · paginación · vista móvil
+blocks/app/    app-shell · sidebar · page-header · metric-card · empty-state
+blocks/site/   site-nav + mega menú · site-footer · faq · cookie-consent · cta · artículo
+blocks/assistant/  intelui-*  (experimental)
+motion/        animated-text · scrub-words · clip-reveal · scroll-reveal · marquee
+hooks/ lib/</pre>
+  <div class="g2" style="margin-top:10px">
+    <p class="out"><b>Vuelven a captationcenter (~13):</b> business-card, map-view, outreach-card, search-form, coverage-matrix, quadrant-*, reason-list, score-badge, onboarding-shell, step-heading, nav-footer, stacked-timeline, logo · y las páginas Prospecting, Outreach, Onboarding, Quadrant.</p>
+    <p class="out"><b>Se borran:</b> money-input, currency-display, use-currency-format, number-compare, month-year-picker, week-grid, week-dates, kanban, carousel, power-chart, slider-field, category-tag, filter-bar, form-modal. <b>A togent:</b> offer-card, profile-intro, process-steps, closing-panel.</p>
+  </div>
+</div>
+
+</div>
+<script>
+const sx=document.getElementById('sx');
+if(matchMedia('(prefers-color-scheme: dark)').matches) sx.classList.add('dark');
+function place(seg){const sel=seg.querySelector('[aria-checked=true]'),ind=seg.querySelector('.ind');ind.style.width=sel.offsetWidth+'px';ind.style.transform=`translateX(${sel.offsetLeft-3}px)`}
+document.querySelectorAll('[data-seg]').forEach(seg=>{
+  const btns=[...seg.querySelectorAll('button')];
+  if(seg.id==='theme'){btns.forEach(b=>b.setAttribute('aria-checked',String((b.dataset.v==='dark')===sx.classList.contains('dark'))))}
+  btns.forEach((b,i)=>{b.tabIndex=b.getAttribute('aria-checked')==='true'?0:-1;
+    b.onclick=()=>{btns.forEach(x=>{x.setAttribute('aria-checked','false');x.tabIndex=-1});b.setAttribute('aria-checked','true');b.tabIndex=0;place(seg);
+      if(seg.id==='theme'){sx.classList.toggle('dark',b.dataset.v==='dark')}};
+    b.onkeydown=e=>{const d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(!d)return;e.preventDefault();const n=btns[(i+d+btns.length)%btns.length];n.focus();n.click()}});
+  requestAnimationFrame(()=>place(seg));
+});
+document.getElementById('slow').onchange=e=>sx.style.setProperty('--segdur',e.target.checked?'1400ms':'260ms');
+const data=[[30,18,10,6],[34,20,12,8],[28,22,14,7],[40,24,12,9],[44,26,16,10],[38,30,15,12]];
+document.getElementById('bars').innerHTML=data.map(r=>'<div>'+r.map((v,i)=>`<span style="height:${v*0.8}px;background:var(--c${i+1})"></span>`).join('')+'</div>').join('');
+</script>
+</body></html>

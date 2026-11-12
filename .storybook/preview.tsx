@@ -44,6 +44,12 @@ const preview: Preview = {
     layout: "fullscreen",
     controls: { expanded: true },
     docs: { toc: true },
+    // Same taxonomy as `categories` in registry.json.
+    options: {
+      storySort: {
+        order: ["Foundations", "UI", "Charts", "Data table", "Blocks", ["App", "Site", "Assistant"], "Motion", "Hooks"],
+      },
+    },
   },
 }
 

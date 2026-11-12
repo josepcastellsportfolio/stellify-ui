@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
 import { Chip } from "@stellify/chip"
 
-const meta = { title: "Components/Chip", component: Chip, args: { children: "Sin página web" } } satisfies Meta<typeof Chip>
+const meta = { title: "UI/Chip", component: Chip, args: { children: "Sin página web" } } satisfies Meta<typeof Chip>
 
 export default meta
 type Story = StoryObj<typeof meta>
