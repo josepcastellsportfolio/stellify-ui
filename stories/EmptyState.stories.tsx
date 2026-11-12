@@ -4,7 +4,7 @@ import { Button } from "@stellify/button"
 import { EmptyState } from "@stellify/empty-state"
 
 const meta = {
-  title: "Components/EmptyState",
+  title: "Blocks/App/EmptyState",
   component: EmptyState,
   tags: ["autodocs"],
   args: {

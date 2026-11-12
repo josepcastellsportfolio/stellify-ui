@@ -16,5 +16,11 @@
       "type": "registry:hook"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "blocks/site"
+  ],
   "type": "registry:hook"
 }

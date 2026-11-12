@@ -18,5 +18,11 @@
       "target": "components/intelui/actionable.tsx"
     }
   ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "blocks/assistant"
+  ],
   "type": "registry:component"
 }

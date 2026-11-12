@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { KeyTakeaways } from "@stellify/key-takeaways"
 
 const meta = {
-  title: "Marketing/KeyTakeaways",
+  title: "Blocks/Site/KeyTakeaways",
   component: KeyTakeaways,
   tags: ["autodocs"],
   args: {

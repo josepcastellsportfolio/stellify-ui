@@ -16,5 +16,11 @@
       "type": "registry:component"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "blocks/site"
+  ],
   "type": "registry:component"
 }

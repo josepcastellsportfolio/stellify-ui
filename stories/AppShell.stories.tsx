@@ -3,13 +3,12 @@ import { Compass, KeyRound, LayoutGrid, LogOut, MapPin, Megaphone, PanelLeft, Pe
 import { useState } from "react"
 import { AppShell } from "@stellify/app-shell"
 import { EmptyState } from "@stellify/empty-state"
-import { Logo } from "@stellify/logo"
 import { Sidebar, SidebarGroup, SidebarItem } from "@stellify/sidebar"
 import { Button } from "@stellify/button"
 import { Badge } from "@stellify/badge"
 
 const meta = {
-  title: "Components/AppShell",
+  title: "Blocks/App/AppShell",
   component: AppShell,
   parameters: { layout: "fullscreen" },
   args: { sidebar: null, children: null },
@@ -25,7 +24,7 @@ const tuVia = (
 )
 
 const Nav = ({ spinner = false }: { spinner?: boolean }) => (
-  <Sidebar aria-label="Navegación principal" logo={<Logo height={26} />}>
+  <Sidebar aria-label="Navegación principal" logo={<span className="text-lg font-semibold tracking-tight">Stellify</span>}>
     <SidebarGroup label="Captación">
       <SidebarItem icon={LayoutGrid} href="#">Cuadrante</SidebarItem>
       <SidebarItem icon={PenLine} href="#">C1 · Contenido</SidebarItem>

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { StatusBadge } from "@stellify/status-badge"
 
 const meta = {
-  title: "Components/StatusBadge",
+  title: "UI/StatusBadge",
   component: StatusBadge,
   tags: ["autodocs"],
   argTypes: {

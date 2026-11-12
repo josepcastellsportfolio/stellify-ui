@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ProgressRing } from "@stellify/progress-ring"
 
 const meta = {
-  title: "Components/ProgressRing",
+  title: "UI/ProgressRing",
   component: ProgressRing,
   tags: ["autodocs"],
   args: { value: 65, max: 100, size: 96, strokeWidth: 8 },

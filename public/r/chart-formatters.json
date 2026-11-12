@@ -11,5 +11,11 @@
       "target": "lib/chart-formatters.ts"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "charts"
+  ],
   "type": "registry:lib"
 }

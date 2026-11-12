@@ -14,5 +14,11 @@
       "target": "components/ui/card.tsx"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "ui"
+  ],
   "type": "registry:ui"
 }

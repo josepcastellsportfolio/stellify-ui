@@ -18,5 +18,11 @@
       "target": "components/intelui/intelui-conversation-list.tsx"
     }
   ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "blocks/assistant"
+  ],
   "type": "registry:component"
 }

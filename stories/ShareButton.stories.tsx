@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ShareButton } from "@stellify/share-button"
 
 const meta = {
-  title: "Marketing/ShareButton",
+  title: "Blocks/Site/ShareButton",
   component: ShareButton,
   tags: ["autodocs"],
   parameters: {

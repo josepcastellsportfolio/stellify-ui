@@ -3,7 +3,7 @@ import { Phone } from "lucide-react"
 import { StickyCta } from "@stellify/sticky-cta"
 
 const meta = {
-  title: "Marketing/StickyCta",
+  title: "Blocks/Site/StickyCta",
   component: StickyCta,
   tags: ["autodocs"],
   parameters: {

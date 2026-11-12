@@ -30,209 +30,172 @@ the registry; `shadcn build` is unaffected.
 
 ## What's in here
 
-| Item | Type | Summary |
-|---|---|---|
-| `stellify-base` | style | The design system: emerald/teal/slate tokens (light + dark, oklch), Inter font, radius. **Install first.** |
-| `button` | ui | **Overwrites `ui/button`.** Hierarchy `primary`/`secondary`/`base` (+ `destructive`/`success`/`warning`/`info`/`link`, plus `default`/`outline`/`ghost` back-compat aliases), `loading` spinner, and a CRUD `mode` (`create`/`edit`/`finish`) → semantic color + icon. |
-| `input` | ui | **Overwrites `ui/input`.** Standard shadcn input + invalid state (`aria-invalid` → destructive border). API-compatible. |
-| `text-field` | component | Labeled input with error/helper text + leading/trailing icons (wraps `input`). |
-| `metric-card` | component | KPI card (label, value, unit, delta, accent icon, `invertDelta`, `hint`, value `tone`, `size="compact"` for dense rows). |
-| `trend-indicator` | component | Up / down / flat arrow + formatted change with a semantic tone (`inverted` for costs); direction from `direction` or a numeric `change` + `flatThreshold`. `label` is the screen-reader text. |
-| `chart-card` | component | Card shell for charts: loading / empty / error states + header actions. |
-| `currency-display` | component | Number → localized currency via `Intl.NumberFormat`. |
-| `money-input` | component | Controlled numeric input with a currency adornment. |
-| `progress-ring` | component | SVG circular progress, themed via tokens. |
-| `page-header` | component | Title + description + actions (presentational only). |
-| `section-card` | component | Titled card panel shell. |
-| `empty-state` | ui | Icon + title + description + action placeholder. |
-| `status-badge` | component | Badge with semantic status colors. |
-| `confirm-dialog` | component | Confirmation dialog over AlertDialog. |
-| `data-table` | component | Controlled, presentational paginated table (sort, skeleton, empty; `toolbar`/`footer` slots). Sortable headers are buttons with `aria-sort`; the actions column header comes from `actionsLabel`. |
-| `data-table-pagination` | component | Pagination footer (page-size + prev/next) for `data-table`. |
-| `data-table-toolbar` | component | Search box + filters toggle for `data-table`'s toolbar slot. |
-| `data-table-mobile` | component | Card-per-row mobile view reusing `data-table` columns. |
-| `filter-bar` | component | Sticky filter form: `FilterBar` (grid column per field + clear button) with `FilterSelect` (first option = all → `""`) and `FilterText` (debounced search box). Copy via props. |
-| `use-currency-format` | hook | Memoized currency formatter. |
-| `use-persisted-state` | hook | `useState` synced to localStorage (SSR-safe). |
-| `week-dates` | lib | Date helpers for weekly grids (no date library). |
-| `week-grid` | component | 7-day week grid + day columns (generalized planner). |
-| `carousel` | component | Generic card carousel: autoplay, hover-pause, drag/swipe, responsive slides-per-view, arrows + dots. Pass `items` + `renderItem`. |
-| `form-modal` | component | Reusable CRUD form modal (react-hook-form + zod): text/number/date/select/color/switch fields, two-column layout, create/update handlers. Copy via props; `onNotify` for toasts. |
-| `date-picker-field` | component | Button + calendar popover; emits ISO `YYYY-MM-DD`. Locale via prop. |
-| `date-range-picker` | component | Range calendar in a popover with quick presets (Today, last 7/30/90 days, this month). Emits ISO `{ from, to }`. |
-| `time-picker` | component | Hour + minute selects (+ AM/PM unless `use24Hour`). Emits 24h `HH:mm`. |
-| `number-compare` | component | Operator select (=, <, ≤, >, ≥) + numeric input. Emits `{ operator, value }`. |
-| `month-year-picker` | component | Native month input (`YYYY-MM`) wrapper, controlled via month/year. |
-| `loading-spinner` | component | Centered spinner; `fullScreen` for route-level loading. |
-| `category-tag` | component | Colored badge resolving Parent / Child category hierarchy. |
-| `logo` | component | StellifyIT wordmark (SVG, `currentColor`). |
+Every item in `registry.json` carries a `categories` entry (the group below) and a `meta.status`:
+`ready`, `experimental` or `deprecated`. Storybook follows the same order. What belongs in the core:
+generic (no domain vocabulary) and used by 2+ products, or a base piece of the system.
+Domain components live in their product (see [MIGRATION.md](MIGRATION.md)).
 
-### Public pages (SEO, conversion, consent)
+### Foundations
 
-Prerender-safe: nothing reads `window`/`navigator`/`document` during render.
-Links go through an optional `renderLink` so apps keep client-side routing.
+Install `stellify-base` once per app, before anything else. It sets the Inter family but does not load it: self-host it (e.g. `@fontsource/inter` 400/500/600/700).
 
 | Item | Type | Summary |
 |---|---|---|
-| `key-takeaways` | component | "En resumen" `<aside>` labelled by its h2 + list; sits between the h1 intro and the first h2. Renders nothing when empty. |
-| `faq-list` | component | FAQ on native `<details>`/`<summary>` (zero JS, answers in the HTML for crawlers) + `faqPageJsonLd(items)` (schema.org FAQPage, no `@context`, for an `@graph`). |
-| `inline-cta` | component | Compact card: one sentence + a primary button-styled link. Goes after the first paragraph. |
-| `sticky-cta` | component | Mobile-only fixed bottom bar (z-40, safe-area) with optional icon secondary (e.g. `tel:`) and an in-flow spacer so the footer is never covered. |
-| `share-button` | component | Native share sheet when available (checked on click), else a popover: copy link + LinkedIn/WhatsApp/X/email intents. No third-party scripts. |
-| `cookie-consent` | component | Presentational, non-modal analytics consent banner (z-50). Accept and Reject with equal weight; no close button. |
+| `stellify-base` | style | Canonical StellifyIT theme: emerald/teal/slate tokens (light + dark, oklch), Inter font, radius. Install first. |
 
-Extended (backwards compatible): `long-form-article` (`afterIntro` / `afterContent` slots).
+### UI (core)
 
-### Site header and scroll motion
-
-Promoted from the stellifyit-global home redesign. Content and copy come in
-through props (no i18n inside); links go through `renderLink`, whose props
-include `children` — `(link, props) => <Link to={link.href} {...props} />`.
-Without `renderLink` they render `NavAnchor`, a plain `<a>`.
-
-The components are `registry:ui`: `shadcn add` writes them to
-`components/ui/` and they import each other as `@/components/ui/<name>`; the
-hooks land in `hooks/`.
+Generic building blocks. The standard shadcn primitives ship here too, so an app **without** shadcn installs everything from one place (they overwrite `ui/<name>`; use `--overwrite`).
 
 | Item | Type | Summary |
 |---|---|---|
-| `mega-menu-panel` | ui | Full-width panel: up to 3 labelled link columns, optional CTA, preview cards that follow the hovered/focused link. Always in the DOM (`hidden`) so links prerender. `motion="css"` for a fade without GSAP. |
-| `nav-preview-card` | ui | Photo-with-scrim or dark-panel preview card, out of the tab order; `FacetGrid` decoration. Colours via `--nav-preview-bg/-fg/-muted`. |
-| `use-mega-menu` | hook | Open/close state: instant open, 120 ms grace close, closing state until the exit animation ends. `megaMenuPanelId`. |
-| `use-mega-menu-motion` | hook | GSAP motion for the panels (`useMegaMenuMotion`) + `MegaMenuMotion`, a render-nothing component for `SiteNav`'s `menuMotion`. |
-| `use-focus-trap` | hook | Tab/Shift+Tab cycle inside a root (skips `inert`/`hidden`), Escape callback, initial focus, scroll lock, optional focus restore. |
-| `use-prefers-reduced-motion` | hook | Reactive, prerender-safe reduced-motion flag. |
-| `animated-text` | ui | Text rising out of a mask line by line / word by word on first view (GSAP SplitText). |
-| `clip-reveal` | ui | Panel opening from a rounded inset `clip-path` as it scrolls in (scrub). |
-| `scroll-reveal` | ui | Section background widening from an inset card to full width as it scrolls up. |
-| `scrub-words` | ui | Statement whose words light up one by one with the scroll. |
-| `marquee` | ui | Infinite marquee (Web Animations API, no keyframes), read once by screen readers, pauses on hover. Not `overflow-marquee` (hover reveal of one truncated string). |
-| `closing-panel` | ui | Dark closing band: headline, intro, `action` slot, dot grid. Colours via `--closing-bg/-fg/-muted`. |
-
-GSAP items depend on `gsap` and `@gsap/react` (SplitText ships in `gsap` ≥ 3.13).
-All of them render their final state as markup and do nothing under reduced motion.
-
-Extended (backwards compatible): `site-nav` — `menu` (desktop mega-menu +
-mobile drill-down sheet with focus trap, scroll lock and an actions dock),
-`mobileVariant`, `mobileBrand`, `mobileActions`, `labels`, `menuMotion`,
-`previewDecoration`, `panelContainerClassName`, `idPrefix`, `onOpenChange`,
-`onNavigate`. Without `menu` it behaves as before. It is now a `registry:ui`
-item too, so a fresh `shadcn add @stellify/site-nav` writes `components/ui/site-nav.tsx`.
-
-### Step flows and app layout
-
-Built for captationcenter, generic enough for any onboarding or back-office app.
-All copy is passed in (Spanish defaults), every part emits `data-slot`.
-
-| Item | Type | Summary |
-|---|---|---|
-| `onboarding-shell` | component | Multi-step frame: logo + "Paso n de N", thin `progress`, centered ~580 px column. |
-| `step-heading` | component | Step title (h1) + grey subtitle. |
-| `choice-card` | component | `ChoiceCardGroup` + `ChoiceCard`: single-choice block options (Radix radio group, arrow keys). |
-| `nav-footer` | component | "← Atrás" + primary "Siguiente →"; disabled / loading / submit. |
-| `number-input` | component | Controlled number (empty = `null`) with a vertical ± stepper and min/max clamping. |
-| `slider` | ui | Radix slider: one thumb per entry of `value`/`defaultValue` (single value or `[min, max]` range), disabled state. |
-| `textarea-field` | component | Labeled `textarea` with required, error and helper text. |
-| `quadrant-grid` / `quadrant-cell` | component | 2×2 grid with column headers and vertical row labels; `active` cell gets a primary border + "Tu vía" badge. |
-| `reason-list` | component | Justifications with a primary check. |
-| `app-shell` | component | Fixed sidebar (collapsible) + optional top bar + scrollable main. |
-| `sidebar` | component | `Sidebar`, `SidebarGroup`, `SidebarGroupLabel`, `SidebarItem` (`aria-current`, trailing slot, `asChild` for router links). |
-
-Extended (backwards compatible): `progress` (`size="sm"`), `textarea` (`autoResize`), `badge` (`size="xs"`, `uppercase`).
-
-### Prospecting (search results on a map)
-
-| Item | Type | Summary |
-|---|---|---|
-| `search-form` | component | Inline required text fields + primary search button (trimmed values, loading). |
-| `map-view` | component | Leaflet map with circle markers (selected = primary), fits to markers, OSM tiles + attribution. Ships `@types/leaflet`. |
-| `business-card` | component | Selectable business row: checkbox, name + `score-badge`, address, rating · phone · web, `chip`s; optional `toggle` slot. |
-| `score-badge` / `chip` / `collapse-toggle` | component | Numeric score pill · neutral tag (optional `onRemove`) · "^ Contraer la lista" toggle. |
-
-Extended (backwards compatible): `page-header` (`eyebrow`), `status-badge` (`icon`, `appearance="plain"`).
-
-### Generated messages
-
-| Item | Type | Summary |
-|---|---|---|
-| `outreach-card` | component | Diagnosis, channel tab, editable subject/body + save, copy to clipboard, objections and probes («Para explorar») tabs for call scripts; generating/queued/failed states; badges, warning and `onTrack`. |
-| `coverage-matrix` | component | Rows × columns of done / planned / untouched cells with legend; every word via props (`stateLabels`, `actionLabels`, `cellLabel`, `legendLabel`). Back `getCell` with a Map. |
-| `stacked-timeline` | component | Stacked bars per bucket (plain SVG) with amount axis, cap line, side bars for series outside the cap and period totals in the legend; empty state when nothing was spent. Texts via props (`capLabel`, `emptyLabel`, `apartNote`, `periodHeader`). |
-| `kanban` | component | `KanbanBoard` (`columns`, `onMove`), `KanbanColumn` (count, empty text) and `KanbanCard` (title, subtitle, badges, actions): native drag and drop on desktop plus a «Mover a…» select per card for keyboard and touch. |
-| `loading-state` | component | Title + text + spinner with optional "n de N" progress (`role="status"`). |
-
-Extended (backwards compatible): `tabs` (`TabsList variant="plain"`).
-
-> Inter: `stellify-base` sets the family but doesn't load it. Self-host it in the app
-> (e.g. `@fontsource/inter` 400/500/600/700).
+| `trend-indicator` | component | Up/down/flat arrow with a formatted change and a semantic tone (up = success, down = danger; invertible for costs). Direction can be derived from a numeric change with a flat threshold. The required label is what screen readers read; copy via props. |
+| `progress-ring` | component | SVG circular progress indicator. value/max/size/strokeWidth via props, themed with currentColor + muted track. |
+| `section-card` | component | Card with a titled header, optional description, header actions slot and content area. Common panel shell. |
+| `status-badge` | component | Badge with semantic status variants (success/warning/danger/info/neutral). Label via children. `icon` and `appearance="plain"` (icon + text, no background) for status pills. |
+| `confirm-dialog` | component | Controlled confirmation dialog over AlertDialog. All copy via props; destructive flag for dangerous actions. |
+| `alert-dialog` | ui | Radix alert dialog (vendored from shadcn so `confirm-dialog` never resolves upstream). Emits data-slot. |
+| `table` | ui | Table primitives (vendored from shadcn so `data-table` never resolves upstream). Emits data-slot. |
+| `button` | ui | API-compatible superset of the shadcn button: primary/secondary/base hierarchy + success/warning/info, a loading spinner state, and a CRUD `mode` (create/edit/finish) that injects a semantic color and icon. Overwrites ui/button. |
+| `input` | ui | Standard shadcn input plus an invalid state (aria-invalid turns the border destructive). API-compatible; overwrites ui/input. |
+| `text-field` | component | Labeled input with error/helper text and optional leading/trailing icons. Wires htmlFor/aria-invalid/aria-describedby. Copy via props. |
+| `badge` | ui | Badge with variants plus `size` (default \| xs) and `uppercase`. Emits data-slot. |
+| `card` | ui | Standard shadcn card primitive, shipped under @stellify for apps without shadcn. Overwrites ui/card. |
+| `dialog` | ui | Standard shadcn dialog primitive, shipped under @stellify for apps without shadcn. Overwrites ui/dialog. |
+| `select` | ui | Standard shadcn select primitive, shipped under @stellify for apps without shadcn. Overwrites ui/select. |
+| `tabs` | ui | Standard shadcn tabs primitive, shipped under @stellify for apps without shadcn. Overwrites ui/tabs. `TabsList variant="plain"`: text tabs with an underline, no pill background. Emits data-slot. |
+| `checkbox` | ui | Standard shadcn checkbox primitive, shipped under @stellify for apps without shadcn. Overwrites ui/checkbox. |
+| `slider` | ui | Standard shadcn slider primitive (Radix), single or range thumbs, shipped under @stellify. Overwrites ui/slider. |
+| `switch` | ui | Standard shadcn switch primitive, shipped under @stellify for apps without shadcn. Overwrites ui/switch. |
+| `tooltip` | ui | Standard shadcn tooltip primitive, shipped under @stellify for apps without shadcn. Overwrites ui/tooltip. |
+| `dropdown-menu` | ui | Standard shadcn dropdown-menu primitive, shipped under @stellify for apps without shadcn. Overwrites ui/dropdown-menu. |
+| `popover` | ui | Standard shadcn popover primitive, shipped under @stellify for apps without shadcn. Overwrites ui/popover. |
+| `calendar` | ui | Standard shadcn calendar primitive, shipped under @stellify for apps without shadcn. Overwrites ui/calendar. |
+| `textarea` | ui | Textarea with `autoResize` (grows with content). Emits data-slot. |
+| `separator` | ui | Standard shadcn separator primitive, shipped under @stellify for apps without shadcn. Overwrites ui/separator. |
+| `label` | ui | Standard shadcn label primitive, shipped under @stellify for apps without shadcn. Overwrites ui/label. |
+| `progress` | ui | Standard shadcn progress primitive, shipped under @stellify for apps without shadcn. Overwrites ui/progress. `size="sm"`: thin bar on a neutral track. |
+| `form` | ui | Standard shadcn form primitive, shipped under @stellify for apps without shadcn. Overwrites ui/form. |
+| `time-range-selector` | ui | Segmented time-range control (7d/30d/90d/All) + getRangeBounds() helper. i18n-agnostic. For chart headers. |
+| `date-picker-field` | component | Button + calendar popover date field. Emits ISO YYYY-MM-DD. Locale via prop. |
+| `loading-spinner` | component | Centered spinner; fullScreen option for route-level loading. size/label props. |
+| `date-range-picker` | component | Range calendar popover with presets, Apply/Cancel, side-by-side months, and an optional date↔datetime switch that unlocks start/end time pickers (default 00:00). Emits ISO { from, to } (with THH:mm when time is on). |
+| `time-picker` | component | Hour + minute selects (+ AM/PM unless use24Hour). Controlled, emits 24h 'HH:mm'. minuteStep configurable. |
+| `overflow-marquee` | component | Truncates with an ellipsis at rest and, only when the text actually overflows, slides horizontally on hover/focus to reveal the full string, easing back on leave. Self-contained (measures its own overflow, pure CSS transform, no Tailwind config). Honors reduced motion; keeps a native title fallback. |
+| `number-input` | component | Controlled numeric input (empty = null) with a vertical ± stepper, min/max clamping and translatable button labels. |
+| `choice-card` | component | Single-choice block options (Radix radio group): title + description, selected = primary border + check. |
+| `textarea-field` | component | Labeled textarea with required asterisk, error and helper text (multi-line sibling of text-field). |
+| `chip` | component | Small neutral tag (e.g. a detected signal); optional `onRemove` adds an accessible remove button. |
+| `collapse-toggle` | component | Text button that collapses/expands a region (aria-expanded, aria-controls). |
+| `loading-state` | component | Long-running work: title + text + spinner, optional "n de N" progress (role=status). |
 
 ### Charts
 
-Vendored from shadcn/ui and re-themed with the stellify-base `--chart-*` tokens
-(so they match the StellifyIT palette in light/dark). Each chart ships demo data
-inside its file — copy it in and edit freely.
+The `chart` primitive (`ChartContainer` / `ChartTooltip` / `ChartLegend` over Recharts) is required by every chart. Each chart ships demo data inside its file; `chart-area`, `chart-bar` and `chart-line` are data-driven (`data` + `config`).
 
 | Item | Type | Summary |
 |---|---|---|
-| `chart` | ui | The chart primitive: `ChartContainer` / `ChartTooltip` / `ChartLegend` over Recharts. **Required by the charts below.** Overwrites `ui/chart`. |
-| `chart-area` | component | Area chart. |
-| `chart-bar` | component | Bar chart. |
-| `chart-line` | component | Line chart. |
-| `chart-pie` | component | Pie / donut chart. |
-| `chart-radar` | component | Radar chart. |
-| `chart-radial` | component | Radial chart. |
+| `chart-card` | component | Card shell for charts with loading skeleton, empty and error states, header actions slot. All copy passed via props. |
+| `chart` | ui | shadcn chart primitive: ChartContainer/ChartTooltip/ChartLegend over Recharts, wired to stellify-base chart tokens. Overwrites ui/chart. |
+| `chart-area` | component | Area chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
+| `chart-bar` | component | Bar chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
+| `chart-line` | component | Line chart built on the chart primitive + Recharts 3, using stellify-base chart-N tokens. Optional per-series dashes, linear curve, Y axis and X formatter. Demo data inside. |
+| `chart-pie` | component | Pie / donut chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
+| `chart-radar` | component | Radar chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
+| `chart-radial` | component | Radial chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
+| `chart-formatters` | lib | Intl-based value/currency/date/number formatters for chart tooltips, legends and axis ticks. Pure, no React. |
+| `use-series-toggle` | hook | Visibility state for an interactive chart legend (click series to show/hide). |
 
-```bash
-npx shadcn@latest add @stellify/chart @stellify/chart-area
-```
+### Data table
 
-The `chart-area` / `chart-bar` / `chart-line` blocks are **data-driven** (pass
-`data` + `config`, or render with no props for the demo).
+`data-table` is presentational: keep your own data hook and feed it `rows`/`sort`; search goes in `toolbar`, pagination in `footer`. See [Composing the data table](#composing-the-data-table).
 
-#### PowerChart — dashboard-grade chart
+| Item | Type | Summary |
+|---|---|---|
+| `data-table` | component | Presentational paginated table (columns, rows, sort, loading skeleton, empty state). Sortable headers are buttons with aria-sort on the header cell (Tab + Enter/Space); the actions column's hidden header comes from actionsLabel. Fetching is the consumer's job — see toolbar/pagination slots. |
+| `data-table-pagination` | component | Controlled pagination footer for data-table: page-size selector + prev/next. Labels via props. No paging logic. |
+| `data-table-toolbar` | component | Search box (with clear) + optional filters toggle and reset for data-table. Presentational; owns no filter state. Drop into the toolbar slot. |
+| `data-table-mobile` | component | Card-per-row mobile view reusing data-table's columns. Pair with data-table behind a breakpoint. Includes loading skeletons + empty slot. |
+| `data-table-filters` | lib | Filter type system for DataTable: 10 filter kinds, operators, state shapes, type guards and factory helpers. No UI. |
+| `data-table-filter-widget` | component | Renders the control for one filter definition — text, number, ranges, date, datetime, select, multiselect and async column values. |
+| `data-table-column-filter` | component | Filter trigger for a column header: an icon that opens the column's filter in a popover, so a wide control is not bound to the column's width. |
+| `data-table-active-filters` | component | Chips showing which filters are applied; each reopens its filter for editing and clears itself. |
 
-`@stellify/power-chart` is a single configurable component (Grafana-ish) over the
-chart primitive. One `type` prop (`area|bar|line|pie|radar|radial`) + options:
+### Blocks · app
 
-- **Reference lines / thresholds** with semantic colors (`success|warning|info|destructive`).
-- **Interactive legend** — click a series to show/hide (`legend.interactive`).
-- **Intl tooltips + axes** via `formatters` (`currency|number|date`).
-- **Brush + time-range selector** (7d/30d/90d/All) for time series.
-- **Loading / empty / error** states (reuses `chart-card`; `retryLabel` for the retry button).
-- **Screen-reader table** — `dataTable={{ caption, xHeader, seriesHeaders? }}` renders a visually hidden table of the plotted values, formatted with `formatters`.
+App layout pieces: built from the core, opinionated layout.
 
-```tsx
-<PowerChart
-  type="bar" title="Spend vs budget" data={rows} xKey="month"
-  series={[{ key: "spend", color: "var(--chart-3)" }]}
-  referenceLines={[{ value: 250, label: "Budget", color: "warning" }]}
-  legend={{ interactive: true }}
-  formatters={{ value: { kind: "currency", currency: "EUR", locale: "es-ES" } }}
-/>
-```
+| Item | Type | Summary |
+|---|---|---|
+| `metric-card` | component | KPI card: label, value, unit, delta with trend arrow, accent icon chip. invertDelta flips good/bad colors (for expenses); tone colors the value (negative = red); details adds label/value rows. |
+| `page-header` | component | Page title + optional description + actions slot. Presentational only (no auth/theme/locale logic). Optional `eyebrow` line above the title. |
+| `empty-state` | component | Centered empty/placeholder block: icon, title, description and optional action. |
+| `app-shell` | component | App frame: fixed left sidebar (collapsible), optional top bar, scrollable main. |
+| `sidebar` | component | Vertical app nav: Sidebar, SidebarGroup, SidebarGroupLabel, SidebarItem (icon, active = aria-current, trailing slot, asChild for router links). |
 
-Supporting items pulled in automatically: `chart-formatters` (lib),
-`use-series-toggle` (hook), `time-range-selector` (ui). Brush/reference lines
-apply to cartesian charts only. Install:
+### Blocks · site
 
-```bash
-npx shadcn@latest add @stellify/power-chart
-```
+Public pages. Prerender-safe: nothing reads `window`/`navigator`/`document` during render. Links go through an optional `renderLink` so apps keep client-side routing; copy comes in through props (`labels`).
 
-### shadcn primitives
+| Item | Type | Summary |
+|---|---|---|
+| `site-nav` | ui | Public site navigation with an accessible mobile menu (focus trap, Escape to close). Optional mega-menu: desktop triggers open MegaMenuPanels (hover, click, ArrowDown; Escape/outside/blur close), mobile becomes a full-screen drill-down sheet (portal, focus trap, scroll lock, inert off-screen pane, actions dock). Links are real anchors so they stay crawlable. |
+| `use-mega-menu` | hook | Mega-menu open/close state: instant open, delayed close for diagonal mouse moves, and a closing state kept until the exit animation finishes. No animation library. Exports megaMenuPanelId. |
+| `use-mega-menu-motion` | hook | GSAP motion for MegaMenuPanel: background grows down, content unclips, items stagger in; category switch re-staggers only; faster fold-up on close. Also a render-nothing MegaMenuMotion component for SiteNav's menuMotion prop. Honors reduced motion. |
+| `nav-preview-card` | ui | Mega-menu preview card: photo with scrim or a dark panel with title, summary and an optional decoration (FacetGrid included). Out of the tab order and a11y tree; renderLink for client routers. |
+| `mega-menu-panel` | ui | Full-width mega-menu panel: up to three labelled link columns, optional CTA, and preview cards that follow the hovered/focused link. Always in the DOM (hidden) so links prerender; data-nav-* hooks for useMegaMenuMotion or a CSS fade. |
+| `site-chat` | component | Public chat panel, degraded-first: renders a FAQ block by default and gains a composer when a service is available. Never shows a raw error or an indefinite spinner. |
+| `site-footer` | component | Site footer with grouped link columns and a legal line. Real anchors — it doubles as the crawlable link graph. |
+| `long-form-article` | component | Long-form page body: intro, optional status badge and figures, h2 sections with pull-outs, stack chips and related links. Content is plain strings, never markup. |
+| `key-takeaways` | component | "En resumen" callout: an aside labelled by its h2 with a list of self-contained takeaways. Fits between the h1 intro and the first h2. Renders nothing when empty. |
+| `faq-list` | component | FAQ section built on native details/summary (zero JS, answers present in the HTML for crawlers) plus a faqPageJsonLd() helper for schema.org FAQPage. |
+| `inline-cta` | component | Compact bordered card with one sentence and a primary button-styled link. Meant to sit after a page's first paragraph. |
+| `sticky-cta` | component | Mobile-only fixed bottom CTA bar (z-40, safe-area aware) with an optional secondary action (e.g. tel:) and an in-flow spacer so it never covers the footer. |
+| `share-button` | component | Share button: native share sheet when available (checked on click), otherwise a popover with copy-link and LinkedIn/WhatsApp/X/email intent links. No third-party scripts. |
+| `cookie-consent` | component | Presentational, non-modal analytics-cookie banner (z-50). Accept and Reject have equal weight; no close button that implies consent. |
 
-The registry also ships the standard shadcn primitives under `@stellify`, so an
-app **without** shadcn can install everything from one place (they overwrite
-`ui/<name>` and are identical to upstream):
+### Blocks · assistant (experimental)
 
-`badge`, `card`, `dialog`, `select`, `tabs`, `checkbox`, `switch`, `tooltip`,
-`dropdown-menu`, `popover`, `calendar`, `textarea`, `separator`, `label`,
-`progress`, `form`, `alert-dialog`, `table` (plus the customized `button` / `input` above), and
-`utils` (`cn()` = clsx + tailwind-merge).
+The intelUI assistant pieces. Experimental: they may change without a migration note until a second product adopts them.
 
-```bash
-npx shadcn@latest add @stellify/card @stellify/dialog @stellify/select --overwrite
-```
+| Item | Type | Summary |
+|---|---|---|
+| `intelui-types` | file | Shared presentational types for the intelUI assistant pieces (messages, tabs, conversations, actions). Engine-agnostic. *(experimental)* |
+| `intelui-pill` | component | Bottom-of-sidebar assistant pill: nav-item styling, fading label, highlighted when intelUI is active. Opens the assistant dropdown. Props-only. *(experimental)* |
+| `intelui-conversation-list` | component | Selectable conversation history list with per-row delete cross (reveals on hover). Props-only, i18n-agnostic. *(experimental)* |
+| `intelui-tabs` | component | Horizontal scrollable tab strip for open conversations: per-tab close cross + a new-conversation button. Props-only. *(experimental)* |
+| `intelui-chat-panel` | component | Upward-expanding transcript panel: context header, tab strip, suggestion chips and message log. max-height transition. Props-only. *(experimental)* |
+| `intelui-floating-bar` | component | Floating assistant input bar: portaled, anchored to the sidebar edge via --intelui-sidebar-w, grows from the icon. Send/stop (spinner+cancel), focus suggestions, caret-up chat panel. Props-only. *(experimental)* |
+| `intelui-dropdown` | component | Assistant popover content in two groups: Actions (Sparkles/Zap) and Conversations (Clock, deletable history), plus the intelUI switch. Props-only. *(experimental)* |
+| `intelui-highlight` | style | Assistant-actionable highlight: --intelui-accent token + a soft persistent outline on [data-intelui-actionable], reinforced on hover/focus and when [data-selected]. Respects reduced motion. Pairs with the Actionable wrapper. *(experimental)* |
+| `actionable` | component | Domain-agnostic wrapper that marks an entity as assistant-actionable: paints data-intelui-actionable / data-intelui-type / data-selected for the intelui-highlight layer. asChild (Slot) merges markers onto the child without an extra node or competing handlers. Props-only. *(experimental)* |
+| `intelui-chip` | component | Removable selected-entity chip for the assistant input: label + trailing ✕, --intelui-accent border, data-intelui-type accent. Props-only. *(experimental)* |
+
+### Motion
+
+GSAP items depend on `gsap` and `@gsap/react` (SplitText ships in `gsap` ≥ 3.13). All of them render their final state as markup and do nothing under reduced motion.
+
+| Item | Type | Summary |
+|---|---|---|
+| `animated-text` | ui | Text that rises out of a mask line by line or word by word when it enters the viewport (GSAP SplitText + ScrollTrigger). Markup is the final text; no motion under reduced motion. |
+| `clip-reveal` | ui | Panel that opens from a rounded inset clip-path to full size as it scrolls in, scrubbed (GSAP ScrollTrigger). Markup is the open state; reduced motion shows it whole. |
+| `scroll-reveal` | ui | Section whose background widens from an inset rounded card to full width (top corners flattening) as it scrolls to the top. Only the background layer moves (GSAP ScrollTrigger). |
+| `scrub-words` | ui | Large statement whose words light up one by one, scrubbed to the scroll (GSAP SplitText + ScrollTrigger). Markup is the lit text. |
+| `marquee` | ui | Infinite horizontal marquee of short entries: rendered twice for a seamless loop, read once by screen readers, Web Animations API (no keyframes to install), pauses on hover, off under reduced motion. |
+
+### Hooks
+
+| Item | Type | Summary |
+|---|---|---|
+| `use-persisted-state` | hook | useState that persists to localStorage (JSON-serialized), SSR-safe. |
+| `use-prefers-reduced-motion` | hook | Reactive prefers-reduced-motion flag. Prerender-safe (false on the server, re-evaluated on the client). |
+| `use-focus-trap` | hook | Keeps focus inside an element while active: Tab/Shift+Tab wrap, escaped focus is pulled back, Escape callback, optional initial focus, body scroll lock and focus restore. Skips inert/hidden subtrees. Exports getFocusables. |
+
+### Lib
+
+| Item | Type | Summary |
+|---|---|---|
+| `utils` | lib | `cn()` = clsx + tailwind-merge. Owned by this registry so installs never pull shadcn's upstream `utils`. |
 
 Source lives in [`registry/stellify/`](registry/stellify/). Built JSON (what the
 CLI fetches) lives in [`public/r/`](public/r/).

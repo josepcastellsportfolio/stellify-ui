@@ -3,7 +3,7 @@ import { Button } from "@stellify/button"
 import { PageHeader } from "@stellify/page-header"
 
 const meta = {
-  title: "Components/PageHeader",
+  title: "Blocks/App/PageHeader",
   component: PageHeader,
   tags: ["autodocs"],
   args: {

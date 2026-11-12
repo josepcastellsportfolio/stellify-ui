@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { AnimatedText } from "@stellify/animated-text"
 import { ClipReveal } from "@stellify/clip-reveal"
-import { ClosingPanel } from "@stellify/closing-panel"
 import { Marquee } from "@stellify/marquee"
 import { ScrollReveal } from "@stellify/scroll-reveal"
 import { ScrubWords } from "@stellify/scrub-words"
@@ -127,23 +126,5 @@ describe("Marquee", () => {
     const track = container.querySelector('[data-slot="marquee-track"]')!
     expect(track.querySelectorAll("b")).toHaveLength(4)
     expect(track.querySelector(".rounded-full")).toBeNull()
-  })
-})
-
-describe("ClosingPanel", () => {
-  it("renders title, intro and the action slot", () => {
-    render(
-      <ClosingPanel title="Hablemos" intro="Una llamada de 20 minutos." action={<a href="/contacto">Reservar</a>} />,
-    )
-    expect(screen.getByRole("heading", { level: 2, name: "Hablemos" })).toBeInTheDocument()
-    expect(screen.getByText("Una llamada de 20 minutos.")).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: "Reservar" })).toHaveAttribute("href", "/contacto")
-  })
-
-  it("can render without motion, grid or intro, at another heading level", () => {
-    const { container } = render(<ClosingPanel title="Fin" titleAs="h3" animated={false} dotGrid={false} />)
-    expect(screen.getByRole("heading", { level: 3, name: "Fin" })).toBeInTheDocument()
-    expect(container.querySelector('[data-slot="closing-panel-grid"]')).toBeNull()
-    expect(container.querySelector('[data-slot="animated-text"]')).toBeNull()
   })
 })

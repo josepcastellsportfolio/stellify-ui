@@ -4,7 +4,7 @@ import { Badge } from "@stellify/badge"
 import { Progress } from "@stellify/progress"
 import { Textarea } from "@stellify/textarea"
 
-const meta = { title: "Components/Extensions (progress, badge, textarea)", parameters: { layout: "padded" } } satisfies Meta
+const meta = { title: "UI/Extensions (progress, badge, textarea)", parameters: { layout: "padded" } } satisfies Meta
 
 export default meta
 type Story = StoryObj<typeof meta>

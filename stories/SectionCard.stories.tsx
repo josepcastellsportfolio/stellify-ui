@@ -3,7 +3,7 @@ import { Button } from "@stellify/button"
 import { SectionCard } from "@stellify/section-card"
 
 const meta = {
-  title: "Components/SectionCard",
+  title: "UI/SectionCard",
   component: SectionCard,
   tags: ["autodocs"],
   args: {

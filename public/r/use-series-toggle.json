@@ -11,5 +11,11 @@
       "target": "hooks/use-series-toggle.ts"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "charts"
+  ],
   "type": "registry:hook"
 }

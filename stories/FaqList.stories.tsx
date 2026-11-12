@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { FaqList } from "@stellify/faq-list"
 
 const meta = {
-  title: "Marketing/FaqList",
+  title: "Blocks/Site/FaqList",
   component: FaqList,
   tags: ["autodocs"],
   args: {

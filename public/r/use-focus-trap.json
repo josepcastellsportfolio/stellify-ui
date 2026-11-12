@@ -11,5 +11,11 @@
       "type": "registry:hook"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "hooks"
+  ],
   "type": "registry:hook"
 }

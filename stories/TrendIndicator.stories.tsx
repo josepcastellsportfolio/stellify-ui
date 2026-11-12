@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { TrendIndicator } from "@stellify/trend-indicator"
 
 const meta = {
-  title: "Components/TrendIndicator",
+  title: "UI/TrendIndicator",
   component: TrendIndicator,
   tags: ["autodocs"],
   parameters: { layout: "centered" },

@@ -17,5 +17,11 @@
       "target": "components/intelui/intelui-pill.tsx"
     }
   ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "blocks/assistant"
+  ],
   "type": "registry:component"
 }

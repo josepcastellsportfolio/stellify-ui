@@ -1,5 +1,30 @@
 # Migration guide
 
+## v2, phase 0: catalogue cleanup (2026-11-12)
+
+The registry now keeps only generic components (see the criterion in the README).
+32 items are gone. If your app installed one of them, **you already have the code**:
+`shadcn add` copied it, so nothing breaks until you re-run `shadcn add` on it. Keep your copy.
+
+| Removed items | Where they live now |
+|---|---|
+| `business-card`, `map-view`, `outreach-card`, `search-form`, `coverage-matrix`, `quadrant-grid`, `quadrant-cell`, `reason-list`, `score-badge`, `onboarding-shell`, `step-heading`, `nav-footer`, `stacked-timeline`, `logo` | captationcenter `packages/ui` (synced to the registry's latest versions) |
+| `offer-card`, `profile-intro`, `process-steps`, `closing-panel` | stellifyit-global / togent `components/ui` |
+| `money-input` | Use `number-input`; a currency variant arrives with the v2 `number-field`. |
+| `currency-display`, `use-currency-format` | `Intl.NumberFormat` directly, or `chart-formatters`. |
+| `filter-bar` | `data-table-toolbar` + the `data-table-filter*` items. |
+| `number-compare`, `month-year-picker`, `week-grid`, `week-dates`, `kanban`, `carousel`, `power-chart`, `slider-field`, `category-tag`, `form-modal` | Deleted (no consumer). Keep your copy if you have one. |
+
+Other changes:
+
+- Every item has `categories` (`foundations`, `ui`, `charts`, `data-table`, `blocks/app`,
+  `blocks/site`, `blocks/assistant`, `motion`, `hooks`, `lib`) and `meta.status`.
+- `intelui-*`, `actionable` and `intelui-highlight` are `blocks/assistant`, status `experimental`.
+- The registry no longer depends on `leaflet`, `react-leaflet` or `@hookform/resolvers`.
+
+Phases 1 to 4 (tokens, borderless core, charts and blocks, illustrations) will add their own
+sections here. Rows below that mention removed items are historical.
+
 How to replace existing usage with `@stellify` registry components. Pull each one
 with `npx shadcn@latest add @stellify/<item>` (after `stellify-base`).
 

@@ -3,7 +3,7 @@ import { AlertTriangle, Receipt, Target, TrendingDown, TrendingUp, Wallet } from
 import { MetricCard } from "@stellify/metric-card"
 
 const meta = {
-  title: "Components/MetricCard",
+  title: "Blocks/App/MetricCard",
   component: MetricCard,
   tags: ["autodocs"],
   args: {

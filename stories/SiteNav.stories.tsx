@@ -31,7 +31,7 @@ const dock = (
 )
 
 const meta = {
-  title: "Marketing/SiteNav",
+  title: "Blocks/Site/SiteNav",
   component: SiteNav,
   tags: ["autodocs"],
   parameters: {

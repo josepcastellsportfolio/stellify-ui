@@ -3,7 +3,7 @@ import { BarChart3 } from "lucide-react"
 import { ChartCard } from "@stellify/chart-card"
 
 const meta = {
-  title: "Components/ChartCard",
+  title: "Charts/ChartCard",
   component: ChartCard,
   tags: ["autodocs"],
   args: { title: "Monthly spend" },

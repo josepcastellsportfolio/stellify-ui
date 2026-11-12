@@ -4,7 +4,7 @@ import { FacetGrid, NavPreviewCard } from "@stellify/nav-preview-card"
 import { demoMenu } from "./fixtures/nav-menu"
 
 const meta = {
-  title: "Marketing/MegaMenuPanel",
+  title: "Blocks/Site/MegaMenuPanel",
   component: MegaMenuPanel,
   tags: ["autodocs"],
   parameters: { layout: "fullscreen" },

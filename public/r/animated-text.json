@@ -17,5 +17,11 @@
       "type": "registry:ui"
     }
   ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "motion"
+  ],
   "type": "registry:ui"
 }
