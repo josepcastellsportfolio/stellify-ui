@@ -1,6 +1,9 @@
 import type { Preview, Decorator } from "@storybook/react-vite"
 import { useEffect } from "react"
 
+// Self-hosted, as consumers are told to do (see stellify-base.css).
+import "@fontsource-variable/inter"
+import "@fontsource-variable/geist-mono"
 import "./shadcn/theme.css"
 
 /**
