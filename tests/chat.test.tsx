@@ -1,7 +1,8 @@
 import { act, fireEvent, render, screen, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { useRef, useState } from "react"
-import { ChatComposer } from "@stellify/chat-composer"
+import { ChatComposer, ChatComposerControl } from "@stellify/chat-composer"
+import { ChatSidebar } from "@stellify/chat-sidebar"
 import { ConversationList, type ConversationListItem } from "@stellify/conversation-list"
 import { KeyboardShortcutsDialog } from "@stellify/keyboard-shortcuts-dialog"
 import { MarkdownMessage } from "@stellify/markdown-message"
@@ -139,6 +140,37 @@ describe("ChatComposer", () => {
     expect(onStop).toHaveBeenCalledTimes(2)
     expect(screen.queryByRole("button", { name: "Enviar" })).not.toBeInTheDocument()
   })
+  it("puts leading settings and controls inside the card, before send", async () => {
+    const user = userEvent.setup()
+    function Toggle() {
+      const [on, setOn] = useState(false)
+      return (
+        <ChatComposerControl aria-pressed={on} onClick={() => setOn((v) => !v)}>
+          No guardar
+        </ChatComposerControl>
+      )
+    }
+    render(
+      <ChatComposer
+        value="hola"
+        onValueChange={() => {}}
+        onSubmit={() => {}}
+        onStop={() => {}}
+        state="idle"
+        leading={<Toggle />}
+        controls={<button type="button">Hablar</button>}
+        notice={<span>Modelo privado</span>}
+      />
+    )
+    const footer = document.querySelector('[data-slot="chat-composer-footer"]') as HTMLElement
+    const buttons = within(footer).getAllByRole("button").map((b) => b.textContent)
+    expect(buttons).toEqual(["No guardar", "Hablar", "Enviar"])
+    const toggle = screen.getByRole("button", { name: "No guardar" })
+    expect(toggle).toHaveAttribute("type", "button")
+    await user.click(toggle)
+    expect(toggle).toHaveAttribute("aria-pressed", "true")
+    expect(footer.closest('[data-slot="chat-composer-card"]')).not.toContainElement(screen.getByText("Modelo privado"))
+  })
 })
 
 const ITEMS: ConversationListItem[] = [
@@ -179,6 +211,45 @@ describe("ConversationList", () => {
     expect(onDelete).toHaveBeenCalledWith("a")
     rerender(<ConversationList items={[]} activeId={null} onSelect={() => {}} onRename={() => {}} onDelete={onDelete} />)
     expect(screen.getByText("Todavía no hay conversaciones.")).toBeInTheDocument()
+  })
+
+  it("filters by title ignoring accents and shows the time in the row's name", () => {
+    const items = [...ITEMS, { id: "d", title: "Canción de cuna", group: "Ayer", time: "1 d", timeTitle: "12/11/2026" }]
+    const { rerender } = render(
+      <ConversationList items={items} activeId={null} onSelect={() => {}} onRename={() => {}} onDelete={() => {}} query="cancion" />
+    )
+    expect(screen.getAllByRole("button", { name: /^Canción/ })).toHaveLength(1)
+    expect(screen.getByRole("button", { name: /^Canción de cuna\s*, 1 d$/ })).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: /^Notas/ })).not.toBeInTheDocument()
+    rerender(<ConversationList items={items} activeId={null} onSelect={() => {}} onRename={() => {}} onDelete={() => {}} query="zzz" />)
+    expect(screen.getByRole("status")).toHaveTextContent("Ninguna conversación coincide.")
+  })
+})
+
+describe("ChatSidebar", () => {
+  it("is a named nav with new chat, a search box Escape clears, and the list", async () => {
+    const user = userEvent.setup()
+    const onNewChat = vi.fn()
+    const onCollapse = vi.fn()
+    function Harness() {
+      const [q, setQ] = useState("")
+      return (
+        <ChatSidebar onNewChat={onNewChat} search={q} onSearchChange={setQ} onCollapse={onCollapse} footer={<button type="button">Ajustes</button>}>
+          <p>query={q}</p>
+        </ChatSidebar>
+      )
+    }
+    render(<Harness />)
+    const nav = screen.getByRole("navigation", { name: "Conversaciones" })
+    await user.click(within(nav).getByRole("button", { name: "Nueva conversación" }))
+    expect(onNewChat).toHaveBeenCalled()
+    const box = within(nav).getByRole("searchbox", { name: "Buscar conversaciones" })
+    await user.type(box, "viaje")
+    expect(screen.getByText("query=viaje")).toBeInTheDocument()
+    await user.keyboard("{Escape}")
+    expect(box).toHaveValue("")
+    await user.click(screen.getByRole("button", { name: "Ocultar la barra lateral" }))
+    expect(onCollapse).toHaveBeenCalled()
   })
 })
 

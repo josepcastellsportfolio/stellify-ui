@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useEffect, useState } from "react"
-import { Cloud, Cpu } from "lucide-react"
-import { ChatComposer } from "@stellify/chat-composer"
+import { Cloud, Cpu, EyeOff } from "lucide-react"
+import { ChatComposer, ChatComposerControl, chatComposerControlClassName } from "@stellify/chat-composer"
+import { ChatSidebar } from "@stellify/chat-sidebar"
 import { ConversationList, type ConversationListItem } from "@stellify/conversation-list"
 import { KeyboardShortcutsDialog } from "@stellify/keyboard-shortcuts-dialog"
 import { MarkdownMessage } from "@stellify/markdown-message"
@@ -95,6 +96,7 @@ export const Composer: Story = {
     const [model, setModel] = useState("sonnet")
     const [favorites, setFavorites] = useState<string[]>([])
     const [language, setLanguage] = useState("es")
+    const [ephemeral, setEphemeral] = useState(false)
     const isPrivate = model === "qwen"
     return (
       <div className="max-w-2xl">
@@ -110,7 +112,7 @@ export const Composer: Story = {
           state={state}
           tone={isPrivate ? "private" : "default"}
           labels={{ hint: "Intro envía · Mayús+Intro, nueva línea" }}
-          controls={
+          leading={
             <>
               <ModelPicker
                 groups={[
@@ -122,8 +124,16 @@ export const Composer: Story = {
                 onValueChange={setModel}
                 favorites={favorites}
                 onToggleFavorite={(k) => setFavorites((f) => (f.includes(k) ? f.filter((x) => x !== k) : [...f, k]))}
-                align="end"
+                className={chatComposerControlClassName}
               />
+              <ChatComposerControl aria-pressed={ephemeral} onClick={() => setEphemeral((v) => !v)}>
+                <EyeOff aria-hidden />
+                No guardar
+              </ChatComposerControl>
+            </>
+          }
+          controls={
+            <>
               <MicButton
                 state={mic}
                 elapsedMs={4000}
@@ -133,8 +143,9 @@ export const Composer: Story = {
             </>
           }
           notice={isPrivate ? <span>Modelo privado: nada sale de tu red.</span> : null}
-          options={
-            <SegmentedControl
+        />
+        <div className="mt-6 flex gap-2">
+          <SegmentedControl
               aria-label="Idioma de la respuesta"
               size="sm"
               value={language}
@@ -144,10 +155,7 @@ export const Composer: Story = {
                 { value: "ca", label: "ca", accessibleLabel: "Catalán" },
                 { value: "en", label: "en", accessibleLabel: "Inglés" },
               ]}
-            />
-          }
-        />
-        <div className="mt-6 flex gap-2">
+          />
           <StopSpeakingButton label="Dejar de leer" onStop={() => {}} />
         </div>
       </div>
@@ -156,10 +164,10 @@ export const Composer: Story = {
 }
 
 const HISTORY: ConversationListItem[] = [
-  { id: "1", title: "Ramas integradas", group: "Hoy" },
-  { id: "2", title: "Receta de pan sin amasar", group: "Hoy", tag: "temporal", tagDescription: "No se guarda en el historial" },
-  { id: "3", title: "Presupuesto de la reforma", group: "Ayer" },
-  { id: "4", title: "Resumen de la reunión del lunes con un título bastante largo", group: "Esta semana" },
+  { id: "1", title: "Ramas integradas", group: "Hoy", time: "12 min" },
+  { id: "2", title: "Receta de pan sin amasar", group: "Hoy", tag: "temporal", tagDescription: "No se guarda en el historial", time: "3 h" },
+  { id: "3", title: "Presupuesto de la reforma", group: "Ayer", time: "1 d" },
+  { id: "4", title: "Resumen de la reunión del lunes con un título bastante largo", group: "Esta semana", time: "4 d" },
 ]
 
 export const History: Story = {
@@ -167,8 +175,10 @@ export const History: Story = {
     const [items, setItems] = useState(HISTORY)
     const [active, setActive] = useState<string | null>("1")
     const [drawer, setDrawer] = useState(false)
+    const [query, setQuery] = useState("")
     const list = (
       <ConversationList
+        query={query}
         items={items}
         activeId={active}
         onSelect={setActive}
@@ -178,12 +188,25 @@ export const History: Story = {
     )
     return (
       <div className="flex flex-col gap-4">
-        <div className="w-72 rounded-lg bg-sidebar p-2">{list}</div>
+        <div className="h-[28rem] w-72 overflow-hidden rounded-lg border">
+          <ChatSidebar
+            brand={<span className="font-semibold">Mi chat</span>}
+            onNewChat={() => setActive(null)}
+            newChatHint="Ctrl ⇧ O"
+            search={query}
+            onSearchChange={setQuery}
+            onCollapse={() => {}}
+          >
+            {list}
+          </ChatSidebar>
+        </div>
         <Button variant="secondary" className="self-start" onClick={() => setDrawer(true)}>
           Abrir como cajón
         </Button>
         <SideDrawer open={drawer} onOpenChange={setDrawer} label="Conversaciones">
-          <div className="p-2">{list}</div>
+          <ChatSidebar onNewChat={() => setDrawer(false)} search={query} onSearchChange={setQuery} onClose={() => setDrawer(false)} closeLabel="Cerrar el menú">
+            {list}
+          </ChatSidebar>
         </SideDrawer>
       </div>
     )

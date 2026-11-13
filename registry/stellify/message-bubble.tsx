@@ -55,7 +55,7 @@ export function MessageBubble({
           className={cn(
             "text-[0.9375rem]",
             user
-              ? "max-w-[85%] whitespace-pre-wrap break-words rounded-lg bg-surface-3 px-4 py-2.5 text-foreground"
+              ? "max-w-[80%] whitespace-pre-wrap break-words rounded-2xl bg-surface-3 px-4 py-2.5 text-foreground"
               : "w-full text-foreground"
           )}
         >
