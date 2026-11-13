@@ -212,7 +212,7 @@ export function ConversationList({
                               title={item.timeTitle}
                               className="pointer-events-none absolute right-2.5 text-xs tabular-nums text-muted-foreground transition-opacity group-focus-within/row:opacity-0 group-hover/row:opacity-0 group-has-[[data-state=open]]/row:opacity-0 [@media(pointer:coarse)]:hidden"
                             >
-                              <span className="sr-only">, </span>
+                              <span className="sr-only">{", "}</span>
                               {item.time}
                             </span>
                           ) : null}

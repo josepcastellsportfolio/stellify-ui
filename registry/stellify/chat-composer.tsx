@@ -85,8 +85,8 @@ function SendGlyph() {
  * adds a line (IME composition is respected); a stop button replaces send
  * while a reply streams, and Escape inside the box stops it too.
  *
- * Focus inside the box outlines the whole card, so the box and its buttons
- * read as one control. A click on the card's empty space focuses the box.
+ * Focus inside the box strengthens the card's edge, so the box and its
+ * buttons read as one control. A click on the card's empty space focuses the box.
  */
 export function ChatComposer({
   value,
@@ -147,8 +147,11 @@ export function ChatComposer({
         onPointerDown={onCardPointerDown}
         className={cn(
           "flex cursor-text flex-col rounded-2xl border shadow-[0_1px_2px_rgb(0_0_0/4%),0_8px_24px_-12px_rgb(0_0_0/18%)] transition-[background-color,border-color] duration-(--duration-fast) dark:shadow-none",
-          "has-[textarea:focus-visible]:outline-2 has-[textarea:focus-visible]:outline-offset-2 has-[textarea:focus-visible]:outline-(--focus)",
-          tone === "private" ? "border-brand/40 bg-brand-subtle" : "border-(--field-edge) bg-surface-1"
+          // Typing focus shows as a stronger edge (a text box always matches :focus-visible, so a
+          // full outline would sit on the card the whole time); the caret marks the spot.
+          tone === "private"
+            ? "border-brand/40 bg-brand-subtle has-[textarea:focus]:border-brand"
+            : "border-(--field-edge) bg-surface-1 has-[textarea:focus]:border-foreground/45"
         )}
       >
         {header}
