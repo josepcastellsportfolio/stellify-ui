@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mic-button",
+  "title": "MicButton",
+  "description": "Push-to-talk toggle for a composer (aria-pressed, running clock while recording, spinner while transcribing, aria-keyshortcuts) + StopSpeakingButton for read-aloud. labels.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/mic-button.tsx",
+      "content": "\"use client\"\n\nimport type { Ref } from \"react\"\nimport { LoaderCircle, Mic, VolumeX } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport type MicButtonState = \"idle\" | \"starting\" | \"recording\" | \"transcribing\"\n\nexport interface MicButtonLabels {\n  /** Accessible name; stays the same while pressed (the state is `aria-pressed`). */\n  talk: string\n  /** Shown next to the spinner while the recording is turned into text. */\n  transcribing: string\n}\n\nconst DEFAULT_LABELS: MicButtonLabels = { talk: \"Hablar\", transcribing: \"Transcribiendo…\" }\n\nexport interface MicButtonProps {\n  state: MicButtonState\n  /** Time recorded so far, shown as m:ss while recording. */\n  elapsedMs?: number\n  /** Tap to start, tap again to stop. */\n  onToggle: () => void\n  disabled?: boolean\n  /** Defaults: talk \"Hablar\", transcribing \"Transcribiendo…\". */\n  labels?: Partial<MicButtonLabels>\n  /** Value for `aria-keyshortcuts` (e.g. \"Alt+M\"); also shown in the tooltip. */\n  keyShortcuts?: string\n  ref?: Ref<HTMLButtonElement>\n  className?: string\n}\n\nfunction clock(ms: number): string {\n  const total = Math.floor(ms / 1000)\n  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, \"0\")}`\n}\n\nconst BASE =\n  \"inline-flex h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors duration-(--duration-fast) [&_svg]:size-5\"\n\n/**\n * Push-to-talk toggle for a chat composer's `controls`. While recording it\n * fills with the danger tone and shows a running clock (and a pulsing dot:\n * shape, not only color); while the audio is transcribed it shows a spinner\n * and ignores taps. Disabled stays focusable (`aria-disabled`). Announce state\n * changes through a live region of your own.\n */\nexport function MicButton({ state, elapsedMs = 0, onToggle, disabled, labels, keyShortcuts, ref, className }: MicButtonProps) {\n  const l = { ...DEFAULT_LABELS, ...labels }\n  const pressed = state === \"recording\" || state === \"starting\"\n  const busy = state === \"transcribing\"\n  const inert = disabled || busy\n\n  return (\n    <button\n      ref={ref}\n      type=\"button\"\n      data-slot=\"mic-button\"\n      data-state={state}\n      onClick={() => {\n        if (!inert) onToggle()\n      }}\n      aria-pressed={pressed}\n      aria-disabled={inert || undefined}\n      aria-busy={busy || state === \"starting\" || undefined}\n      aria-keyshortcuts={keyShortcuts}\n      title={keyShortcuts ? `${l.talk} (${keyShortcuts})` : l.talk}\n      className={cn(\n        BASE,\n        pressed\n          ? \"bg-danger px-3 text-danger-foreground hover:bg-danger/90\"\n          : \"bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary)_88%,var(--foreground))]\",\n        busy && \"px-3\",\n        inert && \"cursor-not-allowed\",\n        disabled && \"opacity-50\",\n        className\n      )}\n    >\n      {busy ? (\n        <>\n          <LoaderCircle className=\"motion-safe:animate-spin\" aria-hidden />\n          <span className=\"hidden sm:inline\" aria-hidden>\n            {l.transcribing}\n          </span>\n        </>\n      ) : pressed ? (\n        <>\n          <span className=\"size-2.5 rounded-full bg-current motion-safe:animate-pulse\" aria-hidden />\n          {/* The clock changes every second: kept out of the name so it isn't re-read. */}\n          <span className=\"font-mono tabular-nums\" aria-hidden>\n            {clock(elapsedMs)}\n          </span>\n        </>\n      ) : (\n        <Mic aria-hidden />\n      )}\n      <span className=\"sr-only\">{l.talk}</span>\n    </button>\n  )\n}\n\nexport interface StopSpeakingButtonProps {\n  onStop: () => void\n  /** Name and (from `sm` up) visible text (\"Dejar de leer\"). */\n  label: string\n  className?: string\n}\n\n/** Visible while an answer is read aloud; stops the voice, not the chat. */\nexport function StopSpeakingButton({ onStop, label, className }: StopSpeakingButtonProps) {\n  return (\n    <button\n      type=\"button\"\n      data-slot=\"stop-speaking\"\n      onClick={onStop}\n      title={label}\n      className={cn(BASE, \"bg-brand-subtle px-3 text-foreground hover:bg-surface-3\", className)}\n    >\n      <VolumeX className=\"text-brand motion-safe:animate-pulse\" aria-hidden />\n      <span className=\"sr-only sm:not-sr-only\">{label}</span>\n    </button>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "components/chat/mic-button.tsx"
+    }
+  ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "blocks/chat"
+  ],
+  "type": "registry:component"
+}

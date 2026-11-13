@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pairing-qr",
+  "title": "PairingQr",
+  "description": "Device-pairing QR (always black on white with a quiet zone) + the code as text + a countdown timer; announces expiry once and offers a new code. qrcode is loaded lazily. labels.",
+  "dependencies": [
+    "qrcode",
+    "lucide-react"
+  ],
+  "devDependencies": [
+    "@types/qrcode"
+  ],
+  "registryDependencies": [
+    "@stellify/button",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/pairing-qr.tsx",
+      "content": "\"use client\"\n\nimport { useEffect, useState } from \"react\"\nimport { Copy, RefreshCw } from \"lucide-react\"\n\nimport { Button } from \"@/components/ui/button\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface PairingQrLabels {\n  /** Accessible name of the QR image. */\n  qrAlt: string\n  /** Label above the code text. */\n  code: string\n  /** \"Caduca en 4:59\". Receives the formatted remaining time. */\n  expiresIn: (time: string) => string\n  expired: string\n  regenerate: string\n  /** Shows a \"copy link\" button when set. */\n  copyLink?: string\n  linkCopied?: string\n}\n\nconst DEFAULT_LABELS: PairingQrLabels = {\n  qrAlt: \"Código QR para vincular el dispositivo\",\n  code: \"Código\",\n  expiresIn: (time) => `Caduca en ${time}`,\n  expired: \"El código ha caducado.\",\n  regenerate: \"Generar otro código\",\n}\n\nexport interface PairingQrProps {\n  /** What the QR encodes (the pairing link). */\n  value: string\n  /** The one-time code, also shown as text for devices without a camera. */\n  code: string\n  /** When the code stops working (ms since epoch). */\n  expiresAt: number\n  /** Defaults in Spanish; `copyLink` has none (no button unless you name it). */\n  labels?: Partial<PairingQrLabels>\n  /** Ask for a new code (offered once expired). */\n  onRegenerate: () => void\n  regenerating?: boolean\n  className?: string\n}\n\nfunction formatRemaining(ms: number): string {\n  const total = Math.max(0, Math.ceil(ms / 1000))\n  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, \"0\")}`\n}\n\n/** SVG path of the QR modules; `qrcode` is loaded only when a QR is shown. */\nfunction useQrPath(value: string): { path: string; size: number } | null {\n  const [qr, setQr] = useState<{ value: string; path: string; size: number } | null>(null)\n  useEffect(() => {\n    let alive = true\n    import(\"qrcode\").then(({ default: QRCode }) => {\n      const { modules } = QRCode.create(value, { errorCorrectionLevel: \"M\" })\n      const size = modules.size\n      let path = \"\"\n      for (let y = 0; y < size; y++) {\n        for (let x = 0; x < size; x++) {\n          if (modules.get(x, y)) path += `M${x} ${y}h1v1h-1z`\n        }\n      }\n      if (alive) setQr({ value, path, size })\n    })\n    return () => {\n      alive = false\n    }\n  }, [value])\n  return qr && qr.value === value ? qr : null\n}\n\n/**\n * Pairing QR with the code as text and a live countdown. The QR is always\n * black on white with a quiet zone (cameras need it, even in dark mode). The\n * countdown is a `timer` (not announced every second); expiry is announced\n * once and offers a new code.\n */\nexport function PairingQr({ value, code, expiresAt, labels, onRegenerate, regenerating, className }: PairingQrProps) {\n  const l = { ...DEFAULT_LABELS, ...labels }\n  const qr = useQrPath(value)\n  const [now, setNow] = useState(() => Date.now())\n  const [copied, setCopied] = useState(false)\n  const remaining = expiresAt - now\n  const expired = remaining <= 0\n\n  useEffect(() => {\n    if (expired) return\n    const id = window.setInterval(() => setNow(Date.now()), 1000)\n    return () => window.clearInterval(id)\n  }, [expired, expiresAt])\n\n  const copyLink = async () => {\n    try {\n      await navigator.clipboard.writeText(value)\n      setCopied(true)\n    } catch {\n      // Clipboard blocked: the code is still shown as text.\n    }\n  }\n\n  const quiet = 4\n  const box = qr ? qr.size + quiet * 2 : 0\n\n  return (\n    <div data-slot=\"pairing-qr\" className={cn(\"flex flex-col items-center gap-4\", className)}>\n      {/* Literal white and black on purpose: a QR must stay dark-on-light in every theme. */}\n      <div className={cn(\"rounded-lg bg-[#fff] p-2\", expired && \"opacity-25\")}>\n        {qr ? (\n          <svg\n            role=\"img\"\n            aria-label={l.qrAlt}\n            viewBox={`${-quiet} ${-quiet} ${box} ${box}`}\n            className=\"size-52\"\n            shapeRendering=\"crispEdges\"\n          >\n            <rect x={-quiet} y={-quiet} width={box} height={box} fill=\"#fff\" />\n            <path d={qr.path} fill=\"#000\" />\n          </svg>\n        ) : (\n          <div className=\"size-52\" aria-hidden />\n        )}\n      </div>\n      <div className=\"flex flex-col items-center gap-1 text-center\">\n        <p className=\"text-sm text-muted-foreground\">{l.code}</p>\n        <p className=\"select-all break-all font-mono text-base font-semibold tracking-wide text-foreground\">{code}</p>\n      </div>\n      <div role=\"status\" className=\"text-sm empty:sr-only\">\n        {expired ? <span className=\"font-medium text-danger\">{l.expired}</span> : null}\n      </div>\n      {!expired ? (\n        <p role=\"timer\" aria-live=\"off\" className=\"font-mono text-sm tabular-nums text-muted-foreground\">\n          {l.expiresIn(formatRemaining(remaining))}\n        </p>\n      ) : null}\n      <div className=\"flex flex-wrap justify-center gap-2\">\n        {expired ? (\n          <Button type=\"button\" size=\"lg\" onClick={onRegenerate} loading={regenerating}>\n            <RefreshCw aria-hidden />\n            {l.regenerate}\n          </Button>\n        ) : l.copyLink ? (\n          <Button type=\"button\" variant=\"secondary\" size=\"lg\" onClick={copyLink}>\n            <Copy aria-hidden />\n            <span aria-live=\"polite\">{copied && l.linkCopied ? l.linkCopied : l.copyLink}</span>\n          </Button>\n        ) : null}\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "components/chat/pairing-qr.tsx"
+    }
+  ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "blocks/chat"
+  ],
+  "type": "registry:component"
+}

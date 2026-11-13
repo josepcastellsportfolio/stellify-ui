@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "message-bubble",
+  "title": "MessageBubble",
+  "description": "One chat message as an <article> named by a hidden heading (level prop): user = tonal bubble on the right, assistant = document on the left. meta/footer slots; hides streaming text from assistive tech.",
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/message-bubble.tsx",
+      "content": "import { useId, type ReactNode } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface MessageBubbleProps {\n  role: \"user\" | \"assistant\"\n  /** Visually hidden heading that names the message for screen readers (\"Tú\", \"Respuesta\"). */\n  heading: string\n  /** Level of that hidden heading in the page outline. Default 2. */\n  headingLevel?: 2 | 3 | 4\n  /** Small line above an assistant message (model name, privacy). */\n  meta?: ReactNode\n  /** Under the content: tool activity, status, message actions. */\n  footer?: ReactNode\n  /** While streaming: hide the changing text from assistive tech (announce it once when it ends). */\n  hideFromAssistiveTech?: boolean\n  children?: ReactNode\n  className?: string\n}\n\n/**\n * One message of a conversation. User messages are a tonal bubble on the\n * right; assistant messages read like a document on the left, no box. Each\n * message is an `<article>` named by a hidden heading, so screen-reader users\n * can jump between messages with the heading or landmark keys. Add\n * `group/message` hover styles (e.g. `message-actions`) through `footer`.\n */\nexport function MessageBubble({\n  role,\n  heading,\n  headingLevel = 2,\n  meta,\n  footer,\n  hideFromAssistiveTech,\n  children,\n  className,\n}: MessageBubbleProps) {\n  const headingId = useId()\n  const user = role === \"user\"\n  const Heading = `h${headingLevel}` as const\n  return (\n    <article\n      data-slot=\"message-bubble\"\n      data-role={role}\n      aria-labelledby={headingId}\n      className={cn(\"group/message flex flex-col gap-1.5\", user ? \"items-end\" : \"items-start\", className)}\n    >\n      <Heading id={headingId} className=\"sr-only\">\n        {heading}\n      </Heading>\n      {meta && !user ? <div className=\"flex flex-wrap items-center gap-2 text-xs text-muted-foreground\">{meta}</div> : null}\n      {children !== undefined && children !== null && children !== \"\" ? (\n        <div\n          aria-hidden={hideFromAssistiveTech || undefined}\n          className={cn(\n            \"text-[0.9375rem]\",\n            user\n              ? \"max-w-[85%] whitespace-pre-wrap break-words rounded-lg bg-surface-3 px-4 py-2.5 text-foreground\"\n              : \"w-full text-foreground\"\n          )}\n        >\n          {children}\n        </div>\n      ) : null}\n      {footer ? <div className={cn(\"flex w-full flex-col gap-1.5\", user && \"items-end\")}>{footer}</div> : null}\n    </article>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "components/chat/message-bubble.tsx"
+    }
+  ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "blocks/chat"
+  ],
+  "type": "registry:component"
+}

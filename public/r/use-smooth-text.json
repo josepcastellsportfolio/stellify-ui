@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-smooth-text",
+  "title": "useSmoothText",
+  "description": "Reveals a streamed string a few characters per frame, catching up with the backlog; instant with reduced motion or when the text is replaced.",
+  "registryDependencies": [
+    "@stellify/use-prefers-reduced-motion"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/use-smooth-text.ts",
+      "content": "\"use client\"\n\nimport { useEffect, useRef, useState } from \"react\"\n\nimport { usePrefersReducedMotion } from \"@/hooks/use-prefers-reduced-motion\"\n\n/** Frames to drain whatever is pending: big chunks speed the reveal up, so it never lags far behind. */\nconst CATCH_UP_FRAMES = 10\n\n/**\n * The text of a streamed answer, revealed a few characters per frame instead\n * of in the lumps the server sends (a local model writes ~8 tokens/s in\n * bursts). The reveal speeds up with the backlog, so it trails the stream by\n * a fraction of a second, and it finishes on its own after the stream ends.\n *\n * With reduced motion, outside `active`, or without `requestAnimationFrame`,\n * it returns `target` as is. If `target` stops extending what is shown (a new\n * answer, an edit), it jumps to it.\n */\nexport function useSmoothText(target: string, active: boolean): string {\n  const reduced = usePrefersReducedMotion()\n  const smooth = active && !reduced && typeof requestAnimationFrame === \"function\"\n  const [shown, setShown] = useState(smooth ? \"\" : target)\n  const shownRef = useRef(shown)\n  const targetRef = useRef(target)\n  useEffect(() => {\n    targetRef.current = target\n  }, [target])\n\n  const running = smooth || shown.length < target.length\n  useEffect(() => {\n    if (!running || reduced || typeof requestAnimationFrame !== \"function\") return\n    let frame = 0\n    const tick = () => {\n      const full = targetRef.current\n      let next = shownRef.current\n      if (!full.startsWith(next)) {\n        next = full\n      } else if (next.length < full.length) {\n        const backlog = full.length - next.length\n        next = full.slice(0, next.length + Math.max(1, Math.ceil(backlog / CATCH_UP_FRAMES)))\n      }\n      if (next !== shownRef.current) {\n        shownRef.current = next\n        setShown(next)\n      }\n      frame = requestAnimationFrame(tick)\n    }\n    frame = requestAnimationFrame(tick)\n    return () => cancelAnimationFrame(frame)\n  }, [running, reduced])\n\n  if (reduced || (!smooth && shown.length >= target.length) || !target.startsWith(shown)) return target\n  return shown\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "hooks"
+  ],
+  "type": "registry:hook"
+}

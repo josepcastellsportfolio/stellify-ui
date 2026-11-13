@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "turn-status",
+  "title": "TurnStatus",
+  "description": "Where a chat turn stands (thinking, responding, tool, cancelled, error) as text + an icon whose shape changes. Purely visual: announce through your own live region.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/turn-status.tsx",
+      "content": "import { CircleSlash, LoaderCircle, PenLine, TriangleAlert, Wrench } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport type TurnStatusKind = \"thinking\" | \"responding\" | \"tool\" | \"cancelled\" | \"error\"\n\nexport interface TurnStatusProps {\n  status: TurnStatusKind\n  /** Already-localized text (\"Pensando…\", \"Cancelado\", the error message). */\n  label: string\n  className?: string\n}\n\nconst ICON = {\n  thinking: LoaderCircle,\n  responding: PenLine,\n  tool: Wrench,\n  cancelled: CircleSlash,\n  error: TriangleAlert,\n} as const\n\n/**\n * Where a turn stands, as text plus an icon whose shape changes with the\n * state. Purely visual: announce changes through a live region of your own\n * (the caption often sits inside a region hidden while streaming).\n */\nexport function TurnStatus({ status, label, className }: TurnStatusProps) {\n  const Icon = ICON[status]\n  return (\n    <p\n      data-slot=\"turn-status\"\n      data-status={status}\n      className={cn(\n        \"inline-flex items-center gap-2 text-sm\",\n        status === \"error\" ? \"font-medium text-danger\" : \"text-muted-foreground\",\n        className\n      )}\n    >\n      <Icon\n        aria-hidden\n        className={cn(\n          \"size-4 shrink-0\",\n          status === \"thinking\" && \"motion-safe:animate-spin\",\n          status === \"responding\" && \"motion-safe:animate-pulse\"\n        )}\n      />\n      <span>{label}</span>\n    </p>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "components/chat/turn-status.tsx"
+    }
+  ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "blocks/chat"
+  ],
+  "type": "registry:component"
+}

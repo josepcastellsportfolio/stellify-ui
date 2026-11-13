@@ -61,18 +61,18 @@ Generic building blocks. The standard shadcn primitives ship here too, so an app
 | `progress-ring` | component | SVG circular progress indicator. value/max/size/strokeWidth via props, themed with currentColor + muted track. |
 | `section-card` | component | Card with a titled header, optional description, header actions slot and content area. Common panel shell. |
 | `status-badge` | component | Badge whose tone is a status (success/warning/danger/info/neutral); `appearance="plain"` for icon + text. Thin wrapper over badge. |
-| `confirm-dialog` | component | Controlled confirmation dialog over AlertDialog. All copy via props; destructive flag for dangerous actions. |
+| `confirm-dialog` | component | Controlled confirmation dialog over AlertDialog. All copy via props; destructive flag for dangerous actions; returnFocusRef for dialogs opened from a menu. |
 | `alert-dialog` | ui | Radix alert dialog (vendored from shadcn so `confirm-dialog` never resolves upstream). Emits data-slot. |
 | `table` | ui | Table primitives (vendored from shadcn so `data-table` never resolves upstream). Emits data-slot. |
-| `button` | ui | Shadcn-compatible button: primary (brand) / secondary (tonal) / base (no fill) + destructive/success/warning/info/link, no borders or shadows. `loading` shows the Spinner; CRUD `mode` (create/edit/finish) injects color and icon. Overwrites ui/button. |
-| `input` | ui | Filled input (bg-field, no border); aria-invalid turns it danger-subtle. Focus is the global outline. API-compatible; overwrites ui/input. |
+| `button` | ui | Shadcn-compatible button: primary (brand) / secondary (tonal) / base (no fill) + destructive/success/warning/info/link, no borders or shadows. `loading` shows the Spinner; CRUD `mode` (create/edit/finish) injects color and icon. `default`, `lg` and `icon` grow to 44px on touch screens. Overwrites ui/button. |
+| `input` | ui | Filled input (bg-field) with a 3:1 underline (field-edge), never an outline box; aria-invalid turns it danger-subtle. Focus is the global outline. API-compatible; overwrites ui/input. |
 | `field` | ui | Form-control wrapper: label, control, then help or error. Owns htmlFor / aria-invalid / aria-describedby / required for any control (input, textarea, select, number-input, pickers). |
 | `spinner` | ui | The one spinner: a ring in the current color, sizes sm/md/lg, `decorative` inside busy buttons. Used by button, loading-spinner and loading-state. |
-| `segmented-control` | ui | Pick one of 2-5 options; the ink indicator slides and changes course mid-move when you click again (interruptible CSS transition). radiogroup, arrows/Home/End, roving tabindex. Exports useSlidingIndicator (used by tabs). |
+| `segmented-control` | ui | Pick one of 2-5 options; the ink indicator slides and changes course mid-move when you click again (interruptible CSS transition). radiogroup, arrows/Home/End, roving tabindex. accessibleLabel for short labels ("es" → Español), size lg = 44px. Exports useSlidingIndicator (used by tabs). |
 | `text-field` | component | Field + Input in one: label, error/help and optional leading/trailing icons. Copy via props. |
 | `badge` | ui | One badge for labels and states: `tone` (neutral/brand/success/warning/danger/info) x `appearance` (subtle/solid/plain), `icon`, `withDot`, `size` (default | xs), `uppercase` (mono caps). shadcn `variant` names still work. Emits data-slot. |
 | `card` | ui | Raised area: surface-2, no border or shadow, 8px radius. Parts as named exports or Card.Header / Title / Description / Content / Footer. Fields inside switch to surface-3. Overwrites ui/card. |
-| `dialog` | ui | Standard shadcn dialog primitive, shipped under @stellify for apps without shadcn. Overwrites ui/dialog. |
+| `dialog` | ui | Standard shadcn dialog primitive, shipped under @stellify for apps without shadcn. Close button: labels.close ("Cerrar"), 32px target, 44px on touch. Overwrites ui/dialog. |
 | `select` | ui | Standard shadcn select primitive, shipped under @stellify for apps without shadcn. Overwrites ui/select. |
 | `tabs` | ui | Radix tabs. Default: segmented look with a sliding, interruptible ink indicator. `TabsList variant="plain"`: text tabs with a sliding underline. Overwrites ui/tabs. Emits data-slot. |
 | `checkbox` | ui | Standard shadcn checkbox primitive, shipped under @stellify for apps without shadcn. Overwrites ui/checkbox. |
@@ -82,7 +82,7 @@ Generic building blocks. The standard shadcn primitives ship here too, so an app
 | `dropdown-menu` | ui | Standard shadcn dropdown-menu primitive, shipped under @stellify for apps without shadcn. Overwrites ui/dropdown-menu. |
 | `popover` | ui | Standard shadcn popover primitive, shipped under @stellify for apps without shadcn. Overwrites ui/popover. |
 | `calendar` | ui | Standard shadcn calendar primitive, shipped under @stellify for apps without shadcn. Overwrites ui/calendar. |
-| `textarea` | ui | Filled textarea with `autoResize` (grows with content); aria-invalid turns it danger-subtle. Emits data-slot. |
+| `textarea` | ui | Filled textarea with a 3:1 underline; `autoResize` grows with the content, shrinks back when cleared (also programmatically) and scrolls past `maxHeight`. aria-invalid turns it danger-subtle. Emits data-slot. |
 | `separator` | ui | Standard shadcn separator primitive, shipped under @stellify for apps without shadcn. Overwrites ui/separator. |
 | `label` | ui | Standard shadcn label primitive, shipped under @stellify for apps without shadcn. Overwrites ui/label. |
 | `progress` | ui | Standard shadcn progress primitive, shipped under @stellify for apps without shadcn. Overwrites ui/progress. `size="sm"`: thin bar on a neutral track. |
@@ -166,6 +166,27 @@ Public pages. Prerender-safe: nothing reads `window`/`navigator`/`document` duri
 | `share-button` | component | Share button: native share sheet when available (checked on click), otherwise a popover with copy-link and LinkedIn/WhatsApp/X/email intent links. No third-party scripts. |
 | `cookie-consent` | component | Presentational, non-modal analytics-cookie banner (z-50). Accept and Reject have equal weight; no close button that implies consent. Copy via `labels` (Spanish defaults). |
 
+### Blocks · chat (experimental)
+
+A chat screen in pieces, upstreamed from voice-bridge and made product-agnostic: every string comes in through props or
+`labels` (Spanish defaults). They install under `components/chat/`. Status, privacy and progress are carried by text and
+icon shape, never by color alone; touch targets are 44px.
+
+| Item | Type | Summary |
+|---|---|---|
+| `model-picker` | component | Model picker: search (prefix > word start > substring), rail of groups with Favorites and live status (off/busy/limited by shape + text), rows with private lock, badges, context, vision/tools, measured speed, star, Alt+1…9. Unavailable models listed with their reason. Popover on desktop, bottom sheet on touch. Announces the choice. labels. |
+| `chat-composer` | component | Message box: grows to maxHeight and shrinks back when cleared, Enter sends, Shift+Enter new line (IME-safe), stop replaces send while streaming (Escape stops). controls/options/notice slots, private tone, one focus outline on the frame. labels. |
+| `message-bubble` | component | One chat message as an <article> named by a hidden heading (level prop): user = tonal bubble on the right, assistant = document on the left. meta/footer slots; hides streaming text from assistive tech. |
+| `markdown-message` | component | Assistant reply from Markdown (GFM): code blocks with copy, tables, lists; raw HTML skipped, images reduced to alt text, headings as bold paragraphs (outline stays intact). Smooth reveal + caret while streaming. labels. |
+| `message-actions` | component | Toolbar under a message: copy (announced), regenerate, fork, delete; arrow keys move; quiet until hover/focus on pointer devices, always visible on touch. labels. |
+| `tool-activity` | component | Compact lines for the tools a turn used: status by icon shape + text (spinner, check, cross), native <details> disclosure for the detail, duration in mono. |
+| `turn-status` | component | Where a chat turn stands (thinking, responding, tool, cancelled, error) as text + an icon whose shape changes. Purely visual: announce through your own live region. |
+| `conversation-list` | component | Conversation history for a sidebar: grouped under headings (Hoy, Ayer…), current one with aria-current + weight + brand edge, always-visible row menu (rename in place, delete), optional tag badge. labels. |
+| `side-drawer` | component | Modal panel from the left or right edge (a sidebar's mobile form): focus trap, Escape and backdrop close, scroll lock, focus return, safe areas. |
+| `mic-button` | component | Push-to-talk toggle for a composer (aria-pressed, running clock while recording, spinner while transcribing, aria-keyshortcuts) + StopSpeakingButton for read-aloud. labels. |
+| `keyboard-shortcuts-dialog` | component | The "?" dialog: every shortcut as a description list with <kbd> keys and alternatives. Built on dialog; labels (title, or, close). |
+| `pairing-qr` | component | Device-pairing QR (always black on white with a quiet zone) + the code as text + a countdown timer; announces expiry once and offers a new code. qrcode is loaded lazily. labels. |
+
 ### Blocks · assistant (experimental)
 
 The intelUI assistant pieces. Experimental: they may change without a migration note until a second product adopts them.
@@ -199,8 +220,9 @@ GSAP items depend on `gsap` and `@gsap/react` (SplitText ships in `gsap` ≥ 3.1
 
 | Item | Type | Summary |
 |---|---|---|
-| `use-persisted-state` | hook | useState that persists to localStorage (JSON-serialized), SSR-safe. |
+| `use-persisted-state` | hook | useState that persists to localStorage (JSON-serialized) on useSyncExternalStore: SSR-safe, hooks on one key and other tabs stay in step, falls back to memory when storage throws. |
 | `use-prefers-reduced-motion` | hook | Reactive prefers-reduced-motion flag. Prerender-safe (false on the server, re-evaluated on the client). |
+| `use-smooth-text` | hook | Reveals a streamed string a few characters per frame, catching up with the backlog; instant with reduced motion or when the text is replaced. |
 | `use-focus-trap` | hook | Keeps focus inside an element while active: Tab/Shift+Tab wrap, escaped focus is pulled back, Escape callback, optional initial focus, body scroll lock and focus restore. Skips inert/hidden subtrees. Exports getFocusables. |
 
 ### Lib
