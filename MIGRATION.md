@@ -1,5 +1,37 @@
 # Migration guide
 
+## v2, phase 1: foundations (2026-11-12)
+
+`stellify-base` has the v2 tokens ([docs/tokens.md](docs/tokens.md)). Re-run
+`npx shadcn add @stellify/stellify-base --overwrite`, then:
+
+1. Self-host the fonts: `npm i @fontsource-variable/inter @fontsource-variable/geist-mono` and import both once.
+2. If you rebranded, move your color to `--brand`, `--brand-foreground` and `--brand-subtle` (both `:root` and `.dark`).
+   `--primary`, `--ring` and the chart slot 1 follow it.
+3. Replace the removed tokens:
+
+| Removed | Use |
+|---|---|
+| `--shadow-card`, `--shadow-card-hover`, `--shadow-button` | Nothing in the flow casts a shadow. Separate with `bg-surface-2`. Overlays: `--shadow-overlay`. |
+| `--radius-card` (22px), `--radius-icon` (16px) | `--radius-container` (8px) |
+| `--duration` | `--duration-base` (240ms); also `-fast` / `-slow` |
+| `--space-hero-top`, `--space-hero-bottom`, `--space-section`, `--leading-body` | Tailwind spacing / `leading-*` in the block itself. |
+
+Values that changed meaning (same name):
+
+- `--secondary` and `--accent` are neutral tones (`surface-3`), no longer teal and brand tint. Use `--brand-subtle` for a brand tint.
+- `--border` and `--input` are a translucent hairline. `--ring` is ink, not brand.
+- `--card` is `surface-2`: a card on the page is a step of tone, not white with a border.
+- `--success` is green-teal (hue 160), no longer the brand; `--info` is blue, not teal; `--warning` text is darker so it passes AA on its tint.
+- `--chart-1..5` are categorical (brand, blue, orange, violet, teal) instead of five greens. `data-chart-palette="mono"` restores a one-hue ramp.
+- `--radius` is 8px (was 10px); `rounded-sm`/`md` are 4px, `rounded-lg`/`xl` 8px.
+
+New: `--surface-1/2/3`, `--surface-overlay`, `--hairline`, `--field`, `--field-hover`, `--danger*` and every
+`-subtle` status tint, `--focus*`, `--shadow-overlay`, `--ease-in-out`, `--tracking-mono-caps`.
+The base layer now draws the focus outline and honours `prefers-reduced-motion` globally.
+
+Components still carry v1 borders and halos; phase 2 removes them.
+
 ## v2, phase 0: catalogue cleanup (2026-11-12)
 
 The registry now keeps only generic components (see the criterion in the README).

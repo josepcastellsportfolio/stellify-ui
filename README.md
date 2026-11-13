@@ -37,11 +37,19 @@ Domain components live in their product (see [MIGRATION.md](MIGRATION.md)).
 
 ### Foundations
 
-Install `stellify-base` once per app, before anything else. It sets the Inter family but does not load it: self-host it (e.g. `@fontsource/inter` 400/500/600/700).
+Install `stellify-base` once per app, before anything else. It writes the tokens (`:root` and `.dark`), the
+Tailwind 4 `@theme inline` wiring (so `bg-surface-2`, `text-danger`, `bg-field`… exist), the focus outline and the
+reduced-motion rule. Every value, with what it is for and the contrast checks behind it, is in
+[docs/tokens.md](docs/tokens.md); Storybook shows them under **Foundations**.
+
+It names the fonts but does not load them. Self-host both:
+`npm i @fontsource-variable/inter @fontsource-variable/geist-mono`, then import them once in your entry file.
+
+To rebrand, override `--brand`, `--brand-foreground` and `--brand-subtle` in both `:root` and `.dark`.
 
 | Item | Type | Summary |
 |---|---|---|
-| `stellify-base` | style | Canonical StellifyIT theme: emerald/teal/slate tokens (light + dark, oklch), Inter font, radius. Install first. |
+| `stellify-base` | style | StellifyIT design tokens v2: tonal surfaces, status and chart palettes, 4/8px radii, solid focus outline, one overlay shadow, motion, Inter + Geist Mono (light + dark, oklch). Install first. |
 
 ### UI (core)
 
@@ -204,7 +212,10 @@ CLI fetches) lives in [`public/r/`](public/r/).
 
 ## Publishing / updating the registry
 
-1. Edit or add a source file in `registry/stellify/`.
+1. Edit or add a source file in `registry/stellify/`. If you touch the tokens, edit
+   `registry/stellify/stellify-base.css` only and run `npm run tokens`: it rewrites the
+   `stellify-base` item in `registry.json` and Storybook's `@theme` block. `npm test`
+   fails while they are out of step.
 2. Register it in [`registry.json`](registry.json) (`name`, `type`,
    `dependencies`, `registryDependencies`, `files`).
 3. Rebuild the JSON:
@@ -318,34 +329,26 @@ shadcn **utility classes** (`bg-card`, `text-muted-foreground`, `border`,
 `rounded-lg`…), never raw colors, so they work on both Tailwind v3 and v4 as
 long as the `stellify-base` variables are present.
 
-**Tailwind v3** (e.g. `stellifyit-global/apps/web-app`, `ebrebook/frontend`) —
-already-set-up shadcn projects map the variables in `tailwind.config.js`:
+**Tailwind v4** (e.g. `recetia-landing`, `recetia/recetia-studio`): nothing to do.
+`shadcn add @stellify/stellify-base` writes the `@theme inline` block for you.
+
+**Tailwind v3** (e.g. `stellifyit-global/apps/web-app`, `ebrebook/frontend`): map each
+token in `tailwind.config.js`. The variables hold complete `oklch()` colors, so map them
+whole (`var(--x)`), not as channels:
 
 ```js
-// tailwind.config.js → theme.extend.colors
-primary: "oklch(var(--primary) / <alpha-value>)",
-// …success / warning / info too (status-badge needs them):
-success: { DEFAULT: "oklch(var(--success) / <alpha-value>)", foreground: "oklch(var(--success-foreground) / <alpha-value>)" },
-warning: { DEFAULT: "oklch(var(--warning) / <alpha-value>)", foreground: "oklch(var(--warning-foreground) / <alpha-value>)" },
-info:    { DEFAULT: "oklch(var(--info) / <alpha-value>)",    foreground: "oklch(var(--info-foreground) / <alpha-value>)" },
+// tailwind.config.js → theme.extend
+colors: {
+  "surface-1": "var(--surface-1)", "surface-2": "var(--surface-2)", "surface-3": "var(--surface-3)",
+  field: { DEFAULT: "var(--field)", hover: "var(--field-hover)" },
+  brand: { DEFAULT: "var(--brand)", foreground: "var(--brand-foreground)", subtle: "var(--brand-subtle)" },
+  danger: { DEFAULT: "var(--danger)", foreground: "var(--danger-foreground)", subtle: "var(--danger-subtle)" },
+  // …success / warning / info the same way, plus the shadcn names (primary, card, muted…)
+},
+borderRadius: { sm: "var(--radius-control)", md: "var(--radius-control)", lg: "var(--radius-container)", xl: "var(--radius-container)" },
 ```
-(See `stellifyit-global/apps/web-app/tailwind.config.js` for the full, working
-mapping — copy it.)
 
-**Tailwind v4** (e.g. `recetia-landing`, `recetia/recetia-studio`) — there is no
-config file; expose the variables through `@theme inline` in your global CSS:
-
-```css
-@import "tailwindcss";
-/* stellify-base wrote :root / .dark variables above */
-@theme inline {
-  --color-primary: var(--primary);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-info: var(--info);
-  /* …map the rest the same way */
-}
-```
+The full list is the `cssVars.theme` block of `stellify-base` in `registry.json`.
 
 **Projects without shadcn yet** (`recetia-studio`, `ebrebook/frontend`) — run
 `npx shadcn@latest init` first (it creates `components.json`, `@/lib/utils`, and
