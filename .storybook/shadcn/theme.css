@@ -25,6 +25,7 @@
   --color-hairline: var(--hairline);
   --color-field: var(--field);
   --color-field-hover: var(--field-hover);
+  --color-field-edge: var(--field-edge);
   --color-focus: var(--focus);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);

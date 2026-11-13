@@ -1,3 +1,5 @@
+"use client"
+
 // Shared filter widget renderer — used by DataGridColumnFilter (column header popovers)
 // All 10 filter types from StellifyitFilters are rendered here.
 
@@ -197,7 +199,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
         <PopoverTrigger asChild>
           <Button
             variant="secondary"
-            className={cn('w-full justify-start bg-field font-normal hover:bg-field-hover', !current.value && 'text-muted-foreground')}
+            className={cn('w-full justify-start bg-field border-b border-field-edge font-normal hover:bg-field-hover', !current.value && 'text-muted-foreground')}
           >
             <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
             {current.value ? formatDate(current.value) : (def.placeholder ?? 'Seleccionar fecha')}

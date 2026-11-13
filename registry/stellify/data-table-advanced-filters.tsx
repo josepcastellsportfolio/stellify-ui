@@ -1,3 +1,5 @@
+"use client"
+
 // "Filtros" button + panel with every filterable column at once. The
 // per-column header buttons are for one quick filter; this is for building a
 // query across several columns without hunting through the headers.

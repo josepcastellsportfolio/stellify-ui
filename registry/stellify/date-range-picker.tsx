@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useId, useState } from "react"
 import { CalendarIcon } from "lucide-react"
 import type { DateRange } from "react-day-picker"
@@ -188,7 +190,7 @@ export default function DateRangePicker({
           variant="secondary"
           disabled={disabled}
           className={cn(
-            "w-full justify-start bg-field font-normal hover:bg-field-hover",
+            "w-full justify-start bg-field border-b border-field-edge font-normal hover:bg-field-hover",
             !value.from && "text-muted-foreground",
             className
           )}

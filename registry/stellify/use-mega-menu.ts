@@ -1,3 +1,5 @@
+"use client"
+
 import { useCallback, useEffect, useRef, useState } from "react"
 
 /** Grace period before a mouseleave closes the panel (diagonal mouse moves). */

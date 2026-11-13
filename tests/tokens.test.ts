@@ -82,6 +82,12 @@ describe.each(["light", "dark"] as const)("%s mode contrast", (mode) => {
   it.each(TEXT_PAIRS)("%s on %s ≥ 4.5:1", (fg, bg) => {
     expect(contrast(vars, fg, bg)).toBeGreaterThanOrEqual(4.5)
   })
+  // WCAG 1.4.11: what identifies a control (field underline, switch track,
+  // and upstream shadcn's `border-input`) against every surface it sits on.
+  it.each(["surface-1", "surface-2", "surface-3", "surface-overlay"])("field-edge on %s ≥ 3:1", (bg) => {
+    expect(contrast(vars, "field-edge", bg)).toBeGreaterThanOrEqual(3)
+    expect(contrast(vars, "input", bg)).toBeGreaterThanOrEqual(3)
+  })
   it.each([1, 2, 3, 4, 5])("chart-%i ≥ 3:1 against the page", (n) => {
     expect(contrast(vars, `chart-${n}`, "surface-1")).toBeGreaterThanOrEqual(3)
   })

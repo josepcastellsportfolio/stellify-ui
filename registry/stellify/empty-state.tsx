@@ -6,6 +6,8 @@ export interface EmptyStateProps {
   title: string
   description: string
   action?: ReactNode
+  /** Level of the title in the page outline. Default 3. */
+  headingLevel?: 2 | 3 | 4 | 5 | 6
 }
 
 /**
@@ -17,16 +19,20 @@ const EmptyState: FC<EmptyStateProps> = ({
   title,
   description,
   action,
-}) => (
-  <div className="flex flex-col items-center justify-center py-12 text-center">
-    <div className="mb-4 rounded-full bg-surface-2 p-4 text-muted-foreground">
-      <Icon className="h-8 w-8 text-muted-foreground" />
+  headingLevel = 3,
+}) => {
+  const Heading = `h${headingLevel}` as const
+  return (
+    <div className="flex flex-col items-center justify-center py-12 text-center">
+      <div className="mb-4 rounded-full bg-surface-2 p-4 text-muted-foreground">
+        <Icon className="h-8 w-8 text-muted-foreground" aria-hidden />
+      </div>
+      <Heading className="mb-1 text-lg font-semibold">{title}</Heading>
+      <p className="mb-4 max-w-sm text-sm text-muted-foreground">{description}</p>
+      {action}
     </div>
-    <h3 className="mb-1 text-lg font-semibold">{title}</h3>
-    <p className="mb-4 max-w-sm text-sm text-muted-foreground">{description}</p>
-    {action}
-  </div>
-)
+  )
+}
 
 export default EmptyState
 export { EmptyState }

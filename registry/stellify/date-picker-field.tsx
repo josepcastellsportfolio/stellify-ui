@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import { CalendarIcon } from "lucide-react"
 
@@ -60,7 +62,7 @@ export default function DatePickerField({
           variant="secondary"
           disabled={disabled}
           className={cn(
-            "w-full justify-start bg-field font-normal hover:bg-field-hover",
+            "w-full justify-start bg-field border-b border-field-edge font-normal hover:bg-field-hover",
             !selected && "text-muted-foreground",
             className
           )}

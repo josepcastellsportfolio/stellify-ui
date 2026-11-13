@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "side-drawer",
+  "title": "SideDrawer",
+  "description": "Modal panel from the left or right edge (a sidebar's mobile form): focus trap, Escape and backdrop close, scroll lock, focus return, safe areas.",
+  "registryDependencies": [
+    "@stellify/use-focus-trap",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/side-drawer.tsx",
+      "content": "\"use client\"\n\nimport { useRef, type ReactNode } from \"react\"\n\nimport { useFocusTrap } from \"@/hooks/use-focus-trap\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface SideDrawerProps {\n  open: boolean\n  onOpenChange: (open: boolean) => void\n  /** Accessible name of the drawer (\"Conversaciones\"). */\n  label: string\n  /** Edge it slides from. Default \"left\". */\n  side?: \"left\" | \"right\"\n  children: ReactNode\n  className?: string\n}\n\n/**\n * Modal panel from a screen edge for small screens (a sidebar's mobile form).\n * Traps focus while open, closes on Escape or a tap on the backdrop, locks\n * page scroll, respects the safe areas, and returns focus to whatever opened\n * it.\n */\nexport function SideDrawer({ open, onOpenChange, label, side = \"left\", children, className }: SideDrawerProps) {\n  const panelRef = useRef<HTMLDivElement>(null)\n  useFocusTrap(panelRef, {\n    active: open,\n    onEscape: () => onOpenChange(false),\n    lockScroll: true,\n    restoreFocus: true,\n  })\n  if (!open) return null\n  return (\n    <div data-slot=\"side-drawer\" className=\"fixed inset-0 z-50\">\n      <div\n        aria-hidden\n        onClick={() => onOpenChange(false)}\n        className=\"absolute inset-0 bg-foreground/40 animate-in fade-in-0\"\n      />\n      <div\n        ref={panelRef}\n        role=\"dialog\"\n        aria-modal=\"true\"\n        aria-label={label}\n        className={cn(\n          \"absolute inset-y-0 flex w-[min(20rem,88vw)] flex-col overflow-y-auto overscroll-contain bg-sidebar text-sidebar-foreground shadow-(--shadow-overlay) animate-in duration-(--duration-base)\",\n          side === \"left\" ? \"left-0 slide-in-from-left\" : \"right-0 slide-in-from-right\",\n          \"pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]\",\n          className\n        )}\n      >\n        {children}\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "components/chat/side-drawer.tsx"
+    }
+  ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "blocks/chat"
+  ],
+  "type": "registry:component"
+}

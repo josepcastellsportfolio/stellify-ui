@@ -9,7 +9,7 @@ Storybook shows every token under **Foundations**.
 - **Tone, not boxes.** Containers are told apart by `surface-1/2/3`. A 1px `hairline` only between rows and sections, never around a box.
 - **No glows.** No translucent focus halos, `ring-offset`, colored shadows, `backdrop-blur` or gradients.
 - **One shadow.** `--shadow-overlay`, only for things that float (popover, menu, dialog, tooltip). Use `shadow-(--shadow-overlay)`.
-- **Filled fields.** `bg-field`, `hover:bg-field-hover`. Invalid = `bg-danger-subtle` + `text-danger` message, no red border.
+- **Filled fields.** `bg-field`, `hover:bg-field-hover`, and a 1px `border-b border-field-edge` underline so the control is visible (WCAG 1.4.11). Invalid = `bg-danger-subtle` + `text-danger` message, no red border.
 - **One focus style.** A 2px solid `--focus` (ink) outline, offset 2px, set globally by the base layer. Components add none of their own.
 - **Two radii.** 4px controls (`rounded-sm`/`rounded-md`), 8px containers (`rounded-lg`/`rounded-xl`). Pill (`--radius-pill`) only for chips and the segmented control.
 - **Status ≠ brand.** `success / warning / danger / info` each have a strong tone, a `-subtle` tint and a `-foreground`. Always with an icon or label, never color alone.
@@ -21,8 +21,8 @@ Storybook shows every token under **Foundations**.
 |---|---|
 | Brand (override per product) | `--brand`, `--brand-foreground`, `--brand-subtle` |
 | Surfaces | `--surface-1` page, `--surface-2` raised, `--surface-3` hover/selected, `--surface-overlay` |
-| Ink | `--foreground`, `--muted-foreground`, `--hairline` |
-| Fields | `--field`, `--field-hover` |
+| Ink | `--foreground`, `--muted-foreground`, `--hairline` (dividers only) |
+| Fields | `--field`, `--field-hover`, `--field-edge` (underline of a field, unchecked switch track; `--input` points at it) |
 | Status | `--{success,warning,danger,info}`, `-foreground`, `-subtle` |
 | Charts | `--chart-1` … `--chart-5`; `data-chart-palette="mono"` swaps in a brand ramp |
 | Shape | `--radius-control` 4px, `--radius-container` 8px, `--radius-pill` |
@@ -42,6 +42,7 @@ read them. `destructive` = `danger`.
 
 - text pairs ≥ 4.5:1: ink on every surface, `brand-foreground` on `brand`, `brand` on `brand-subtle`,
   each status on its `-subtle` and its `-foreground` on it;
+- `field-edge` (and `input`) ≥ 3:1 against `surface-1/2/3` and `surface-overlay`: what identifies a control;
 - every chart color ≥ 3:1 against the page.
 
 The categorical palette also passed the dataviz validator (lightness band, chroma floor, colour-blind
