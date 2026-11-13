@@ -70,4 +70,7 @@
   --radius-md: var(--radius-control);
   --radius-lg: var(--radius-container);
   --radius-xl: var(--radius-container);
+  --radius-pill: var(--radius-pill);
+  --tracking-display: var(--tracking-display);
+  --tracking-mono-caps: var(--tracking-mono-caps);
 }

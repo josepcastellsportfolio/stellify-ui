@@ -43,6 +43,13 @@ export const RADIUS_THEME = {
   "radius-md": "var(--radius-control)",
   "radius-lg": "var(--radius-container)",
   "radius-xl": "var(--radius-container)",
+  "radius-pill": "var(--radius-pill)",
+}
+
+/** Type tokens the components use as utilities (`tracking-display`). */
+export const TYPE_THEME = {
+  "tracking-display": "var(--tracking-display)",
+  "tracking-mono-caps": "var(--tracking-mono-caps)",
 }
 
 const stripComments = (css) => css.replace(/\/\*[\s\S]*?\*\//g, "")
@@ -121,7 +128,7 @@ export function expectedItemCss({ extra }) {
 export function expectedThemeVars() {
   const theme = {}
   for (const t of COLOR_TOKENS) theme[`color-${t}`] = `var(--${t})`
-  return { ...theme, ...RADIUS_THEME }
+  return { ...theme, ...RADIUS_THEME, ...TYPE_THEME }
 }
 
 function themeCss() {
