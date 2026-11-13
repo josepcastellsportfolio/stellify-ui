@@ -193,6 +193,14 @@
 }
 
 @layer base {
+  /* Tailwind 4 defaults borders to currentColor (ink). Every border in the
+     system is the hairline unless a component says otherwise. */
+  *,
+  ::before,
+  ::after,
+  ::backdrop {
+    border-color: var(--border);
+  }
   body {
     font-family: var(--font-sans);
     background-color: var(--background);

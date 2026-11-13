@@ -61,7 +61,7 @@ export default function DataTablePagination({
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center justify-between gap-2 pt-2 text-sm text-muted-foreground",
+        "flex flex-wrap items-center justify-between gap-2 text-sm text-muted-foreground",
         className
       )}
     >

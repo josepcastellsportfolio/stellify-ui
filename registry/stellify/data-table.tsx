@@ -63,9 +63,10 @@ export interface DataTableProps<T> {
   className?: string
 }
 
+// Right-aligned columns are figures: Geist Mono with tabular digits so they line up.
 const alignClass = {
   left: "text-left",
-  right: "text-right",
+  right: "text-right font-mono tabular-nums",
   center: "text-center",
 } as const
 
@@ -100,7 +101,7 @@ export default function DataTable<T>({
     <div data-slot="data-table" className={cn("space-y-3", className)}>
       {toolbar}
 
-      <div className="rounded-lg border border-border/60">
+      <div data-slot="data-table-frame" className="overflow-hidden rounded-lg border bg-background">
         <Table>
           <TableHeader>
             <TableRow>
@@ -137,7 +138,7 @@ export default function DataTable<T>({
                       <button
                         type="button"
                         data-slot="data-table-sort"
-                        className="-mx-1 inline-flex items-center gap-1 rounded-sm px-1 font-medium outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                        className="-mx-1 inline-flex items-center gap-1 rounded-sm px-1 uppercase transition-colors duration-(--duration-fast) hover:text-foreground"
                       >
                         {col.header}
                         {isSorted ? (
@@ -175,7 +176,7 @@ export default function DataTable<T>({
                 <TableRow key={`skeleton-${rowIndex}`}>
                   {Array.from({ length: colCount }).map((__, cellIndex) => (
                     <TableCell key={cellIndex}>
-                      <div className="h-4 w-full animate-pulse rounded bg-muted" />
+                      <div className="h-4 w-full animate-pulse rounded-sm bg-surface-3" />
                     </TableCell>
                   ))}
                 </TableRow>
@@ -218,9 +219,12 @@ export default function DataTable<T>({
             )}
           </TableBody>
         </Table>
+        {footer && (
+          <div data-slot="data-table-footer" className="border-t bg-surface-2 px-3 py-2 [--field-hover:color-mix(in_oklch,var(--surface-3)_85%,var(--foreground))] [--field:var(--surface-3)]">
+            {footer}
+          </div>
+        )}
       </div>
-
-      {footer}
     </div>
   )
 }

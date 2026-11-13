@@ -238,6 +238,9 @@
           "--chart-5": "oklch(0.48 0.09 126)"
         },
         "@layer base": {
+          "*, ::before, ::after, ::backdrop": {
+            "border-color": "var(--border)"
+          },
           "body": {
             "font-family": "var(--font-sans)",
             "background-color": "var(--background)",

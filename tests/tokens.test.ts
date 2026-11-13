@@ -23,6 +23,11 @@ describe("stellify-base tokens", () => {
     }
   })
 
+  it("makes the hairline the default border color (Tailwind 4 defaults to currentColor)", () => {
+    const base = parsed.extra["@layer base"] as Record<string, Record<string, string>>
+    expect(base["*, ::before, ::after, ::backdrop"]).toEqual({ "border-color": "var(--border)" })
+  })
+
   it("has no glow tokens left", () => {
     const names = [...Object.keys(parsed.light), ...Object.keys(parsed.dark)]
     expect(names.filter((n) => n.startsWith("shadow-"))).toEqual(["shadow-overlay", "shadow-overlay"])

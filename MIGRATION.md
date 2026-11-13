@@ -40,6 +40,11 @@ filled fields. Re-add what you use with `npx shadcn add @stellify/<item> --overw
 - Inputs, selects, textareas and picker triggers are filled and 36px tall (was 40px, outlined).
 - `checkbox` keeps a 1.5px edge (a control needs a visible boundary); `switch` and `slider` lose their shadows.
 - `progress` is 8px tall by default (was 16px). `chip` is a pill.
+- `stellify-base` now sets the hairline as the default border color (Tailwind 4 defaulted to the text color, so
+  every `border-b` was a dark line). Re-add `stellify-base` to pick it up.
+- `table`: header row on `surface-2` with mono caps labels, hairline row separators, hover `surface-2`, selected row
+  `brand-subtle` with a brand edge. `data-table`: rounded hairline frame; the `footer` (e.g. pagination) now renders
+  inside the frame on `surface-2`; right-aligned columns use Geist Mono tabular figures.
 
 ## v2, phase 1: foundations (2026-11-12)
 
