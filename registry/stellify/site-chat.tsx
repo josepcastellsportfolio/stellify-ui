@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useRef, useState } from "react"
 import type { FC, FormEvent, ReactNode } from "react"
 import { Send } from "lucide-react"

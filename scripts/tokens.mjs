@@ -26,7 +26,7 @@ export const COLOR_TOKENS = [
   "background", "foreground",
   "surface-1", "surface-2", "surface-3", "surface-overlay",
   "brand", "brand-foreground", "brand-subtle",
-  "muted", "muted-foreground", "hairline", "field", "field-hover", "focus",
+  "muted", "muted-foreground", "hairline", "field", "field-hover", "field-edge", "focus",
   "card", "card-foreground", "popover", "popover-foreground",
   "primary", "primary-foreground", "secondary", "secondary-foreground",
   "accent", "accent-foreground", "destructive", "destructive-foreground",

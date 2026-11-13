@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useRef, type RefObject } from "react"
 
 /** What counts as focusable inside a trap. */

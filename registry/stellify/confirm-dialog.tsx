@@ -1,4 +1,6 @@
-import type { ReactNode } from "react"
+"use client"
+
+import type { ReactNode, RefObject } from "react"
 
 import {
   AlertDialog,
@@ -40,6 +42,12 @@ export interface ConfirmDialogProps {
   destructive?: boolean
   /** Disable the confirm button (e.g. while a request is in flight). */
   loading?: boolean
+  /**
+   * Where focus goes when the dialog closes. Radix returns it to the
+   * `trigger`; a controlled dialog opened from a menu item (whose element is
+   * gone by then) needs somewhere to land, usually the menu's own button.
+   */
+  returnFocusRef?: RefObject<HTMLElement | null>
 }
 
 /**
@@ -59,12 +67,20 @@ export default function ConfirmDialog({
   onConfirm,
   destructive = false,
   loading = false,
+  returnFocusRef,
 }: ConfirmDialogProps) {
   const l = { ...DEFAULT_LABELS, ...labels }
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}
-      <AlertDialogContent>
+      <AlertDialogContent
+        onCloseAutoFocus={(event) => {
+          const target = returnFocusRef?.current
+          if (!target?.isConnected) return
+          event.preventDefault()
+          target.focus()
+        }}
+      >
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           {description && (
