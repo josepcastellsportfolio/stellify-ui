@@ -9,6 +9,6 @@ describe("loading-spinner", () => {
 
   it("fills the viewport when fullScreen", () => {
     render(<LoadingSpinner fullScreen />)
-    expect(screen.getByRole("status")).toHaveClass("h-screen")
+    expect(screen.getByRole("status").parentElement).toHaveClass("h-screen")
   })
 })

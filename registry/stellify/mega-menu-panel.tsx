@@ -60,8 +60,7 @@ const GROUP_COLS: Record<number, string> = {
 }
 
 const FOCUS_RING =
-  "rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
-  "focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+  "rounded-sm"
 
 export interface MegaMenuPanelProps {
   category: MegaMenuCategory
@@ -146,7 +145,7 @@ export const MegaMenuPanel: FC<MegaMenuPanelProps> = ({
         data-nav-bg
         aria-hidden="true"
         className={cn(
-          "absolute inset-0 origin-top bg-background/[0.97] shadow-[0_40px_80px_-24px_oklch(0.208_0.042_265.755/0.28)] backdrop-blur-lg",
+          "absolute inset-0 origin-top bg-popover shadow-(--shadow-overlay)",
           motion === "css" && "animate-in fade-in-0 duration-200 motion-reduce:animate-none",
         )}
       />

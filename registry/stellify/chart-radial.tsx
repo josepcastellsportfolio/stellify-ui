@@ -86,7 +86,7 @@ export default function Component({
                 />
               }
             />
-            <RadialBar dataKey={dataKey} background />
+            <RadialBar dataKey={dataKey} background={{ fill: "var(--surface-3)" }} cornerRadius={4} />
           </RadialBarChart>
         </ChartContainer>
       </CardContent>

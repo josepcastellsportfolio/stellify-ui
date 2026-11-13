@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useId, useState } from "react"
 import { CalendarIcon } from "lucide-react"
 import type { DateRange } from "react-day-picker"
 
@@ -41,22 +41,30 @@ export interface DateRangePickerProps {
   locale?: string
   disabled?: boolean
   className?: string
-  /** Apply button label. Defaults to "Apply". */
-  applyLabel?: string
-  /** Cancel button label. Defaults to "Cancel". */
-  cancelLabel?: string
   /** Default state of the time switch when the popover opens. Defaults to false. */
   defaultIncludeTime?: boolean
   /** Hide the date/time switch entirely (force date-only). Defaults to false. */
   hideTimeToggle?: boolean
   /** Use 24-hour time inputs. Defaults to false (12h + AM/PM). */
   use24Hour?: boolean
-  /** Label for the time switch. Defaults to "Include time". */
-  timeToggleLabel?: string
-  /** Label for the start-time field. Defaults to "Start time". */
-  startTimeLabel?: string
-  /** Label for the end-time field. Defaults to "End time". */
-  endTimeLabel?: string
+  /** Interface copy. Spanish defaults; presets have their own labels. */
+  labels?: Partial<DateRangePickerLabels>
+}
+
+export interface DateRangePickerLabels {
+  apply: string
+  cancel: string
+  includeTime: string
+  startTime: string
+  endTime: string
+}
+
+const DEFAULT_LABELS: DateRangePickerLabels = {
+  apply: "Aplicar",
+  cancel: "Cancelar",
+  includeTime: "Incluir hora",
+  startTime: "Hora de inicio",
+  endTime: "Hora de fin",
 }
 
 function toISODate(d: Date): string {
@@ -89,14 +97,14 @@ function shift(today: Date, days: number): Date {
   return d
 }
 
-/** English-default presets. Pass your own `presets` to localize. */
+/** Default presets, in Spanish. Pass your own `presets` to localize. */
 export const DEFAULT_RANGE_PRESETS: DateRangePreset[] = [
-  { label: "Today", getRange: (t) => ({ from: toISODate(t), to: toISODate(t) }) },
-  { label: "Last 7 days", getRange: (t) => ({ from: toISODate(shift(t, 6)), to: toISODate(t) }) },
-  { label: "Last 30 days", getRange: (t) => ({ from: toISODate(shift(t, 29)), to: toISODate(t) }) },
-  { label: "Last 90 days", getRange: (t) => ({ from: toISODate(shift(t, 89)), to: toISODate(t) }) },
+  { label: "Hoy", getRange: (t) => ({ from: toISODate(t), to: toISODate(t) }) },
+  { label: "Últimos 7 días", getRange: (t) => ({ from: toISODate(shift(t, 6)), to: toISODate(t) }) },
+  { label: "Últimos 30 días", getRange: (t) => ({ from: toISODate(shift(t, 29)), to: toISODate(t) }) },
+  { label: "Últimos 90 días", getRange: (t) => ({ from: toISODate(shift(t, 89)), to: toISODate(t) }) },
   {
-    label: "This month",
+    label: "Este mes",
     getRange: (t) => ({
       from: toISODate(new Date(t.getFullYear(), t.getMonth(), 1)),
       to: toISODate(t),
@@ -117,15 +125,13 @@ export default function DateRangePicker({
   locale,
   disabled,
   className,
-  applyLabel = "Apply",
-  cancelLabel = "Cancel",
   defaultIncludeTime = false,
   hideTimeToggle = false,
   use24Hour = false,
-  timeToggleLabel = "Include time",
-  startTimeLabel = "Start time",
-  endTimeLabel = "End time",
+  labels,
 }: DateRangePickerProps) {
+  const l = { ...DEFAULT_LABELS, ...labels }
+  const timeId = useId()
   const [open, setOpen] = useState(false)
   // Draft state — edits stay local until the user clicks Apply.
   const [draft, setDraft] = useState<DateRange | undefined>(undefined)
@@ -182,7 +188,7 @@ export default function DateRangePicker({
           variant="secondary"
           disabled={disabled}
           className={cn(
-            "w-full justify-start font-normal",
+            "w-full justify-start bg-field font-normal hover:bg-field-hover",
             !value.from && "text-muted-foreground",
             className
           )}
@@ -192,18 +198,18 @@ export default function DateRangePicker({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto overflow-hidden rounded-lg p-0 shadow-lg"
+        className="w-auto overflow-hidden rounded-lg p-0"
         align="start"
         sideOffset={6}
       >
         {/* Header: time toggle */}
         {!hideTimeToggle && (
-          <div className="flex items-center justify-end gap-2 border-b border-border/60 px-3 py-2">
-            <Label htmlFor="drp-time" className="text-xs text-muted-foreground">
-              {timeToggleLabel}
+          <div className="flex items-center justify-end gap-2 border-b border-border px-3 py-2">
+            <Label htmlFor={timeId} className="text-xs text-muted-foreground">
+              {l.includeTime}
             </Label>
             <Switch
-              id="drp-time"
+              id={timeId}
               checked={withTime}
               onCheckedChange={setWithTime}
             />
@@ -212,7 +218,7 @@ export default function DateRangePicker({
 
         <div className="flex">
           {presets.length > 0 && (
-            <div className="flex flex-col gap-1 border-r border-border/60 p-2">
+            <div className="flex flex-col gap-1 border-r border-border p-2">
               {presets.map((preset) => (
                 <Button
                   key={preset.label}
@@ -243,24 +249,24 @@ export default function DateRangePicker({
 
         {/* Time fields — unlocked by the header switch */}
         {withTime && (
-          <div className="flex flex-wrap items-end gap-4 border-t border-border/60 px-3 py-3">
+          <div className="flex flex-wrap items-end gap-4 border-t border-border px-3 py-3">
             <div className="space-y-1">
-              <Label className="text-xs text-muted-foreground">{startTimeLabel}</Label>
+              <Label className="text-xs text-muted-foreground">{l.startTime}</Label>
               <TimePicker value={startTime} onChange={setStartTime} use24Hour={use24Hour} />
             </div>
             <div className="space-y-1">
-              <Label className="text-xs text-muted-foreground">{endTimeLabel}</Label>
+              <Label className="text-xs text-muted-foreground">{l.endTime}</Label>
               <TimePicker value={endTime} onChange={setEndTime} use24Hour={use24Hour} />
             </div>
           </div>
         )}
 
-        <div className="flex items-center justify-end gap-2 border-t border-border/60 p-3">
+        <div className="flex items-center justify-end gap-2 border-t border-border p-3">
           <Button type="button" variant="secondary" size="sm" onClick={() => setOpen(false)}>
-            {cancelLabel}
+            {l.cancel}
           </Button>
           <Button type="button" variant="primary" size="sm" onClick={apply}>
-            {applyLabel}
+            {l.apply}
           </Button>
         </div>
       </PopoverContent>

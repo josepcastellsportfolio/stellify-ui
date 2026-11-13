@@ -3,31 +3,31 @@ import { ArrowDownRight, ArrowUpRight, type LucideIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-export type MetricCardAccent =
-  | "amber"
-  | "sky"
-  | "rose"
-  | "emerald"
-  | "violet"
-  | "orange"
-  | "teal"
-  | "pink"
-  | "slate"
+/** System accents for the icon chip. */
+export type MetricCardAccent = "neutral" | "brand" | "success" | "warning" | "danger" | "info"
+
+/** v1 hue names, still accepted and mapped onto the system accents. */
+type LegacyAccent = "amber" | "sky" | "rose" | "emerald" | "violet" | "orange" | "teal" | "pink" | "slate"
+
+const LEGACY_ACCENT: Record<LegacyAccent, MetricCardAccent> = {
+  amber: "warning",
+  orange: "warning",
+  sky: "info",
+  teal: "info",
+  violet: "info",
+  rose: "danger",
+  pink: "danger",
+  emerald: "success",
+  slate: "neutral",
+}
 
 const ACCENT_ICON_CLASS: Record<MetricCardAccent, string> = {
-  amber: "bg-amber-200 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200",
-  sky: "bg-sky-200 text-sky-900 dark:bg-sky-900/40 dark:text-sky-200",
-  rose: "bg-rose-200 text-rose-900 dark:bg-rose-900/40 dark:text-rose-200",
-  emerald:
-    "bg-emerald-200 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-200",
-  violet:
-    "bg-violet-200 text-violet-900 dark:bg-violet-900/40 dark:text-violet-200",
-  orange:
-    "bg-orange-200 text-orange-900 dark:bg-orange-900/40 dark:text-orange-200",
-  teal: "bg-teal-200 text-teal-900 dark:bg-teal-900/40 dark:text-teal-200",
-  pink: "bg-pink-200 text-pink-900 dark:bg-pink-900/40 dark:text-pink-200",
-  slate:
-    "bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-slate-100",
+  neutral: "bg-surface-3 text-foreground",
+  brand: "bg-brand-subtle text-brand",
+  success: "bg-success-subtle text-success",
+  warning: "bg-warning-subtle text-warning",
+  danger: "bg-danger-subtle text-danger",
+  info: "bg-info-subtle text-info",
 }
 
 export interface MetricCardDelta {
@@ -41,8 +41,8 @@ export type MetricCardTone = "default" | "positive" | "negative"
 
 const TONE_VALUE_CLASS: Record<MetricCardTone, string> = {
   default: "text-foreground",
-  positive: "text-emerald-700 dark:text-emerald-400",
-  negative: "text-rose-700 dark:text-rose-400",
+  positive: "text-success",
+  negative: "text-danger",
 }
 
 export interface MetricCardDetail {
@@ -60,8 +60,8 @@ export interface MetricCardProps {
   unit?: string
   /** Optional change indicator. */
   delta?: MetricCardDelta
-  /** Accent color for the icon chip. Defaults to "emerald". */
-  accent?: MetricCardAccent
+  /** Accent of the icon chip. Defaults to "neutral". v1 hue names (emerald, rose…) still work. */
+  accent?: MetricCardAccent | LegacyAccent
   /** Optional leading icon (lucide). */
   icon?: LucideIcon
   /**
@@ -94,7 +94,7 @@ const MetricCard: FC<MetricCardProps> = ({
   value,
   unit,
   delta,
-  accent = "emerald",
+  accent = "neutral",
   icon: Icon,
   invertDelta = false,
   hint,
@@ -111,6 +111,7 @@ const MetricCard: FC<MetricCardProps> = ({
   // `invertDelta` can flip the meaning for metrics where up is bad.
   const positive = delta?.positive ?? false
   const good = invertDelta ? !positive : positive
+  const resolvedAccent: MetricCardAccent = accent in LEGACY_ACCENT ? LEGACY_ACCENT[accent as LegacyAccent] : (accent as MetricCardAccent)
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!onClick) return
@@ -123,10 +124,10 @@ const MetricCard: FC<MetricCardProps> = ({
   return (
     <div
       className={cn(
-        "flex h-full min-w-0 flex-col rounded-lg border border-border/60 bg-card text-card-foreground shadow-sm transition-all",
+        "flex h-full min-w-0 flex-col rounded-lg bg-card text-card-foreground transition-colors duration-(--duration-fast)",
         compact ? "gap-1 p-3" : "gap-3 p-5",
         interactive &&
-          "cursor-pointer hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md hover:ring-1 hover:ring-primary/20",
+          "cursor-pointer hover:bg-surface-3",
         className
       )}
       onClick={onClick}
@@ -150,7 +151,7 @@ const MetricCard: FC<MetricCardProps> = ({
             className={cn(
               "items-center justify-center rounded-md",
               compact ? "hidden p-1.5 sm:inline-flex" : "inline-flex p-2",
-              ACCENT_ICON_CLASS[accent]
+              ACCENT_ICON_CLASS[resolvedAccent]
             )}
           >
             <Icon className="h-4 w-4" />
@@ -161,10 +162,10 @@ const MetricCard: FC<MetricCardProps> = ({
       <div className="flex min-w-0 items-baseline gap-2">
         <span
           className={cn(
-            "break-words tabular-nums",
+            "break-words font-mono tabular-nums tracking-tight",
             compact
-              ? "text-base font-semibold leading-tight sm:text-lg"
-              : "text-3xl font-bold",
+              ? "text-base font-medium leading-tight sm:text-lg"
+              : "text-[28px] font-medium leading-none",
             TONE_VALUE_CLASS[tone]
           )}
         >
@@ -182,10 +183,8 @@ const MetricCard: FC<MetricCardProps> = ({
       {delta && (
         <div
           className={cn(
-            "inline-flex items-center gap-1 text-xs font-medium",
-            good
-              ? "text-emerald-600 dark:text-emerald-400"
-              : "text-rose-600 dark:text-rose-400"
+            "inline-flex items-center gap-1 font-mono text-xs font-medium tabular-nums",
+            good ? "text-success" : "text-danger"
           )}
         >
           {positive ? (
@@ -198,7 +197,7 @@ const MetricCard: FC<MetricCardProps> = ({
       )}
 
       {details && details.length > 0 && (
-        <dl className="mt-auto grid gap-1 border-t border-border/60 pt-3 text-sm">
+        <dl className="mt-auto grid gap-1 border-t pt-3 text-sm">
           {details.map((detail) => (
             <div key={detail.label} className="flex items-baseline justify-between gap-3">
               <dt className="text-muted-foreground">{detail.label}</dt>

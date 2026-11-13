@@ -1,39 +1,31 @@
 import type { FC } from "react"
-import { Loader2 } from "lucide-react"
 
+import { Spinner } from "@/components/ui/spinner"
 import { cn } from "@/lib/utils"
 
 export interface LoadingSpinnerProps {
-  /** Icon size in px. Defaults to 24. */
-  size?: number
+  size?: "sm" | "md" | "lg"
   /** Fill the viewport height (centered full-screen). Defaults to false. */
   fullScreen?: boolean
-  /** Accessible label. Defaults to "Loading". */
+  /** Accessible label. Defaults to "Cargando". */
   label?: string
   className?: string
 }
 
 /**
- * Centered spinner. `fullScreen` centers it in the viewport (route-level
- * loading); otherwise it centers within its container.
+ * `Spinner` centered in its container, or in the viewport with `fullScreen`
+ * (route-level loading).
  */
-const LoadingSpinner: FC<LoadingSpinnerProps> = ({
-  size = 24,
-  fullScreen = false,
-  label = "Loading",
-  className,
-}) => (
+const LoadingSpinner: FC<LoadingSpinnerProps> = ({ size = "lg", fullScreen = false, label = "Cargando", className }) => (
   <div
+    data-slot="loading-spinner"
     className={cn(
-      "flex items-center justify-center",
+      "flex items-center justify-center text-muted-foreground",
       fullScreen ? "h-screen" : "h-full w-full py-8",
       className
     )}
-    role="status"
-    aria-label={label}
   >
-    <Loader2 className="animate-spin text-muted-foreground" style={{ width: size, height: size }} />
-    <span className="sr-only">{label}</span>
+    <Spinner size={size} label={label} />
   </div>
 )
 

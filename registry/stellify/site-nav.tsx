@@ -125,8 +125,8 @@ export interface SiteNavProps {
 const HOVER_CLICK_MS = 500
 
 const FOCUS_RING =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 " +
-  "focus-visible:ring-offset-background"
+  "" +
+  ""
 
 /**
  * Public site navigation with an accessible mobile menu and optional
@@ -289,8 +289,8 @@ export const SiteNav: FC<SiteNavProps> = ({
 
   const linkClass =
     "text-sm text-muted-foreground transition-colors hover:text-foreground " +
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
-    "focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
+    "" +
+    "rounded-sm"
 
   const renderAny = (link: SiteNavLink, props: { className: string; onClick?: () => void } & Partial<NavLinkRenderProps>) =>
     renderLink?.(link, props) ?? <NavAnchor href={link.href} {...props} />
@@ -367,7 +367,7 @@ export const SiteNav: FC<SiteNavProps> = ({
         type="button"
         className={cn(
           "inline-flex items-center justify-center rounded-md p-2 text-foreground md:hidden",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "",
         )}
         aria-expanded={open}
         aria-controls={mobileId}
@@ -529,7 +529,7 @@ const MobileSheet: FC<MobileSheetProps> = ({ id, menu, links, brand, dock, label
                     onClick={() => openCategory(category.id)}
                     className={cn(
                       "flex w-full items-center justify-between rounded-md py-4 text-left text-3xl font-normal",
-                      "tracking-display",
+                      "tracking-(--tracking-display)",
                       FOCUS_RING,
                     )}
                   >
@@ -567,7 +567,7 @@ const MobileSheet: FC<MobileSheetProps> = ({ id, menu, links, brand, dock, label
             </button>
             {selected ? (
               <>
-                <h2 className="mt-4 text-3xl font-normal tracking-display">{selected.label}</h2>
+                <h2 className="mt-4 text-3xl font-normal tracking-(--tracking-display)">{selected.label}</h2>
                 <div className="mt-8 flex flex-col gap-8">
                   {selected.groups.map(group => (
                     <div key={group.id}>

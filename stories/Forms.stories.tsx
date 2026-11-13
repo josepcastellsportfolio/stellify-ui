@@ -5,6 +5,8 @@ import DatePickerField from "@stellify/date-picker-field"
 import DateRangePicker, { type DateRangeValue } from "@stellify/date-range-picker"
 import TimePicker from "@stellify/time-picker"
 import LoadingSpinner from "@stellify/loading-spinner"
+import { Spinner as SpinnerMark } from "@stellify/spinner"
+import { Button } from "@stellify/button"
 
 const meta = {
   title: "UI/Pickers & spinner",
@@ -52,4 +54,16 @@ export const Time: Story = {
   },
 }
 
-export const Spinner: Story = { render: () => <LoadingSpinner /> }
+export const Spinner: Story = {
+  render: () => (
+    <div className="flex items-center gap-6">
+      <SpinnerMark size="sm" />
+      <SpinnerMark />
+      <SpinnerMark size="lg" />
+      <Button loading>Guardar</Button>
+      <div className="h-24 w-40 rounded-lg bg-surface-2">
+        <LoadingSpinner size="md" />
+      </div>
+    </div>
+  ),
+}

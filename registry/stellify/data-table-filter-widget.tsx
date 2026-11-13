@@ -14,6 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { CalendarIcon } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
 import type {
   ActiveFilterValue,
@@ -21,14 +22,19 @@ import type {
   SelectOption,
   StringOperator,
   NumberOperator,
-} from './data-table-filters';
+} from '@/lib/data-table-filters';
 import {
   defaultFilterValue,
   STRING_OPERATOR_LABELS,
   NUMBER_OPERATOR_LABELS,
-} from './data-table-filters';
+} from '@/lib/data-table-filters';
 
-// ── Date formatting helper ─────────────────────────────────────────────────────
+// ── Date formatting helpers ────────────────────────────────────────────────────
+
+/** YYYY-MM-DD in local time. `toISOString()` would shift the day east of UTC. */
+function toLocalISODate(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
 
 function formatDate(dateStr: string): string {
   if (!dateStr) return '';
@@ -81,14 +87,9 @@ export const MultiselectWidget: React.FC<MultiselectWidgetProps> = ({
       {effectiveOptions.map(opt => (
         <label
           key={opt.value}
-          className="flex items-center gap-2 px-1 py-1 rounded-sm hover:bg-accent cursor-pointer text-sm"
+          className="flex cursor-pointer items-center gap-2 rounded-sm px-1.5 py-1 text-sm transition-colors duration-(--duration-fast) hover:bg-surface-3"
         >
-          <input
-            type="checkbox"
-            checked={values.includes(opt.value)}
-            onChange={() => toggle(opt.value)}
-            className="rounded border-input"
-          />
+          <Checkbox checked={values.includes(opt.value)} onCheckedChange={() => toggle(opt.value)} />
           {opt.label}
         </label>
       ))}
@@ -116,7 +117,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
           value={current.operator}
           onValueChange={(op) => onChange(columnKey, { ...current, operator: op as StringOperator })}
         >
-          <SelectTrigger className="h-9 w-[120px] text-xs shrink-0">
+          <SelectTrigger className="w-[120px] text-xs shrink-0">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -128,7 +129,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
           </SelectContent>
         </Select>
         <Input
-          className="h-9 text-sm"
+          className="text-sm"
           placeholder={def.placeholder ?? 'Filtrar...'}
           value={current.value}
           onChange={(e) => onChange(columnKey, { ...current, value: e.target.value })}
@@ -145,7 +146,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
           value={current.operator}
           onValueChange={(op) => onChange(columnKey, { ...current, operator: op as NumberOperator })}
         >
-          <SelectTrigger className="h-9 w-[60px] text-sm shrink-0 font-mono">
+          <SelectTrigger className="w-[60px] text-sm shrink-0 font-mono">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -158,7 +159,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
         </Select>
         <Input
           type="number"
-          className="h-9 text-sm"
+          className="text-sm"
           placeholder={def.placeholder ?? '0'}
           value={current.value}
           onChange={(e) => onChange(columnKey, { ...current, value: e.target.value })}
@@ -172,7 +173,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
       <div className="flex items-center gap-1 w-full">
         <Input
           type="number"
-          className="h-9 text-sm"
+          className="text-sm"
           placeholder={def.fromPlaceholder ?? 'Min'}
           value={current.from}
           onChange={(e) => onChange(columnKey, { ...current, from: e.target.value })}
@@ -180,7 +181,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
         <span className="text-muted-foreground text-xs shrink-0">—</span>
         <Input
           type="number"
-          className="h-9 text-sm"
+          className="text-sm"
           placeholder={def.toPlaceholder ?? 'Max'}
           value={current.to}
           onChange={(e) => onChange(columnKey, { ...current, to: e.target.value })}
@@ -195,8 +196,8 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            variant="outline"
-            className={cn('h-9 w-full justify-start text-sm font-normal', !current.value && 'text-muted-foreground')}
+            variant="secondary"
+            className={cn('w-full justify-start bg-field font-normal hover:bg-field-hover', !current.value && 'text-muted-foreground')}
           >
             <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
             {current.value ? formatDate(current.value) : (def.placeholder ?? 'Seleccionar fecha')}
@@ -206,7 +207,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
           <Calendar
             mode="single"
             selected={selected}
-            onSelect={(date) => onChange(columnKey, { type: 'date', value: date ? date.toISOString().split('T')[0] : '' })}
+            onSelect={(date) => onChange(columnKey, { type: 'date', value: date ? toLocalISODate(date) : '' })}
           />
         </PopoverContent>
       </Popover>
@@ -214,7 +215,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
   }
 
   if (def.type === 'date_range' && current.type === 'date_range') {
-    const toISO = (d: Date) => d.toISOString().split('T')[0];
+    const toISO = toLocalISODate;
     const today = new Date();
 
     const presets = [
@@ -256,10 +257,10 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
               key={p.label}
               onClick={() => onChange(columnKey, { type: 'date_range', from: p.from, to: p.to })}
               className={cn(
-                'px-2 py-0.5 rounded text-xs border transition-colors',
+                'h-7 rounded-full px-2.5 text-xs transition-colors duration-(--duration-fast)',
                 activePreset?.label === p.label
-                  ? 'bg-primary text-primary-foreground border-primary'
-                  : 'border-input bg-background hover:bg-accent',
+                  ? 'bg-foreground text-background'
+                  : 'bg-surface-2 hover:bg-surface-3',
               )}
             >
               {p.label}
@@ -271,14 +272,14 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
         <div className="flex items-center gap-1">
           <Input
             type="date"
-            className="h-8 text-xs px-2"
+            className="h-8 px-2 text-xs"
             value={current.from}
             onChange={(e) => onChange(columnKey, { ...current, from: e.target.value })}
           />
           <span className="text-muted-foreground text-xs shrink-0">—</span>
           <Input
             type="date"
-            className="h-8 text-xs px-2"
+            className="h-8 px-2 text-xs"
             value={current.to}
             onChange={(e) => onChange(columnKey, { ...current, to: e.target.value })}
           />
@@ -291,7 +292,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
     return (
       <Input
         type="datetime-local"
-        className="h-9 text-sm w-full"
+        className="text-sm w-full"
         value={current.value}
         onChange={(e) => onChange(columnKey, { type: 'datetime', value: e.target.value })}
       />
@@ -305,7 +306,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
           <p className="text-xs text-muted-foreground">{def.fromPlaceholder ?? 'Desde'}</p>
           <Input
             type="datetime-local"
-            className="h-9 text-sm"
+            className="text-sm"
             value={current.from}
             onChange={(e) => onChange(columnKey, { ...current, from: e.target.value })}
           />
@@ -314,7 +315,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
           <p className="text-xs text-muted-foreground">{def.toPlaceholder ?? 'Hasta'}</p>
           <Input
             type="datetime-local"
-            className="h-9 text-sm"
+            className="text-sm"
             value={current.to}
             onChange={(e) => onChange(columnKey, { ...current, to: e.target.value })}
           />
@@ -329,7 +330,7 @@ export const FilterWidget: React.FC<FilterWidgetProps> = ({ columnKey, def, valu
         value={current.value || '__all__'}
         onValueChange={(v) => onChange(columnKey, { type: 'select', value: v === '__all__' ? '' : v })}
       >
-        <SelectTrigger className="h-9 w-full text-sm">
+        <SelectTrigger className="w-full text-sm">
           <SelectValue placeholder={def.placeholder ?? 'Todos'} />
         </SelectTrigger>
         <SelectContent>

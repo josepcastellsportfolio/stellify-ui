@@ -60,7 +60,7 @@ export default function DatePickerField({
           variant="secondary"
           disabled={disabled}
           className={cn(
-            "w-full justify-start font-normal",
+            "w-full justify-start bg-field font-normal hover:bg-field-hover",
             !selected && "text-muted-foreground",
             className
           )}
@@ -70,7 +70,7 @@ export default function DatePickerField({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto overflow-hidden rounded-lg p-0 shadow-lg"
+        className="w-auto overflow-hidden rounded-lg p-0"
         align="start"
         sideOffset={6}
       >

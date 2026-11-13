@@ -55,6 +55,7 @@ export const ClipReveal: FC<ClipRevealProps> = ({
         {
           clipPath: to,
           ease: "none",
+          overwrite: "auto",
           scrollTrigger: { trigger: rootRef.current, start, end, scrub: true },
         },
       )
@@ -64,7 +65,7 @@ export const ClipReveal: FC<ClipRevealProps> = ({
 
   return (
     <section id={id} ref={rootRef} data-slot="clip-reveal" className={cn("scroll-mt-24 px-2 md:px-4", rootClassName)}>
-      <div data-clip="panel" className={cn("overflow-hidden rounded-[28px]", className)}>
+      <div data-clip="panel" className={cn("overflow-hidden rounded-lg", className)}>
         {children}
       </div>
     </section>

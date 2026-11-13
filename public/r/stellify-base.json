@@ -73,7 +73,10 @@
       "radius-sm": "var(--radius-control)",
       "radius-md": "var(--radius-control)",
       "radius-lg": "var(--radius-container)",
-      "radius-xl": "var(--radius-container)"
+      "radius-xl": "var(--radius-container)",
+      "radius-pill": "var(--radius-pill)",
+      "tracking-display": "var(--tracking-display)",
+      "tracking-mono-caps": "var(--tracking-mono-caps)"
     },
     "light": {
       "brand": "oklch(0.525 0.095 126)",
@@ -227,6 +230,9 @@
       "--chart-5": "oklch(0.48 0.09 126)"
     },
     "@layer base": {
+      "*, ::before, ::after, ::backdrop": {
+        "border-color": "var(--border)"
+      },
       "body": {
         "font-family": "var(--font-sans)",
         "background-color": "var(--background)",

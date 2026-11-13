@@ -33,7 +33,7 @@ const InteluiChip = forwardRef<HTMLSpanElement, InteluiChipProps>(
       ref={ref}
       data-intelui-type={type}
       className={cn(
-        "inline-flex h-6 shrink-0 items-center gap-1 rounded-full border px-2",
+        "inline-flex h-6 shrink-0 items-center gap-1 rounded-full bg-surface-2 px-2",
         "bg-accent/40 text-xs font-medium text-foreground",
         "max-w-[10rem]",
       )}
@@ -48,7 +48,7 @@ const InteluiChip = forwardRef<HTMLSpanElement, InteluiChipProps>(
         className={cn(
           "flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-muted-foreground",
           "hover:bg-accent hover:text-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "",
           !reducedMotion && "transition-colors",
         )}
       >

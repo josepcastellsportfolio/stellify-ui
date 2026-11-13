@@ -23,6 +23,19 @@ describe("stellify-base tokens", () => {
     }
   })
 
+  it("exposes the type and pill tokens as Tailwind utilities (tracking-display, rounded-pill)", () => {
+    // Components use these classes; a token only on :root generates no utility.
+    const theme = expectedThemeVars()
+    for (const name of Object.keys(parsed.light).filter((n) => n.startsWith("tracking-") || n === "radius-pill")) {
+      expect(theme, name).toHaveProperty(name, `var(--${name})`)
+    }
+  })
+
+  it("makes the hairline the default border color (Tailwind 4 defaults to currentColor)", () => {
+    const base = parsed.extra["@layer base"] as Record<string, Record<string, string>>
+    expect(base["*, ::before, ::after, ::backdrop"]).toEqual({ "border-color": "var(--border)" })
+  })
+
   it("has no glow tokens left", () => {
     const names = [...Object.keys(parsed.light), ...Object.keys(parsed.dark)]
     expect(names.filter((n) => n.startsWith("shadow-"))).toEqual(["shadow-overlay", "shadow-overlay"])

@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { SegmentedControl } from "@/components/ui/segmented-control"
 
 export type TimeRange = "7d" | "30d" | "90d" | "all"
 
@@ -9,7 +8,7 @@ const DEFAULT_LABELS: Record<TimeRange, string> = {
   "7d": "7d",
   "30d": "30d",
   "90d": "90d",
-  all: "All",
+  all: "Todo",
 }
 
 const RANGE_DAYS: Record<TimeRange, number | null> = {
@@ -39,45 +38,34 @@ export interface TimeRangeSelectorProps {
   onChange: (range: TimeRange) => void
   /** Which ranges to show. Defaults to all four. */
   ranges?: TimeRange[]
-  /** Override labels (consumer owns copy/i18n). */
-  labels?: Partial<Record<TimeRange, string>>
+  /** Option labels. Defaults: "7d", "30d", "90d", "Todo". `group` names the control for screen readers (default "Periodo"). */
+  labels?: Partial<Record<TimeRange | "group", string>>
+  size?: "sm" | "md"
   className?: string
 }
 
 /**
- * Segmented time-range control (7d / 30d / 90d / All). Presentational and
- * i18n-agnostic — pass `labels` to localize. Generalized from StellifyIT's
- * StatsRangeSelector; drop it into a chart card's header.
+ * Time-range picker (7d / 30d / 90d / Todo) built on `segmented-control`, so
+ * the indicator slides and can be interrupted. Pass `labels` to localize.
+ * Drop it into a chart card's header.
  */
 export function TimeRangeSelector({
   value,
   onChange,
   ranges = TIME_RANGES,
   labels,
+  size = "sm",
   className,
 }: TimeRangeSelectorProps) {
   return (
-    <div
-      className={cn(
-        "inline-flex items-center gap-0.5 rounded-md border border-border bg-muted/40 p-0.5",
-        className
-      )}
-      role="group"
-    >
-      {ranges.map((r) => (
-        <Button
-          key={r}
-          type="button"
-          size="sm"
-          variant={value === r ? "primary" : "base"}
-          className="h-7 px-2.5 text-xs"
-          aria-pressed={value === r}
-          onClick={() => onChange(r)}
-        >
-          {labels?.[r] ?? DEFAULT_LABELS[r]}
-        </Button>
-      ))}
-    </div>
+    <SegmentedControl
+      aria-label={labels?.group ?? "Periodo"}
+      size={size}
+      value={value}
+      onValueChange={onChange}
+      options={ranges.map((r) => ({ value: r, label: labels?.[r] ?? DEFAULT_LABELS[r] }))}
+      className={className}
+    />
   )
 }
 
