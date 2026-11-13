@@ -2207,7 +2207,7 @@
       "name": "message-bubble",
       "type": "registry:component",
       "title": "MessageBubble",
-      "description": "One chat message as an <article> named by a hidden heading (level prop): user = tonal bubble on the right, assistant = document on the left. meta/footer slots; hides streaming text from assistive tech.",
+      "description": "One chat message as an <article> named by a hidden heading (level prop): user = rounded tonal bubble (max 80%) on the right, assistant = document on the left. meta/footer slots; hides streaming text from assistive tech.",
       "categories": [
         "blocks/chat"
       ],
@@ -2307,7 +2307,7 @@
       "name": "chat-composer",
       "type": "registry:component",
       "title": "ChatComposer",
-      "description": "Message box: grows to maxHeight and shrinks back when cleared, Enter sends, Shift+Enter new line (IME-safe), stop replaces send while streaming (Escape stops). controls/options/notice slots, private tone, one focus outline on the frame. labels.",
+      "description": "Message box as one card (T3 Code-style): auto-growing textarea on top, footer with `leading` settings (model picker, toggles via ChatComposerControl) and `controls` + round send/stop on the right. Enter sends, Shift+Enter newline (IME-safe), Escape stops; focus outlines the card; private tone; notice line below.",
       "categories": [
         "blocks/chat"
       ],
@@ -2318,7 +2318,6 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@stellify/button",
         "@stellify/textarea",
         "@stellify/utils"
       ],
@@ -2334,7 +2333,7 @@
       "name": "conversation-list",
       "type": "registry:component",
       "title": "ConversationList",
-      "description": "Conversation history for a sidebar: grouped under headings (Hoy, Ayer…), current one with aria-current + weight + brand edge, always-visible row menu (rename in place, delete), optional tag badge. labels.",
+      "description": "Conversation history for a sidebar in compact rows: grouped under headings (Hoy, Ayer…), relative time at the row end that gives way to the row menu (rename in place, delete) on hover/focus, menu always visible on touch; current one with aria-current + weight + background; accent-insensitive `query` filter; optional tag badge. labels.",
       "categories": [
         "blocks/chat"
       ],
@@ -2355,6 +2354,31 @@
           "path": "registry/stellify/conversation-list.tsx",
           "type": "registry:component",
           "target": "components/chat/conversation-list.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chat-sidebar",
+      "type": "registry:component",
+      "title": "ChatSidebar",
+      "description": "Left column of a chat app (T3 Code-style): brand + collapse (or close in a drawer), new-conversation row with shortcut hint, search box that filters as you type (Escape clears), scrolling list slot, footer. A <nav> landmark. labels.",
+      "categories": [
+        "blocks/chat"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/chat-sidebar.tsx",
+          "type": "registry:component",
+          "target": "components/chat/chat-sidebar.tsx"
         }
       ]
     },
