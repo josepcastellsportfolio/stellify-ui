@@ -54,6 +54,7 @@ export const AnimatedText: FC<AnimatedTextProps> = ({
             yPercent: 110,
             duration: 0.9,
             ease: "expo.out",
+            overwrite: "auto",
             stagger: split === "words" ? 0.05 : 0.08,
             delay,
             scrollTrigger: immediate ? undefined : { trigger: el, start: "top 88%", once: true },

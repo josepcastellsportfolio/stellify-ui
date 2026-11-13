@@ -17,6 +17,10 @@ export interface DataTableMobileProps<T> {
   skeletonCards?: number
   /** Rendered when there are no rows and not loading. */
   emptyState?: ReactNode
+  /** `list`: one card per row (phones). `grid`: a responsive card grid, for a "cards" view on any screen. */
+  layout?: "list" | "grid"
+  /** Optional per-card class (e.g. dim rows already read). */
+  rowClassName?: (row: T) => string | undefined
   className?: string
 }
 
@@ -42,21 +46,24 @@ export default function DataTableMobile<T>({
   loading = false,
   skeletonCards = 3,
   emptyState,
+  layout = "list",
+  rowClassName,
   className,
 }: DataTableMobileProps<T>) {
+  const container = layout === "grid" ? "grid gap-3 sm:grid-cols-2 lg:grid-cols-3" : "space-y-3"
   if (loading) {
     return (
-      <div className={cn("space-y-3", className)}>
+      <div className={cn(container, className)}>
         {Array.from({ length: skeletonCards }).map((_, i) => (
-          <Card key={i} className="border-l-4 border-l-primary/30">
+          <Card key={i}>
             <CardContent className="space-y-2 px-3 pb-2 pt-3">
               {Array.from({ length: 3 }).map((__, j) => (
                 <div
                   key={j}
                   className="flex animate-pulse items-center justify-between gap-2"
                 >
-                  <div className="h-3 w-1/3 rounded bg-muted" />
-                  <div className="h-4 w-1/2 rounded bg-muted" />
+                  <div className="h-3 w-1/3 rounded-sm bg-surface-3" />
+                  <div className="h-4 w-1/2 rounded-sm bg-surface-3" />
                 </div>
               ))}
             </CardContent>
@@ -73,12 +80,12 @@ export default function DataTableMobile<T>({
   const [primary, ...rest] = columns
 
   return (
-    <div className={cn("space-y-3", className)}>
+    <div className={cn(container, className)}>
       {rows.map((row) => (
-        <Card key={getRowKey(row)} className="border-l-4 border-l-primary">
-          <CardContent className="px-3 pb-2 pt-3">
+        <Card key={getRowKey(row)} className={cn("flex flex-col transition-colors duration-(--duration-fast) hover:bg-surface-3", rowClassName?.(row))}>
+          <CardContent className="flex flex-1 flex-col px-4 pb-2 pt-4">
             {primary && (
-              <p className="mb-1 truncate text-sm font-medium">
+              <p className={cn("mb-1 text-sm font-medium", layout === "grid" ? "line-clamp-2" : "truncate")}>
                 {cellValue(primary, row)}
               </p>
             )}
@@ -94,7 +101,7 @@ export default function DataTableMobile<T>({
             )}
 
             {actions && (
-              <div className="mt-1 flex justify-end gap-1 border-t border-border/60 pt-2">
+              <div className="mt-auto flex justify-end gap-1 border-t pt-2">
                 {actions(row)}
               </div>
             )}

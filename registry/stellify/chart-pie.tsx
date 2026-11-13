@@ -81,7 +81,7 @@ export default function Component({
                 <ChartTooltipContent hideLabel formatter={(value) => valueFormatter(value)} />
               }
             />
-            <Pie data={data} dataKey={dataKey} nameKey={nameKey} innerRadius={innerRadius} />
+            <Pie data={data} dataKey={dataKey} nameKey={nameKey} innerRadius={innerRadius} stroke="var(--card)" strokeWidth={2} />
           </PieChart>
         </ChartContainer>
       </CardContent>

@@ -19,13 +19,13 @@ function AppShell({ sidebar, topbar, children, sidebarOpen = true, className }: 
       className={cn("flex h-screen overflow-hidden bg-background text-foreground", className)}
     >
       {sidebarOpen && (
-        <aside className="hidden w-60 shrink-0 overflow-y-auto border-r border-border/60 md:block">
+        <aside className="hidden w-60 shrink-0 overflow-y-auto bg-sidebar text-sidebar-foreground md:block">
           {sidebar}
         </aside>
       )}
       <div className="flex min-w-0 flex-1 flex-col">
         {topbar && (
-          <header className="flex h-14 shrink-0 items-center gap-4 border-b border-border/60 px-6">
+          <header className="flex h-14 shrink-0 items-center gap-4 border-b px-6">
             {topbar}
           </header>
         )}

@@ -58,11 +58,11 @@ const InteluiTabs: FC<InteluiTabsProps> = ({
                 }
               }}
               className={cn(
-                "group/tab flex shrink-0 cursor-pointer items-center gap-1 rounded-md border px-2 py-1 text-xs",
+                "group/tab flex shrink-0 cursor-pointer items-center gap-1 rounded-md bg-surface-2 px-2 py-1 text-xs transition-colors duration-(--duration-fast)",
                 "max-w-[10rem] transition-colors",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "",
                 active
-                  ? "border-primary bg-primary/10 text-foreground"
+                  ? "bg-brand-subtle text-brand"
                   : "border-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground",
               )}
             >
@@ -74,7 +74,7 @@ const InteluiTabs: FC<InteluiTabsProps> = ({
                 className={cn(
                   "flex h-4 w-4 shrink-0 items-center justify-center rounded",
                   "text-muted-foreground hover:bg-destructive hover:text-destructive-foreground",
-                  "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+                  "",
                 )}
               >
                 <X className="h-3 w-3" aria-hidden />
@@ -90,7 +90,7 @@ const InteluiTabs: FC<InteluiTabsProps> = ({
         className={cn(
           "flex h-6 w-6 shrink-0 items-center justify-center rounded-md",
           "text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "",
         )}
       >
         <Plus className="h-4 w-4" aria-hidden />

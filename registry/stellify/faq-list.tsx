@@ -37,9 +37,7 @@ export interface FaqListProps {
 }
 
 const linkClass =
-  "mt-3 inline-flex text-sm font-medium text-primary underline-offset-4 hover:underline " +
-  "rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
-  "focus-visible:ring-offset-2"
+  "mt-3 inline-flex rounded-sm text-sm font-medium text-primary underline-offset-4 hover:underline"
 
 /**
  * Frequently asked questions as native `<details>`/`<summary>` disclosures.
@@ -66,7 +64,7 @@ export const FaqList: FC<FaqListProps> = ({
 
   return (
     <section data-slot="faq-list" aria-labelledby={id} className={className}>
-      <h2 id={id} className="text-2xl font-semibold tracking-display">
+      <h2 id={id} className="text-2xl font-semibold tracking-(--tracking-display)">
         {title}
       </h2>
 
@@ -81,10 +79,10 @@ export const FaqList: FC<FaqListProps> = ({
               <summary
                 className={cn(
                   "flex cursor-pointer list-none items-start justify-between gap-4 py-4",
-                  "text-left font-medium leading-body text-foreground",
+                  "text-left font-medium leading-relaxed text-foreground",
                   "[&::-webkit-details-marker]:hidden",
-                  "rounded-sm focus-visible:outline-none focus-visible:ring-2",
-                  "focus-visible:ring-ring focus-visible:ring-offset-2",
+                  "rounded-sm",
+                  "",
                 )}
               >
                 {item.question}
@@ -92,14 +90,14 @@ export const FaqList: FC<FaqListProps> = ({
                   aria-hidden="true"
                   className={cn(
                     "mt-1 size-4 shrink-0 text-muted-foreground",
-                    "transition-transform duration-base ease-out-soft group-open:rotate-180",
+                    "transition-transform duration-(--duration-base) ease-(--ease-out) group-open:rotate-180",
                     "motion-reduce:transition-none",
                   )}
                 />
               </summary>
 
               <div data-slot="faq-answer" className="pb-5 pr-8">
-                <p className="leading-body text-muted-foreground">{item.answer}</p>
+                <p className="leading-relaxed text-muted-foreground">{item.answer}</p>
                 {link
                   ? renderLink?.(link, { className: linkClass }) ?? (
                       <a href={link.href} className={linkClass}>

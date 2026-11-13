@@ -14,6 +14,13 @@ import {
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
+export interface ConfirmDialogLabels {
+  confirm: string
+  cancel: string
+}
+
+const DEFAULT_LABELS: ConfirmDialogLabels = { confirm: "Confirmar", cancel: "Cancelar" }
+
 export interface ConfirmDialogProps {
   /** Controlled open state. Omit (with `trigger`) for uncontrolled usage. */
   open?: boolean
@@ -25,10 +32,8 @@ export interface ConfirmDialogProps {
   title: string
   /** Dialog description / body copy. */
   description?: ReactNode
-  /** Confirm button label. Defaults to "Confirm". */
-  confirmLabel?: string
-  /** Cancel button label. Defaults to "Cancel". */
-  cancelLabel?: string
+  /** Button copy. Defaults: "Confirmar", "Cancelar". */
+  labels?: Partial<ConfirmDialogLabels>
   /** Called when the user confirms. */
   onConfirm: () => void
   /** Style the confirm button as destructive (red). */
@@ -50,12 +55,12 @@ export default function ConfirmDialog({
   trigger,
   title,
   description,
-  confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
+  labels,
   onConfirm,
   destructive = false,
   loading = false,
 }: ConfirmDialogProps) {
+  const l = { ...DEFAULT_LABELS, ...labels }
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}
@@ -68,7 +73,7 @@ export default function ConfirmDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={loading}>
-            {cancelLabel}
+            {l.cancel}
           </AlertDialogCancel>
           <AlertDialogAction
             disabled={loading}
@@ -78,7 +83,7 @@ export default function ConfirmDialog({
                 buttonVariants({ variant: "destructive" })
             )}
           >
-            {confirmLabel}
+            {l.confirm}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -84,7 +84,7 @@ export default function Component({
               }
             />
             {keys.map((key) => (
-              <Bar key={key} dataKey={key} fill={`var(--color-${key})`} radius={8} />
+              <Bar key={key} dataKey={key} fill={`var(--color-${key})`} radius={[4, 4, 0, 0]} />
             ))}
           </BarChart>
         </ChartContainer>

@@ -100,8 +100,9 @@ export default function Component({
                 dataKey={key}
                 type="natural"
                 fill={`var(--color-${key})`}
-                fillOpacity={0.4}
+                fillOpacity={0.12}
                 stroke={`var(--color-${key})`}
+                strokeWidth={2}
               />
             ))}
           </AreaChart>

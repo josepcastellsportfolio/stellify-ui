@@ -58,7 +58,8 @@ const meta = {
 } satisfies Meta<typeof DataTable<Expense>>
 
 export default meta
-type Story = StoryObj<typeof meta>
+// Stories render complete examples, so they set no args.
+type Story = StoryObj
 
 function FullExample() {
   const [search, setSearch] = useState("")
@@ -106,7 +107,7 @@ function FullExample() {
             <DataTableToolbar
               search={search}
               onSearchChange={setSearch}
-              searchPlaceholder="Search expenses…"
+              labels={{ searchPlaceholder: "Search expenses…" }}
             />
           }
           footer={
