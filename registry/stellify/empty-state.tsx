@@ -19,7 +19,7 @@ const EmptyState: FC<EmptyStateProps> = ({
   action,
 }) => (
   <div className="flex flex-col items-center justify-center py-12 text-center">
-    <div className="mb-4 rounded-full bg-muted p-4">
+    <div className="mb-4 rounded-full bg-surface-2 p-4 text-muted-foreground">
       <Icon className="h-8 w-8 text-muted-foreground" />
     </div>
     <h3 className="mb-1 text-lg font-semibold">{title}</h3>

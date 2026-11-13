@@ -145,7 +145,7 @@ export const NavPreviewCard: FC<NavPreviewCardProps> = ({
   className,
 }) => {
   const classes = cn(
-    "group/preview relative flex flex-col justify-end overflow-hidden rounded-card",
+    "group/preview relative flex flex-col justify-end overflow-hidden rounded-lg",
     "bg-[var(--nav-preview-bg,oklch(0.16_0.02_265))] text-[var(--nav-preview-fg,oklch(0.98_0_0))]",
     size === "lg" ? "min-h-[15rem] p-6" : "min-h-[7.5rem] p-5",
     className,
@@ -179,9 +179,9 @@ export const NavPreviewCard: FC<NavPreviewCardProps> = ({
         key={previewKey ?? href}
         className="relative flex flex-col gap-2 animate-in fade-in-0 duration-150 motion-reduce:animate-none"
       >
-        <span className={cn("leading-tight tracking-display", size === "lg" ? "text-2xl" : "text-lg")}>{title}</span>
+        <span className={cn("leading-tight tracking-(--tracking-display)", size === "lg" ? "text-2xl" : "text-lg")}>{title}</span>
         {summary && size === "lg" ? (
-          <span className="line-clamp-3 max-w-[38ch] text-sm leading-body text-[var(--nav-preview-muted,oklch(0.78_0.02_265))]">
+          <span className="line-clamp-3 max-w-[38ch] text-sm leading-relaxed text-[var(--nav-preview-muted,oklch(0.78_0.02_265))]">
             {summary}
           </span>
         ) : null}

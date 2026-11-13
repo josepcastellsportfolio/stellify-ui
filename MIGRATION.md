@@ -1,5 +1,29 @@
 # Migration guide
 
+## v2, phase 3: charts, blocks and motion (2026-11-13)
+
+The v2 rules now cover every item, and `tests/registry.test.ts` checks all of them: no focus halos, no
+non-overlay shadows, no blur or gradients, no outlined fields, no raw palette colors (`bg-emerald-200`…) and no
+utilities from the removed v1 tokens.
+
+- **Removed-token utilities.** Blocks used `rounded-card`, `rounded-icon`, `rounded-pill`, `leading-body`,
+  `shadow-card`, `tracking-display`, `duration-base` and `ease-out-soft`, which only worked if your Tailwind config
+  defined them. They now use `rounded-lg`, `rounded-full`, `leading-relaxed`, `tracking-(--tracking-display)` and
+  the motion tokens.
+- **Charts.** Bars have 4px rounded tops on the baseline; area and radar fills are light (12–15%) with a 2px line;
+  pie slices are separated by a 2px surface ring; the tooltip is an overlay. Axis ticks use Geist Mono and now
+  actually take the muted color (recharts 3 moved the tick class, so the shadcn selector never matched).
+  `chart-card`: `retryLabel` → `labels.retry` ("Reintentar").
+- **`metric-card`.** `accent` takes `neutral | brand | success | warning | danger | info` (default `neutral`); the
+  v1 hues (`emerald`, `rose`…) still work and map onto them. Value and delta use tabular mono; status colors come
+  from the tokens, so they follow dark mode and rebranding.
+- **App blocks.** `app-shell`'s sidebar is a tonal column (`bg-sidebar`), not a bordered one; `sidebar` marks the
+  active item with `sidebar-accent` and a brand edge.
+- **Site blocks.** `cookie-consent` floats as an overlay on desktop; `acceptLabel`, `rejectLabel`, `policyLabel` →
+  `labels`. `site-chat` copy moves to `labels`. `mega-menu-panel` uses the overlay surface and shadow.
+- **Motion.** Every GSAP tween and timeline sets `overwrite: "auto"`, so a new animation on the same element
+  replaces the running one instead of fighting it.
+
 ## v2, phase 2: the ui core (2026-11-13)
 
 The `ui` items now follow the v2 rules: no box borders, no focus halos, no shadows except on overlays,

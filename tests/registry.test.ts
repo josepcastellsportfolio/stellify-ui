@@ -42,9 +42,9 @@ describe("registry.json integrity", () => {
   })
 })
 
-// v2 personality: no glows, no outlined boxes in the ui core. Phase 3 extends
-// this to charts, data-table, blocks and motion.
-describe("ui core has no halos or box borders", () => {
+// v2 personality: no glows, no outlined fields, and nothing that depends on the
+// tokens v2 removed. Applies to every item that ships markup.
+describe("no halos, outlined fields or removed tokens", () => {
   const FORBIDDEN = [
     /focus(?:-visible)?:ring/, // translucent focus halos: stellify-base draws the one outline
     /ring-offset/,
@@ -53,9 +53,13 @@ describe("ui core has no halos or box borders", () => {
     /backdrop-blur/,
     /bg-gradient/,
     /(?<![\w-])border-input(?![\w-])/, // fields are filled
+    /(?<![\w(-])(?:rounded-(?:card|icon|pill)|leading-body|shadow-card|shadow-button|tracking-display|duration-base|ease-out-soft)(?![\w-])/, // v1 marketing tokens
+    /var\(--(?:radius-card|radius-icon|shadow-card|shadow-button|duration|space-[a-z-]+)\)/,
+    // Raw palette colors bypass the tokens (and dark mode, and rebranding).
+    /(?<![\w-])(?:bg|text|border|fill|stroke|ring|from|to)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d{2,3}\b/,
   ]
   const uiFiles = items
-    .filter((i) => (i as Item & { categories?: string[] }).categories?.[0] === "ui")
+    .filter((i) => (i as Item & { categories?: string[] }).categories?.[0] !== "foundations")
     .flatMap((i) => i.files ?? [])
     .map((f) => f.path)
     .filter((p) => p.endsWith(".tsx"))

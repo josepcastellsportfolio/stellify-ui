@@ -72,8 +72,8 @@ const SidebarItem = React.forwardRef<HTMLAnchorElement, SidebarItemProps>(
         data-active={active}
         aria-current={active ? "page" : undefined}
         className={cn(
-          "flex items-center gap-3 whitespace-nowrap rounded-md px-2 py-2 text-sm text-foreground/80 transition-colors hover:bg-muted hover:text-foreground",
-          active && "bg-primary/5 font-semibold text-primary hover:bg-primary/10 hover:text-primary",
+          "relative flex items-center gap-3 whitespace-nowrap rounded-md px-2 py-2 text-sm text-muted-foreground transition-colors duration-(--duration-fast) hover:bg-sidebar-accent hover:text-foreground",
+          active && "bg-sidebar-accent font-medium text-foreground before:absolute before:inset-y-1.5 before:-left-2 before:w-0.5 before:rounded-full before:bg-brand",
           className
         )}
         {...props}

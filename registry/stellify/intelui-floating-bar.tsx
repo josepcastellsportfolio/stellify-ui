@@ -160,7 +160,7 @@ const InteluiFloatingBar: FC<InteluiFloatingBarProps> = ({
 
         {showFocusSuggestions && (
           <div
-            className="absolute bottom-full left-0 mb-2 w-64 rounded-lg border border-border bg-popover p-2 shadow-md"
+            className="absolute bottom-full left-0 mb-2 w-64 rounded-lg bg-popover p-2 shadow-(--shadow-overlay)"
             role="listbox"
             aria-label={labels.suggestionsTitle}
           >
@@ -179,7 +179,7 @@ const InteluiFloatingBar: FC<InteluiFloatingBarProps> = ({
                     className={cn(
                       "w-full rounded-md px-2 py-1.5 text-left text-sm text-foreground",
                       "transition-colors hover:bg-accent hover:text-accent-foreground",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                      "",
                     )}
                   >
                     {s.label}
@@ -192,7 +192,7 @@ const InteluiFloatingBar: FC<InteluiFloatingBarProps> = ({
 
         <form
           onSubmit={handleSubmit}
-          className="flex h-10 origin-left items-center gap-1.5 overflow-hidden rounded-md border border-border bg-popover px-2 shadow-md"
+          className="flex h-10 origin-left items-center gap-1.5 overflow-hidden rounded-lg bg-popover px-2 shadow-(--shadow-overlay)"
           style={{
             width: entered
               ? "min(28rem, calc(100vw - var(--intelui-sidebar-w, 3.5rem) - 2.5rem))"
@@ -211,7 +211,7 @@ const InteluiFloatingBar: FC<InteluiFloatingBarProps> = ({
             className={cn(
               "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-primary",
               "transition-colors hover:bg-accent",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "",
             )}
           >
             <Sparkles className="h-5 w-5" strokeWidth={1.75} aria-hidden />
@@ -236,7 +236,7 @@ const InteluiFloatingBar: FC<InteluiFloatingBarProps> = ({
               className={cn(
                 "group/stop flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-primary",
                 "transition-colors hover:bg-accent",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "",
               )}
             >
               <Loader2
@@ -256,7 +256,7 @@ const InteluiFloatingBar: FC<InteluiFloatingBarProps> = ({
               className={cn(
                 "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-primary",
                 "transition-colors hover:bg-accent disabled:opacity-40",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "",
               )}
             >
               <Send className="h-4 w-4" aria-hidden />
@@ -271,7 +271,7 @@ const InteluiFloatingBar: FC<InteluiFloatingBarProps> = ({
             className={cn(
               "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted-foreground",
               "transition-[background-color,transform] hover:bg-accent",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "",
               chatExpanded && "rotate-180",
               reducedMotion && "transition-none",
             )}

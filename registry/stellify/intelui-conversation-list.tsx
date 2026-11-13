@@ -43,7 +43,7 @@ const InteluiConversationList: FC<InteluiConversationListProps> = ({
             className={cn(
               "flex w-full items-center gap-2 rounded-md py-1.5 pl-2 pr-8 text-left text-sm",
               "text-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "",
             )}
           >
             <MessageSquare className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
@@ -59,7 +59,7 @@ const InteluiConversationList: FC<InteluiConversationListProps> = ({
                 "text-muted-foreground opacity-0 transition-opacity",
                 "hover:bg-destructive hover:text-destructive-foreground",
                 "group-hover/item:opacity-100 focus-visible:opacity-100",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "",
               )}
             >
               <X className="h-3.5 w-3.5" aria-hidden />

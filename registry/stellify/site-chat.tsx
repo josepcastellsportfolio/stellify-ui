@@ -47,12 +47,29 @@ export interface SiteChatProps {
   onSend?: (text: string) => void
   /** Slot for the bot check (Turnstile) rendered before the first turn. */
   verification?: ReactNode
+  /** Copy. Spanish defaults. */
+  labels?: Partial<SiteChatLabels>
   className?: string
 }
 
-const PHASE_LABEL: Record<Exclude<SiteChatPhase, "idle">, string> = {
+export interface SiteChatLabels {
+  conversation: string
+  inputLabel: string
+  inputPlaceholder: string
+  send: string
+  searching: string
+  writing: string
+  exhausted: string
+}
+
+const DEFAULT_LABELS: SiteChatLabels = {
+  conversation: "Conversación",
+  inputLabel: "Escribe tu pregunta",
+  inputPlaceholder: "Escribe tu pregunta…",
+  send: "Enviar",
   searching: "Buscando en el contenido…",
   writing: "Redactando…",
+  exhausted: "Has alcanzado el máximo de preguntas de esta sesión.",
 }
 
 /**
@@ -80,6 +97,7 @@ export const SiteChat: FC<SiteChatProps> = ({
   maxTurns = 8,
   maxMessageLength = 500,
   onSend,
+  labels,
   verification,
   className,
 }) => {
@@ -90,6 +108,7 @@ export const SiteChat: FC<SiteChatProps> = ({
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight })
   }, [messages.length, phase])
 
+  const l = { ...DEFAULT_LABELS, ...labels }
   const exhausted = turnsUsed >= maxTurns
   const canSend = enabled && !exhausted && phase === "idle" && draft.trim().length > 0
 
@@ -103,11 +122,11 @@ export const SiteChat: FC<SiteChatProps> = ({
   return (
     <section
       className={cn(
-        "rounded-card border border-border bg-card p-5 shadow-card sm:p-8",
+        "rounded-lg bg-card p-5 sm:p-8",
         className,
       )}
     >
-      <h2 className="text-2xl font-semibold tracking-display text-card-foreground">
+      <h2 className="text-2xl font-semibold tracking-(--tracking-display) text-card-foreground">
         {title}
       </h2>
       {description ? (
@@ -120,13 +139,13 @@ export const SiteChat: FC<SiteChatProps> = ({
           className="mt-6 max-h-80 space-y-4 overflow-y-auto"
           role="log"
           aria-live="polite"
-          aria-label="Conversación"
+          aria-label={l.conversation}
         >
           {messages.map((message, index) => (
             <div
               key={index}
               className={cn(
-                "rounded-icon px-4 py-3 text-sm",
+                "rounded-lg px-4 py-3 text-sm",
                 message.role === "user"
                   ? "bg-muted text-foreground"
                   : "bg-accent text-accent-foreground",
@@ -160,10 +179,10 @@ export const SiteChat: FC<SiteChatProps> = ({
         {faqs.map(faq => (
           <li
             key={faq.question}
-            className="rounded-icon border border-border/60 p-4"
+            className="rounded-lg bg-background p-4"
           >
             <p className="font-medium text-card-foreground">{faq.question}</p>
-            <p className="mt-2 text-sm leading-body text-muted-foreground">
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               {faq.answer}
             </p>
             <a
@@ -182,7 +201,7 @@ export const SiteChat: FC<SiteChatProps> = ({
 
           <div className="flex gap-3">
             <label htmlFor="site-chat-input" className="sr-only">
-              Escribe tu pregunta
+              {l.inputLabel}
             </label>
             <input
               id="site-chat-input"
@@ -190,30 +209,30 @@ export const SiteChat: FC<SiteChatProps> = ({
               onChange={event => setDraft(event.target.value)}
               maxLength={maxMessageLength}
               disabled={exhausted || phase !== "idle"}
-              placeholder="Escribe tu pregunta…"
+              placeholder={l.inputPlaceholder}
               className={cn(
-                "flex-1 rounded-pill border border-input bg-background px-4 py-2.5 text-sm",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                "flex-1 rounded-full bg-background px-4 py-2.5 text-sm transition-colors duration-(--duration-fast) hover:bg-surface-3",
+                "",
               )}
             />
             <button
               type="submit"
               disabled={!canSend}
               className={cn(
-                "inline-flex items-center gap-2 rounded-pill bg-primary px-5 py-2.5",
+                "inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5",
                 "text-sm font-medium text-primary-foreground disabled:opacity-50",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                "",
               )}
             >
               <Send className="h-4 w-4" aria-hidden="true" />
-              Enviar
+              {l.send}
             </button>
           </div>
 
           {/* Progress is named, not mute: the model runs on a home GPU and queues. */}
           <p className="mt-3 min-h-5 text-xs text-muted-foreground" aria-live="polite">
-            {phase !== "idle" ? PHASE_LABEL[phase] : null}
-            {exhausted ? "Has alcanzado el máximo de preguntas de esta sesión." : null}
+            {phase !== "idle" ? l[phase] : null}
+            {exhausted ? l.exhausted : null}
           </p>
         </form>
       ) : null}

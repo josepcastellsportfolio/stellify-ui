@@ -33,7 +33,7 @@ const badgeVariants = cva(
         xs: "gap-1 px-1.5 py-0 text-[10px] leading-4 [&>svg]:size-3",
       },
       uppercase: {
-        true: "font-mono uppercase tracking-(--tracking-mono-caps)",
+        true: "font-mono uppercase tracking-wide",
         false: "",
       },
     },

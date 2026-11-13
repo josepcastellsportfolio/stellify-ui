@@ -63,6 +63,7 @@ export const ScrollReveal: FC<ScrollRevealProps> = ({
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
           ease: "none",
+          overwrite: "auto",
           scrollTrigger: { trigger: root, start: "top bottom", end: "top top", scrub: true, invalidateOnRefresh: true },
         },
       )

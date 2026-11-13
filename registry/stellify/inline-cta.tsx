@@ -43,12 +43,12 @@ export const InlineCta: FC<InlineCtaProps> = ({
     <div
       data-slot="inline-cta"
       className={cn(
-        "flex flex-col gap-4 rounded-card border border-border bg-card p-5",
+        "flex flex-col gap-4 rounded-lg bg-card p-5",
         "sm:flex-row sm:items-center sm:justify-between sm:gap-6",
         className,
       )}
     >
-      <p data-slot="inline-cta-text" className="leading-body text-card-foreground">
+      <p data-slot="inline-cta-text" className="leading-relaxed text-card-foreground">
         {text}
       </p>
       {renderLink?.(link, { className: actionClass }) ?? (

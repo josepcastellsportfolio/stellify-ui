@@ -1285,7 +1285,7 @@
       "name": "chart-card",
       "type": "registry:component",
       "title": "ChartCard",
-      "description": "Card shell for charts with loading skeleton, empty and error states, header actions slot. All copy passed via props.",
+      "description": "Card shell for charts with loading skeleton, empty and error states, header actions slot. `labels.retry` defaults to \"Reintentar\".",
       "categories": [
         "charts"
       ],
@@ -1771,7 +1771,7 @@
       "name": "metric-card",
       "type": "registry:component",
       "title": "MetricCard",
-      "description": "KPI card: label, value, unit, delta with trend arrow, accent icon chip. invertDelta flips good/bad colors (for expenses); tone colors the value (negative = red); details adds label/value rows.",
+      "description": "KPI card on a tonal surface: label, value in tabular mono, unit, delta with trend arrow, accent icon chip (neutral/brand/success/warning/danger/info; v1 hue names still map). invertDelta flips good/bad; tone colors the value; details adds label/value rows.",
       "categories": [
         "blocks/app"
       ],
@@ -2002,7 +2002,7 @@
       "name": "site-chat",
       "type": "registry:component",
       "title": "SiteChat",
-      "description": "Public chat panel, degraded-first: renders a FAQ block by default and gains a composer when a service is available. Never shows a raw error or an indefinite spinner.",
+      "description": "Public chat panel, degraded-first: renders a FAQ block by default and gains a composer when a service is available. Never shows a raw error or an indefinite spinner. Copy via `labels` (Spanish defaults).",
       "categories": [
         "blocks/site"
       ],
@@ -2182,7 +2182,7 @@
       "name": "cookie-consent",
       "type": "registry:component",
       "title": "CookieConsent",
-      "description": "Presentational, non-modal analytics-cookie banner (z-50). Accept and Reject have equal weight; no close button that implies consent.",
+      "description": "Presentational, non-modal analytics-cookie banner (z-50). Accept and Reject have equal weight; no close button that implies consent. Copy via `labels` (Spanish defaults).",
       "categories": [
         "blocks/site"
       ],

@@ -72,7 +72,7 @@ export const StickyCta: FC<StickyCtaProps> = ({
       <div
         data-slot="sticky-cta"
         className={cn(
-          "fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur",
+          "fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95",
           "px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:hidden",
           className,
         )}

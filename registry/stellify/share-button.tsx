@@ -70,8 +70,8 @@ type CopyState = "idle" | "copied" | "failed"
 
 const itemClass =
   "flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm text-popover-foreground " +
-  "transition-colors duration-base ease-out-soft hover:bg-accent hover:text-accent-foreground " +
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none " +
+  "transition-colors duration-(--duration-fast) ease-(--ease-out) hover:bg-accent hover:text-accent-foreground " +
+  "motion-reduce:transition-none " +
   "[&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"
 
 /**

@@ -40,14 +40,14 @@ const InteluiPill = forwardRef<HTMLButtonElement, InteluiPillProps>(
       aria-haspopup={disabled ? undefined : "dialog"}
       aria-expanded={disabled ? undefined : open}
       className={cn(
-        "flex h-10 w-full items-center gap-3 rounded-md border border-transparent px-2",
+        "flex h-10 w-full items-center gap-3 rounded-md px-2",
         "text-foreground transition-colors",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "",
         disabled
           ? "cursor-not-allowed opacity-40"
           : active
-            ? "border-primary bg-primary text-primary-foreground"
-            : "hover:border-primary hover:bg-primary hover:text-primary-foreground",
+            ? "bg-primary text-primary-foreground"
+            : "hover:bg-primary hover:text-primary-foreground",
       )}
     >
       <MessageSquareText className="h-5 w-5 shrink-0" strokeWidth={1.75} aria-hidden />
