@@ -1544,7 +1544,7 @@
       "name": "data-table",
       "type": "registry:component",
       "title": "DataTable",
-      "description": "Presentational paginated table (columns, rows, sort, loading skeleton, empty state). Sortable headers are buttons with aria-sort on the header cell (Tab + Enter/Space); the actions column's hidden header comes from actionsLabel. Fetching is the consumer's job — see toolbar/pagination slots.",
+      "description": "Presentational, controlled table in a rounded frame: tinted header, hairline rows, footer inside. Sort, per-column header filters (`filter` + `filters`/`onFilterChange`), row selection with select-all and a bulk-actions bar, row actions, loading skeleton, empty state. Right-aligned columns use tabular mono figures. Spanish `labels`.",
       "categories": [
         "data-table"
       ],
@@ -1556,6 +1556,9 @@
       ],
       "registryDependencies": [
         "@stellify/table",
+        "@stellify/checkbox",
+        "@stellify/data-table-column-filter",
+        "@stellify/data-table-filters",
         "@stellify/utils"
       ],
       "files": [
@@ -1569,7 +1572,7 @@
       "name": "data-table-pagination",
       "type": "registry:component",
       "title": "DataTablePagination",
-      "description": "Controlled pagination footer for data-table: page-size selector + prev/next. Labels via props. No paging logic.",
+      "description": "Controlled pagination: rows per page, \"1–10 de 42\" range and numbered pages with gaps. Spanish `labels`.",
       "categories": [
         "data-table"
       ],
@@ -1595,7 +1598,7 @@
       "name": "data-table-toolbar",
       "type": "registry:component",
       "title": "DataTableToolbar",
-      "description": "Search box (with clear) + optional filters toggle and reset for data-table. Presentational; owns no filter state. Drop into the toolbar slot.",
+      "description": "Search row for data-table with `filters` and `actions` slots and children for active-filter chips. Spanish `labels`.",
       "categories": [
         "data-table"
       ],
@@ -1644,7 +1647,7 @@
       "name": "data-table-filters",
       "type": "registry:lib",
       "title": "DataTableFilters",
-      "description": "Filter type system for DataTable: 10 filter kinds, operators, state shapes, type guards and factory helpers. No UI.",
+      "description": "Filter type system for DataTable: 10 filter kinds, operators, state shapes, type guards and factory helpers. No UI. Also `applyFilters` / `matchesFilter` / `countActiveFilters` for in-memory rows.",
       "categories": [
         "data-table"
       ],
@@ -1690,7 +1693,7 @@
       "name": "data-table-column-filter",
       "type": "registry:component",
       "title": "DataTableColumnFilter",
-      "description": "Filter trigger for a column header: an icon that opens the column's filter in a popover, so a wide control is not bound to the column's width.",
+      "description": "Header filter button (tinted while active) opening the column's FilterWidget in a popover.",
       "categories": [
         "data-table"
       ],
@@ -1715,7 +1718,7 @@
       "name": "data-table-active-filters",
       "type": "registry:component",
       "title": "DataTableActiveFilters",
-      "description": "Chips showing which filters are applied; each reopens its filter for editing and clears itself.",
+      "description": "Active-filter chips: column + value, click to edit, ✕ to clear, optional \"Limpiar filtros\". Spanish `labels`.",
       "categories": [
         "data-table"
       ],
@@ -1731,6 +1734,35 @@
       "files": [
         {
           "path": "registry/stellify/data-table-active-filters.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "data-table-advanced-filters",
+      "type": "registry:component",
+      "title": "DataTableAdvancedFilters",
+      "description": "\"Filtros\" button with an active-count badge opening a panel with every filterable column's widget; edits apply live, with per-field reset and \"Limpiar todo\". Spanish `labels`.",
+      "categories": [
+        "data-table"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/popover",
+        "@stellify/data-table-filter-widget",
+        "@stellify/data-table-active-filters",
+        "@stellify/data-table-filters",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/data-table-advanced-filters.tsx",
           "type": "registry:component"
         }
       ]

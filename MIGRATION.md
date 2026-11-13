@@ -42,6 +42,20 @@ filled fields. Re-add what you use with `npx shadcn add @stellify/<item> --overw
 - `progress` is 8px tall by default (was 16px). `chip` is a pill.
 - `stellify-base` now sets the hairline as the default border color (Tailwind 4 defaulted to the text color, so
   every `border-b` was a dark line). Re-add `stellify-base` to pick it up.
+- **Data table family** (breaking copy props, Spanish defaults):
+  - `data-table`: new `filter` on columns plus `filters` / `onFilterChange` (header filter buttons), `selectedKeys` /
+    `onSelectedKeysChange` (checkbox column, select-all) and `bulkActions` (bar above the rows), `labels`.
+  - `data-table-toolbar`: `searchPlaceholder`, `resetLabel`, `clearSearchLabel` → `labels`; `showFilterToggle`,
+    `filtersOpen`, `onToggleFilters` are gone (put `DataTableAdvancedFilters` in the new `filters` slot);
+    `children` renders under the row (for `DataTableActiveFilters`).
+  - `data-table-pagination`: `rowsPerPageLabel`, `ofLabel`, `previousLabel`, `nextLabel` → `labels`; shows the range
+    ("1–10 de 42") and numbered pages.
+  - New `data-table-advanced-filters` ("Filtros" button + panel with every filterable column).
+  - `data-table-active-filters`: optional `onClearAll` ("Limpiar filtros"), `labels`.
+  - `data-table-filters`: `applyFilters`, `matchesFilter`, `countActiveFilters` for in-memory rows.
+  - `data-table-mobile`: `layout="grid"` for a cards view, `rowClassName`.
+  - Fixed: components imported `./data-table-filters`, which broke once installed (the lib lands in `lib/`); and date
+    presets ("Este mes"…) used UTC, so east of UTC they started a day early.
 - `table`: header row on `surface-2` with mono caps labels, hairline row separators, hover `surface-2`, selected row
   `brand-subtle` with a brand edge. `data-table`: rounded hairline frame; the `footer` (e.g. pagination) now renders
   inside the frame on `surface-2`; right-aligned columns use Geist Mono tabular figures.

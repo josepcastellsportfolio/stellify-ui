@@ -123,14 +123,15 @@ The `chart` primitive (`ChartContainer` / `ChartTooltip` / `ChartLegend` over Re
 
 | Item | Type | Summary |
 |---|---|---|
-| `data-table` | component | Presentational paginated table (columns, rows, sort, loading skeleton, empty state). Sortable headers are buttons with aria-sort on the header cell (Tab + Enter/Space); the actions column's hidden header comes from actionsLabel. Fetching is the consumer's job — see toolbar/pagination slots. |
-| `data-table-pagination` | component | Controlled pagination footer for data-table: page-size selector + prev/next. Labels via props. No paging logic. |
-| `data-table-toolbar` | component | Search box (with clear) + optional filters toggle and reset for data-table. Presentational; owns no filter state. Drop into the toolbar slot. |
+| `data-table` | component | Presentational, controlled table in a rounded frame: tinted header, hairline rows, footer inside. Sort, per-column header filters (`filter` + `filters`/`onFilterChange`), row selection with select-all and a bulk-actions bar, row actions, loading skeleton, empty state. Right-aligned columns use tabular mono figures. Spanish `labels`. |
+| `data-table-pagination` | component | Controlled pagination: rows per page, "1–10 de 42" range and numbered pages with gaps. Spanish `labels`. |
+| `data-table-toolbar` | component | Search row for data-table with `filters` and `actions` slots and children for active-filter chips. Spanish `labels`. |
 | `data-table-mobile` | component | Card-per-row mobile view reusing data-table's columns. Pair with data-table behind a breakpoint. Includes loading skeletons + empty slot. |
-| `data-table-filters` | lib | Filter type system for DataTable: 10 filter kinds, operators, state shapes, type guards and factory helpers. No UI. |
+| `data-table-filters` | lib | Filter type system for DataTable: 10 filter kinds, operators, state shapes, type guards and factory helpers. No UI. Also `applyFilters` / `matchesFilter` / `countActiveFilters` for in-memory rows. |
 | `data-table-filter-widget` | component | Renders the control for one filter definition — text, number, ranges, date, datetime, select, multiselect and async column values. |
-| `data-table-column-filter` | component | Filter trigger for a column header: an icon that opens the column's filter in a popover, so a wide control is not bound to the column's width. |
-| `data-table-active-filters` | component | Chips showing which filters are applied; each reopens its filter for editing and clears itself. |
+| `data-table-column-filter` | component | Header filter button (tinted while active) opening the column's FilterWidget in a popover. |
+| `data-table-active-filters` | component | Active-filter chips: column + value, click to edit, ✕ to clear, optional "Limpiar filtros". Spanish `labels`. |
+| `data-table-advanced-filters` | component | "Filtros" button with an active-count badge opening a panel with every filterable column's widget; edits apply live, with per-field reset and "Limpiar todo". Spanish `labels`. |
 
 ### Blocks · app
 
@@ -171,7 +172,7 @@ The intelUI assistant pieces. Experimental: they may change without a migration 
 
 | Item | Type | Summary |
 |---|---|---|
-| `intelui-types` | registry:file | Shared presentational types for the intelUI assistant pieces (messages, tabs, conversations, actions). Engine-agnostic. |
+| `intelui-types` | file | Shared presentational types for the intelUI assistant pieces (messages, tabs, conversations, actions). Engine-agnostic. |
 | `intelui-pill` | component | Bottom-of-sidebar assistant pill: nav-item styling, fading label, highlighted when intelUI is active. Opens the assistant dropdown. Props-only. |
 | `intelui-conversation-list` | component | Selectable conversation history list with per-row delete cross (reveals on hover). Props-only, i18n-agnostic. |
 | `intelui-tabs` | component | Horizontal scrollable tab strip for open conversations: per-tab close cross + a new-conversation button. Props-only. |

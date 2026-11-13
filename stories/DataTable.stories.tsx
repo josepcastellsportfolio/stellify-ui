@@ -107,7 +107,7 @@ function FullExample() {
             <DataTableToolbar
               search={search}
               onSearchChange={setSearch}
-              searchPlaceholder="Search expenses…"
+              labels={{ searchPlaceholder: "Search expenses…" }}
             />
           }
           footer={

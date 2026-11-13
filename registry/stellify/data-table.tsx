@@ -9,6 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Checkbox } from "@/components/ui/checkbox"
+import { DataTableColumnFilter } from "@/components/data-table-column-filter"
+import { defaultFilterValue, type ActiveFilters, type ActiveFilterValue, type FilterDef } from "@/lib/data-table-filters"
 import { cn } from "@/lib/utils"
 
 export interface DataTableColumn<T> {
@@ -24,7 +27,29 @@ export interface DataTableColumn<T> {
   align?: "left" | "right" | "center"
   /** Responsive visibility class, e.g. "hidden sm:table-cell". */
   hidden?: string
+  /** Makes the column filterable: a filter button in its header (and in the advanced panel). */
+  filter?: FilterDef
   className?: string
+}
+
+export type RowKey = string | number
+
+export interface DataTableLabels {
+  /** Name of the select-all checkbox. */
+  selectAll: string
+  /** Name of a row checkbox. */
+  selectRow: string
+  /** "3 seleccionadas" in the bulk bar. */
+  selected: (count: number) => string
+  /** Button that clears the selection. */
+  clearSelection: string
+}
+
+const DEFAULT_LABELS: DataTableLabels = {
+  selectAll: "Seleccionar todas las filas",
+  selectRow: "Seleccionar fila",
+  selected: (n) => (n === 1 ? "1 seleccionada" : `${n} seleccionadas`),
+  clearSelection: "Deseleccionar",
 }
 
 export interface DataTableSort {
@@ -36,7 +61,7 @@ export interface DataTableProps<T> {
   columns: DataTableColumn<T>[]
   rows: T[]
   /** Stable row key extractor. */
-  getRowKey: (row: T) => string | number
+  getRowKey: (row: T) => RowKey
   /** Current sort state (controlled). */
   sort?: DataTableSort | null
   /** Called with the clicked column key; you compute the next sort. */
@@ -58,8 +83,19 @@ export interface DataTableProps<T> {
   emptyState?: ReactNode
   /** Slot above the table (search, filters). */
   toolbar?: ReactNode
-  /** Slot below the table (pagination). */
+  /** Slot below the table (pagination). Renders inside the frame. */
   footer?: ReactNode
+  /** Active column filters (controlled). Needed for header filter buttons. */
+  filters?: ActiveFilters
+  /** Called when a header filter changes. */
+  onFilterChange?: (key: string, value: ActiveFilterValue) => void
+  /** Selected row keys (controlled). Passing it adds the checkbox column. */
+  selectedKeys?: ReadonlySet<RowKey>
+  onSelectedKeysChange?: (keys: Set<RowKey>) => void
+  /** Bulk actions for the selection, shown in a bar above the rows while any are selected. */
+  bulkActions?: (keys: Set<RowKey>) => ReactNode
+  /** Copy. Spanish defaults. */
+  labels?: Partial<DataTableLabels>
   className?: string
 }
 
@@ -93,18 +129,72 @@ export default function DataTable<T>({
   emptyState,
   toolbar,
   footer,
+  filters,
+  onFilterChange,
+  selectedKeys,
+  onSelectedKeysChange,
+  bulkActions,
+  labels,
   className,
 }: DataTableProps<T>) {
-  const colCount = columns.length + (actions ? 1 : 0)
+  const l = { ...DEFAULT_LABELS, ...labels }
+  const selectable = selectedKeys !== undefined
+  const colCount = columns.length + (actions ? 1 : 0) + (selectable ? 1 : 0)
+
+  const pageKeys = rows.map(getRowKey)
+  const selectedOnPage = selectable ? pageKeys.filter((k) => selectedKeys.has(k)).length : 0
+  const allOnPage = pageKeys.length > 0 && selectedOnPage === pageKeys.length
+  const someOnPage = selectedOnPage > 0 && !allOnPage
+
+  const toggleAll = () => {
+    if (!selectedKeys) return
+    const next = new Set(selectedKeys)
+    for (const k of pageKeys) (allOnPage ? next.delete(k) : next.add(k))
+    onSelectedKeysChange?.(next)
+  }
+  const toggleRow = (key: RowKey) => {
+    if (!selectedKeys) return
+    const next = new Set(selectedKeys)
+    if (next.has(key)) next.delete(key)
+    else next.add(key)
+    onSelectedKeysChange?.(next)
+  }
+  const selectionCount = selectedKeys?.size ?? 0
 
   return (
     <div data-slot="data-table" className={cn("space-y-3", className)}>
       {toolbar}
 
       <div data-slot="data-table-frame" className="overflow-hidden rounded-lg border bg-background">
+        {bulkActions && selectionCount > 0 && (
+          <div
+            data-slot="data-table-bulk-bar"
+            className="flex flex-wrap items-center gap-3 border-b bg-brand-subtle px-3 py-2 text-sm text-brand [--field:var(--surface-1)]"
+          >
+            <span className="font-mono text-xs tabular-nums">{l.selected(selectionCount)}</span>
+            <div className="flex flex-wrap items-center gap-2">{bulkActions(new Set(selectedKeys))}</div>
+            <button
+              type="button"
+              onClick={() => onSelectedKeysChange?.(new Set())}
+              className="ml-auto text-xs underline-offset-4 hover:underline"
+            >
+              {l.clearSelection}
+            </button>
+          </div>
+        )}
         <Table>
           <TableHeader>
             <TableRow>
+              {selectable && (
+                <TableHead className="w-10 pr-0">
+                  <Checkbox
+                    checked={allOnPage ? true : someOnPage ? "indeterminate" : false}
+                    onCheckedChange={toggleAll}
+                    aria-label={l.selectAll}
+                    disabled={rows.length === 0}
+                  />
+                </TableHead>
+              )}
               {columns.map((col) => {
                 const isSorted = sort?.key === col.key
                 return (
@@ -134,6 +224,7 @@ export default function DataTable<T>({
                         : undefined
                     }
                   >
+                    <span className={cn("inline-flex items-center gap-0.5", col.align === "right" && "flex-row-reverse")}>
                     {col.sortable ? (
                       <button
                         type="button"
@@ -157,6 +248,18 @@ export default function DataTable<T>({
                     ) : (
                       col.header
                     )}
+                    {col.filter && filters && onFilterChange && (
+                      <span onClick={(e) => e.stopPropagation()}>
+                        <DataTableColumnFilter
+                          columnKey={col.key}
+                          header={col.header}
+                          def={col.filter}
+                          value={filters[col.key] ?? defaultFilterValue(col.filter)}
+                          onChange={onFilterChange}
+                        />
+                      </span>
+                    )}
+                    </span>
                   </TableHead>
                 )
               })}
@@ -188,11 +291,20 @@ export default function DataTable<T>({
                 </TableCell>
               </TableRow>
             ) : (
-              rows.map((row) => (
+              rows.map((row) => {
+                const key = getRowKey(row)
+                const isSelected = selectable && selectedKeys.has(key)
+                return (
                 <TableRow
-                  key={getRowKey(row)}
+                  key={key}
+                  data-state={isSelected ? "selected" : undefined}
                   className={rowClassName?.(row)}
                 >
+                  {selectable && (
+                    <TableCell className="w-10 pr-0">
+                      <Checkbox checked={isSelected} onCheckedChange={() => toggleRow(key)} aria-label={l.selectRow} />
+                    </TableCell>
+                  )}
                   {columns.map((col) => (
                     <TableCell
                       key={col.key}
@@ -215,7 +327,8 @@ export default function DataTable<T>({
                     </TableCell>
                   )}
                 </TableRow>
-              ))
+                )
+              })
             )}
           </TableBody>
         </Table>

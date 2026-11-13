@@ -1,46 +1,45 @@
-// Column-header filter trigger — ListFilter icon + Popover with FilterWidget.
-// Shown only on filterable columns; icon turns text-primary when filter is active.
+// Column-header filter trigger: a funnel button that opens the column's
+// FilterWidget in a popover. Shown only on filterable columns; the button
+// fills with the brand tint while its filter is active.
 
 import { ListFilter } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { isFilterActive } from './data-table-filters';
-import { FilterWidget } from './data-table-filter-widget';
-import type { FilterWidgetProps } from './data-table-filter-widget';
+import { isFilterActive } from '@/lib/data-table-filters';
+import { FilterWidget } from '@/components/data-table-filter-widget';
+import type { FilterWidgetProps } from '@/components/data-table-filter-widget';
 
-type DataTableColumnFilterProps = FilterWidgetProps;
+interface DataTableColumnFilterProps extends FilterWidgetProps {
+  /** Column name, for the button's accessible name ("Filtrar Importe"). */
+  header?: string;
+  /** Prefix of the button's name. Defaults to "Filtrar". */
+  label?: string;
+}
 
-export function DataTableColumnFilter({ columnKey, def, value, onChange }: DataTableColumnFilterProps) {
+export function DataTableColumnFilter({ columnKey, def, value, onChange, header, label = 'Filtrar' }: DataTableColumnFilterProps) {
   const active = isFilterActive(value);
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
+        <button
+          type="button"
+          data-active={active || undefined}
           className={cn(
-            'h-6 w-6 ml-1 shrink-0',
-            active ? 'text-primary' : 'text-muted-foreground hover:text-foreground',
+            'inline-flex size-6 shrink-0 items-center justify-center rounded-sm transition-colors duration-(--duration-fast)',
+            active
+              ? 'bg-brand-subtle text-brand'
+              : 'text-muted-foreground/70 hover:bg-surface-3 hover:text-foreground',
           )}
-          aria-label={`Filtrar columna`}
+          aria-label={header ? `${label} ${header}` : label}
         >
-          <ListFilter className="h-3.5 w-3.5" />
-        </Button>
+          <ListFilter className="size-3.5" aria-hidden />
+        </button>
       </PopoverTrigger>
-      {/* 300px, not the popover default: the date-range presets (Hoy, Ayer,
-          7 días, Este mes, Mes pasado) need about 290px to sit on one line,
-          and wrapping them was half of what made the old inline filter row
-          look broken. Width here is independent of the column's width, which
-          is the whole point of moving the widget out of the table. */}
-      <PopoverContent className="w-[300px] max-w-[90vw] p-3" align="start" side="bottom">
-        <FilterWidget
-          columnKey={columnKey}
-          def={def}
-          value={value}
-          onChange={onChange}
-        />
+      {/* 300px: the date-range presets need about 290px to sit on one line. */}
+      <PopoverContent className="w-[300px] max-w-[90vw] p-3 font-sans normal-case tracking-normal" align="start" side="bottom">
+        {header && <p className="mb-2 text-xs font-medium text-foreground">{header}</p>}
+        <FilterWidget columnKey={columnKey} def={def} value={value} onChange={onChange} />
       </PopoverContent>
     </Popover>
   );
