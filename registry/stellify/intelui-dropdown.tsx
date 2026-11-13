@@ -78,7 +78,7 @@ const InteluiDropdown: FC<InteluiDropdownProps> = ({
                 className={cn(
                   "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm",
                   "text-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  "",
                 )}
               >
                 <Zap className="h-4 w-4 shrink-0 text-primary" aria-hidden />
@@ -104,7 +104,7 @@ const InteluiDropdown: FC<InteluiDropdownProps> = ({
           className={cn(
             "flex h-6 w-6 shrink-0 items-center justify-center rounded-md",
             "text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "",
           )}
         >
           <Plus className="h-4 w-4" aria-hidden />

@@ -80,8 +80,9 @@ export default function Component({
                 key={key}
                 dataKey={key}
                 fill={`var(--color-${key})`}
-                fillOpacity={0.6}
+                fillOpacity={0.15}
                 stroke={`var(--color-${key})`}
+                strokeWidth={2}
               />
             ))}
           </RadarChart>

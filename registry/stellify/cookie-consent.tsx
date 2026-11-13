@@ -8,6 +8,18 @@ export interface CookieConsentLink {
   label: string
 }
 
+export interface CookieConsentLabels {
+  policy: string
+  accept: string
+  reject: string
+}
+
+const DEFAULT_LABELS: CookieConsentLabels = {
+  policy: "Política de cookies",
+  accept: "Aceptar",
+  reject: "Rechazar",
+}
+
 export interface CookieConsentProps {
   /**
    * Controlled by the app, which owns the stored choice. Keeping storage out
@@ -18,9 +30,8 @@ export interface CookieConsentProps {
   /** What is collected and why. Plain text or inline markup (e.g. a `<p>`). */
   description: ReactNode
   policyHref: string
-  policyLabel?: string
-  acceptLabel?: string
-  rejectLabel?: string
+  /** Copy. Defaults: "Política de cookies", "Aceptar", "Rechazar". */
+  labels?: Partial<CookieConsentLabels>
   onAccept: () => void
   onReject: () => void
   /**
@@ -33,7 +44,7 @@ export interface CookieConsentProps {
 
 const policyLinkClass =
   "font-medium text-foreground underline underline-offset-4 hover:no-underline rounded-sm " +
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+  ""
 
 /**
  * Analytics-cookie consent banner. Purely presentational.
@@ -49,9 +60,7 @@ export const CookieConsent: FC<CookieConsentProps> = ({
   title = "Cookies de analítica",
   description,
   policyHref,
-  policyLabel = "Política de cookies",
-  acceptLabel = "Aceptar",
-  rejectLabel = "Rechazar",
+  labels,
   onAccept,
   onReject,
   renderLink,
@@ -59,7 +68,8 @@ export const CookieConsent: FC<CookieConsentProps> = ({
 }) => {
   if (!open) return null
 
-  const policy = { href: policyHref, label: policyLabel }
+  const l = { ...DEFAULT_LABELS, ...labels }
+  const policy = { href: policyHref, label: l.policy }
 
   return (
     <div
@@ -70,33 +80,33 @@ export const CookieConsent: FC<CookieConsentProps> = ({
         "fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background p-4 text-foreground",
         "pb-[calc(1rem+env(safe-area-inset-bottom))]",
         "md:inset-x-auto md:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] md:left-6 md:max-w-sm",
-        "md:rounded-card md:border md:p-5 md:shadow-card",
-        "animate-in fade-in-0 slide-in-from-bottom-4 duration-base motion-reduce:animate-none",
+        "md:rounded-lg md:border-0 md:bg-popover md:p-5 md:shadow-(--shadow-overlay)",
+        "animate-in fade-in-0 slide-in-from-bottom-4 duration-(--duration-base) motion-reduce:animate-none",
         className,
       )}
     >
-      <p data-slot="cookie-consent-title" className="font-semibold tracking-display">
+      <p data-slot="cookie-consent-title" className="font-semibold tracking-(--tracking-display)">
         {title}
       </p>
       <div
         data-slot="cookie-consent-description"
-        className="mt-2 text-sm leading-body text-muted-foreground"
+        className="mt-2 text-sm leading-relaxed text-muted-foreground"
       >
         {description}
       </div>
       <p className="mt-2 text-sm">
         {renderLink?.(policy, { className: policyLinkClass }) ?? (
           <a href={policyHref} className={policyLinkClass}>
-            {policyLabel}
+            {l.policy}
           </a>
         )}
       </p>
       <div data-slot="cookie-consent-actions" className="mt-4 grid grid-cols-2 gap-3">
         <Button type="button" variant="secondary" onClick={onReject}>
-          {rejectLabel}
+          {l.reject}
         </Button>
         <Button type="button" variant="secondary" onClick={onAccept}>
-          {acceptLabel}
+          {l.accept}
         </Button>
       </div>
     </div>

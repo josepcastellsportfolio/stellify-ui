@@ -106,7 +106,7 @@ The `chart` primitive (`ChartContainer` / `ChartTooltip` / `ChartLegend` over Re
 
 | Item | Type | Summary |
 |---|---|---|
-| `chart-card` | component | Card shell for charts with loading skeleton, empty and error states, header actions slot. All copy passed via props. |
+| `chart-card` | component | Card shell for charts with loading skeleton, empty and error states, header actions slot. `labels.retry` defaults to "Reintentar". |
 | `chart` | ui | shadcn chart primitive: ChartContainer/ChartTooltip/ChartLegend over Recharts, wired to stellify-base chart tokens. Overwrites ui/chart. |
 | `chart-area` | component | Area chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
 | `chart-bar` | component | Bar chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
@@ -139,7 +139,7 @@ App layout pieces: built from the core, opinionated layout.
 
 | Item | Type | Summary |
 |---|---|---|
-| `metric-card` | component | KPI card: label, value, unit, delta with trend arrow, accent icon chip. invertDelta flips good/bad colors (for expenses); tone colors the value (negative = red); details adds label/value rows. |
+| `metric-card` | component | KPI card on a tonal surface: label, value in tabular mono, unit, delta with trend arrow, accent icon chip (neutral/brand/success/warning/danger/info; v1 hue names still map). invertDelta flips good/bad; tone colors the value; details adds label/value rows. |
 | `page-header` | component | Page title + optional description + actions slot. Presentational only (no auth/theme/locale logic). Optional `eyebrow` line above the title. |
 | `empty-state` | component | Centered empty/placeholder block: icon, title, description and optional action. |
 | `app-shell` | component | App frame: fixed left sidebar (collapsible), optional top bar, scrollable main. |
@@ -156,7 +156,7 @@ Public pages. Prerender-safe: nothing reads `window`/`navigator`/`document` duri
 | `use-mega-menu-motion` | hook | GSAP motion for MegaMenuPanel: background grows down, content unclips, items stagger in; category switch re-staggers only; faster fold-up on close. Also a render-nothing MegaMenuMotion component for SiteNav's menuMotion prop. Honors reduced motion. |
 | `nav-preview-card` | ui | Mega-menu preview card: photo with scrim or a dark panel with title, summary and an optional decoration (FacetGrid included). Out of the tab order and a11y tree; renderLink for client routers. |
 | `mega-menu-panel` | ui | Full-width mega-menu panel: up to three labelled link columns, optional CTA, and preview cards that follow the hovered/focused link. Always in the DOM (hidden) so links prerender; data-nav-* hooks for useMegaMenuMotion or a CSS fade. |
-| `site-chat` | component | Public chat panel, degraded-first: renders a FAQ block by default and gains a composer when a service is available. Never shows a raw error or an indefinite spinner. |
+| `site-chat` | component | Public chat panel, degraded-first: renders a FAQ block by default and gains a composer when a service is available. Never shows a raw error or an indefinite spinner. Copy via `labels` (Spanish defaults). |
 | `site-footer` | component | Site footer with grouped link columns and a legal line. Real anchors — it doubles as the crawlable link graph. |
 | `long-form-article` | component | Long-form page body: intro, optional status badge and figures, h2 sections with pull-outs, stack chips and related links. Content is plain strings, never markup. |
 | `key-takeaways` | component | "En resumen" callout: an aside labelled by its h2 with a list of self-contained takeaways. Fits between the h1 intro and the first h2. Renders nothing when empty. |
@@ -164,7 +164,7 @@ Public pages. Prerender-safe: nothing reads `window`/`navigator`/`document` duri
 | `inline-cta` | component | Compact bordered card with one sentence and a primary button-styled link. Meant to sit after a page's first paragraph. |
 | `sticky-cta` | component | Mobile-only fixed bottom CTA bar (z-40, safe-area aware) with an optional secondary action (e.g. tel:) and an in-flow spacer so it never covers the footer. |
 | `share-button` | component | Share button: native share sheet when available (checked on click), otherwise a popover with copy-link and LinkedIn/WhatsApp/X/email intent links. No third-party scripts. |
-| `cookie-consent` | component | Presentational, non-modal analytics-cookie banner (z-50). Accept and Reject have equal weight; no close button that implies consent. |
+| `cookie-consent` | component | Presentational, non-modal analytics-cookie banner (z-50). Accept and Reject have equal weight; no close button that implies consent. Copy via `labels` (Spanish defaults). |
 
 ### Blocks · assistant (experimental)
 
@@ -172,7 +172,7 @@ The intelUI assistant pieces. Experimental: they may change without a migration 
 
 | Item | Type | Summary |
 |---|---|---|
-| `intelui-types` | file | Shared presentational types for the intelUI assistant pieces (messages, tabs, conversations, actions). Engine-agnostic. |
+| `intelui-types` | registry:file | Shared presentational types for the intelUI assistant pieces (messages, tabs, conversations, actions). Engine-agnostic. |
 | `intelui-pill` | component | Bottom-of-sidebar assistant pill: nav-item styling, fading label, highlighted when intelUI is active. Opens the assistant dropdown. Props-only. |
 | `intelui-conversation-list` | component | Selectable conversation history list with per-row delete cross (reveals on hover). Props-only, i18n-agnostic. |
 | `intelui-tabs` | component | Horizontal scrollable tab strip for open conversations: per-tab close cross + a new-conversation button. Props-only. |

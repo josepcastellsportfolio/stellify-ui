@@ -32,8 +32,8 @@ export interface ChartCardProps {
   errorDescription?: string
   /** Retry handler; renders a button when provided alongside `error`. */
   onRetry?: () => void
-  /** Label for the retry button. Defaults to "Retry". */
-  retryLabel?: string
+  /** Copy. Defaults: retry = "Reintentar". */
+  labels?: { retry?: string }
   /** Slot rendered on the right of the header (e.g. a range selector). */
   headerActions?: ReactNode
   /** Skeleton height in px while loading. Defaults to 240. */
@@ -56,7 +56,7 @@ function CenteredState({
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
       {Icon && (
-        <div className="mb-4 rounded-full bg-muted p-4">
+        <div className="mb-4 rounded-full bg-surface-3 p-4 text-muted-foreground">
           <Icon className="h-8 w-8 text-muted-foreground" />
         </div>
       )}
@@ -91,7 +91,7 @@ export default function ChartCard({
   errorTitle,
   errorDescription,
   onRetry,
-  retryLabel = "Retry",
+  labels,
   headerActions,
   skeletonHeight = 240,
   children,
@@ -108,7 +108,7 @@ export default function ChartCard({
   if (loading) {
     body = (
       <div
-        className="animate-pulse rounded bg-muted"
+        className="animate-pulse rounded-sm bg-surface-3"
         style={{ height: skeletonHeight }}
       />
     )
@@ -121,7 +121,7 @@ export default function ChartCard({
         action={
           onRetry ? (
             <Button variant="outline" size="sm" onClick={onRetry}>
-              {retryLabel}
+              {labels?.retry ?? "Reintentar"}
             </Button>
           ) : undefined
         }

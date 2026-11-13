@@ -82,6 +82,8 @@ export function useMegaMenuMotion(
       closingRef.current = prev
       timeline.current = gsap
         .timeline({
+          // A new tween on the same element replaces this one mid-flight.
+          defaults: { overwrite: "auto" },
           onComplete: () => {
             closingRef.current = null
             onClosedRef.current()
@@ -93,7 +95,7 @@ export function useMegaMenuMotion(
     }
 
     const { bg, content, items } = parts(openId)
-    const tl = gsap.timeline()
+    const tl = gsap.timeline({ defaults: { overwrite: "auto" } })
     timeline.current = tl
 
     if (prev) {
