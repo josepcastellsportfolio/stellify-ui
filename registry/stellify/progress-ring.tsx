@@ -58,7 +58,7 @@ const ProgressRing: FC<ProgressRingProps> = ({
     >
       <svg width={size} height={size} className="-rotate-90">
         <circle
-          className="text-muted"
+          className="text-surface-3"
           stroke="currentColor"
           fill="none"
           strokeWidth={strokeWidth}
@@ -76,10 +76,10 @@ const ProgressRing: FC<ProgressRingProps> = ({
           r={radius}
           cx={center}
           cy={center}
-          className="transition-[stroke-dashoffset] duration-500 ease-out"
+          className="transition-[stroke-dashoffset] duration-(--duration-slow) ease-(--ease-out)"
         />
       </svg>
-      <div className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-foreground">
+      <div className="absolute inset-0 flex items-center justify-center font-mono text-sm font-medium tabular-nums text-foreground">
         {children === undefined ? `${percent}%` : children}
       </div>
     </div>

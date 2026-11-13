@@ -1,5 +1,65 @@
 # Migration guide
 
+## v2, phase 2: the ui core (2026-11-13)
+
+The `ui` items now follow the v2 rules: no box borders, no focus halos, no shadows except on overlays,
+filled fields. Re-add what you use with `npx shadcn add @stellify/<item> --overwrite`.
+`tests/registry.test.ts` fails if a ui item brings a halo or an outlined field back.
+
+**New** (status `experimental`): `field`, `spinner`, `segmented-control`.
+
+**Breaking props**: copy moves into a typed `labels` prop with Spanish defaults.
+
+| Item | Before | Now |
+|---|---|---|
+| `confirm-dialog` | `confirmLabel`, `cancelLabel` (English defaults) | `labels={{ confirm, cancel }}`, defaults "Confirmar" / "Cancelar" |
+| `date-range-picker` | `applyLabel`, `cancelLabel`, `timeToggleLabel`, `startTimeLabel`, `endTimeLabel`; English presets | `labels={{ apply, cancel, includeTime, startTime, endTime }}`; presets in Spanish ("Hoy", "Últimos 7 días"…) |
+| `number-input` | `incrementLabel`, `decrementLabel` | `labels={{ increment, decrement }}` |
+| `chip` | `removeLabel` | `labels={{ remove }}` |
+| `collapse-toggle` | `openLabel`, `closedLabel` | `labels={{ open, closed }}` |
+| `dialog` | sr-only "Close" | `<DialogContent labels={{ close }}>`, default "Cerrar" |
+| `loading-state` | "n de N" hard-coded | `labels={{ progress: (done, total) => … }}` |
+| `time-range-selector` | `all` label "All" | "Todo"; `labels.group` names the control (default "Periodo") |
+| `loading-spinner` | `size` in px, label "Loading" | `size="sm" \| "md" \| "lg"`, label "Cargando" |
+
+**Unified families**
+
+- `badge` takes `tone` (neutral, brand, success, warning, danger, info) and `appearance` (subtle, solid, plain),
+  plus `icon` and `withDot`. The shadcn `variant` names still work. It renders a `<span>` (was a `<div>`).
+  `status-badge` is now a thin wrapper over it; `statusBadgeVariants` is gone (use `badgeVariants`).
+- `spinner` is the only spinner: `button` (`loading`), `loading-spinner` and `loading-state` use it.
+- `card` is a tonal surface (no border or shadow, 8px radius, 20px padding, 16px title) and also exposes
+  `Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, `Card.Footer`. Fields inside a card use `surface-3`.
+- `text-field` and `textarea-field` are built on `field`. For any other control, wrap it: `<Field label error><Select/></Field>`.
+- `time-range-selector` and the default `tabs` use the `segmented-control` indicator; `time-range-selector`
+  is now a `radiogroup` (was buttons with `aria-pressed`).
+
+**Look changes worth checking in your screens**
+
+- `button`: `secondary`/`outline` are tonal (no border); sizes are 32/36/40px (`sm`/default/`lg`, was 36/40/44).
+- Inputs, selects, textareas and picker triggers are filled and 36px tall (was 40px, outlined).
+- `checkbox` keeps a 1.5px edge (a control needs a visible boundary); `switch` and `slider` lose their shadows.
+- `progress` is 8px tall by default (was 16px). `chip` is a pill.
+- `stellify-base` now sets the hairline as the default border color (Tailwind 4 defaulted to the text color, so
+  every `border-b` was a dark line). Re-add `stellify-base` to pick it up.
+- **Data table family** (breaking copy props, Spanish defaults):
+  - `data-table`: new `filter` on columns plus `filters` / `onFilterChange` (header filter buttons), `selectedKeys` /
+    `onSelectedKeysChange` (checkbox column, select-all) and `bulkActions` (bar above the rows), `labels`.
+  - `data-table-toolbar`: `searchPlaceholder`, `resetLabel`, `clearSearchLabel` → `labels`; `showFilterToggle`,
+    `filtersOpen`, `onToggleFilters` are gone (put `DataTableAdvancedFilters` in the new `filters` slot);
+    `children` renders under the row (for `DataTableActiveFilters`).
+  - `data-table-pagination`: `rowsPerPageLabel`, `ofLabel`, `previousLabel`, `nextLabel` → `labels`; shows the range
+    ("1–10 de 42") and numbered pages.
+  - New `data-table-advanced-filters` ("Filtros" button + panel with every filterable column).
+  - `data-table-active-filters`: optional `onClearAll` ("Limpiar filtros"), `labels`.
+  - `data-table-filters`: `applyFilters`, `matchesFilter`, `countActiveFilters` for in-memory rows.
+  - `data-table-mobile`: `layout="grid"` for a cards view, `rowClassName`.
+  - Fixed: components imported `./data-table-filters`, which broke once installed (the lib lands in `lib/`); and date
+    presets ("Este mes"…) used UTC, so east of UTC they started a day early.
+- `table`: header row on `surface-2` with mono caps labels, hairline row separators, hover `surface-2`, selected row
+  `brand-subtle` with a brand edge. `data-table`: rounded hairline frame; the `footer` (e.g. pagination) now renders
+  inside the frame on `surface-2`; right-aligned columns use Geist Mono tabular figures.
+
 ## v2, phase 1: foundations (2026-11-12)
 
 `stellify-base` has the v2 tokens ([docs/tokens.md](docs/tokens.md)). Re-run

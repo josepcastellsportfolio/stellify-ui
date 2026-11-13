@@ -60,18 +60,21 @@ Generic building blocks. The standard shadcn primitives ship here too, so an app
 | `trend-indicator` | component | Up/down/flat arrow with a formatted change and a semantic tone (up = success, down = danger; invertible for costs). Direction can be derived from a numeric change with a flat threshold. The required label is what screen readers read; copy via props. |
 | `progress-ring` | component | SVG circular progress indicator. value/max/size/strokeWidth via props, themed with currentColor + muted track. |
 | `section-card` | component | Card with a titled header, optional description, header actions slot and content area. Common panel shell. |
-| `status-badge` | component | Badge with semantic status variants (success/warning/danger/info/neutral). Label via children. `icon` and `appearance="plain"` (icon + text, no background) for status pills. |
+| `status-badge` | component | Badge whose tone is a status (success/warning/danger/info/neutral); `appearance="plain"` for icon + text. Thin wrapper over badge. |
 | `confirm-dialog` | component | Controlled confirmation dialog over AlertDialog. All copy via props; destructive flag for dangerous actions. |
 | `alert-dialog` | ui | Radix alert dialog (vendored from shadcn so `confirm-dialog` never resolves upstream). Emits data-slot. |
 | `table` | ui | Table primitives (vendored from shadcn so `data-table` never resolves upstream). Emits data-slot. |
-| `button` | ui | API-compatible superset of the shadcn button: primary/secondary/base hierarchy + success/warning/info, a loading spinner state, and a CRUD `mode` (create/edit/finish) that injects a semantic color and icon. Overwrites ui/button. |
-| `input` | ui | Standard shadcn input plus an invalid state (aria-invalid turns the border destructive). API-compatible; overwrites ui/input. |
-| `text-field` | component | Labeled input with error/helper text and optional leading/trailing icons. Wires htmlFor/aria-invalid/aria-describedby. Copy via props. |
-| `badge` | ui | Badge with variants plus `size` (default \| xs) and `uppercase`. Emits data-slot. |
-| `card` | ui | Standard shadcn card primitive, shipped under @stellify for apps without shadcn. Overwrites ui/card. |
+| `button` | ui | Shadcn-compatible button: primary (brand) / secondary (tonal) / base (no fill) + destructive/success/warning/info/link, no borders or shadows. `loading` shows the Spinner; CRUD `mode` (create/edit/finish) injects color and icon. Overwrites ui/button. |
+| `input` | ui | Filled input (bg-field, no border); aria-invalid turns it danger-subtle. Focus is the global outline. API-compatible; overwrites ui/input. |
+| `field` | ui | Form-control wrapper: label, control, then help or error. Owns htmlFor / aria-invalid / aria-describedby / required for any control (input, textarea, select, number-input, pickers). |
+| `spinner` | ui | The one spinner: a ring in the current color, sizes sm/md/lg, `decorative` inside busy buttons. Used by button, loading-spinner and loading-state. |
+| `segmented-control` | ui | Pick one of 2-5 options; the ink indicator slides and changes course mid-move when you click again (interruptible CSS transition). radiogroup, arrows/Home/End, roving tabindex. Exports useSlidingIndicator (used by tabs). |
+| `text-field` | component | Field + Input in one: label, error/help and optional leading/trailing icons. Copy via props. |
+| `badge` | ui | One badge for labels and states: `tone` (neutral/brand/success/warning/danger/info) x `appearance` (subtle/solid/plain), `icon`, `withDot`, `size` (default | xs), `uppercase` (mono caps). shadcn `variant` names still work. Emits data-slot. |
+| `card` | ui | Raised area: surface-2, no border or shadow, 8px radius. Parts as named exports or Card.Header / Title / Description / Content / Footer. Fields inside switch to surface-3. Overwrites ui/card. |
 | `dialog` | ui | Standard shadcn dialog primitive, shipped under @stellify for apps without shadcn. Overwrites ui/dialog. |
 | `select` | ui | Standard shadcn select primitive, shipped under @stellify for apps without shadcn. Overwrites ui/select. |
-| `tabs` | ui | Standard shadcn tabs primitive, shipped under @stellify for apps without shadcn. Overwrites ui/tabs. `TabsList variant="plain"`: text tabs with an underline, no pill background. Emits data-slot. |
+| `tabs` | ui | Radix tabs. Default: segmented look with a sliding, interruptible ink indicator. `TabsList variant="plain"`: text tabs with a sliding underline. Overwrites ui/tabs. Emits data-slot. |
 | `checkbox` | ui | Standard shadcn checkbox primitive, shipped under @stellify for apps without shadcn. Overwrites ui/checkbox. |
 | `slider` | ui | Standard shadcn slider primitive (Radix), single or range thumbs, shipped under @stellify. Overwrites ui/slider. |
 | `switch` | ui | Standard shadcn switch primitive, shipped under @stellify for apps without shadcn. Overwrites ui/switch. |
@@ -79,20 +82,20 @@ Generic building blocks. The standard shadcn primitives ship here too, so an app
 | `dropdown-menu` | ui | Standard shadcn dropdown-menu primitive, shipped under @stellify for apps without shadcn. Overwrites ui/dropdown-menu. |
 | `popover` | ui | Standard shadcn popover primitive, shipped under @stellify for apps without shadcn. Overwrites ui/popover. |
 | `calendar` | ui | Standard shadcn calendar primitive, shipped under @stellify for apps without shadcn. Overwrites ui/calendar. |
-| `textarea` | ui | Textarea with `autoResize` (grows with content). Emits data-slot. |
+| `textarea` | ui | Filled textarea with `autoResize` (grows with content); aria-invalid turns it danger-subtle. Emits data-slot. |
 | `separator` | ui | Standard shadcn separator primitive, shipped under @stellify for apps without shadcn. Overwrites ui/separator. |
 | `label` | ui | Standard shadcn label primitive, shipped under @stellify for apps without shadcn. Overwrites ui/label. |
 | `progress` | ui | Standard shadcn progress primitive, shipped under @stellify for apps without shadcn. Overwrites ui/progress. `size="sm"`: thin bar on a neutral track. |
 | `form` | ui | Standard shadcn form primitive, shipped under @stellify for apps without shadcn. Overwrites ui/form. |
-| `time-range-selector` | ui | Segmented time-range control (7d/30d/90d/All) + getRangeBounds() helper. i18n-agnostic. For chart headers. |
+| `time-range-selector` | ui | Time-range picker (7d/30d/90d/Todo) on segmented-control + getRangeBounds() helper. labels prop. For chart headers. |
 | `date-picker-field` | component | Button + calendar popover date field. Emits ISO YYYY-MM-DD. Locale via prop. |
-| `loading-spinner` | component | Centered spinner; fullScreen option for route-level loading. size/label props. |
+| `loading-spinner` | component | Spinner centered in its container or the viewport (`fullScreen`). size sm/md/lg; label defaults to "Cargando". |
 | `date-range-picker` | component | Range calendar popover with presets, Apply/Cancel, side-by-side months, and an optional date↔datetime switch that unlocks start/end time pickers (default 00:00). Emits ISO { from, to } (with THH:mm when time is on). |
 | `time-picker` | component | Hour + minute selects (+ AM/PM unless use24Hour). Controlled, emits 24h 'HH:mm'. minuteStep configurable. |
 | `overflow-marquee` | component | Truncates with an ellipsis at rest and, only when the text actually overflows, slides horizontally on hover/focus to reveal the full string, easing back on leave. Self-contained (measures its own overflow, pure CSS transform, no Tailwind config). Honors reduced motion; keeps a native title fallback. |
 | `number-input` | component | Controlled numeric input (empty = null) with a vertical ± stepper, min/max clamping and translatable button labels. |
 | `choice-card` | component | Single-choice block options (Radix radio group): title + description, selected = primary border + check. |
-| `textarea-field` | component | Labeled textarea with required asterisk, error and helper text (multi-line sibling of text-field). |
+| `textarea-field` | component | Field + Textarea: the multi-line sibling of text-field. |
 | `chip` | component | Small neutral tag (e.g. a detected signal); optional `onRemove` adds an accessible remove button. |
 | `collapse-toggle` | component | Text button that collapses/expands a region (aria-expanded, aria-controls). |
 | `loading-state` | component | Long-running work: title + text + spinner, optional "n de N" progress (role=status). |
@@ -120,14 +123,15 @@ The `chart` primitive (`ChartContainer` / `ChartTooltip` / `ChartLegend` over Re
 
 | Item | Type | Summary |
 |---|---|---|
-| `data-table` | component | Presentational paginated table (columns, rows, sort, loading skeleton, empty state). Sortable headers are buttons with aria-sort on the header cell (Tab + Enter/Space); the actions column's hidden header comes from actionsLabel. Fetching is the consumer's job — see toolbar/pagination slots. |
-| `data-table-pagination` | component | Controlled pagination footer for data-table: page-size selector + prev/next. Labels via props. No paging logic. |
-| `data-table-toolbar` | component | Search box (with clear) + optional filters toggle and reset for data-table. Presentational; owns no filter state. Drop into the toolbar slot. |
+| `data-table` | component | Presentational, controlled table in a rounded frame: tinted header, hairline rows, footer inside. Sort, per-column header filters (`filter` + `filters`/`onFilterChange`), row selection with select-all and a bulk-actions bar, row actions, loading skeleton, empty state. Right-aligned columns use tabular mono figures. Spanish `labels`. |
+| `data-table-pagination` | component | Controlled pagination: rows per page, "1–10 de 42" range and numbered pages with gaps. Spanish `labels`. |
+| `data-table-toolbar` | component | Search row for data-table with `filters` and `actions` slots and children for active-filter chips. Spanish `labels`. |
 | `data-table-mobile` | component | Card-per-row mobile view reusing data-table's columns. Pair with data-table behind a breakpoint. Includes loading skeletons + empty slot. |
-| `data-table-filters` | lib | Filter type system for DataTable: 10 filter kinds, operators, state shapes, type guards and factory helpers. No UI. |
+| `data-table-filters` | lib | Filter type system for DataTable: 10 filter kinds, operators, state shapes, type guards and factory helpers. No UI. Also `applyFilters` / `matchesFilter` / `countActiveFilters` for in-memory rows. |
 | `data-table-filter-widget` | component | Renders the control for one filter definition — text, number, ranges, date, datetime, select, multiselect and async column values. |
-| `data-table-column-filter` | component | Filter trigger for a column header: an icon that opens the column's filter in a popover, so a wide control is not bound to the column's width. |
-| `data-table-active-filters` | component | Chips showing which filters are applied; each reopens its filter for editing and clears itself. |
+| `data-table-column-filter` | component | Header filter button (tinted while active) opening the column's FilterWidget in a popover. |
+| `data-table-active-filters` | component | Active-filter chips: column + value, click to edit, ✕ to clear, optional "Limpiar filtros". Spanish `labels`. |
+| `data-table-advanced-filters` | component | "Filtros" button with an active-count badge opening a panel with every filterable column's widget; edits apply live, with per-field reset and "Limpiar todo". Spanish `labels`. |
 
 ### Blocks · app
 
@@ -168,16 +172,16 @@ The intelUI assistant pieces. Experimental: they may change without a migration 
 
 | Item | Type | Summary |
 |---|---|---|
-| `intelui-types` | file | Shared presentational types for the intelUI assistant pieces (messages, tabs, conversations, actions). Engine-agnostic. *(experimental)* |
-| `intelui-pill` | component | Bottom-of-sidebar assistant pill: nav-item styling, fading label, highlighted when intelUI is active. Opens the assistant dropdown. Props-only. *(experimental)* |
-| `intelui-conversation-list` | component | Selectable conversation history list with per-row delete cross (reveals on hover). Props-only, i18n-agnostic. *(experimental)* |
-| `intelui-tabs` | component | Horizontal scrollable tab strip for open conversations: per-tab close cross + a new-conversation button. Props-only. *(experimental)* |
-| `intelui-chat-panel` | component | Upward-expanding transcript panel: context header, tab strip, suggestion chips and message log. max-height transition. Props-only. *(experimental)* |
-| `intelui-floating-bar` | component | Floating assistant input bar: portaled, anchored to the sidebar edge via --intelui-sidebar-w, grows from the icon. Send/stop (spinner+cancel), focus suggestions, caret-up chat panel. Props-only. *(experimental)* |
-| `intelui-dropdown` | component | Assistant popover content in two groups: Actions (Sparkles/Zap) and Conversations (Clock, deletable history), plus the intelUI switch. Props-only. *(experimental)* |
-| `intelui-highlight` | style | Assistant-actionable highlight: --intelui-accent token + a soft persistent outline on [data-intelui-actionable], reinforced on hover/focus and when [data-selected]. Respects reduced motion. Pairs with the Actionable wrapper. *(experimental)* |
-| `actionable` | component | Domain-agnostic wrapper that marks an entity as assistant-actionable: paints data-intelui-actionable / data-intelui-type / data-selected for the intelui-highlight layer. asChild (Slot) merges markers onto the child without an extra node or competing handlers. Props-only. *(experimental)* |
-| `intelui-chip` | component | Removable selected-entity chip for the assistant input: label + trailing ✕, --intelui-accent border, data-intelui-type accent. Props-only. *(experimental)* |
+| `intelui-types` | file | Shared presentational types for the intelUI assistant pieces (messages, tabs, conversations, actions). Engine-agnostic. |
+| `intelui-pill` | component | Bottom-of-sidebar assistant pill: nav-item styling, fading label, highlighted when intelUI is active. Opens the assistant dropdown. Props-only. |
+| `intelui-conversation-list` | component | Selectable conversation history list with per-row delete cross (reveals on hover). Props-only, i18n-agnostic. |
+| `intelui-tabs` | component | Horizontal scrollable tab strip for open conversations: per-tab close cross + a new-conversation button. Props-only. |
+| `intelui-chat-panel` | component | Upward-expanding transcript panel: context header, tab strip, suggestion chips and message log. max-height transition. Props-only. |
+| `intelui-floating-bar` | component | Floating assistant input bar: portaled, anchored to the sidebar edge via --intelui-sidebar-w, grows from the icon. Send/stop (spinner+cancel), focus suggestions, caret-up chat panel. Props-only. |
+| `intelui-dropdown` | component | Assistant popover content in two groups: Actions (Sparkles/Zap) and Conversations (Clock, deletable history), plus the intelUI switch. Props-only. |
+| `intelui-highlight` | style | Assistant-actionable highlight: --intelui-accent token + a soft persistent outline on [data-intelui-actionable], reinforced on hover/focus and when [data-selected]. Respects reduced motion. Pairs with the Actionable wrapper. |
+| `actionable` | component | Domain-agnostic wrapper that marks an entity as assistant-actionable: paints data-intelui-actionable / data-intelui-type / data-selected for the intelui-highlight layer. asChild (Slot) merges markers onto the child without an extra node or competing handlers. Props-only. |
+| `intelui-chip` | component | Removable selected-entity chip for the assistant input: label + trailing ✕, --intelui-accent border, data-intelui-type accent. Props-only. |
 
 ### Motion
 

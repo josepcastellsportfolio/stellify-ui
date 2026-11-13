@@ -29,7 +29,7 @@ function Calendar({
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn(
-        "group/calendar bg-background p-3 [--cell-size:2.5rem]",
+        "group/calendar bg-transparent p-3 [--cell-size:2.5rem]",
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className
@@ -69,7 +69,7 @@ function Calendar({
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
-          "relative rounded-md border border-input shadow-xs has-focus:border-ring has-focus:ring-[3px] has-focus:ring-ring/50",
+          "relative rounded-md bg-field has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-(--focus)",
           defaultClassNames.dropdown_root
         ),
         dropdown: cn("absolute inset-0 bg-popover opacity-0", defaultClassNames.dropdown),
@@ -89,7 +89,7 @@ function Calendar({
         range_middle: "rounded-none bg-accent",
         range_end: "rounded-r-md bg-accent",
         today:
-          "rounded-md font-semibold text-primary ring-1 ring-inset ring-primary/40 data-[selected=true]:ring-0",
+          "rounded-md bg-brand-subtle font-semibold text-primary data-[selected=true]:bg-transparent",
         outside: cn(
           "text-muted-foreground/50 aria-selected:text-muted-foreground",
           defaultClassNames.outside
@@ -152,11 +152,11 @@ function CalendarDayButton({
       className={cn(
         "flex size-full! min-w-0 items-center justify-center rounded-md p-0! text-sm font-normal leading-none transition-colors",
         "hover:bg-accent hover:text-accent-foreground",
-        "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[selected-single=true]:shadow-sm data-[selected-single=true]:shadow-primary/30",
+        "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground",
         "data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground",
         "data-[range-start=true]:rounded-l-md data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground",
         "data-[range-end=true]:rounded-r-md data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground",
-        "group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-2 group-data-[focused=true]/day:ring-primary/50",
+        "group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:outline-2 group-data-[focused=true]/day:outline-offset-2 group-data-[focused=true]/day:outline-(--focus)",
         className
       )}
       {...props}

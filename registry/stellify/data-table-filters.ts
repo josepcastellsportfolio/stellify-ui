@@ -356,3 +356,94 @@ export const Filters = {
     };
   },
 };
+
+// ── Client-side matching ───────────────────────────────────────────────────────
+//
+// For tables whose rows are already in memory. Server-driven tables send
+// `ActiveFilters` to their API instead and never call these.
+
+function asNumber(v: unknown): number | null {
+  if (v === null || v === undefined || v === '') return null;
+  const n = typeof v === 'number' ? v : Number(String(v).replace(',', '.'));
+  return Number.isFinite(n) ? n : null;
+}
+
+/** ISO date (YYYY-MM-DD) of a Date or date-like string, or '' if not a date. */
+function asISODate(v: unknown): string {
+  if (v === null || v === undefined || v === '') return '';
+  const d = v instanceof Date ? v : new Date(String(v));
+  if (Number.isNaN(d.getTime())) return '';
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${m}-${day}`;
+}
+
+/** Does one cell value pass one filter? Inactive filters always pass. */
+export function matchesFilter(cell: unknown, filter: ActiveFilterValue | undefined): boolean {
+  if (!filter || !isFilterActive(filter)) return true;
+  switch (filter.type) {
+    case 'string': {
+      const text = String(cell ?? '').toLocaleLowerCase('es');
+      const q = filter.value.trim().toLocaleLowerCase('es');
+      if (filter.operator === 'equals') return text === q;
+      if (filter.operator === 'starts_with') return text.startsWith(q);
+      if (filter.operator === 'ends_with') return text.endsWith(q);
+      return text.includes(q);
+    }
+    case 'number': {
+      const n = asNumber(cell);
+      const target = asNumber(filter.value);
+      if (n === null || target === null) return false;
+      switch (filter.operator) {
+        case 'eq': return n === target;
+        case 'lt': return n < target;
+        case 'lte': return n <= target;
+        case 'gt': return n > target;
+        case 'gte': return n >= target;
+      }
+      return true;
+    }
+    case 'number_range': {
+      const n = asNumber(cell);
+      if (n === null) return false;
+      const from = asNumber(filter.from);
+      const to = asNumber(filter.to);
+      return (from === null || n >= from) && (to === null || n <= to);
+    }
+    case 'date':
+    case 'datetime':
+      return asISODate(cell) === asISODate(filter.value);
+    case 'date_range':
+    case 'datetime_range': {
+      const d = asISODate(cell);
+      if (!d) return false;
+      const from = asISODate(filter.from);
+      const to = asISODate(filter.to);
+      return (!from || d >= from) && (!to || d <= to);
+    }
+    case 'select':
+      return String(cell ?? '') === filter.value;
+    case 'multiselect':
+    case 'column_values':
+      return filter.values.includes(String(cell ?? ''));
+  }
+}
+
+/**
+ * Keep the rows that pass every active filter. `getValue` reads the cell a
+ * filter applies to (defaults to `row[key]`).
+ */
+export function applyFilters<T>(
+  rows: T[],
+  filters: ActiveFilters,
+  getValue: (row: T, key: string) => unknown = (row, key) => (row as Record<string, unknown>)[key],
+): T[] {
+  const active = Object.entries(filters).filter(([, f]) => isFilterActive(f));
+  if (active.length === 0) return rows;
+  return rows.filter(row => active.every(([key, f]) => matchesFilter(getValue(row, key), f)));
+}
+
+/** How many filters are narrowing the table (for a "Filtros (3)" button). */
+export function countActiveFilters(filters: ActiveFilters): number {
+  return Object.values(filters).filter(f => isFilterActive(f)).length;
+}

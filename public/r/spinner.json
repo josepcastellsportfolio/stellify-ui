@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "title": "Spinner",
+  "description": "The one spinner: a ring in the current color, sizes sm/md/lg, `decorative` inside busy buttons. Used by button, loading-spinner and loading-state.",
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/spinner.tsx",
+      "content": "import { cn } from \"@/lib/utils\"\n\nconst SIZE = { sm: \"size-4 border-2\", md: \"size-5 border-2\", lg: \"size-8 border-[3px]\" } as const\n\nexport interface SpinnerProps {\n  size?: keyof typeof SIZE\n  /** Accessible name. Defaults to \"Cargando\". Ignored when `decorative`. */\n  label?: string\n  /** Hide it from assistive tech, e.g. inside a button that already says it is busy. */\n  decorative?: boolean\n  className?: string\n}\n\n/**\n * The one spinner of the system: a ring in the current text color with a\n * quarter gap. Used by `button`, `loading-spinner` and `loading-state`.\n * Under reduced motion `stellify-base` stops the rotation and the ring reads\n * as a static loading mark.\n */\nfunction Spinner({ size = \"md\", label = \"Cargando\", decorative = false, className }: SpinnerProps) {\n  return (\n    <span\n      data-slot=\"spinner\"\n      role={decorative ? undefined : \"status\"}\n      aria-label={decorative ? undefined : label}\n      aria-hidden={decorative || undefined}\n      className={cn(\n        \"inline-block shrink-0 animate-spin rounded-full border-current border-r-transparent [animation-duration:800ms]\",\n        SIZE[size],\n        className\n      )}\n    />\n  )\n}\n\nexport { Spinner }\n",
+      "type": "registry:ui",
+      "target": "components/ui/spinner.tsx"
+    }
+  ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "ui"
+  ],
+  "type": "registry:ui"
+}
