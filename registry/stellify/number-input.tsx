@@ -12,9 +12,16 @@ export interface NumberInputProps
   min?: number
   max?: number
   step?: number
-  incrementLabel?: string
-  decrementLabel?: string
+  /** Stepper button names. Defaults: "Aumentar", "Disminuir". */
+  labels?: Partial<NumberInputLabels>
 }
+
+export interface NumberInputLabels {
+  increment: string
+  decrement: string
+}
+
+const DEFAULT_LABELS: NumberInputLabels = { increment: "Aumentar", decrement: "Disminuir" }
 
 const clamp = (n: number, min?: number, max?: number) =>
   Math.min(max ?? Number.POSITIVE_INFINITY, Math.max(min ?? Number.NEGATIVE_INFINITY, n))
@@ -29,8 +36,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       min,
       max,
       step = 1,
-      incrementLabel = "Aumentar",
-      decrementLabel = "Disminuir",
+      labels,
       id,
       className,
       disabled,
@@ -38,13 +44,14 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     },
     ref
   ) => {
+    const l = { ...DEFAULT_LABELS, ...labels }
     const generatedId = React.useId()
     const inputId = id ?? generatedId
     const bump = (delta: number) => onChange(clamp((value ?? min ?? 0) + delta, min, max))
     const atMax = value !== null && max !== undefined && value >= max
     const atMin = value !== null && min !== undefined && value <= min
     const stepperButton =
-      "flex h-1/2 w-7 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-40 [&_svg]:size-3.5"
+      "flex h-1/2 w-7 items-center justify-center rounded-sm text-muted-foreground hover:bg-surface-3 hover:text-foreground disabled:opacity-40 [&_svg]:size-3.5"
 
     return (
       <div data-slot="number-input" className="space-y-1.5">
@@ -65,7 +72,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               onChange(raw === "" ? null : clamp(Number(raw), min, max))
             }}
             className={cn(
-              "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pr-9 text-base [appearance:textfield] focus-visible:border-primary/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+              "flex h-9 w-full rounded-md bg-field px-3 py-1.5 pr-9 text-base text-foreground tabular-nums transition-colors duration-(--duration-fast) hover:bg-field-hover aria-[invalid=true]:bg-danger-subtle [appearance:textfield] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
               className
             )}
             {...props}
@@ -74,7 +81,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             <button
               type="button"
               tabIndex={-1}
-              aria-label={incrementLabel}
+              aria-label={l.increment}
               disabled={disabled || atMax}
               onClick={() => bump(step)}
               className={stepperButton}
@@ -84,7 +91,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             <button
               type="button"
               tabIndex={-1}
-              aria-label={decrementLabel}
+              aria-label={l.decrement}
               disabled={disabled || atMin}
               onClick={() => bump(-step)}
               className={stepperButton}

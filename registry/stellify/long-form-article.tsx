@@ -144,7 +144,7 @@ export const LongFormArticle: FC<LongFormArticleProps> = ({
         <ul className="mt-6 flex flex-wrap gap-2">
           {page.stack.map(item => (
             <li key={item}>
-              <Badge variant="outline" className="max-w-full whitespace-normal font-mono text-xs">
+              <Badge className="max-w-full whitespace-normal font-mono text-xs">
                 {item}
               </Badge>
             </li>

@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@/components/ui/*": ["./registry/stellify/*", "./.storybook/shadcn/components/ui/*"],
+      "@/components/intelui/*": ["./registry/stellify/*"],
       "@/components/*": ["./registry/stellify/*", "./.storybook/shadcn/components/*"],
       "@/lib/*": ["./registry/stellify/*", "./.storybook/shadcn/lib/*"],
       "@/hooks/*": ["./registry/stellify/*", "./.storybook/shadcn/hooks/*"],

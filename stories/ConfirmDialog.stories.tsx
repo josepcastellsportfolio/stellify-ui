@@ -9,7 +9,8 @@ const meta = {
 } satisfies Meta<typeof ConfirmDialog>
 
 export default meta
-type Story = StoryObj<typeof meta>
+// Stories render their own dialog, so they set no args.
+type Story = StoryObj
 
 export const Default: Story = {
   render: () => (
@@ -17,7 +18,7 @@ export const Default: Story = {
       trigger={<Button variant="secondary">Open dialog</Button>}
       title="Save changes?"
       description="Your changes will be applied immediately."
-      confirmLabel="Save"
+      labels={{ confirm: "Save" }}
       onConfirm={() => alert("confirmed")}
     />
   ),
@@ -29,7 +30,7 @@ export const Destructive: Story = {
       trigger={<Button variant="destructive">Delete expense</Button>}
       title="Delete this expense?"
       description="This action cannot be undone."
-      confirmLabel="Delete"
+      labels={{ confirm: "Delete" }}
       destructive
       onConfirm={() => alert("deleted")}
     />

@@ -36,9 +36,9 @@ const ChoiceCard = React.forwardRef<
     ref={ref}
     data-slot="choice-card"
     className={cn(
-      "group flex w-full items-start justify-between gap-4 rounded-lg border border-transparent bg-muted/40 px-4 py-3 text-left transition-colors",
-      "hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
-      "data-[state=checked]:border-primary/60 data-[state=checked]:bg-background",
+      "group flex w-full items-start justify-between gap-4 rounded-lg bg-surface-2 px-4 py-3 text-left transition-colors duration-(--duration-fast)",
+      "hover:bg-surface-3",
+      "data-[state=checked]:bg-brand-subtle",
       "disabled:cursor-not-allowed disabled:opacity-50",
       className
     )}

@@ -3,20 +3,27 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+export interface ChipLabels {
+  remove: string
+}
+
+const DEFAULT_LABELS: ChipLabels = { remove: "Quitar" }
+
 export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
   /** Shows a small remove button (e.g. an editable list of topics). Read-only when omitted. */
   onRemove?: () => void
-  /** Accessible name prefix for the remove button: "Quitar <text>". */
-  removeLabel?: string
+  /** Copy. `remove` prefixes the remove button's name: "Quitar <text>". */
+  labels?: Partial<ChipLabels>
 }
 
-/** Small neutral tag (e.g. a detected signal), optionally removable. */
-function Chip({ className, children, onRemove, removeLabel = "Quitar", ...props }: ChipProps) {
+/** A user-held value (a topic, a filter), pill-shaped and optionally removable. For labels and states use `badge`. */
+function Chip({ className, children, onRemove, labels, ...props }: ChipProps) {
+  const l = { ...DEFAULT_LABELS, ...labels }
   return (
     <span
       data-slot="chip"
       className={cn(
-        "inline-flex items-center gap-1 whitespace-nowrap rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground",
+        "inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-surface-2 px-2.5 py-0.5 text-xs text-foreground",
         className
       )}
       {...props}
@@ -26,8 +33,8 @@ function Chip({ className, children, onRemove, removeLabel = "Quitar", ...props 
         <button
           type="button"
           onClick={onRemove}
-          aria-label={`${removeLabel} ${typeof children === "string" ? children : ""}`.trim()}
-          className="-mr-1 rounded p-0.5 hover:bg-foreground/10 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+          aria-label={`${l.remove} ${typeof children === "string" ? children : ""}`.trim()}
+          className="-mr-1.5 rounded-full p-0.5 text-muted-foreground transition-colors duration-(--duration-fast) hover:bg-surface-3 hover:text-foreground"
         >
           <X className="size-3" aria-hidden />
         </button>

@@ -41,3 +41,27 @@ describe("registry.json integrity", () => {
     expect(Object.keys(base.css ?? {})).toContain('@import "tw-animate-css"')
   })
 })
+
+// v2 personality: no glows, no outlined boxes in the ui core. Phase 3 extends
+// this to charts, data-table, blocks and motion.
+describe("ui core has no halos or box borders", () => {
+  const FORBIDDEN = [
+    /focus(?:-visible)?:ring/, // translucent focus halos: stellify-base draws the one outline
+    /ring-offset/,
+    /(?<![\w-])shadow-(?:xs|sm|md|lg|xl|2xl)(?![\w-])/, // only shadow-(--shadow-overlay)
+    /shadow-primary/,
+    /backdrop-blur/,
+    /bg-gradient/,
+    /(?<![\w-])border-input(?![\w-])/, // fields are filled
+  ]
+  const uiFiles = items
+    .filter((i) => (i as Item & { categories?: string[] }).categories?.[0] === "ui")
+    .flatMap((i) => i.files ?? [])
+    .map((f) => f.path)
+    .filter((p) => p.endsWith(".tsx"))
+
+  it.each(uiFiles)("%s", (file) => {
+    const src = fs.readFileSync(path.join(root, file), "utf8")
+    for (const re of FORBIDDEN) expect(src, `${file} matches ${re}`).not.toMatch(re)
+  })
+})

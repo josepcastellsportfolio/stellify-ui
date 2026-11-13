@@ -1,5 +1,46 @@
 # Migration guide
 
+## v2, phase 2: the ui core (2026-11-13)
+
+The `ui` items now follow the v2 rules: no box borders, no focus halos, no shadows except on overlays,
+filled fields. Re-add what you use with `npx shadcn add @stellify/<item> --overwrite`.
+`tests/registry.test.ts` fails if a ui item brings a halo or an outlined field back.
+
+**New** (status `experimental`): `field`, `spinner`, `segmented-control`.
+
+**Breaking props**: copy moves into a typed `labels` prop with Spanish defaults.
+
+| Item | Before | Now |
+|---|---|---|
+| `confirm-dialog` | `confirmLabel`, `cancelLabel` (English defaults) | `labels={{ confirm, cancel }}`, defaults "Confirmar" / "Cancelar" |
+| `date-range-picker` | `applyLabel`, `cancelLabel`, `timeToggleLabel`, `startTimeLabel`, `endTimeLabel`; English presets | `labels={{ apply, cancel, includeTime, startTime, endTime }}`; presets in Spanish ("Hoy", "Últimos 7 días"…) |
+| `number-input` | `incrementLabel`, `decrementLabel` | `labels={{ increment, decrement }}` |
+| `chip` | `removeLabel` | `labels={{ remove }}` |
+| `collapse-toggle` | `openLabel`, `closedLabel` | `labels={{ open, closed }}` |
+| `dialog` | sr-only "Close" | `<DialogContent labels={{ close }}>`, default "Cerrar" |
+| `loading-state` | "n de N" hard-coded | `labels={{ progress: (done, total) => … }}` |
+| `time-range-selector` | `all` label "All" | "Todo"; `labels.group` names the control (default "Periodo") |
+| `loading-spinner` | `size` in px, label "Loading" | `size="sm" \| "md" \| "lg"`, label "Cargando" |
+
+**Unified families**
+
+- `badge` takes `tone` (neutral, brand, success, warning, danger, info) and `appearance` (subtle, solid, plain),
+  plus `icon` and `withDot`. The shadcn `variant` names still work. It renders a `<span>` (was a `<div>`).
+  `status-badge` is now a thin wrapper over it; `statusBadgeVariants` is gone (use `badgeVariants`).
+- `spinner` is the only spinner: `button` (`loading`), `loading-spinner` and `loading-state` use it.
+- `card` is a tonal surface (no border or shadow, 8px radius, 20px padding, 16px title) and also exposes
+  `Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, `Card.Footer`. Fields inside a card use `surface-3`.
+- `text-field` and `textarea-field` are built on `field`. For any other control, wrap it: `<Field label error><Select/></Field>`.
+- `time-range-selector` and the default `tabs` use the `segmented-control` indicator; `time-range-selector`
+  is now a `radiogroup` (was buttons with `aria-pressed`).
+
+**Look changes worth checking in your screens**
+
+- `button`: `secondary`/`outline` are tonal (no border); sizes are 32/36/40px (`sm`/default/`lg`, was 36/40/44).
+- Inputs, selects, textareas and picker triggers are filled and 36px tall (was 40px, outlined).
+- `checkbox` keeps a 1.5px edge (a control needs a visible boundary); `switch` and `slider` lose their shadows.
+- `progress` is 8px tall by default (was 16px). `chip` is a pill.
+
 ## v2, phase 1: foundations (2026-11-12)
 
 `stellify-base` has the v2 tokens ([docs/tokens.md](docs/tokens.md)). Re-run

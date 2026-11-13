@@ -329,7 +329,7 @@
       "name": "status-badge",
       "type": "registry:component",
       "title": "StatusBadge",
-      "description": "Badge with semantic status variants (success/warning/danger/info/neutral). Label via children. `icon` and `appearance=\"plain\"` (icon + text, no background) for status pills.",
+      "description": "Badge whose tone is a status (success/warning/danger/info/neutral); `appearance=\"plain\"` for icon + text. Thin wrapper over badge.",
       "categories": [
         "ui"
       ],
@@ -341,7 +341,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@stellify/utils"
+        "@stellify/badge"
       ],
       "files": [
         {
@@ -423,7 +423,7 @@
       "name": "button",
       "type": "registry:ui",
       "title": "Button (StellifyIT)",
-      "description": "API-compatible superset of the shadcn button: primary/secondary/base hierarchy + success/warning/info, a loading spinner state, and a CRUD `mode` (create/edit/finish) that injects a semantic color and icon. Overwrites ui/button.",
+      "description": "Shadcn-compatible button: primary (brand) / secondary (tonal) / base (no fill) + destructive/success/warning/info/link, no borders or shadows. `loading` shows the Spinner; CRUD `mode` (create/edit/finish) injects color and icon. Overwrites ui/button.",
       "categories": [
         "ui"
       ],
@@ -436,6 +436,7 @@
         "@radix-ui/react-slot"
       ],
       "registryDependencies": [
+        "@stellify/spinner",
         "@stellify/utils"
       ],
       "files": [
@@ -450,7 +451,7 @@
       "name": "input",
       "type": "registry:ui",
       "title": "Input (StellifyIT)",
-      "description": "Standard shadcn input plus an invalid state (aria-invalid turns the border destructive). API-compatible; overwrites ui/input.",
+      "description": "Filled input (bg-field, no border); aria-invalid turns it danger-subtle. Focus is the global outline. API-compatible; overwrites ui/input.",
       "categories": [
         "ui"
       ],
@@ -469,10 +470,77 @@
       ]
     },
     {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Form-control wrapper: label, control, then help or error. Owns htmlFor / aria-invalid / aria-describedby / required for any control (input, textarea, select, number-input, pickers).",
+      "categories": [
+        "ui"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "registryDependencies": [
+        "@stellify/label",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/field.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "The one spinner: a ring in the current color, sizes sm/md/lg, `decorative` inside busy buttons. Used by button, loading-spinner and loading-state.",
+      "categories": [
+        "ui"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/spinner.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/spinner.tsx"
+        }
+      ]
+    },
+    {
+      "name": "segmented-control",
+      "type": "registry:ui",
+      "title": "SegmentedControl",
+      "description": "Pick one of 2-5 options; the ink indicator slides and changes course mid-move when you click again (interruptible CSS transition). radiogroup, arrows/Home/End, roving tabindex. Exports useSlidingIndicator (used by tabs).",
+      "categories": [
+        "ui"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/segmented-control.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/segmented-control.tsx"
+        }
+      ]
+    },
+    {
       "name": "text-field",
       "type": "registry:component",
       "title": "TextField",
-      "description": "Labeled input with error/helper text and optional leading/trailing icons. Wires htmlFor/aria-invalid/aria-describedby. Copy via props.",
+      "description": "Field + Input in one: label, error/help and optional leading/trailing icons. Copy via props.",
       "categories": [
         "ui"
       ],
@@ -483,8 +551,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "@stellify/field",
         "@stellify/input",
-        "@stellify/label",
         "@stellify/utils"
       ],
       "files": [
@@ -498,7 +566,7 @@
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge (StellifyIT)",
-      "description": "Badge with variants plus `size` (default | xs) and `uppercase`. Emits data-slot.",
+      "description": "One badge for labels and states: `tone` (neutral/brand/success/warning/danger/info) x `appearance` (subtle/solid/plain), `icon`, `withDot`, `size` (default | xs), `uppercase` (mono caps). shadcn `variant` names still work. Emits data-slot.",
       "categories": [
         "ui"
       ],
@@ -516,14 +584,15 @@
         }
       ],
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority",
+        "lucide-react"
       ]
     },
     {
       "name": "card",
       "type": "registry:ui",
       "title": "Card (StellifyIT)",
-      "description": "Standard shadcn card primitive, shipped under @stellify for apps without shadcn. Overwrites ui/card.",
+      "description": "Raised area: surface-2, no border or shadow, 8px radius. Parts as named exports or Card.Header / Title / Description / Content / Footer. Fields inside switch to surface-3. Overwrites ui/card.",
       "categories": [
         "ui"
       ],
@@ -595,7 +664,7 @@
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs (StellifyIT)",
-      "description": "Standard shadcn tabs primitive, shipped under @stellify for apps without shadcn. Overwrites ui/tabs. `TabsList variant=\"plain\"`: text tabs with an underline, no pill background. Emits data-slot.",
+      "description": "Radix tabs. Default: segmented look with a sliding, interruptible ink indicator. `TabsList variant=\"plain\"`: text tabs with a sliding underline. Overwrites ui/tabs. Emits data-slot.",
       "categories": [
         "ui"
       ],
@@ -603,6 +672,7 @@
         "status": "ready"
       },
       "registryDependencies": [
+        "@stellify/segmented-control",
         "@stellify/utils"
       ],
       "files": [
@@ -797,7 +867,7 @@
       "name": "textarea",
       "type": "registry:ui",
       "title": "Textarea (StellifyIT)",
-      "description": "Textarea with `autoResize` (grows with content). Emits data-slot.",
+      "description": "Filled textarea with `autoResize` (grows with content); aria-invalid turns it danger-subtle. Emits data-slot.",
       "categories": [
         "ui"
       ],
@@ -923,19 +993,15 @@
       "name": "time-range-selector",
       "type": "registry:ui",
       "title": "TimeRangeSelector",
-      "description": "Segmented time-range control (7d/30d/90d/All) + getRangeBounds() helper. i18n-agnostic. For chart headers.",
+      "description": "Time-range picker (7d/30d/90d/Todo) on segmented-control + getRangeBounds() helper. labels prop. For chart headers.",
       "categories": [
         "ui"
       ],
       "meta": {
         "status": "ready"
       },
-      "dependencies": [
-        "lucide-react"
-      ],
       "registryDependencies": [
-        "@stellify/button",
-        "@stellify/utils"
+        "@stellify/segmented-control"
       ],
       "files": [
         {
@@ -976,17 +1042,15 @@
       "name": "loading-spinner",
       "type": "registry:component",
       "title": "LoadingSpinner",
-      "description": "Centered spinner; fullScreen option for route-level loading. size/label props.",
+      "description": "Spinner centered in its container or the viewport (`fullScreen`). size sm/md/lg; label defaults to \"Cargando\".",
       "categories": [
         "ui"
       ],
       "meta": {
         "status": "ready"
       },
-      "dependencies": [
-        "lucide-react"
-      ],
       "registryDependencies": [
+        "@stellify/spinner",
         "@stellify/utils"
       ],
       "files": [
@@ -1124,7 +1188,7 @@
       "name": "textarea-field",
       "type": "registry:component",
       "title": "TextareaField",
-      "description": "Labeled textarea with required asterisk, error and helper text (multi-line sibling of text-field).",
+      "description": "Field + Textarea: the multi-line sibling of text-field.",
       "categories": [
         "ui"
       ],
@@ -1132,7 +1196,7 @@
         "status": "ready"
       },
       "registryDependencies": [
-        "@stellify/label",
+        "@stellify/field",
         "@stellify/textarea",
         "@stellify/utils"
       ],
@@ -1202,11 +1266,9 @@
       "meta": {
         "status": "ready"
       },
-      "dependencies": [
-        "lucide-react"
-      ],
       "registryDependencies": [
         "@stellify/progress",
+        "@stellify/spinner",
         "@stellify/utils"
       ],
       "files": [
