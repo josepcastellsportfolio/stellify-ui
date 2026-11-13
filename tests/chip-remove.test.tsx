@@ -16,7 +16,7 @@ describe("Chip onRemove", () => {
   })
 
   it("lets the remove label be translated", () => {
-    render(<Chip onRemove={() => {}} removeLabel="Remove">Topic</Chip>)
+    render(<Chip onRemove={() => {}} labels={{ remove: "Remove" }}>Topic</Chip>)
     expect(screen.getByRole("button", { name: "Remove Topic" })).toBeInTheDocument()
   })
 })

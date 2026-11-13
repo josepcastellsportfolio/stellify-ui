@@ -39,18 +39,18 @@ export const KeyTakeaways: FC<KeyTakeawaysProps> = ({
     <aside
       data-slot="key-takeaways"
       aria-labelledby={headingId}
-      className={cn("border-l-2 border-primary bg-muted/40 py-5 pl-6 pr-5", className)}
+      className={cn("border-l-2 border-brand bg-surface-2 py-5 pl-6 pr-5", className)}
     >
       <h2
         id={headingId}
         data-slot="key-takeaways-title"
-        className="text-base font-semibold tracking-display text-foreground"
+        className="text-base font-semibold tracking-(--tracking-display) text-foreground"
       >
         {title}
       </h2>
       <ul
         data-slot="key-takeaways-list"
-        className="mt-3 flex list-disc flex-col gap-2 pl-5 leading-body text-foreground marker:text-primary"
+        className="mt-3 flex list-disc flex-col gap-2 pl-5 leading-relaxed text-foreground marker:text-primary"
       >
         {items.map(item => (
           <li key={item}>{item}</li>

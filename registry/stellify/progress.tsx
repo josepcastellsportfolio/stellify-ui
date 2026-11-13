@@ -7,9 +7,9 @@ import { cn } from "@/lib/utils"
 const progressVariants = cva("relative w-full overflow-hidden rounded-full", {
   variants: {
     size: {
-      default: "h-4 bg-secondary",
+      default: "h-2 bg-surface-3",
       /** Thin bar on a neutral track, e.g. under an onboarding header. */
-      sm: "h-1 bg-muted",
+      sm: "h-1 bg-surface-3",
     },
   },
   defaultVariants: { size: "default" },
@@ -32,7 +32,7 @@ const Progress = React.forwardRef<
   >
     <ProgressPrimitive.Indicator
       data-slot="progress-indicator"
-      className="h-full w-full flex-1 bg-primary transition-all"
+      className="h-full w-full flex-1 bg-primary transition-transform duration-(--duration-slow) ease-(--ease-out)"
       style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
     />
   </ProgressPrimitive.Root>

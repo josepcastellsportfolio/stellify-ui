@@ -5,9 +5,9 @@ import { Progress } from "@stellify/progress"
 import { Textarea } from "@stellify/textarea"
 
 describe("progress size", () => {
-  it("keeps h-4 by default and is thin with size=sm", () => {
+  it("is h-2 by default and thin with size=sm", () => {
     const { rerender } = render(<Progress value={50} aria-label="p" />)
-    expect(screen.getByRole("progressbar")).toHaveClass("h-4")
+    expect(screen.getByRole("progressbar")).toHaveClass("h-2")
     rerender(<Progress value={50} size="sm" aria-label="p" />)
     expect(screen.getByRole("progressbar")).toHaveClass("h-1")
     expect(screen.getByRole("progressbar")).toHaveAttribute("data-slot", "progress")
@@ -33,10 +33,10 @@ describe("textarea autoResize", () => {
 })
 
 describe("badge size and uppercase", () => {
-  it("defaults are unchanged", () => {
+  it("defaults to a neutral subtle badge", () => {
     render(<Badge>Nuevo</Badge>)
     const badge = screen.getByText("Nuevo")
-    expect(badge).toHaveClass("text-xs", "px-2.5")
+    expect(badge).toHaveClass("text-xs", "px-2", "bg-surface-3")
     expect(badge).not.toHaveClass("uppercase")
   })
 

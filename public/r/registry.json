@@ -6,8 +6,8 @@
     {
       "name": "stellify-base",
       "type": "registry:style",
-      "title": "StellifyIT design system base",
-      "description": "Canonical StellifyIT theme: emerald/teal/slate tokens (light + dark, oklch), Inter font, radius. Install first.",
+      "title": "StellifyIT design tokens",
+      "description": "StellifyIT design tokens v2: tonal surfaces, status and chart palettes, 4/8px radii, solid focus outline, one overlay shadow, motion, Inter + Geist Mono (light + dark, oklch). Install first.",
       "categories": [
         "foundations"
       ],
@@ -25,109 +25,239 @@
       ],
       "cssVars": {
         "theme": {
-          "font-sans": "'Inter', system-ui, -apple-system, sans-serif",
-          "radius": "0.625rem",
-          "container-max": "1180px",
-          "container-pad": "28px",
-          "space-hero-top": "96px",
-          "space-hero-bottom": "72px",
-          "space-section": "92px",
-          "radius-card": "22px",
-          "radius-pill": "999px",
-          "radius-icon": "16px",
-          "shadow-card": "0 26px 60px -38px oklch(0.208 0.042 265.755 / 0.35)",
-          "shadow-card-hover": "0 34px 80px -46px oklch(0.208 0.042 265.755 / 0.45)",
-          "shadow-button": "0 12px 30px -14px oklch(0.525 0.095 126 / 0.65)",
-          "ease-out": "cubic-bezier(.2, .8, .25, 1)",
-          "duration": "300ms",
-          "tracking-display": "-0.03em",
-          "leading-body": "1.65",
-          "font-mono": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace"
+          "color-background": "var(--background)",
+          "color-foreground": "var(--foreground)",
+          "color-surface-1": "var(--surface-1)",
+          "color-surface-2": "var(--surface-2)",
+          "color-surface-3": "var(--surface-3)",
+          "color-surface-overlay": "var(--surface-overlay)",
+          "color-brand": "var(--brand)",
+          "color-brand-foreground": "var(--brand-foreground)",
+          "color-brand-subtle": "var(--brand-subtle)",
+          "color-muted": "var(--muted)",
+          "color-muted-foreground": "var(--muted-foreground)",
+          "color-hairline": "var(--hairline)",
+          "color-field": "var(--field)",
+          "color-field-hover": "var(--field-hover)",
+          "color-focus": "var(--focus)",
+          "color-card": "var(--card)",
+          "color-card-foreground": "var(--card-foreground)",
+          "color-popover": "var(--popover)",
+          "color-popover-foreground": "var(--popover-foreground)",
+          "color-primary": "var(--primary)",
+          "color-primary-foreground": "var(--primary-foreground)",
+          "color-secondary": "var(--secondary)",
+          "color-secondary-foreground": "var(--secondary-foreground)",
+          "color-accent": "var(--accent)",
+          "color-accent-foreground": "var(--accent-foreground)",
+          "color-destructive": "var(--destructive)",
+          "color-destructive-foreground": "var(--destructive-foreground)",
+          "color-border": "var(--border)",
+          "color-input": "var(--input)",
+          "color-ring": "var(--ring)",
+          "color-success": "var(--success)",
+          "color-success-foreground": "var(--success-foreground)",
+          "color-success-subtle": "var(--success-subtle)",
+          "color-warning": "var(--warning)",
+          "color-warning-foreground": "var(--warning-foreground)",
+          "color-warning-subtle": "var(--warning-subtle)",
+          "color-danger": "var(--danger)",
+          "color-danger-foreground": "var(--danger-foreground)",
+          "color-danger-subtle": "var(--danger-subtle)",
+          "color-info": "var(--info)",
+          "color-info-foreground": "var(--info-foreground)",
+          "color-info-subtle": "var(--info-subtle)",
+          "color-chart-1": "var(--chart-1)",
+          "color-chart-2": "var(--chart-2)",
+          "color-chart-3": "var(--chart-3)",
+          "color-chart-4": "var(--chart-4)",
+          "color-chart-5": "var(--chart-5)",
+          "color-sidebar": "var(--sidebar)",
+          "color-sidebar-foreground": "var(--sidebar-foreground)",
+          "color-sidebar-primary": "var(--sidebar-primary)",
+          "color-sidebar-primary-foreground": "var(--sidebar-primary-foreground)",
+          "color-sidebar-accent": "var(--sidebar-accent)",
+          "color-sidebar-accent-foreground": "var(--sidebar-accent-foreground)",
+          "color-sidebar-border": "var(--sidebar-border)",
+          "color-sidebar-ring": "var(--sidebar-ring)",
+          "radius-sm": "var(--radius-control)",
+          "radius-md": "var(--radius-control)",
+          "radius-lg": "var(--radius-container)",
+          "radius-xl": "var(--radius-container)"
         },
         "light": {
-          "background": "oklch(0.98 0.002 264.536)",
-          "foreground": "oklch(0.208 0.042 265.755)",
-          "card": "oklch(1 0 0)",
-          "card-foreground": "oklch(0.208 0.042 265.755)",
-          "popover": "oklch(1 0 0)",
-          "popover-foreground": "oklch(0.208 0.042 265.755)",
-          "primary": "oklch(0.525 0.095 126)",
-          "primary-foreground": "oklch(1 0 0)",
-          "secondary": "oklch(0.511 0.096 186.391)",
-          "secondary-foreground": "oklch(0.982 0.018 166.913)",
-          "muted": "oklch(0.968 0.007 264.536)",
-          "muted-foreground": "oklch(0.554 0.046 257.417)",
-          "accent": "oklch(0.96 0.025 126)",
-          "accent-foreground": "oklch(0.3 0.06 126)",
-          "destructive": "oklch(0.577 0.245 27.325)",
-          "destructive-foreground": "oklch(0.985 0 0)",
-          "border": "oklch(0.929 0.013 255.508)",
-          "input": "oklch(0.929 0.013 255.508)",
-          "ring": "oklch(0.525 0.095 126)",
-          "chart-1": "oklch(0.525 0.095 126)",
-          "chart-2": "oklch(0.62 0.09 120)",
-          "chart-3": "oklch(0.45 0.08 135)",
-          "chart-4": "oklch(0.72 0.08 118)",
-          "chart-5": "oklch(0.58 0.07 142)",
-          "sidebar": "oklch(0.985 0.005 264.536)",
-          "sidebar-foreground": "oklch(0.208 0.042 265.755)",
-          "sidebar-primary": "oklch(0.525 0.095 126)",
-          "sidebar-primary-foreground": "oklch(1 0 0)",
-          "sidebar-accent": "oklch(0.96 0.025 126)",
-          "sidebar-accent-foreground": "oklch(0.3 0.06 126)",
-          "sidebar-border": "oklch(0.929 0.013 255.508)",
-          "sidebar-ring": "oklch(0.525 0.095 126)",
-          "success": "oklch(0.525 0.095 126)",
+          "brand": "oklch(0.525 0.095 126)",
+          "brand-foreground": "oklch(1 0 0)",
+          "brand-subtle": "oklch(0.955 0.03 126)",
+          "surface-1": "oklch(0.985 0.002 106)",
+          "surface-2": "oklch(0.962 0.004 106)",
+          "surface-3": "oklch(0.935 0.005 106)",
+          "surface-overlay": "oklch(0.985 0.002 106)",
+          "foreground": "oklch(0.21 0.02 265)",
+          "muted-foreground": "oklch(0.47 0.02 265)",
+          "hairline": "oklch(0.21 0.02 265 / 0.08)",
+          "success": "oklch(0.5 0.11 160)",
           "success-foreground": "oklch(1 0 0)",
-          "warning": "oklch(0.795 0.184 86.047)",
-          "warning-foreground": "oklch(0.279 0.077 45.635)",
-          "info": "oklch(0.511 0.096 186.391)",
-          "info-foreground": "oklch(1 0 0)"
+          "success-subtle": "oklch(0.95 0.04 160)",
+          "warning": "oklch(0.52 0.12 65)",
+          "warning-foreground": "oklch(1 0 0)",
+          "warning-subtle": "oklch(0.95 0.05 80)",
+          "danger": "oklch(0.52 0.19 27)",
+          "danger-foreground": "oklch(1 0 0)",
+          "danger-subtle": "oklch(0.95 0.035 27)",
+          "info": "oklch(0.5 0.13 245)",
+          "info-foreground": "oklch(1 0 0)",
+          "info-subtle": "oklch(0.95 0.03 245)",
+          "chart-1": "oklch(0.53 0.12 126)",
+          "chart-2": "oklch(0.58 0.13 245)",
+          "chart-3": "oklch(0.64 0.15 50)",
+          "chart-4": "oklch(0.55 0.14 305)",
+          "chart-5": "oklch(0.62 0.11 190)",
+          "shadow-overlay": "0 1px 2px oklch(0 0 0 / 0.06), 0 10px 24px -12px oklch(0 0 0 / 0.18)",
+          "radius-control": "4px",
+          "radius-container": "8px",
+          "radius-pill": "999px",
+          "focus-width": "2px",
+          "focus-offset": "2px",
+          "ease-out": "cubic-bezier(0.2, 0.8, 0.25, 1)",
+          "ease-in-out": "cubic-bezier(0.65, 0, 0.35, 1)",
+          "duration-fast": "120ms",
+          "duration-base": "240ms",
+          "duration-slow": "400ms",
+          "font-sans": "'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif",
+          "font-mono": "'Geist Mono Variable', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+          "tracking-display": "-0.03em",
+          "tracking-mono-caps": "0.06em",
+          "container-max": "1180px",
+          "container-pad": "28px",
+          "field": "var(--surface-2)",
+          "field-hover": "var(--surface-3)",
+          "focus": "var(--foreground)",
+          "background": "var(--surface-1)",
+          "card": "var(--surface-2)",
+          "card-foreground": "var(--foreground)",
+          "popover": "var(--surface-overlay)",
+          "popover-foreground": "var(--foreground)",
+          "primary": "var(--brand)",
+          "primary-foreground": "var(--brand-foreground)",
+          "secondary": "var(--surface-3)",
+          "secondary-foreground": "var(--foreground)",
+          "muted": "var(--surface-2)",
+          "accent": "var(--surface-3)",
+          "accent-foreground": "var(--foreground)",
+          "destructive": "var(--danger)",
+          "destructive-foreground": "var(--danger-foreground)",
+          "border": "var(--hairline)",
+          "input": "var(--hairline)",
+          "ring": "var(--focus)",
+          "sidebar": "var(--surface-2)",
+          "sidebar-foreground": "var(--foreground)",
+          "sidebar-primary": "var(--brand)",
+          "sidebar-primary-foreground": "var(--brand-foreground)",
+          "sidebar-accent": "var(--surface-3)",
+          "sidebar-accent-foreground": "var(--foreground)",
+          "sidebar-border": "var(--hairline)",
+          "sidebar-ring": "var(--focus)",
+          "radius": "var(--radius-container)"
         },
         "dark": {
-          "background": "oklch(0.15 0.02 265)",
-          "foreground": "oklch(0.968 0.007 264.536)",
-          "card": "oklch(0.21 0.026 265)",
-          "card-foreground": "oklch(0.968 0.007 264.536)",
-          "popover": "oklch(0.21 0.026 265)",
-          "popover-foreground": "oklch(0.968 0.007 264.536)",
-          "primary": "oklch(0.72 0.095 126)",
-          "primary-foreground": "oklch(0.25 0.05 126)",
-          "secondary": "oklch(0.704 0.14 182.503)",
-          "secondary-foreground": "oklch(0.277 0.046 192.524)",
-          "muted": "oklch(0.293 0.033 265.755)",
-          "muted-foreground": "oklch(0.704 0.04 256.788)",
-          "accent": "oklch(0.3 0.06 126)",
-          "accent-foreground": "oklch(0.72 0.095 126)",
-          "destructive": "oklch(0.396 0.141 25.723)",
-          "destructive-foreground": "oklch(0.985 0 0)",
-          "border": "oklch(0.293 0.033 265.755)",
-          "input": "oklch(0.293 0.033 265.755)",
-          "ring": "oklch(0.72 0.095 126)",
-          "chart-1": "oklch(0.72 0.095 126)",
-          "chart-2": "oklch(0.6 0.09 120)",
-          "chart-3": "oklch(0.78 0.08 135)",
-          "chart-4": "oklch(0.55 0.08 118)",
-          "chart-5": "oklch(0.65 0.07 142)",
-          "sidebar": "oklch(0.18 0.023 265)",
-          "sidebar-foreground": "oklch(0.968 0.007 264.536)",
-          "sidebar-primary": "oklch(0.72 0.095 126)",
-          "sidebar-primary-foreground": "oklch(0.25 0.05 126)",
-          "sidebar-accent": "oklch(0.3 0.06 126)",
-          "sidebar-accent-foreground": "oklch(0.72 0.095 126)",
-          "sidebar-border": "oklch(0.293 0.033 265.755)",
-          "sidebar-ring": "oklch(0.72 0.095 126)",
-          "success": "oklch(0.72 0.095 126)",
-          "success-foreground": "oklch(0.25 0.05 126)",
-          "warning": "oklch(0.828 0.189 84.429)",
-          "warning-foreground": "oklch(0.279 0.077 45.635)",
-          "info": "oklch(0.704 0.14 182.503)",
-          "info-foreground": "oklch(0.277 0.046 192.524)"
+          "brand": "oklch(0.74 0.11 126)",
+          "brand-foreground": "oklch(0.2 0.04 126)",
+          "brand-subtle": "oklch(0.3 0.05 126)",
+          "surface-1": "oklch(0.17 0.012 265)",
+          "surface-2": "oklch(0.215 0.014 265)",
+          "surface-3": "oklch(0.26 0.016 265)",
+          "foreground": "oklch(0.96 0.005 265)",
+          "muted-foreground": "oklch(0.72 0.015 265)",
+          "hairline": "oklch(1 0 0 / 0.08)",
+          "success": "oklch(0.76 0.12 160)",
+          "success-foreground": "oklch(0.2 0.04 160)",
+          "success-subtle": "oklch(0.3 0.05 160)",
+          "warning": "oklch(0.8 0.13 80)",
+          "warning-foreground": "oklch(0.2 0.04 80)",
+          "warning-subtle": "oklch(0.32 0.05 80)",
+          "danger": "oklch(0.74 0.15 27)",
+          "danger-foreground": "oklch(0.2 0.04 27)",
+          "danger-subtle": "oklch(0.32 0.06 27)",
+          "info": "oklch(0.76 0.11 245)",
+          "info-foreground": "oklch(0.2 0.04 245)",
+          "info-subtle": "oklch(0.3 0.05 245)",
+          "chart-1": "oklch(0.66 0.12 126)",
+          "chart-2": "oklch(0.64 0.13 245)",
+          "chart-3": "oklch(0.66 0.14 55)",
+          "chart-4": "oklch(0.62 0.15 305)",
+          "chart-5": "oklch(0.66 0.11 190)",
+          "surface-overlay": "oklch(0.215 0.014 265)",
+          "shadow-overlay": "0 1px 2px oklch(0 0 0 / 0.3), 0 12px 28px -12px oklch(0 0 0 / 0.6)",
+          "field": "var(--surface-2)",
+          "field-hover": "var(--surface-3)",
+          "focus": "var(--foreground)",
+          "background": "var(--surface-1)",
+          "card": "var(--surface-2)",
+          "card-foreground": "var(--foreground)",
+          "popover": "var(--surface-overlay)",
+          "popover-foreground": "var(--foreground)",
+          "primary": "var(--brand)",
+          "primary-foreground": "var(--brand-foreground)",
+          "secondary": "var(--surface-3)",
+          "secondary-foreground": "var(--foreground)",
+          "muted": "var(--surface-2)",
+          "accent": "var(--surface-3)",
+          "accent-foreground": "var(--foreground)",
+          "destructive": "var(--danger)",
+          "destructive-foreground": "var(--danger-foreground)",
+          "border": "var(--hairline)",
+          "input": "var(--hairline)",
+          "ring": "var(--focus)",
+          "sidebar": "var(--surface-2)",
+          "sidebar-foreground": "var(--foreground)",
+          "sidebar-primary": "var(--brand)",
+          "sidebar-primary-foreground": "var(--brand-foreground)",
+          "sidebar-accent": "var(--surface-3)",
+          "sidebar-accent-foreground": "var(--foreground)",
+          "sidebar-border": "var(--hairline)",
+          "sidebar-ring": "var(--focus)",
+          "radius": "var(--radius-container)"
         }
       },
       "files": [],
       "css": {
-        "@import \"tw-animate-css\"": {}
+        "@import \"tw-animate-css\"": {},
+        "[data-chart-palette=\"mono\"]": {
+          "--chart-1": "oklch(0.36 0.09 126)",
+          "--chart-2": "oklch(0.45 0.11 126)",
+          "--chart-3": "oklch(0.54 0.12 126)",
+          "--chart-4": "oklch(0.63 0.12 126)",
+          "--chart-5": "oklch(0.72 0.1 126)"
+        },
+        ".dark [data-chart-palette=\"mono\"], .dark[data-chart-palette=\"mono\"]": {
+          "--chart-1": "oklch(0.88 0.08 126)",
+          "--chart-2": "oklch(0.78 0.11 126)",
+          "--chart-3": "oklch(0.68 0.12 126)",
+          "--chart-4": "oklch(0.58 0.11 126)",
+          "--chart-5": "oklch(0.48 0.09 126)"
+        },
+        "@layer base": {
+          "*, ::before, ::after, ::backdrop": {
+            "border-color": "var(--border)"
+          },
+          "body": {
+            "font-family": "var(--font-sans)",
+            "background-color": "var(--background)",
+            "color": "var(--foreground)"
+          },
+          ":focus-visible": {
+            "outline": "var(--focus-width) solid var(--focus)",
+            "outline-offset": "var(--focus-offset)"
+          },
+          "@media (prefers-reduced-motion: reduce)": {
+            "*, *::before, *::after": {
+              "transition-duration": "0.01ms !important",
+              "animation-duration": "0.01ms !important",
+              "animation-iteration-count": "1 !important"
+            }
+          }
+        }
       }
     },
     {
@@ -202,7 +332,7 @@
       "name": "status-badge",
       "type": "registry:component",
       "title": "StatusBadge",
-      "description": "Badge with semantic status variants (success/warning/danger/info/neutral). Label via children. `icon` and `appearance=\"plain\"` (icon + text, no background) for status pills.",
+      "description": "Badge whose tone is a status (success/warning/danger/info/neutral); `appearance=\"plain\"` for icon + text. Thin wrapper over badge.",
       "categories": [
         "ui"
       ],
@@ -214,7 +344,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@stellify/utils"
+        "@stellify/badge"
       ],
       "files": [
         {
@@ -296,7 +426,7 @@
       "name": "button",
       "type": "registry:ui",
       "title": "Button (StellifyIT)",
-      "description": "API-compatible superset of the shadcn button: primary/secondary/base hierarchy + success/warning/info, a loading spinner state, and a CRUD `mode` (create/edit/finish) that injects a semantic color and icon. Overwrites ui/button.",
+      "description": "Shadcn-compatible button: primary (brand) / secondary (tonal) / base (no fill) + destructive/success/warning/info/link, no borders or shadows. `loading` shows the Spinner; CRUD `mode` (create/edit/finish) injects color and icon. Overwrites ui/button.",
       "categories": [
         "ui"
       ],
@@ -309,6 +439,7 @@
         "@radix-ui/react-slot"
       ],
       "registryDependencies": [
+        "@stellify/spinner",
         "@stellify/utils"
       ],
       "files": [
@@ -323,7 +454,7 @@
       "name": "input",
       "type": "registry:ui",
       "title": "Input (StellifyIT)",
-      "description": "Standard shadcn input plus an invalid state (aria-invalid turns the border destructive). API-compatible; overwrites ui/input.",
+      "description": "Filled input (bg-field, no border); aria-invalid turns it danger-subtle. Focus is the global outline. API-compatible; overwrites ui/input.",
       "categories": [
         "ui"
       ],
@@ -342,10 +473,77 @@
       ]
     },
     {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Form-control wrapper: label, control, then help or error. Owns htmlFor / aria-invalid / aria-describedby / required for any control (input, textarea, select, number-input, pickers).",
+      "categories": [
+        "ui"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "registryDependencies": [
+        "@stellify/label",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/field.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "The one spinner: a ring in the current color, sizes sm/md/lg, `decorative` inside busy buttons. Used by button, loading-spinner and loading-state.",
+      "categories": [
+        "ui"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/spinner.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/spinner.tsx"
+        }
+      ]
+    },
+    {
+      "name": "segmented-control",
+      "type": "registry:ui",
+      "title": "SegmentedControl",
+      "description": "Pick one of 2-5 options; the ink indicator slides and changes course mid-move when you click again (interruptible CSS transition). radiogroup, arrows/Home/End, roving tabindex. Exports useSlidingIndicator (used by tabs).",
+      "categories": [
+        "ui"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/segmented-control.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/segmented-control.tsx"
+        }
+      ]
+    },
+    {
       "name": "text-field",
       "type": "registry:component",
       "title": "TextField",
-      "description": "Labeled input with error/helper text and optional leading/trailing icons. Wires htmlFor/aria-invalid/aria-describedby. Copy via props.",
+      "description": "Field + Input in one: label, error/help and optional leading/trailing icons. Copy via props.",
       "categories": [
         "ui"
       ],
@@ -356,8 +554,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "@stellify/field",
         "@stellify/input",
-        "@stellify/label",
         "@stellify/utils"
       ],
       "files": [
@@ -371,7 +569,7 @@
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge (StellifyIT)",
-      "description": "Badge with variants plus `size` (default | xs) and `uppercase`. Emits data-slot.",
+      "description": "One badge for labels and states: `tone` (neutral/brand/success/warning/danger/info) x `appearance` (subtle/solid/plain), `icon`, `withDot`, `size` (default | xs), `uppercase` (mono caps). shadcn `variant` names still work. Emits data-slot.",
       "categories": [
         "ui"
       ],
@@ -389,14 +587,15 @@
         }
       ],
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority",
+        "lucide-react"
       ]
     },
     {
       "name": "card",
       "type": "registry:ui",
       "title": "Card (StellifyIT)",
-      "description": "Standard shadcn card primitive, shipped under @stellify for apps without shadcn. Overwrites ui/card.",
+      "description": "Raised area: surface-2, no border or shadow, 8px radius. Parts as named exports or Card.Header / Title / Description / Content / Footer. Fields inside switch to surface-3. Overwrites ui/card.",
       "categories": [
         "ui"
       ],
@@ -468,7 +667,7 @@
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs (StellifyIT)",
-      "description": "Standard shadcn tabs primitive, shipped under @stellify for apps without shadcn. Overwrites ui/tabs. `TabsList variant=\"plain\"`: text tabs with an underline, no pill background. Emits data-slot.",
+      "description": "Radix tabs. Default: segmented look with a sliding, interruptible ink indicator. `TabsList variant=\"plain\"`: text tabs with a sliding underline. Overwrites ui/tabs. Emits data-slot.",
       "categories": [
         "ui"
       ],
@@ -476,6 +675,7 @@
         "status": "ready"
       },
       "registryDependencies": [
+        "@stellify/segmented-control",
         "@stellify/utils"
       ],
       "files": [
@@ -670,7 +870,7 @@
       "name": "textarea",
       "type": "registry:ui",
       "title": "Textarea (StellifyIT)",
-      "description": "Textarea with `autoResize` (grows with content). Emits data-slot.",
+      "description": "Filled textarea with `autoResize` (grows with content); aria-invalid turns it danger-subtle. Emits data-slot.",
       "categories": [
         "ui"
       ],
@@ -796,19 +996,15 @@
       "name": "time-range-selector",
       "type": "registry:ui",
       "title": "TimeRangeSelector",
-      "description": "Segmented time-range control (7d/30d/90d/All) + getRangeBounds() helper. i18n-agnostic. For chart headers.",
+      "description": "Time-range picker (7d/30d/90d/Todo) on segmented-control + getRangeBounds() helper. labels prop. For chart headers.",
       "categories": [
         "ui"
       ],
       "meta": {
         "status": "ready"
       },
-      "dependencies": [
-        "lucide-react"
-      ],
       "registryDependencies": [
-        "@stellify/button",
-        "@stellify/utils"
+        "@stellify/segmented-control"
       ],
       "files": [
         {
@@ -849,17 +1045,15 @@
       "name": "loading-spinner",
       "type": "registry:component",
       "title": "LoadingSpinner",
-      "description": "Centered spinner; fullScreen option for route-level loading. size/label props.",
+      "description": "Spinner centered in its container or the viewport (`fullScreen`). size sm/md/lg; label defaults to \"Cargando\".",
       "categories": [
         "ui"
       ],
       "meta": {
         "status": "ready"
       },
-      "dependencies": [
-        "lucide-react"
-      ],
       "registryDependencies": [
+        "@stellify/spinner",
         "@stellify/utils"
       ],
       "files": [
@@ -997,7 +1191,7 @@
       "name": "textarea-field",
       "type": "registry:component",
       "title": "TextareaField",
-      "description": "Labeled textarea with required asterisk, error and helper text (multi-line sibling of text-field).",
+      "description": "Field + Textarea: the multi-line sibling of text-field.",
       "categories": [
         "ui"
       ],
@@ -1005,7 +1199,7 @@
         "status": "ready"
       },
       "registryDependencies": [
-        "@stellify/label",
+        "@stellify/field",
         "@stellify/textarea",
         "@stellify/utils"
       ],
@@ -1075,11 +1269,9 @@
       "meta": {
         "status": "ready"
       },
-      "dependencies": [
-        "lucide-react"
-      ],
       "registryDependencies": [
         "@stellify/progress",
+        "@stellify/spinner",
         "@stellify/utils"
       ],
       "files": [
@@ -1093,7 +1285,7 @@
       "name": "chart-card",
       "type": "registry:component",
       "title": "ChartCard",
-      "description": "Card shell for charts with loading skeleton, empty and error states, header actions slot. All copy passed via props.",
+      "description": "Card shell for charts with loading skeleton, empty and error states, header actions slot. `labels.retry` defaults to \"Reintentar\".",
       "categories": [
         "charts"
       ],
@@ -1352,7 +1544,7 @@
       "name": "data-table",
       "type": "registry:component",
       "title": "DataTable",
-      "description": "Presentational paginated table (columns, rows, sort, loading skeleton, empty state). Sortable headers are buttons with aria-sort on the header cell (Tab + Enter/Space); the actions column's hidden header comes from actionsLabel. Fetching is the consumer's job — see toolbar/pagination slots.",
+      "description": "Presentational, controlled table in a rounded frame: tinted header, hairline rows, footer inside. Sort, per-column header filters (`filter` + `filters`/`onFilterChange`), row selection with select-all and a bulk-actions bar, row actions, loading skeleton, empty state. Right-aligned columns use tabular mono figures. Spanish `labels`.",
       "categories": [
         "data-table"
       ],
@@ -1364,6 +1556,9 @@
       ],
       "registryDependencies": [
         "@stellify/table",
+        "@stellify/checkbox",
+        "@stellify/data-table-column-filter",
+        "@stellify/data-table-filters",
         "@stellify/utils"
       ],
       "files": [
@@ -1377,7 +1572,7 @@
       "name": "data-table-pagination",
       "type": "registry:component",
       "title": "DataTablePagination",
-      "description": "Controlled pagination footer for data-table: page-size selector + prev/next. Labels via props. No paging logic.",
+      "description": "Controlled pagination: rows per page, \"1–10 de 42\" range and numbered pages with gaps. Spanish `labels`.",
       "categories": [
         "data-table"
       ],
@@ -1403,7 +1598,7 @@
       "name": "data-table-toolbar",
       "type": "registry:component",
       "title": "DataTableToolbar",
-      "description": "Search box (with clear) + optional filters toggle and reset for data-table. Presentational; owns no filter state. Drop into the toolbar slot.",
+      "description": "Search row for data-table with `filters` and `actions` slots and children for active-filter chips. Spanish `labels`.",
       "categories": [
         "data-table"
       ],
@@ -1452,7 +1647,7 @@
       "name": "data-table-filters",
       "type": "registry:lib",
       "title": "DataTableFilters",
-      "description": "Filter type system for DataTable: 10 filter kinds, operators, state shapes, type guards and factory helpers. No UI.",
+      "description": "Filter type system for DataTable: 10 filter kinds, operators, state shapes, type guards and factory helpers. No UI. Also `applyFilters` / `matchesFilter` / `countActiveFilters` for in-memory rows.",
       "categories": [
         "data-table"
       ],
@@ -1498,7 +1693,7 @@
       "name": "data-table-column-filter",
       "type": "registry:component",
       "title": "DataTableColumnFilter",
-      "description": "Filter trigger for a column header: an icon that opens the column's filter in a popover, so a wide control is not bound to the column's width.",
+      "description": "Header filter button (tinted while active) opening the column's FilterWidget in a popover.",
       "categories": [
         "data-table"
       ],
@@ -1523,7 +1718,7 @@
       "name": "data-table-active-filters",
       "type": "registry:component",
       "title": "DataTableActiveFilters",
-      "description": "Chips showing which filters are applied; each reopens its filter for editing and clears itself.",
+      "description": "Active-filter chips: column + value, click to edit, ✕ to clear, optional \"Limpiar filtros\". Spanish `labels`.",
       "categories": [
         "data-table"
       ],
@@ -1544,10 +1739,39 @@
       ]
     },
     {
+      "name": "data-table-advanced-filters",
+      "type": "registry:component",
+      "title": "DataTableAdvancedFilters",
+      "description": "\"Filtros\" button with an active-count badge opening a panel with every filterable column's widget; edits apply live, with per-field reset and \"Limpiar todo\". Spanish `labels`.",
+      "categories": [
+        "data-table"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/button",
+        "@stellify/popover",
+        "@stellify/data-table-filter-widget",
+        "@stellify/data-table-active-filters",
+        "@stellify/data-table-filters",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/data-table-advanced-filters.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "metric-card",
       "type": "registry:component",
       "title": "MetricCard",
-      "description": "KPI card: label, value, unit, delta with trend arrow, accent icon chip. invertDelta flips good/bad colors (for expenses); tone colors the value (negative = red); details adds label/value rows.",
+      "description": "KPI card on a tonal surface: label, value in tabular mono, unit, delta with trend arrow, accent icon chip (neutral/brand/success/warning/danger/info; v1 hue names still map). invertDelta flips good/bad; tone colors the value; details adds label/value rows.",
       "categories": [
         "blocks/app"
       ],
@@ -1778,7 +2002,7 @@
       "name": "site-chat",
       "type": "registry:component",
       "title": "SiteChat",
-      "description": "Public chat panel, degraded-first: renders a FAQ block by default and gains a composer when a service is available. Never shows a raw error or an indefinite spinner.",
+      "description": "Public chat panel, degraded-first: renders a FAQ block by default and gains a composer when a service is available. Never shows a raw error or an indefinite spinner. Copy via `labels` (Spanish defaults).",
       "categories": [
         "blocks/site"
       ],
@@ -1958,7 +2182,7 @@
       "name": "cookie-consent",
       "type": "registry:component",
       "title": "CookieConsent",
-      "description": "Presentational, non-modal analytics-cookie banner (z-50). Accept and Reject have equal weight; no close button that implies consent.",
+      "description": "Presentational, non-modal analytics-cookie banner (z-50). Accept and Reject have equal weight; no close button that implies consent. Copy via `labels` (Spanish defaults).",
       "categories": [
         "blocks/site"
       ],

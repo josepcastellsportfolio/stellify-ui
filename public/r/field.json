@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "field",
+  "title": "Field",
+  "description": "Form-control wrapper: label, control, then help or error. Owns htmlFor / aria-invalid / aria-describedby / required for any control (input, textarea, select, number-input, pickers).",
+  "registryDependencies": [
+    "@stellify/label",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/field.tsx",
+      "content": "import * as React from \"react\"\n\nimport { Label } from \"@/components/ui/label\"\nimport { cn } from \"@/lib/utils\"\n\n/** What `Field` hands to its control so label, help and error are wired up. */\nexport interface FieldControlProps {\n  id: string\n  required?: boolean\n  \"aria-invalid\"?: true\n  \"aria-describedby\"?: string\n}\n\nexport interface FieldProps {\n  /** Label above the control. */\n  label?: React.ReactNode\n  /** Help under the control; hidden while there is an error. */\n  description?: React.ReactNode\n  /** Error message: marks the control invalid and is announced. */\n  error?: React.ReactNode\n  /** Adds the required mark to the label and `required` to the control. */\n  required?: boolean\n  /** Control id. Generated when omitted. */\n  id?: string\n  className?: string\n  /**\n   * The control. A single element gets `id`, `required`, `aria-invalid` and\n   * `aria-describedby` merged in; a function receives them to place by hand.\n   */\n  children: React.ReactElement<FieldControlProps> | ((control: FieldControlProps) => React.ReactNode)\n}\n\n/**\n * The wrapper every form control sits in: label, control, then help or error.\n * Owns the accessibility wiring so each control doesn't. Works with `input`,\n * `textarea`, `select`, `number-input`, the date pickers, or any custom control.\n *\n * ```tsx\n * <Field label=\"Email\" error={errors.email} required>\n *   <Input type=\"email\" />\n * </Field>\n * ```\n */\nfunction Field({ label, description, error, required, id, className, children }: FieldProps) {\n  const generatedId = React.useId()\n  const childId = typeof children === \"function\" ? undefined : children.props.id\n  const controlId = id ?? childId ?? generatedId\n  const messageId = error ? `${controlId}-error` : description ? `${controlId}-description` : undefined\n\n  const control: FieldControlProps = {\n    id: controlId,\n    required: required || undefined,\n    \"aria-invalid\": error ? true : undefined,\n    \"aria-describedby\": messageId,\n  }\n\n  return (\n    <div data-slot=\"field\" data-invalid={error ? \"\" : undefined} className={cn(\"space-y-1.5\", className)}>\n      {label && (\n        <Label htmlFor={controlId}>\n          {label}\n          {required && (\n            <span className=\"ml-0.5 text-danger\" aria-hidden>\n              *\n            </span>\n          )}\n        </Label>\n      )}\n      {typeof children === \"function\"\n        ? children(control)\n        : React.cloneElement(children, { ...control, ...stripUndefined(children.props) })}\n      {error ? (\n        <p id={messageId} data-slot=\"field-error\" className=\"text-xs text-danger\">\n          {error}\n        </p>\n      ) : description ? (\n        <p id={messageId} data-slot=\"field-description\" className=\"text-xs text-muted-foreground\">\n          {description}\n        </p>\n      ) : null}\n    </div>\n  )\n}\n\n/** Props the child set explicitly win over Field's, but `undefined` never erases them. */\nfunction stripUndefined<T extends object>(props: T): Partial<T> {\n  return Object.fromEntries(Object.entries(props).filter(([, v]) => v !== undefined)) as Partial<T>\n}\n\nexport { Field }\n",
+      "type": "registry:ui",
+      "target": "components/ui/field.tsx"
+    }
+  ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "ui"
+  ],
+  "type": "registry:ui"
+}

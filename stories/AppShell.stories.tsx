@@ -18,7 +18,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 const tuVia = (
-  <Badge size="xs" uppercase variant="outline" className="border-transparent text-primary">
+  <Badge size="xs" uppercase tone="brand">
     Tu vía
   </Badge>
 )

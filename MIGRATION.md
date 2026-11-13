@@ -1,5 +1,121 @@
 # Migration guide
 
+## v2, phase 3: charts, blocks and motion (2026-11-13)
+
+The v2 rules now cover every item, and `tests/registry.test.ts` checks all of them: no focus halos, no
+non-overlay shadows, no blur or gradients, no outlined fields, no raw palette colors (`bg-emerald-200`…) and no
+utilities from the removed v1 tokens.
+
+- **Removed-token utilities.** Blocks used `rounded-card`, `rounded-icon`, `rounded-pill`, `leading-body`,
+  `shadow-card`, `tracking-display`, `duration-base` and `ease-out-soft`, which only worked if your Tailwind config
+  defined them. They now use `rounded-lg`, `rounded-full`, `leading-relaxed`, `tracking-(--tracking-display)` and
+  the motion tokens.
+- **Charts.** Bars have 4px rounded tops on the baseline; area and radar fills are light (12–15%) with a 2px line;
+  pie slices are separated by a 2px surface ring; the tooltip is an overlay. Axis ticks use Geist Mono and now
+  actually take the muted color (recharts 3 moved the tick class, so the shadcn selector never matched).
+  `chart-card`: `retryLabel` → `labels.retry` ("Reintentar").
+- **`metric-card`.** `accent` takes `neutral | brand | success | warning | danger | info` (default `neutral`); the
+  v1 hues (`emerald`, `rose`…) still work and map onto them. Value and delta use tabular mono; status colors come
+  from the tokens, so they follow dark mode and rebranding.
+- **App blocks.** `app-shell`'s sidebar is a tonal column (`bg-sidebar`), not a bordered one; `sidebar` marks the
+  active item with `sidebar-accent` and a brand edge.
+- **Site blocks.** `cookie-consent` floats as an overlay on desktop; `acceptLabel`, `rejectLabel`, `policyLabel` →
+  `labels`. `site-chat` copy moves to `labels`. `mega-menu-panel` uses the overlay surface and shadow.
+- **Motion.** Every GSAP tween and timeline sets `overwrite: "auto"`, so a new animation on the same element
+  replaces the running one instead of fighting it.
+
+## v2, phase 2: the ui core (2026-11-13)
+
+The `ui` items now follow the v2 rules: no box borders, no focus halos, no shadows except on overlays,
+filled fields. Re-add what you use with `npx shadcn add @stellify/<item> --overwrite`.
+`tests/registry.test.ts` fails if a ui item brings a halo or an outlined field back.
+
+**New** (status `experimental`): `field`, `spinner`, `segmented-control`.
+
+**Breaking props**: copy moves into a typed `labels` prop with Spanish defaults.
+
+| Item | Before | Now |
+|---|---|---|
+| `confirm-dialog` | `confirmLabel`, `cancelLabel` (English defaults) | `labels={{ confirm, cancel }}`, defaults "Confirmar" / "Cancelar" |
+| `date-range-picker` | `applyLabel`, `cancelLabel`, `timeToggleLabel`, `startTimeLabel`, `endTimeLabel`; English presets | `labels={{ apply, cancel, includeTime, startTime, endTime }}`; presets in Spanish ("Hoy", "Últimos 7 días"…) |
+| `number-input` | `incrementLabel`, `decrementLabel` | `labels={{ increment, decrement }}` |
+| `chip` | `removeLabel` | `labels={{ remove }}` |
+| `collapse-toggle` | `openLabel`, `closedLabel` | `labels={{ open, closed }}` |
+| `dialog` | sr-only "Close" | `<DialogContent labels={{ close }}>`, default "Cerrar" |
+| `loading-state` | "n de N" hard-coded | `labels={{ progress: (done, total) => … }}` |
+| `time-range-selector` | `all` label "All" | "Todo"; `labels.group` names the control (default "Periodo") |
+| `loading-spinner` | `size` in px, label "Loading" | `size="sm" \| "md" \| "lg"`, label "Cargando" |
+
+**Unified families**
+
+- `badge` takes `tone` (neutral, brand, success, warning, danger, info) and `appearance` (subtle, solid, plain),
+  plus `icon` and `withDot`. The shadcn `variant` names still work. It renders a `<span>` (was a `<div>`).
+  `status-badge` is now a thin wrapper over it; `statusBadgeVariants` is gone (use `badgeVariants`).
+- `spinner` is the only spinner: `button` (`loading`), `loading-spinner` and `loading-state` use it.
+- `card` is a tonal surface (no border or shadow, 8px radius, 20px padding, 16px title) and also exposes
+  `Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, `Card.Footer`. Fields inside a card use `surface-3`.
+- `text-field` and `textarea-field` are built on `field`. For any other control, wrap it: `<Field label error><Select/></Field>`.
+- `time-range-selector` and the default `tabs` use the `segmented-control` indicator; `time-range-selector`
+  is now a `radiogroup` (was buttons with `aria-pressed`).
+
+**Look changes worth checking in your screens**
+
+- `button`: `secondary`/`outline` are tonal (no border); sizes are 32/36/40px (`sm`/default/`lg`, was 36/40/44).
+- Inputs, selects, textareas and picker triggers are filled and 36px tall (was 40px, outlined).
+- `checkbox` keeps a 1.5px edge (a control needs a visible boundary); `switch` and `slider` lose their shadows.
+- `progress` is 8px tall by default (was 16px). `chip` is a pill.
+- `stellify-base` now sets the hairline as the default border color (Tailwind 4 defaulted to the text color, so
+  every `border-b` was a dark line). Re-add `stellify-base` to pick it up.
+- **Data table family** (breaking copy props, Spanish defaults):
+  - `data-table`: new `filter` on columns plus `filters` / `onFilterChange` (header filter buttons), `selectedKeys` /
+    `onSelectedKeysChange` (checkbox column, select-all) and `bulkActions` (bar above the rows), `labels`.
+  - `data-table-toolbar`: `searchPlaceholder`, `resetLabel`, `clearSearchLabel` → `labels`; `showFilterToggle`,
+    `filtersOpen`, `onToggleFilters` are gone (put `DataTableAdvancedFilters` in the new `filters` slot);
+    `children` renders under the row (for `DataTableActiveFilters`).
+  - `data-table-pagination`: `rowsPerPageLabel`, `ofLabel`, `previousLabel`, `nextLabel` → `labels`; shows the range
+    ("1–10 de 42") and numbered pages.
+  - New `data-table-advanced-filters` ("Filtros" button + panel with every filterable column).
+  - `data-table-active-filters`: optional `onClearAll` ("Limpiar filtros"), `labels`.
+  - `data-table-filters`: `applyFilters`, `matchesFilter`, `countActiveFilters` for in-memory rows.
+  - `data-table-mobile`: `layout="grid"` for a cards view, `rowClassName`.
+  - Fixed: components imported `./data-table-filters`, which broke once installed (the lib lands in `lib/`); and date
+    presets ("Este mes"…) used UTC, so east of UTC they started a day early.
+- `table`: header row on `surface-2` with mono caps labels, hairline row separators, hover `surface-2`, selected row
+  `brand-subtle` with a brand edge. `data-table`: rounded hairline frame; the `footer` (e.g. pagination) now renders
+  inside the frame on `surface-2`; right-aligned columns use Geist Mono tabular figures.
+
+## v2, phase 1: foundations (2026-11-12)
+
+`stellify-base` has the v2 tokens ([docs/tokens.md](docs/tokens.md)). Re-run
+`npx shadcn add @stellify/stellify-base --overwrite`, then:
+
+1. Self-host the fonts: `npm i @fontsource-variable/inter @fontsource-variable/geist-mono` and import both once.
+2. If you rebranded, move your color to `--brand`, `--brand-foreground` and `--brand-subtle` (both `:root` and `.dark`).
+   `--primary`, `--ring` and the chart slot 1 follow it.
+3. Replace the removed tokens:
+
+| Removed | Use |
+|---|---|
+| `--shadow-card`, `--shadow-card-hover`, `--shadow-button` | Nothing in the flow casts a shadow. Separate with `bg-surface-2`. Overlays: `--shadow-overlay`. |
+| `--radius-card` (22px), `--radius-icon` (16px) | `--radius-container` (8px) |
+| `--duration` | `--duration-base` (240ms); also `-fast` / `-slow` |
+| `--space-hero-top`, `--space-hero-bottom`, `--space-section`, `--leading-body` | Tailwind spacing / `leading-*` in the block itself. |
+
+Values that changed meaning (same name):
+
+- `--secondary` and `--accent` are neutral tones (`surface-3`), no longer teal and brand tint. Use `--brand-subtle` for a brand tint.
+- `--border` and `--input` are a translucent hairline. `--ring` is ink, not brand.
+- `--card` is `surface-2`: a card on the page is a step of tone, not white with a border.
+- `--success` is green-teal (hue 160), no longer the brand; `--info` is blue, not teal; `--warning` text is darker so it passes AA on its tint.
+- `--chart-1..5` are categorical (brand, blue, orange, violet, teal) instead of five greens. `data-chart-palette="mono"` restores a one-hue ramp.
+- `--radius` is 8px (was 10px); `rounded-sm`/`md` are 4px, `rounded-lg`/`xl` 8px.
+
+New: `--surface-1/2/3`, `--surface-overlay`, `--hairline`, `--field`, `--field-hover`, `--danger*` and every
+`-subtle` status tint, `--focus*`, `--shadow-overlay`, `--ease-in-out`, `--tracking-mono-caps`.
+The base layer now draws the focus outline and honours `prefers-reduced-motion` globally.
+
+Components still carry v1 borders and halos; phase 2 removes them.
+
 ## v2, phase 0: catalogue cleanup (2026-11-12)
 
 The registry now keeps only generic components (see the criterion in the README).

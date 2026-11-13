@@ -69,7 +69,7 @@ const InteluiChatPanel: FC<InteluiChatPanelProps> = ({
       id="intelui-chat-panel"
       aria-hidden={!expanded}
       className={cn(
-        "absolute bottom-full left-0 right-0 mb-2 flex flex-col overflow-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-md",
+        "absolute bottom-full left-0 right-0 mb-2 flex flex-col overflow-hidden rounded-lg bg-popover text-popover-foreground shadow-(--shadow-overlay)",
         "transition-[max-height,opacity] duration-200 ease-out",
         reducedMotion && "transition-none",
         expanded ? "max-h-[60vh] opacity-100" : "pointer-events-none max-h-0 opacity-0",
@@ -99,9 +99,9 @@ const InteluiChatPanel: FC<InteluiChatPanelProps> = ({
               type="button"
               onClick={() => onPickSuggestion(s.id)}
               className={cn(
-                "rounded-full border border-border px-2.5 py-1 text-xs text-foreground",
-                "transition-colors hover:border-primary hover:bg-primary/10",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "rounded-full bg-surface-2 px-2.5 py-1 text-xs text-foreground",
+                "transition-colors duration-(--duration-fast) hover:bg-brand-subtle hover:text-brand",
+                "",
               )}
             >
               {s.label}

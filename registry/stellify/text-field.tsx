@@ -2,7 +2,7 @@ import * as React from "react"
 import type { LucideIcon } from "lucide-react"
 
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Field } from "@/components/ui/field"
 import { cn } from "@/lib/utils"
 
 export interface TextFieldProps
@@ -28,9 +28,8 @@ export interface TextFieldProps
 /**
  * Labeled input with error / helper text and optional leading/trailing icons.
  *
- * Wraps the StellifyIT `Input`. Wiring (`htmlFor`, `aria-invalid`,
- * `aria-describedby`) is handled so screen readers announce the label and the
- * error/helper. All copy is passed via props — no hardcoded language.
+ * `Field` + `Input` in one component. `Field` does the wiring (`htmlFor`,
+ * `aria-invalid`, `aria-describedby`). All copy comes in through props.
  */
 const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
   (
@@ -48,61 +47,38 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     },
     ref
   ) => {
-    const generatedId = React.useId()
-    const inputId = id ?? generatedId
-    const describedById = error
-      ? `${inputId}-error`
-      : helperText
-        ? `${inputId}-helper`
-        : undefined
-
     return (
-      <div className={cn("space-y-1.5", wrapperClassName)}>
-        {label && (
-          <Label htmlFor={inputId}>
-            {label}
-            {required && <span className="ml-0.5 text-destructive">*</span>}
-          </Label>
-        )}
-
-        <div className="relative">
-          {LeadingIcon && (
-            <LeadingIcon
-              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-              aria-hidden
-            />
-          )}
-          <Input
-            ref={ref}
-            id={inputId}
-            required={required}
-            aria-invalid={error ? true : undefined}
-            aria-describedby={describedById}
-            className={cn(
-              LeadingIcon && "pl-9",
-              TrailingIcon && "pr-9",
-              className
+      <Field
+        label={label}
+        error={error}
+        description={helperText}
+        required={required}
+        id={id}
+        className={wrapperClassName}
+      >
+        {(control) => (
+          <div className="relative">
+            {LeadingIcon && (
+              <LeadingIcon
+                className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                aria-hidden
+              />
             )}
-            {...props}
-          />
-          {TrailingIcon && (
-            <TrailingIcon
-              className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-              aria-hidden
+            <Input
+              ref={ref}
+              {...control}
+              className={cn(LeadingIcon && "pl-9", TrailingIcon && "pr-9", className)}
+              {...props}
             />
-          )}
-        </div>
-
-        {error ? (
-          <p id={`${inputId}-error`} className="text-xs text-destructive">
-            {error}
-          </p>
-        ) : helperText ? (
-          <p id={`${inputId}-helper`} className="text-xs text-muted-foreground">
-            {helperText}
-          </p>
-        ) : null}
-      </div>
+            {TrailingIcon && (
+              <TrailingIcon
+                className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                aria-hidden
+              />
+            )}
+          </div>
+        )}
+      </Field>
     )
   }
 )

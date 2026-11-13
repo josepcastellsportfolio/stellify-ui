@@ -55,6 +55,7 @@ export const ScrubWords: FC<ScrubWordsProps> = ({
             opacity: dimOpacity,
             stagger: 0.1,
             ease: "none",
+            overwrite: "auto",
             scrollTrigger: { trigger: el, start, end, scrub: true },
           })
         },

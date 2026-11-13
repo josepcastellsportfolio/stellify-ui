@@ -14,7 +14,7 @@ describe("metric-card", () => {
 
   it("paints a negative value in the negative tone color", () => {
     render(<MetricCard label="Saldo" value="−500 €" tone="negative" />)
-    expect(screen.getByText("−500 €")).toHaveClass("text-rose-700")
+    expect(screen.getByText("−500 €")).toHaveClass("text-danger")
   })
 
   it("compact size uses the small type scale", () => {
@@ -25,9 +25,9 @@ describe("metric-card", () => {
 
   it("colors the delta by direction, inverted when asked", () => {
     const { rerender } = render(<MetricCard label="Gasto" value="980" delta={{ value: "+3%", positive: true }} />)
-    expect(screen.getByText("+3%")).toHaveClass("text-emerald-600")
+    expect(screen.getByText("+3%")).toHaveClass("text-success")
     rerender(<MetricCard label="Gasto" value="980" invertDelta delta={{ value: "+3%", positive: true }} />)
-    expect(screen.getByText("+3%")).toHaveClass("text-rose-600")
+    expect(screen.getByText("+3%")).toHaveClass("text-danger")
   })
 
   it("is a keyboard-operable button when clickable", async () => {

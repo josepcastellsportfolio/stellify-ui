@@ -88,7 +88,7 @@ export const Marquee: FC<MarqueeProps> = ({
           <span
             key={`${item}-${index}`}
             className={cn(
-              "inline-flex items-center gap-10 whitespace-nowrap text-lg tracking-display text-muted-foreground",
+              "inline-flex items-center gap-10 whitespace-nowrap text-lg tracking-(--tracking-display) text-muted-foreground",
               itemClassName,
             )}
           >

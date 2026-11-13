@@ -51,6 +51,6 @@ export const ErrorState: Story = {
     errorTitle: "Could not load chart",
     errorDescription: "Something went wrong fetching the data.",
     onRetry: () => alert("retry"),
-    retryLabel: "Retry",
+    labels: { retry: "Reintentar" },
   },
 }

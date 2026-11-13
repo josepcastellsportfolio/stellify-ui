@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-table-advanced-filters",
+  "title": "DataTableAdvancedFilters",
+  "description": "\"Filtros\" button with an active-count badge opening a panel with every filterable column's widget; edits apply live, with per-field reset and \"Limpiar todo\". Spanish `labels`.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/button",
+    "@stellify/popover",
+    "@stellify/data-table-filter-widget",
+    "@stellify/data-table-active-filters",
+    "@stellify/data-table-filters",
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/data-table-advanced-filters.tsx",
+      "content": "// \"Filtros\" button + panel with every filterable column at once. The\n// per-column header buttons are for one quick filter; this is for building a\n// query across several columns without hunting through the headers.\n\nimport { useState } from 'react';\nimport { SlidersHorizontal } from 'lucide-react';\nimport { Button } from '@/components/ui/button';\nimport { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';\nimport { FilterWidget } from '@/components/data-table-filter-widget';\nimport type { FilterableColumn } from '@/components/data-table-active-filters';\nimport {\n  countActiveFilters,\n  defaultFilterValue,\n  isFilterActive,\n  type ActiveFilters,\n  type ActiveFilterValue,\n} from '@/lib/data-table-filters';\nimport { cn } from '@/lib/utils';\n\nexport interface DataTableAdvancedFiltersLabels {\n  /** Trigger text. */\n  trigger: string;\n  /** Panel title. */\n  title: string;\n  /** Clears every filter. */\n  clearAll: string;\n  /** Closes the panel. */\n  done: string;\n  /** Per-field reset. */\n  reset: string;\n}\n\nconst DEFAULT_LABELS: DataTableAdvancedFiltersLabels = {\n  trigger: 'Filtros',\n  title: 'Filtros avanzados',\n  clearAll: 'Limpiar todo',\n  done: 'Listo',\n  reset: 'Quitar',\n};\n\nexport interface DataTableAdvancedFiltersProps {\n  columns: FilterableColumn[];\n  filters: ActiveFilters;\n  onChange: (key: string, value: ActiveFilterValue) => void;\n  onClearAll: () => void;\n  open?: boolean;\n  onOpenChange?: (open: boolean) => void;\n  labels?: Partial<DataTableAdvancedFiltersLabels>;\n}\n\n/**\n * Filters are applied as you edit them (no \"Apply\" step), like the header\n * popovers, so the table behind the panel updates live.\n */\nexport function DataTableAdvancedFilters({\n  columns,\n  filters,\n  onChange,\n  onClearAll,\n  open,\n  onOpenChange,\n  labels,\n}: DataTableAdvancedFiltersProps) {\n  const l = { ...DEFAULT_LABELS, ...labels };\n  const [innerOpen, setInnerOpen] = useState(false);\n  const isOpen = open ?? innerOpen;\n  const setOpen = (next: boolean) => {\n    setInnerOpen(next);\n    onOpenChange?.(next);\n  };\n  const filterable = columns.filter(c => c.filter);\n  const count = countActiveFilters(filters);\n\n  return (\n    <Popover open={isOpen} onOpenChange={setOpen}>\n      <PopoverTrigger asChild>\n        <Button variant={count > 0 ? 'secondary' : 'base'} className={cn(count > 0 && 'text-brand')}>\n          <SlidersHorizontal aria-hidden />\n          {l.trigger}\n          {count > 0 && (\n            <span className=\"ml-0.5 inline-flex min-w-5 items-center justify-center rounded-full bg-brand px-1.5 font-mono text-[11px] tabular-nums text-brand-foreground\">\n              {count}\n            </span>\n          )}\n        </Button>\n      </PopoverTrigger>\n      <PopoverContent align=\"end\" className=\"w-[380px] max-w-[94vw] p-0\">\n        <div className=\"flex items-center justify-between border-b px-4 py-3\">\n          <p className=\"text-sm font-semibold\">{l.title}</p>\n          {count > 0 && (\n            <button\n              type=\"button\"\n              onClick={onClearAll}\n              className=\"text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline\"\n            >\n              {l.clearAll}\n            </button>\n          )}\n        </div>\n        <div className=\"max-h-[60vh] divide-y overflow-y-auto\">\n          {filterable.map(col => {\n            const value = filters[col.key] ?? defaultFilterValue(col.filter!);\n            const active = isFilterActive(filters[col.key]);\n            return (\n              <div key={col.key} className=\"space-y-2 px-4 py-3\">\n                <div className=\"flex items-center justify-between\">\n                  <p className=\"font-mono text-[11px] uppercase tracking-(--tracking-mono-caps) text-muted-foreground\">\n                    {col.header}\n                  </p>\n                  {active && (\n                    <button\n                      type=\"button\"\n                      onClick={() => onChange(col.key, defaultFilterValue(col.filter!))}\n                      className=\"text-xs text-muted-foreground hover:text-foreground\"\n                    >\n                      {l.reset}\n                    </button>\n                  )}\n                </div>\n                <FilterWidget columnKey={col.key} def={col.filter!} value={value} onChange={onChange} />\n              </div>\n            );\n          })}\n        </div>\n        <div className=\"flex justify-end border-t bg-surface-2 px-4 py-2.5\">\n          <Button size=\"sm\" onClick={() => setOpen(false)}>\n            {l.done}\n          </Button>\n        </div>\n      </PopoverContent>\n    </Popover>\n  );\n}\n\nexport default DataTableAdvancedFilters;\n",
+      "type": "registry:component"
+    }
+  ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "data-table"
+  ],
+  "type": "registry:component"
+}
