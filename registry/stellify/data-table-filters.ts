@@ -368,14 +368,25 @@ function asNumber(v: unknown): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-/** ISO date (YYYY-MM-DD) of a Date or date-like string, or '' if not a date. */
-function asISODate(v: unknown): string {
+const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
+const pad = (n: number) => String(n).padStart(2, '0');
+
+/**
+ * Local `YYYY-MM-DDTHH:mm` of a Date or date-like string ('' if not a date).
+ * A date-only string is that local day as is: `new Date('2026-11-01')` would
+ * read it as UTC midnight and land on the previous day west of Greenwich.
+ */
+function asLocalStamp(v: unknown): string {
   if (v === null || v === undefined || v === '') return '';
+  if (typeof v === 'string' && DATE_ONLY.test(v)) return v;
   const d = v instanceof Date ? v : new Date(String(v));
   if (Number.isNaN(d.getTime())) return '';
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${d.getFullYear()}-${m}-${day}`;
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+/** ISO date (YYYY-MM-DD) of a Date or date-like string, in local time, or '' if not a date. */
+function asISODate(v: unknown): string {
+  return asLocalStamp(v).slice(0, 10);
 }
 
 /** Does one cell value pass one filter? Inactive filters always pass. */
@@ -413,13 +424,23 @@ export function matchesFilter(cell: unknown, filter: ActiveFilterValue | undefin
     case 'date':
     case 'datetime':
       return asISODate(cell) === asISODate(filter.value);
-    case 'date_range':
-    case 'datetime_range': {
+    case 'date_range': {
       const d = asISODate(cell);
       if (!d) return false;
       const from = asISODate(filter.from);
       const to = asISODate(filter.to);
       return (!from || d >= from) && (!to || d <= to);
+    }
+    case 'datetime_range': {
+      // Compare at the precision of each bound: a bound with a time is inclusive
+      // to the minute, a bound without one covers its whole day.
+      const d = asLocalStamp(cell);
+      if (!d) return false;
+      const from = asLocalStamp(filter.from);
+      const to = asLocalStamp(filter.to);
+      const fromOk = !from || d.slice(0, from.length) >= from;
+      const toOk = !to || d.slice(0, to.length) <= to;
+      return fromOk && toOk;
     }
     case 'select':
       return String(cell ?? '') === filter.value;
