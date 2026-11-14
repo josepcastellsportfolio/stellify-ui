@@ -29,6 +29,22 @@ describe("applyFilters", () => {
     expect(matchesFilter("2026-11-01", { type: "date", value: "2026-11-01" })).toBe(true)
     expect(matchesFilter(5, { type: "number", value: "5", operator: "gte" })).toBe(true)
   })
+
+  it("honours the times of a datetime range, inclusive to the minute", () => {
+    const range = { type: "datetime_range", from: "2026-11-14T10:00", to: "2026-11-14T12:00" } as const
+    expect(matchesFilter("2026-11-14T11:30", range)).toBe(true)
+    expect(matchesFilter("2026-11-14T12:00:45", range)).toBe(true)
+    expect(matchesFilter("2026-11-14T09:59", range)).toBe(false)
+    expect(matchesFilter("2026-11-14T23:00", range)).toBe(false)
+    // A bound without a time covers its whole day.
+    expect(matchesFilter("2026-11-14T23:00", { type: "datetime_range", from: "", to: "2026-11-14" })).toBe(true)
+    expect(matchesFilter(new Date(2026, 10, 14, 11, 0), range)).toBe(true)
+  })
+
+  it("reads a date-only string as that local day", () => {
+    expect(matchesFilter(new Date(2026, 10, 1, 0, 30), { type: "date", value: "2026-11-01" })).toBe(true)
+    expect(matchesFilter("2026-11-01", { type: "date_range", from: "2026-11-01", to: "2026-11-01" })).toBe(true)
+  })
 })
 
 describe("DataTable selection and header filters", () => {

@@ -11,6 +11,7 @@ import { PairingQr } from "@stellify/pairing-qr"
 import { SideDrawer } from "@stellify/side-drawer"
 import { ToolActivity } from "@stellify/tool-activity"
 import { TurnStatus } from "@stellify/turn-status"
+import ConfirmDialog from "@stellify/confirm-dialog"
 
 describe("MessageBubble", () => {
   it("is an article named by a hidden heading, at the level asked", () => {
@@ -283,6 +284,36 @@ describe("SideDrawer", () => {
     await user.keyboard("{Escape}")
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
     expect(screen.getByRole("button", { name: "Menú" })).toHaveFocus()
+  })
+})
+
+function DrawerWithConfirm() {
+  const [open, setOpen] = useState(true)
+  const [confirming, setConfirming] = useState(false)
+  return (
+    <>
+      <SideDrawer open={open} onOpenChange={setOpen} label="Conversaciones">
+        <button type="button" onClick={() => setConfirming(true)}>
+          Borrar
+        </button>
+      </SideDrawer>
+      <ConfirmDialog open={confirming} onOpenChange={setConfirming} title="¿Borrar?" labels={{ confirm: "Sí", cancel: "No" }} onConfirm={() => {}} />
+    </>
+  )
+}
+
+describe("SideDrawer with a dialog opened from it", () => {
+  it("leaves Tab and Escape to the dialog on top", async () => {
+    const user = userEvent.setup()
+    render(<DrawerWithConfirm />)
+    await user.click(screen.getByRole("button", { name: "Borrar" }))
+    const alert = screen.getByRole("alertdialog", { name: "¿Borrar?" })
+    expect(within(alert).getByRole("button", { name: "No" })).toHaveFocus()
+    await user.tab()
+    expect(within(alert).getByRole("button", { name: "Sí" })).toHaveFocus()
+    await user.keyboard("{Escape}")
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument()
+    expect(screen.getByRole("dialog", { name: "Conversaciones" })).toBeInTheDocument()
   })
 })
 
