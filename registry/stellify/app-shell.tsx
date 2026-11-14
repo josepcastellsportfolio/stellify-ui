@@ -19,7 +19,7 @@ function AppShell({ sidebar, topbar, children, sidebarOpen = true, className }: 
       className={cn("flex h-screen overflow-hidden bg-background text-foreground", className)}
     >
       {sidebarOpen && (
-        <aside className="hidden w-60 shrink-0 overflow-y-auto bg-sidebar text-sidebar-foreground md:block">
+        <aside className="hidden w-60 shrink-0 overflow-y-auto bg-sidebar text-sidebar-foreground md:block pl-[env(safe-area-inset-left)]">
           {sidebar}
         </aside>
       )}
@@ -29,7 +29,7 @@ function AppShell({ sidebar, topbar, children, sidebarOpen = true, className }: 
             {topbar}
           </header>
         )}
-        <main className="flex-1 overflow-y-auto px-6 py-8">{children}</main>
+        <main className="flex-1 overflow-y-auto px-6 py-8 pr-[max(1.5rem,env(safe-area-inset-right))] pb-[max(2rem,env(safe-area-inset-bottom))]">{children}</main>
       </div>
     </div>
   )

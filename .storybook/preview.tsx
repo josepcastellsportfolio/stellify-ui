@@ -5,6 +5,7 @@ import { useEffect } from "react"
 import "@fontsource-variable/inter"
 import "@fontsource-variable/geist-mono"
 import "./shadcn/theme.css"
+import { IllustrationProvider } from "@stellify/illustration"
 
 /**
  * Toggles the `.dark` class on <html> (and the preview root) so the
@@ -20,7 +21,10 @@ const withTheme: Decorator = (Story, context) => {
   return (
     <div className="bg-background text-foreground" data-theme={theme}>
       <div className="min-h-[200px] p-8">
-        <Story />
+        {/* Relative: works at the root locally and under /stellify-ui/ on Pages. */}
+        <IllustrationProvider baseUrl="illustrations/">
+          <Story />
+        </IllustrationProvider>
       </div>
     </div>
   )

@@ -1,5 +1,32 @@
 # Migration guide
 
+## v2, phase 4: illustrations and principles (2026-11-14)
+
+- **`illustration` (new).** 21 public-domain plates (botanical, fauna, objects; Artvee), cleaned into ink-only
+  alpha masks and drawn in a token color (`tone="brand" | "foreground" | "muted"`), so each product sees them in
+  its own `--brand`, light and dark. `ILLUSTRATIONS` is the manifest (title, artist, date, source). The WebPs are
+  not in the registry JSON: by default they load from jsDelivr; in production copy `public/illustrations/` into
+  your app and wrap it in `<IllustrationProvider baseUrl="/illustrations/">`.
+- **`empty-state`.** Takes `illustration` (a plate name); `icon` is now optional and stays for compact states.
+- **Principles** (`docs/principles.md`, Storybook *Foundations → Principles*). What changes for you:
+  - `button`: presses compress to 97% instead of nudging down 1px. `loading` keeps the label in place (no layout
+    shift) and fades the spinner in only after 150ms (`--delay-feedback`). Content is wrapped in a
+    `display: contents` span; selectors like `button > svg` still match through `[&_svg]`, but a strict
+    `button > svg` in your own CSS no longer does.
+  - `number-input` is now a text field with `role="spinbutton"` and `inputMode="decimal"`: it reads "1.234,5",
+    "12,5 €" or "−3" (`parseNumber`) and clamps on blur instead of on every keystroke. Tests that expected
+    `toHaveValue(11)` now get the string `"11"`. Arrow keys still step.
+  - Overlays (popover, menu, select, tooltip) scale from their trigger and use the fast duration.
+    `TooltipProvider` defaults to `delayDuration={300}` and `skipDelayDuration={500}`.
+  - On touch screens checkboxes, switches, segmented options and small buttons get a 44px invisible hit area
+    (`--touch-target`); these elements are now `position: relative`. (Default/lg/icon buttons and the dialog close
+    already grow to 44px, see below.)
+  - Base layer: kerning, `text-wrap: balance` on headings and `pretty` on paragraphs, tabular figures in tables,
+    `time`, `data` and `output`, and a pointer cursor on everything clickable.
+  - New tokens: `--ease-spring`, `--stagger-step`, `--delay-feedback`, `--touch-target`.
+  - New items: `combobox`, `stagger`, `use-view-transition`. `SegmentedControl` warns in development above five
+    options.
+
 ## Chat items, model picker and accessibility fixes (2026-11-13)
 
 **New** (status `experimental`, category `blocks/chat`, installed under `components/chat/`): `model-picker`,

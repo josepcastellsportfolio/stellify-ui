@@ -8,19 +8,33 @@ const meta = {
   component: EmptyState,
   tags: ["autodocs"],
   args: {
-    icon: Receipt,
-    title: "No expenses this month",
-    description: "Add your first expense to start tracking your finances.",
+    illustration: "nautilus",
+    title: "Todavía no hay documentos",
+    description: "Sube el primero o conecta una fuente y aparecerá aquí.",
   },
 } satisfies Meta<typeof EmptyState>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
+/** First-run screen: a plate in the product's brand color. */
 export const Default: Story = {}
 
 export const WithAction: Story = {
   args: {
-    action: <Button mode="create">New expense</Button>,
+    illustration: "beetles",
+    title: "Sin resultados",
+    description: "Ningún documento cumple los filtros. Prueba a quitar alguno.",
+    action: <Button variant="secondary">Quitar filtros</Button>,
+  },
+}
+
+/** Compact, for a panel or a table: an icon instead of a plate. */
+export const WithIcon: Story = {
+  args: {
+    illustration: undefined,
+    icon: Receipt,
+    title: "Sin gastos este mes",
+    description: "Añade el primero para empezar a llevar las cuentas.",
   },
 }

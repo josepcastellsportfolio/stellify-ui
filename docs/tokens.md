@@ -2,7 +2,8 @@
 
 Source of truth: [`registry/stellify/stellify-base.css`](../registry/stellify/stellify-base.css).
 `npm run tokens` copies it into `registry.json` and Storybook; `npm test` fails if they drift.
-Storybook shows every token under **Foundations**.
+Storybook shows every token under **Foundations**. How components behave (motion, UX laws, type) is in
+[principles.md](principles.md).
 
 ## Rules
 
@@ -28,7 +29,8 @@ Storybook shows every token under **Foundations**.
 | Shape | `--radius-control` 4px, `--radius-container` 8px, `--radius-pill` |
 | Elevation | `--shadow-overlay` |
 | Focus | `--focus`, `--focus-width` 2px, `--focus-offset` 2px |
-| Motion | `--duration-fast` 120ms, `--duration-base` 240ms, `--duration-slow` 400ms, `--ease-out`, `--ease-in-out` |
+| Motion | `--duration-fast` 120ms, `--duration-base` 240ms, `--duration-slow` 400ms, `--ease-out`, `--ease-in-out`, `--ease-spring` (overshoot for things that land), `--stagger-step` 40ms, `--delay-feedback` 150ms |
+| Touch | `--touch-target` 44px, the minimum hit area on coarse pointers |
 | Type | `--font-sans` Inter, `--font-mono` Geist Mono, `--tracking-display`, `--tracking-mono-caps` |
 | Site layout | `--container-max`, `--container-pad` |
 

@@ -37,7 +37,7 @@ function CollapseToggle({ open, onOpenChange, labels, controls, className }: Col
       )}
     >
       <ChevronDown
-        className={cn("size-4 transition-transform duration-(--duration-base) ease-(--ease-out)", open && "rotate-180")}
+        className={cn("size-4 transition-transform duration-(--duration-base) ease-(--ease-spring)", open && "rotate-180")}
         aria-hidden
       />
       {open ? l.open : l.closed}

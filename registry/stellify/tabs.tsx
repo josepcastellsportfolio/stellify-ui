@@ -44,7 +44,7 @@ const TabsList = React.forwardRef<
           aria-hidden
           data-slot="tabs-indicator"
           className={cn(
-            "absolute left-0 -z-10 transition-[transform,width,opacity] duration-(--duration-base) ease-(--ease-out)",
+            "absolute left-0 -z-10 transition-[transform,width,opacity] duration-(--duration-base) [transition-timing-function:var(--ease-spring),var(--ease-out),var(--ease-out)]",
             plain ? "bottom-0 h-0.5 rounded-full bg-foreground" : "inset-y-[3px] rounded-full bg-foreground"
           )}
           style={indicator}

@@ -3,6 +3,8 @@ import type { StorybookConfig } from "@storybook/react-vite"
 const config: StorybookConfig = {
   stories: ["../stories/**/*.stories.@(ts|tsx)", "../stories/**/*.mdx"],
   addons: ["@storybook/addon-docs"],
+  // Illustration plates, served next to the stories so they load without the CDN.
+  staticDirs: [{ from: "../public/illustrations", to: "/illustrations" }],
   framework: {
     name: "@storybook/react-vite",
     options: {},
