@@ -124,6 +124,10 @@
           "duration-fast": "120ms",
           "duration-base": "240ms",
           "duration-slow": "400ms",
+          "ease-spring": "cubic-bezier(0.34, 1.4, 0.64, 1)",
+          "stagger-step": "40ms",
+          "delay-feedback": "150ms",
+          "touch-target": "44px",
           "font-sans": "'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif",
           "font-mono": "'Geist Mono Variable', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
           "tracking-display": "-0.03em",
@@ -241,10 +245,29 @@
           "*, ::before, ::after, ::backdrop": {
             "border-color": "var(--border)"
           },
+          "html": {
+            "-webkit-tap-highlight-color": "transparent"
+          },
           "body": {
             "font-family": "var(--font-sans)",
             "background-color": "var(--background)",
-            "color": "var(--foreground)"
+            "color": "var(--foreground)",
+            "font-kerning": "normal",
+            "font-optical-sizing": "auto",
+            "text-rendering": "optimizeLegibility"
+          },
+          "h1, h2, h3, h4": {
+            "text-wrap": "balance"
+          },
+          "p, li, dd, figcaption, blockquote": {
+            "text-wrap": "pretty"
+          },
+          "table, time, data, output": {
+            "font-variant-numeric": "tabular-nums"
+          },
+          "button:not(:disabled), [role=\"button\"]:not([aria-disabled=\"true\"]), [role=\"option\"]:not([aria-disabled=\"true\"]), [role=\"tab\"]:not([aria-disabled=\"true\"]), summary, label[for], select:not(:disabled)": {
+            "cursor": "pointer",
+            "touch-action": "manipulation"
           },
           ":focus-visible": {
             "outline": "var(--focus-width) solid var(--focus)",
@@ -661,6 +684,33 @@
       ],
       "dependencies": [
         "@radix-ui/react-select"
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Searchable select (WAI-ARIA combobox + listbox): single or multiple (chips), groups, creatable, accent-insensitive filter, full keyboard, 44px rows on touch. Works as the control inside Field.",
+      "categories": [
+        "ui"
+      ],
+      "meta": {
+        "status": "ready"
+      },
+      "dependencies": [
+        "@radix-ui/react-popover",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils",
+        "@stellify/popover",
+        "@stellify/chip"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/combobox.tsx",
+          "type": "registry:ui"
+        }
       ]
     },
     {
@@ -1813,10 +1863,31 @@
       ]
     },
     {
+      "name": "illustration",
+      "type": "registry:ui",
+      "title": "Illustration",
+      "description": "21 public-domain plates (botanical, fauna, objects; Artvee) as ink-only alpha masks drawn in a token color (brand by default), so each product sees them in its own brand, light and dark. Manifest with title, artist, date and source. WebPs load from jsDelivr or your own /illustrations folder via IllustrationProvider.",
+      "categories": [
+        "blocks/app"
+      ],
+      "meta": {
+        "status": "ready"
+      },
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/illustration.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "empty-state",
       "type": "registry:component",
       "title": "EmptyState",
-      "description": "Centered empty/placeholder block: icon, title, description and optional action.",
+      "description": "Centered empty/placeholder block: a public-domain plate (or an icon), title, description and optional action.",
       "categories": [
         "blocks/app"
       ],
@@ -1831,6 +1902,9 @@
           "path": "registry/stellify/empty-state.tsx",
           "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "@stellify/illustration"
       ]
     },
     {
@@ -2599,6 +2673,27 @@
       ]
     },
     {
+      "name": "stagger",
+      "type": "registry:ui",
+      "title": "Stagger",
+      "description": "Staggered entrance for arriving content: each child fades and rises in turn (--stagger-step, capped so long lists settle fast). Adds a class and delay to your own markup; off under reduced motion.",
+      "categories": [
+        "motion"
+      ],
+      "meta": {
+        "status": "ready"
+      },
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/stagger.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "use-persisted-state",
       "type": "registry:hook",
       "title": "usePersistedState",
@@ -2612,6 +2707,24 @@
       "files": [
         {
           "path": "registry/stellify/use-persisted-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-view-transition",
+      "type": "registry:hook",
+      "title": "useViewTransition",
+      "description": "Shared element transitions with the View Transitions API: run a state change through it and elements with the same view-transition-name morph between views. Instant fallback without the API or under reduced motion.",
+      "categories": [
+        "hooks"
+      ],
+      "meta": {
+        "status": "ready"
+      },
+      "files": [
+        {
+          "path": "registry/stellify/use-view-transition.ts",
           "type": "registry:hook"
         }
       ]

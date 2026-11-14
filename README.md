@@ -74,6 +74,7 @@ Generic building blocks. The standard shadcn primitives ship here too, so an app
 | `card` | ui | Raised area: surface-2, no border or shadow, 8px radius. Parts as named exports or Card.Header / Title / Description / Content / Footer. Fields inside switch to surface-3. Overwrites ui/card. |
 | `dialog` | ui | Standard shadcn dialog primitive, shipped under @stellify for apps without shadcn. Overwrites ui/dialog. |
 | `select` | ui | Standard shadcn select primitive, shipped under @stellify for apps without shadcn. Overwrites ui/select. |
+| `combobox` | ui | Searchable select (WAI-ARIA combobox + listbox): single or multiple (chips), groups, creatable, accent-insensitive filter, full keyboard, 44px rows on touch. Works as the control inside Field. |
 | `tabs` | ui | Radix tabs. Default: segmented look with a sliding, interruptible ink indicator. `TabsList variant="plain"`: text tabs with a sliding underline. Overwrites ui/tabs. Emits data-slot. |
 | `checkbox` | ui | Standard shadcn checkbox primitive, shipped under @stellify for apps without shadcn. Overwrites ui/checkbox. |
 | `slider` | ui | Standard shadcn slider primitive (Radix), single or range thumbs, shipped under @stellify. Overwrites ui/slider. |
@@ -141,7 +142,8 @@ App layout pieces: built from the core, opinionated layout.
 |---|---|---|
 | `metric-card` | component | KPI card on a tonal surface: label, value in tabular mono, unit, delta with trend arrow, accent icon chip (neutral/brand/success/warning/danger/info; v1 hue names still map). invertDelta flips good/bad; tone colors the value; details adds label/value rows. |
 | `page-header` | component | Page title + optional description + actions slot. Presentational only (no auth/theme/locale logic). Optional `eyebrow` line above the title. |
-| `empty-state` | component | Centered empty/placeholder block: icon, title, description and optional action. |
+| `illustration` | ui | 21 public-domain plates (botanical, fauna, objects; Artvee) as ink-only alpha masks drawn in a token color (brand by default), so each product sees them in its own brand, light and dark. Manifest with title, artist, date and source. WebPs load from jsDelivr or your own /illustrations folder via IllustrationProvider. |
+| `empty-state` | component | Centered empty/placeholder block: a public-domain plate (or an icon), title, description and optional action. |
 | `app-shell` | component | App frame: fixed left sidebar (collapsible), optional top bar, scrollable main. |
 | `sidebar` | component | Vertical app nav: Sidebar, SidebarGroup, SidebarGroupLabel, SidebarItem (icon, active = aria-current, trailing slot, asChild for router links). |
 
@@ -194,12 +196,14 @@ GSAP items depend on `gsap` and `@gsap/react` (SplitText ships in `gsap` ≥ 3.1
 | `scroll-reveal` | ui | Section whose background widens from an inset rounded card to full width (top corners flattening) as it scrolls to the top. Only the background layer moves (GSAP ScrollTrigger). |
 | `scrub-words` | ui | Large statement whose words light up one by one, scrubbed to the scroll (GSAP SplitText + ScrollTrigger). Markup is the lit text. |
 | `marquee` | ui | Infinite horizontal marquee of short entries: rendered twice for a seamless loop, read once by screen readers, Web Animations API (no keyframes to install), pauses on hover, off under reduced motion. |
+| `stagger` | ui | Staggered entrance for arriving content: each child fades and rises in turn (--stagger-step, capped so long lists settle fast). Adds a class and delay to your own markup; off under reduced motion. |
 
 ### Hooks
 
 | Item | Type | Summary |
 |---|---|---|
 | `use-persisted-state` | hook | useState that persists to localStorage (JSON-serialized), SSR-safe. |
+| `use-view-transition` | hook | Shared element transitions with the View Transitions API: run a state change through it and elements with the same view-transition-name morph between views. Instant fallback without the API or under reduced motion. |
 | `use-prefers-reduced-motion` | hook | Reactive prefers-reduced-motion flag. Prerender-safe (false on the server, re-evaluated on the client). |
 | `use-focus-trap` | hook | Keeps focus inside an element while active: Tab/Shift+Tab wrap, escaped focus is pulled back, Escape callback, optional initial focus, body scroll lock and focus restore. Skips inert/hidden subtrees. Exports getFocusables. |
 

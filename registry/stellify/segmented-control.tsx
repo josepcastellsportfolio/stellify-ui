@@ -89,6 +89,10 @@ function SegmentedControl<T extends string>({
   "aria-label": ariaLabel,
 }: SegmentedControlProps<T>) {
   const ref = React.useRef<HTMLDivElement>(null)
+  if (process.env.NODE_ENV !== "production" && options.length > 5) {
+    // Hick's law: past five options the choice slows down; a select reads better.
+    console.warn(`SegmentedControl "${ariaLabel}": ${options.length} options; use a select above 5.`)
+  }
   const indicator = useSlidingIndicator(ref, '[aria-checked="true"]', [value, options.length, size])
 
   const enabled = options.filter((o) => !o.disabled && !disabled)
@@ -141,7 +145,7 @@ function SegmentedControl<T extends string>({
       <span
         aria-hidden
         data-slot="segmented-control-indicator"
-        className="absolute inset-y-[3px] left-0 -z-10 rounded-full bg-foreground transition-[transform,width,opacity] duration-(--duration-base) ease-(--ease-out)"
+        className="absolute inset-y-[3px] left-0 -z-10 rounded-full bg-foreground transition-[transform,width,opacity] duration-(--duration-base) [transition-timing-function:var(--ease-spring),var(--ease-out),var(--ease-out)]"
         style={indicator}
       />
       {options.map((o) => {
@@ -159,7 +163,7 @@ function SegmentedControl<T extends string>({
             onClick={() => onValueChange(o.value)}
             onKeyDown={(e) => onKeyDown(e, o.value)}
             className={cn(
-              "inline-flex items-center justify-center whitespace-nowrap rounded-full font-medium transition-colors duration-(--duration-base) disabled:pointer-events-none disabled:opacity-50",
+              "relative inline-flex items-center justify-center whitespace-nowrap rounded-full font-medium pointer-coarse:after:absolute pointer-coarse:after:inset-x-0 pointer-coarse:after:inset-y-[min(0px,calc((100%-var(--touch-target))/2))] transition-colors duration-(--duration-base) disabled:pointer-events-none disabled:opacity-50",
               SIZE[size],
               checked ? "text-background" : "text-muted-foreground hover:text-foreground"
             )}

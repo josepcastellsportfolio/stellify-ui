@@ -2,14 +2,17 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "empty-state",
   "title": "EmptyState",
-  "description": "Centered empty/placeholder block: icon, title, description and optional action.",
+  "description": "Centered empty/placeholder block: a public-domain plate (or an icon), title, description and optional action.",
   "dependencies": [
     "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/illustration"
   ],
   "files": [
     {
       "path": "registry/stellify/empty-state.tsx",
-      "content": "import type { FC, ReactNode } from \"react\"\nimport type { LucideIcon } from \"lucide-react\"\n\nexport interface EmptyStateProps {\n  icon: LucideIcon\n  title: string\n  description: string\n  action?: ReactNode\n}\n\n/**\n * Centered placeholder for \"no data\" / \"nothing here yet\" states.\n * Copy and icon are passed in, keeping the component i18n-agnostic.\n */\nconst EmptyState: FC<EmptyStateProps> = ({\n  icon: Icon,\n  title,\n  description,\n  action,\n}) => (\n  <div className=\"flex flex-col items-center justify-center py-12 text-center\">\n    <div className=\"mb-4 rounded-full bg-surface-2 p-4 text-muted-foreground\">\n      <Icon className=\"h-8 w-8 text-muted-foreground\" />\n    </div>\n    <h3 className=\"mb-1 text-lg font-semibold\">{title}</h3>\n    <p className=\"mb-4 max-w-sm text-sm text-muted-foreground\">{description}</p>\n    {action}\n  </div>\n)\n\nexport default EmptyState\nexport { EmptyState }\n",
+      "content": "import type { FC, ReactNode } from \"react\"\nimport type { LucideIcon } from \"lucide-react\"\n\nimport { Illustration, type IllustrationName } from \"@/components/ui/illustration\"\n\nexport interface EmptyStateProps {\n  /** A plate from `illustration`. Takes precedence over `icon`; use it for first-run and empty screens. */\n  illustration?: IllustrationName\n  /** A small icon instead, for compact or repeated empty states (a table, a panel). */\n  icon?: LucideIcon\n  title: string\n  description: string\n  action?: ReactNode\n}\n\n/**\n * Centered placeholder for \"no data\" / \"nothing here yet\" states.\n * Copy and artwork are passed in, keeping the component i18n-agnostic.\n */\nconst EmptyState: FC<EmptyStateProps> = ({ illustration, icon: Icon, title, description, action }) => (\n  <div data-slot=\"empty-state\" className=\"flex flex-col items-center justify-center py-12 text-center\">\n    {illustration ? (\n      <Illustration name={illustration} className=\"mb-5 w-28\" />\n    ) : Icon ? (\n      <div className=\"mb-4 rounded-full bg-surface-2 p-4\">\n        <Icon className=\"size-8 text-muted-foreground\" aria-hidden />\n      </div>\n    ) : null}\n    <h3 className=\"mb-1 text-lg font-semibold text-balance\">{title}</h3>\n    <p className=\"mb-4 max-w-sm text-sm text-pretty text-muted-foreground\">{description}</p>\n    {action}\n  </div>\n)\n\nexport default EmptyState\nexport { EmptyState }\n",
       "type": "registry:ui"
     }
   ],

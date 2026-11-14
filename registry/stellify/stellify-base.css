@@ -84,6 +84,15 @@
   --duration-fast: 120ms;
   --duration-base: 240ms;
   --duration-slow: 400ms;
+  /* Follow-through: a small overshoot for things that land (switch thumb,
+     sliding indicators). Never for things that leave. */
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  /* Delay between items of a staggered entrance; capped by `stagger`. */
+  --stagger-step: 40ms;
+  /* Doherty threshold: a wait shorter than this shows no spinner. */
+  --delay-feedback: 150ms;
+  /* Minimum hit area on touch screens. */
+  --touch-target: 44px;
 
   /* Type */
   --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
@@ -201,10 +210,49 @@
   ::backdrop {
     border-color: var(--border);
   }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     font-family: var(--font-sans);
     background-color: var(--background);
     color: var(--foreground);
+    font-kerning: normal;
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+  }
+  /* No widows: headings balance their lines, running text avoids a lone last word. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dd,
+  figcaption,
+  blockquote {
+    text-wrap: pretty;
+  }
+  /* Numbers that line up: tables, times and data values. */
+  table,
+  time,
+  data,
+  output {
+    font-variant-numeric: tabular-nums;
+  }
+  /* Affordance: what can be clicked shows it (Tailwind 4 resets buttons to the default cursor).
+     `manipulation` drops the double-tap zoom delay on touch. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="option"]:not([aria-disabled="true"]),
+  [role="tab"]:not([aria-disabled="true"]),
+  summary,
+  label[for],
+  select:not(:disabled) {
+    cursor: pointer;
+    touch-action: manipulation;
   }
   :focus-visible {
     outline: var(--focus-width) solid var(--focus);

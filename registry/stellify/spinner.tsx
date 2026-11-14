@@ -9,6 +9,11 @@ export interface SpinnerProps {
   /** Hide it from assistive tech, e.g. inside a button that already says it is busy. */
   decorative?: boolean
   className?: string
+  /**
+   * Fade in only after a short wait: `true` uses `--delay-feedback` (150ms),
+   * a number is milliseconds. A wait shorter than that shows nothing.
+   */
+  delay?: boolean | number
 }
 
 /**
@@ -17,7 +22,7 @@ export interface SpinnerProps {
  * Under reduced motion `stellify-base` stops the rotation and the ring reads
  * as a static loading mark.
  */
-function Spinner({ size = "md", label = "Cargando", decorative = false, className }: SpinnerProps) {
+function Spinner({ size = "md", label = "Cargando", decorative = false, delay, className }: SpinnerProps) {
   return (
     <span
       data-slot="spinner"
@@ -27,8 +32,10 @@ function Spinner({ size = "md", label = "Cargando", decorative = false, classNam
       className={cn(
         "inline-block shrink-0 animate-spin rounded-full border-current border-r-transparent [animation-duration:800ms]",
         SIZE[size],
+        delay && "transition-opacity duration-(--duration-fast) starting:opacity-0",
         className
       )}
+      style={delay ? { transitionDelay: delay === true ? "var(--delay-feedback)" : `${delay}ms` } : undefined}
     />
   )
 }

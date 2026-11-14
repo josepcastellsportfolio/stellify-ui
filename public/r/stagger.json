@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stagger",
+  "title": "Stagger",
+  "description": "Staggered entrance for arriving content: each child fades and rises in turn (--stagger-step, capped so long lists settle fast). Adds a class and delay to your own markup; off under reduced motion.",
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/stagger.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface StaggerProps {\n  children: React.ReactNode\n  /** Delay between items, ms. Defaults to `--stagger-step` (40ms). */\n  step?: number\n  /**\n   * Items after this index share the last delay, so a long list never takes\n   * longer than `step × max` to settle (default 8 → 320ms).\n   */\n  max?: number\n  /** Replay the entrance when this changes (e.g. a new page of results). */\n  replayKey?: React.Key\n}\n\n/**\n * Staggered entrance: each direct child fades and rises a few pixels, one\n * after the other. It adds a class and a delay to each child, so the markup\n * stays yours (`<ul><Stagger>{items.map(li)}</Stagger></ul>`).\n *\n * Use it for content that arrives (results, cards on first load), never for\n * something the person is acting on: a stagger delays the thing they want.\n * Reduced motion turns it off through `stellify-base`.\n */\nfunction Stagger({ children, step, max = 8, replayKey }: StaggerProps) {\n  let i = 0\n  const items = React.Children.map(children, (child) => {\n    if (!React.isValidElement<{ className?: string; style?: React.CSSProperties }>(child)) return child\n    const n = Math.min(i++, max)\n    const delay = step === undefined ? `calc(var(--stagger-step) * ${n})` : `${step * n}ms`\n    return React.cloneElement(child, {\n      key: `${child.key ?? n}-${replayKey ?? \"\"}`,\n      className: cn(\n        \"animate-in fade-in-0 slide-in-from-bottom-1 fill-mode-both duration-(--duration-base) ease-(--ease-out)\",\n        child.props.className\n      ),\n      style: { ...child.props.style, animationDelay: delay },\n    })\n  })\n  return <>{items}</>\n}\n\nexport { Stagger }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "status": "ready"
+  },
+  "categories": [
+    "motion"
+  ],
+  "type": "registry:ui"
+}
