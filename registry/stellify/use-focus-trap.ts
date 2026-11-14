@@ -7,6 +7,9 @@ export const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), ' +
   'textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
+/** A dialog layer that may sit on top of a trap (portaled, so outside its root). */
+const MODAL_LAYER = '[role="dialog"], [role="alertdialog"]'
+
 /**
  * Focusable elements under `root`, in DOM order, skipping anything inside an
  * `inert` or `hidden` subtree (an off-screen drill-down pane, a closed panel)
@@ -89,6 +92,11 @@ export function useFocusTrap<T extends HTMLElement>(
     const onKeyDown = (event: KeyboardEvent) => {
       const root = ref.current
       if (!root) return
+      // A layer on top already handled the key (a Radix menu or dialog closing on Escape).
+      if (event.defaultPrevented) return
+      // Focus is in a dialog opened from inside the trap (portaled out of it): that dialog owns the keys.
+      const focused = document.activeElement
+      if (focused && !root.contains(focused) && focused.closest(MODAL_LAYER)) return
       if (event.key === "Escape") {
         if (!onEscapeRef.current) return
         event.preventDefault()
