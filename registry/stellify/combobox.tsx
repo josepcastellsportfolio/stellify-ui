@@ -4,7 +4,7 @@ import * as React from "react"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
 import { Check, ChevronDown, Plus, X } from "lucide-react"
 
-import { Chip } from "@/components/ui/chip"
+import { Chip } from "@/components/chip"
 import { Popover, PopoverContent } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 

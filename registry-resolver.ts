@@ -22,7 +22,9 @@ export function registryFirst(root: string): Plugin {
     async resolveId(source, importer) {
       if (!source.startsWith("@/")) return null
       const m = source.match(/^@\/(?:components\/ui|components|lib|hooks)\/(.+)$/)
-      const hit = m ? find(registry, m[1]) : undefined
+      // `@/components/chat/x` (an item with a `target` in a subfolder) is
+      // registry/stellify/x: the registry tree is flat.
+      const hit = m ? find(registry, m[1]) ?? find(registry, path.basename(m[1])) : undefined
       if (hit) return hit
       // Anything else under `@/` (e.g. `@/components/ui/table` before it was
       // vendored, or a CSS file) comes from the consumer tree.

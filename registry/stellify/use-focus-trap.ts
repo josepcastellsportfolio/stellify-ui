@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useRef, type RefObject } from "react"
 
 /** What counts as focusable inside a trap. */
@@ -7,11 +9,13 @@ export const FOCUSABLE_SELECTOR =
 
 /**
  * Focusable elements under `root`, in DOM order, skipping anything inside an
- * `inert` or `hidden` subtree (an off-screen drill-down pane, a closed panel).
+ * `inert` or `hidden` subtree (an off-screen drill-down pane, a closed panel)
+ * and anything taken out of the tab order with a negative `tabindex` (e.g. a
+ * mega-menu preview card, which is also `aria-hidden`).
  */
 export function getFocusables(root: HTMLElement): HTMLElement[] {
   return Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
-    el => !el.closest("[inert], [hidden]"),
+    el => el.tabIndex >= 0 && !el.closest("[inert], [hidden]"),
   )
 }
 

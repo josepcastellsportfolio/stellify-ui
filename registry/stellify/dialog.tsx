@@ -52,7 +52,7 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-3 top-3 rounded-md p-1.5 pointer-coarse:after:absolute pointer-coarse:after:inset-[min(0px,calc((100%-var(--touch-target))/2))] text-muted-foreground transition-colors duration-(--duration-fast) hover:bg-accent hover:text-foreground disabled:pointer-events-none">
+      <DialogPrimitive.Close className="absolute right-2 top-2 inline-flex size-8 items-center justify-center rounded-md text-muted-foreground [@media(pointer:coarse)]:size-11 transition-colors duration-(--duration-fast) hover:bg-accent hover:text-foreground disabled:pointer-events-none">
         <X className="size-4" aria-hidden />
         <span className="sr-only">{labels?.close ?? "Cerrar"}</span>
       </DialogPrimitive.Close>

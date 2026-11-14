@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
 
@@ -132,7 +134,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               onKeyDown?.(e)
             }}
             className={cn(
-              "flex h-9 w-full rounded-md bg-field px-3 py-1.5 pr-9 text-base text-foreground tabular-nums transition-colors duration-(--duration-fast) hover:bg-field-hover aria-[invalid=true]:bg-danger-subtle disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+              "flex h-9 w-full rounded-md bg-field border-b border-field-edge px-3 py-1.5 pr-9 text-base text-foreground tabular-nums transition-colors duration-(--duration-fast) hover:bg-field-hover aria-[invalid=true]:bg-danger-subtle disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
               className
             )}
             {...props}

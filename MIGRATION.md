@@ -18,13 +18,60 @@
     `toHaveValue(11)` now get the string `"11"`. Arrow keys still step.
   - Overlays (popover, menu, select, tooltip) scale from their trigger and use the fast duration.
     `TooltipProvider` defaults to `delayDuration={300}` and `skipDelayDuration={500}`.
-  - On touch screens buttons, checkboxes, switches, segmented options and the dialog close get a 44px invisible
-    hit area (`--touch-target`); these elements are now `position: relative`.
+  - On touch screens checkboxes, switches, segmented options and small buttons get a 44px invisible hit area
+    (`--touch-target`); these elements are now `position: relative`. (Default/lg/icon buttons and the dialog close
+    already grow to 44px, see below.)
   - Base layer: kerning, `text-wrap: balance` on headings and `pretty` on paragraphs, tabular figures in tables,
     `time`, `data` and `output`, and a pointer cursor on everything clickable.
   - New tokens: `--ease-spring`, `--stagger-step`, `--delay-feedback`, `--touch-target`.
   - New items: `combobox`, `stagger`, `use-view-transition`. `SegmentedControl` warns in development above five
     options.
+
+## Chat items, model picker and accessibility fixes (2026-11-13)
+
+**New** (status `experimental`, category `blocks/chat`, installed under `components/chat/`): `model-picker`,
+`chat-composer`, `message-bubble`, `markdown-message`, `message-actions`, `tool-activity`, `turn-status`,
+`conversation-list`, `side-drawer`, `mic-button`, `keyboard-shortcuts-dialog`, `pairing-qr`, and the hook
+`use-smooth-text`. They come from voice-bridge's `web/src/components/chat/`; differences from those copies:
+
+| Item | voice-bridge copy | Registry |
+|---|---|---|
+| `chat-composer` | `voiceControl` slot, bordered frame | `controls` slot (model picker, mic), tonal frame (`surface-2`, `brand-subtle` when `tone="private"`); built on `textarea` + `button` |
+| `keyboard-shortcuts-dialog` | `title`, `orLabel`, `closeLabel` props, `LabeledDialogContent` | `labels={{ title, or, close }}`; the registry `dialog` now has a translatable, larger close button |
+| `segmented-control` | own native-radio copy | not added: the registry one gains `accessibleLabel` per option and `size="lg"` (44px) |
+| `model-picker` | dropdown menu with `private`/`available` | new item (search, groups rail, favorites, status, speed, Alt+1…9, sheet on touch) |
+| all | required `labels` | `labels` optional, Spanish defaults; `message-bubble`/`conversation-list` take `headingLevel` |
+
+**Tokens.** New `--field-edge` (light `oklch(0.6 0.015 265)`, dark `oklch(0.55 0.015 265)`), ≥ 3:1 against every
+surface (WCAG 1.4.11). `--input` now points at it, so upstream shadcn components that draw `border-input` get a
+visible boundary. `--border` stays the faint hairline: it is only for dividers, which 1.4.11 does not cover.
+
+**Visible changes**
+
+- `input`, `textarea`, `select`, `number-input`, the date-picker triggers and the calendar's month/year selects keep
+  their fill and gain a 1px `field-edge` underline (filled, still not outlined).
+- `switch`: the unchecked track is `field-edge` (was `foreground/25`, 1.7:1).
+- `button`: `default`, `lg` and `icon` get `min-h-11` (and `min-w-11` for `icon`) on coarse pointers. Desktop sizes
+  are unchanged; `sm` stays compact everywhere.
+- `dialog`: the close button is a 32px target (44px on touch), was ~28px.
+
+**API**
+
+- `textarea`: `autoResize` now measures on every value change (a controlled box cleared after sending shrinks back)
+  and takes `maxHeight` (px), past which it scrolls. `field-sizing-content` is gone.
+- `confirm-dialog`: `returnFocusRef` for dialogs opened from a menu item.
+- `empty-state`, `loading-state`: `headingLevel` (2–6, default 3).
+- `segmented-control`: `accessibleLabel` per option, `size="lg"`.
+- `use-persisted-state` and `use-prefers-reduced-motion` use `useSyncExternalStore` (no setState in an effect; they
+  passed React's `react-hooks/set-state-in-effect` lint only after this). `use-persisted-state` now also syncs hooks on
+  the same key and other tabs.
+- `"use client"` added to every item that calls hooks or builds event handlers and lacked it (31 files). Items that only forward event props
+  (`chip`, `site-footer`, `inline-cta`…) were left alone so they keep working in Server Components.
+
+Already fixed on `main` by the v2 tokens and not touched here: `--muted-foreground` (6.5:1 light), `--destructive`
+as text (7.8:1 dark), `--warning` as text (5.5:1 light), `status-badge` neutral/danger, the focus ring on
+`input`/`textarea` (the global 2px solid outline), `dialog`'s close label, `confirm-dialog`'s label props and
+`loading-state`'s "n de N".
 
 ## v2, phase 3: charts, blocks and motion (2026-11-13)
 

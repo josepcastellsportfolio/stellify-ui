@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -48,6 +50,8 @@ export function useSlidingIndicator(
 export interface SegmentedOption<T extends string> {
   value: T
   label: React.ReactNode
+  /** Full name for assistive tech when `label` is short ("es" → "Español"). */
+  accessibleLabel?: string
   disabled?: boolean
 }
 
@@ -58,7 +62,8 @@ export interface SegmentedControlProps<T extends string> {
   onValueChange: (value: T) => void
   /** Accessible name of the group (required: the options alone don't say what they choose). */
   "aria-label": string
-  size?: "sm" | "md"
+  /** `lg` is a 44px touch target (chat composers, mobile settings). */
+  size?: "sm" | "md" | "lg"
   /** Stretch to the container width, options sharing it equally. */
   fullWidth?: boolean
   disabled?: boolean
@@ -68,6 +73,7 @@ export interface SegmentedControlProps<T extends string> {
 const SIZE = {
   sm: "h-7 px-2.5 text-xs",
   md: "h-8 px-3.5 text-sm",
+  lg: "h-11 min-w-11 px-3.5 text-sm",
 } as const
 
 /**
@@ -168,7 +174,14 @@ function SegmentedControl<T extends string>({
               checked ? "text-background" : "text-muted-foreground hover:text-foreground"
             )}
           >
-            {o.label}
+            {o.accessibleLabel ? (
+              <>
+                <span aria-hidden>{o.label}</span>
+                <span className="sr-only">{o.accessibleLabel}</span>
+              </>
+            ) : (
+              o.label
+            )}
           </button>
         )
       })}

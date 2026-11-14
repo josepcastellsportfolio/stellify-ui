@@ -8,9 +8,10 @@
  * The system in one paragraph: containers are told apart by tone
  * (surface-1/2/3), not by boxes; hairlines only between rows and sections; no
  * glows, gradients or blur; one neutral shadow, for overlays only; fields are
- * filled; focus is a solid 2px ink outline; radii are 4px (controls) and 8px
- * (containers); status colors are their own hues, separate from the brand;
- * charts use a categorical palette whose first slot is the brand.
+ * filled (with a 3:1 `field-edge` underline); focus is a solid 2px ink outline;
+ * radii are 4px (controls) and 8px (containers); status colors are their own
+ * hues, separate from the brand; charts use a categorical palette whose first
+ * slot is the brand.
  *
  * Colors are oklch. Contrast and chart-palette checks are recorded in
  * docs/tokens.md.
@@ -41,6 +42,10 @@
   --foreground: oklch(0.21 0.02 265);
   --muted-foreground: oklch(0.47 0.02 265);
   --hairline: oklch(0.21 0.02 265 / 0.08);
+  /* The edge of a control (the underline of a filled field, an unchecked
+     switch track): >= 3:1 against every surface (WCAG 1.4.11). The hairline
+     is decorative and stays faint; controls never rely on it. */
+  --field-edge: oklch(0.6 0.015 265);
 
   /* Status. `X` is the strong tone (text on `X-subtle`, or a solid fill under
      `X-foreground`); `X-subtle` is the tinted background. */
@@ -117,6 +122,7 @@
   --foreground: oklch(0.96 0.005 265);
   --muted-foreground: oklch(0.72 0.015 265);
   --hairline: oklch(1 0 0 / 0.08);
+  --field-edge: oklch(0.55 0.015 265);
 
   --success: oklch(0.76 0.12 160);
   --success-foreground: oklch(0.2 0.04 160);
@@ -170,7 +176,8 @@
   --destructive: var(--danger);
   --destructive-foreground: var(--danger-foreground);
   --border: var(--hairline);
-  --input: var(--hairline);
+  /* Upstream shadcn draws control boundaries with `input`: the field edge. */
+  --input: var(--field-edge);
   --ring: var(--focus);
   --sidebar: var(--surface-2);
   --sidebar-foreground: var(--foreground);

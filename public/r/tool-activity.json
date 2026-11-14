@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tool-activity",
+  "title": "ToolActivity",
+  "description": "Compact lines for the tools a turn used: status by icon shape + text (spinner, check, cross), native <details> disclosure for the detail, duration in mono.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@stellify/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/stellify/tool-activity.tsx",
+      "content": "import { CircleCheck, CircleX, LoaderCircle } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface ToolActivityItem {\n  id: string\n  /** Already-localized line that also states the status (\"Consultando el repositorio…\", \"Repositorio consultado\"). */\n  label: string\n  status: \"running\" | \"done\" | \"failed\"\n  /** Shown when the line is expanded (the query sent, the note written…). */\n  detail?: string | null\n  /** Already-formatted duration (\"2,4 s\"). */\n  duration?: string | null\n}\n\nexport interface ToolActivityProps {\n  items: ToolActivityItem[]\n  /** Accessible name of the list (\"Herramientas usadas\"). */\n  label: string\n  className?: string\n}\n\nconst ICON = { running: LoaderCircle, done: CircleCheck, failed: CircleX } as const\n\n/**\n * Compact lines for the tools a turn used. A line with a detail is a native\n * `<details>` disclosure, so it is keyboard- and screen-reader-operable for\n * free. Status is carried by the text and the icon's shape (spinner, check,\n * cross), never by color alone.\n */\nexport function ToolActivity({ items, label, className }: ToolActivityProps) {\n  if (items.length === 0) return null\n  return (\n    <ul data-slot=\"tool-activity\" aria-label={label} className={cn(\"flex w-full flex-col gap-1\", className)}>\n      {items.map((item) => {\n        const Icon = ICON[item.status]\n        const line = (\n          <>\n            <Icon\n              aria-hidden\n              className={cn(\n                \"size-4 shrink-0\",\n                item.status === \"running\" && \"motion-safe:animate-spin\",\n                item.status === \"done\" && \"text-success\",\n                item.status === \"failed\" && \"text-danger\"\n              )}\n            />\n            <span className=\"min-w-0 flex-1 truncate\">{item.label}</span>\n            {item.duration ? <span className=\"shrink-0 font-mono text-xs tabular-nums\">{item.duration}</span> : null}\n          </>\n        )\n        return (\n          <li key={item.id} className=\"text-sm text-muted-foreground\">\n            {item.detail ? (\n              <details className=\"group rounded-md\">\n                <summary className=\"flex min-h-9 cursor-pointer list-none items-center gap-2 rounded-md px-1 hover:text-foreground [&::-webkit-details-marker]:hidden\">\n                  {line}\n                  <span\n                    aria-hidden\n                    className=\"shrink-0 transition-transform duration-(--duration-fast) group-open:rotate-90\"\n                  >\n                    ›\n                  </span>\n                </summary>\n                <p className=\"ml-6 mt-1 whitespace-pre-wrap border-l border-field-edge pl-3 text-foreground\">{item.detail}</p>\n              </details>\n            ) : (\n              <div className=\"flex min-h-9 items-center gap-2 px-1\">{line}</div>\n            )}\n          </li>\n        )\n      })}\n    </ul>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "components/chat/tool-activity.tsx"
+    }
+  ],
+  "meta": {
+    "status": "experimental"
+  },
+  "categories": [
+    "blocks/chat"
+  ],
+  "type": "registry:component"
+}

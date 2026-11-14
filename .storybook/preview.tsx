@@ -54,7 +54,7 @@ const preview: Preview = {
     // Same taxonomy as `categories` in registry.json.
     options: {
       storySort: {
-        order: ["Foundations", "UI", "Charts", "Data table", "Blocks", ["App", "Site", "Assistant"], "Motion", "Hooks"],
+        order: ["Foundations", "UI", "Charts", "Data table", "Blocks", ["App", "Site", "Chat", "Assistant"], "Motion", "Hooks"],
       },
     },
   },

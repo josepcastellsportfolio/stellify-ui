@@ -33,10 +33,11 @@ const buttonVariants = cva(
         ghost: GHOST,
       },
       size: {
-        default: "h-9 px-4",
+        // On touch screens (coarse pointer) default, lg and icon grow to 44px.
+        default: "h-9 px-4 [@media(pointer:coarse)]:min-h-11",
         sm: "h-8 px-3",
-        lg: "h-10 px-6",
-        icon: "size-9",
+        lg: "h-10 px-6 [@media(pointer:coarse)]:min-h-11",
+        icon: "size-9 [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11",
       },
     },
     defaultVariants: {

@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useRef, type FC, type ReactNode } from "react"
 
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion"

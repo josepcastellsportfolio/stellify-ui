@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState, type FC, type ReactNode } from "react"
 import { ArrowRight } from "lucide-react"
 

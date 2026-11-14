@@ -1,3 +1,5 @@
+"use client"
+
 import { useRef, type FC, type ReactNode } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"

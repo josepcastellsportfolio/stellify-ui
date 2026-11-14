@@ -1,3 +1,5 @@
+"use client"
+
 import { useId } from "react"
 import type { FC, ReactNode } from "react"
 import { ChevronDown } from "lucide-react"

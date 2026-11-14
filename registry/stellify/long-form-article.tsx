@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from "react"
 
 import { Badge } from "@/components/ui/badge"
-import { MetricCard } from "@/components/ui/metric-card"
+import { MetricCard } from "@/components/metric-card"
 import { cn } from "@/lib/utils"
 
 export interface LongFormStat {
