@@ -207,3 +207,38 @@ describe("Combobox", () => {
     expect(screen.queryByRole("listbox")).toBeNull()
   })
 })
+
+describe("Combobox recent", () => {
+  it("lists recent values first under their own heading while nothing is typed, without duplicates", async () => {
+    render(<Single recent={["turismo", "nope", "camion", "turismo"]} />)
+    const input = screen.getByRole("combobox")
+    fireEvent.keyDown(input, { key: "ArrowDown" })
+    const recent = within(screen.getByRole("group", { name: "Recientes" })).getAllByRole("option")
+    expect(recent).toHaveLength(2)
+    expect(recent[0]).toHaveTextContent(/^Turismo/)
+    expect(recent[1]).toHaveTextContent("Camión")
+    expect(screen.getAllByRole("option", { name: /Turismo/ })).toHaveLength(1)
+    expect(within(screen.getByRole("group", { name: "Ligeros" })).getAllByRole("option")).toHaveLength(1)
+    expect(input).toHaveAttribute("aria-activedescendant", recent[0].id)
+  })
+
+  it("puts ungrouped options under their own heading while recents show", () => {
+    const opts = [
+      { value: "a", label: "Alfa" },
+      { value: "b", label: "Beta" },
+      { value: "c", label: "Gamma" },
+    ]
+    render(<Combobox aria-label="Letra" options={opts} value={null} onValueChange={() => {}} recent={["c"]} />)
+    fireEvent.keyDown(screen.getByRole("combobox"), { key: "ArrowDown" })
+    expect(within(screen.getByRole("group", { name: "Recientes" })).getAllByRole("option")).toHaveLength(1)
+    expect(within(screen.getByRole("group", { name: "Todas" })).getAllByRole("option")).toHaveLength(2)
+  })
+
+  it("drops the recent group as soon as the person types", async () => {
+    render(<Single recent={["turismo"]} />)
+    const input = screen.getByRole("combobox")
+    await userEvent.type(input, "tur")
+    expect(screen.queryByRole("group", { name: "Recientes" })).toBeNull()
+    expect(within(screen.getByRole("group", { name: "Ligeros" })).getAllByRole("option")).toHaveLength(1)
+  })
+})

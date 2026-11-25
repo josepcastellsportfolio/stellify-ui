@@ -74,7 +74,8 @@ Generic building blocks. The standard shadcn primitives ship here too, so an app
 | `card` | ui | Raised area: surface-2, no border or shadow, 8px radius. Parts as named exports or Card.Header / Title / Description / Content / Footer. Fields inside switch to surface-3. Overwrites ui/card. |
 | `dialog` | ui | Standard shadcn dialog primitive, shipped under @stellify for apps without shadcn. Close button: labels.close ("Cerrar"), 32px target, 44px on touch. Overwrites ui/dialog. |
 | `select` | ui | Standard shadcn select primitive, shipped under @stellify for apps without shadcn. Overwrites ui/select. |
-| `combobox` | ui | Searchable select (WAI-ARIA combobox + listbox): single or multiple (chips), groups, creatable, accent-insensitive filter, full keyboard, 44px rows on touch. Works as the control inside Field. |
+| `combobox` | ui | Searchable select (WAI-ARIA combobox + listbox): single or multiple (chips), groups, creatable, `recent` values listed first while nothing is typed, accent-insensitive filter, full keyboard, 44px rows on touch. Works as the control inside Field. |
+| `otp-input` | ui | One-time code input, one box per character: auto-advance, Backspace goes back, paste and SMS autofill (`one-time-code`) spread across the boxes, numeric or alphanumeric, 44px boxes. Works as the control inside Field. |
 | `tabs` | ui | Radix tabs. Default: segmented look with a sliding, interruptible ink indicator. `TabsList variant="plain"`: text tabs with a sliding underline. Overwrites ui/tabs. Emits data-slot. |
 | `checkbox` | ui | Standard shadcn checkbox primitive, shipped under @stellify for apps without shadcn. Overwrites ui/checkbox. |
 | `slider` | ui | Standard shadcn slider primitive (Radix), single or range thumbs, shipped under @stellify. Overwrites ui/slider. |
@@ -95,7 +96,8 @@ Generic building blocks. The standard shadcn primitives ship here too, so an app
 | `time-picker` | component | Hour + minute selects (+ AM/PM unless use24Hour). Controlled, emits 24h 'HH:mm'. minuteStep configurable. |
 | `overflow-marquee` | component | Truncates with an ellipsis at rest and, only when the text actually overflows, slides horizontally on hover/focus to reveal the full string, easing back on leave. Self-contained (measures its own overflow, pure CSS transform, no Tailwind config). Honors reduced motion; keeps a native title fallback. |
 | `number-input` | component | Controlled numeric input (empty = null) with a vertical ± stepper, min/max clamping and translatable button labels. |
-| `choice-card` | component | Single-choice block options (Radix radio group): title + description, selected = primary border + check. |
+| `choice-card` | component | Single-choice block options (Radix radio group): title + description + optional badge, selected = brand tint + check. `featured` marks the one option meant to stand out (Von Restorff). |
+| `stepper` | ui | Steps joined by a line (order tracking, multi-page forms): ordered list, `aria-current="step"`, status read as text, responsive by default (stacked on phones, a row from sm), or fixed horizontal or vertical. Exports StepMarker and stepStatus, shared with progress-checklist. |
 | `textarea-field` | component | Field + Textarea: the multi-line sibling of text-field. |
 | `chip` | component | Small neutral tag (e.g. a detected signal); optional `onRemove` adds an accessible remove button. |
 | `collapse-toggle` | component | Text button that collapses/expands a region (aria-expanded, aria-controls). |
@@ -111,7 +113,7 @@ The `chart` primitive (`ChartContainer` / `ChartTooltip` / `ChartLegend` over Re
 | `chart` | ui | shadcn chart primitive: ChartContainer/ChartTooltip/ChartLegend over Recharts, wired to stellify-base chart tokens. Overwrites ui/chart. |
 | `chart-area` | component | Area chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
 | `chart-bar` | component | Bar chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
-| `chart-line` | component | Line chart built on the chart primitive + Recharts 3, using stellify-base chart-N tokens. Optional per-series dashes, linear curve, Y axis and X formatter. Demo data inside. |
+| `chart-line` | component | Line chart built on the chart primitive + Recharts 3, using stellify-base chart-N tokens. Optional per-series dashes, linear curve, Y axis, X formatter and `directLabels` (each series named at the end of its line, no legend). Demo data inside. |
 | `chart-pie` | component | Pie / donut chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
 | `chart-radar` | component | Radar chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
 | `chart-radial` | component | Radial chart built on the chart primitive + Recharts, using stellify-base chart-N tokens. Demo data inside — edit freely. |
@@ -144,6 +146,8 @@ App layout pieces: built from the core, opinionated layout.
 | `page-header` | component | Page title + optional description + actions slot. Presentational only (no auth/theme/locale logic). Optional `eyebrow` line above the title. |
 | `illustration` | ui | 21 public-domain plates (botanical, fauna, objects; Artvee) as ink-only alpha masks drawn in a token color (brand by default), so each product sees them in its own brand, light and dark. Manifest with title, artist, date and source. WebPs load from jsDelivr or your own /illustrations folder via IllustrationProvider. |
 | `empty-state` | component | Centered empty/placeholder block: a public-domain plate (or an icon), title, description and optional action. |
+| `success-state` | component | End-of-task screen (payment sent, setup finished): a check that lands with the spring ease (or a plate), title, the outcome as a large tabular figure, description and next action. Lives in a status region. |
+| `progress-checklist` | component | Onboarding/setup checklist with its progress in view: "3 de 5", a bar, "Te faltan 2 pasos"; only the next pending item shows its action. Copy via labels (Spanish defaults). |
 | `app-shell` | component | App frame: fixed left sidebar (collapsible), optional top bar, scrollable main. |
 | `sidebar` | component | Vertical app nav: Sidebar, SidebarGroup, SidebarGroupLabel, SidebarItem (icon, active = aria-current, trailing slot, asChild for router links). |
 

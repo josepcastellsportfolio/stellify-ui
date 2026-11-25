@@ -1,6 +1,7 @@
 # UX, motion and type principles (v2)
 
-Forty principles: twenty on UX and animation and twenty design terms. Each one is either built into a component
+Four tables: motion, UX laws, design laws (the twenty Gestalt and UX-psychology laws; progressive disclosure sits
+under UX laws) and type. Each principle is either built into a component
 (so you get it for free) or is a rule for the code you write around them. Storybook shows the live ones under
 **Foundations → Principles**. The tokens they use are in [tokens.md](tokens.md).
 
@@ -44,6 +45,33 @@ Reduced motion cuts every duration to near zero (`stellify-base`); delays still 
 | Affordance | What can be clicked shows a pointer (base layer), a hover tint and a focus outline; nothing else does. |
 | Layout shift | A loading button keeps its label's width (spinner on top); illustrations reserve their aspect ratio; numbers use tabular figures so they don't jiggle while updating. |
 | Combobox | `combobox`: a searchable select for long lists, single or multiple. |
+
+## Design laws
+
+Twenty laws from Gestalt and UX psychology, checked against the library (2026-11-25). Progressive disclosure is
+under UX laws above. "Rule" means it's for the code you write around the components.
+
+| Law | In the library |
+|---|---|
+| Aesthetic-usability effect | People find a good-looking interface easier to use and forgive it more. Overall appeal (above) is how: tonal surfaces, one shadow, one focus style. It never excuses a broken flow. |
+| Law of proximity | Related things sit close together and groups are spaced apart: `Field` stacks label, control and help at 6px, and forms add more space between groups than within them. |
+| Law of common region | Things on the same surface belong together: `Card`, `SectionCard` and `progress-checklist` group by a tonal surface, never by an outlined box. |
+| Law of similarity | Things that look alike are expected to work alike: one `Button` variant per level of importance, and the same action looks the same on every screen. Rule: don't style two different actions the same way. |
+| Uniform connectedness | Joined things read as one: `stepper` connects its steps with a line that fills up to the current one. |
+| Law of Prägnanz | People read the simplest shape: `chart-pie` is a donut by default, and charts have no 3D, gradients or decoration. |
+| Von Restorff effect | The one that differs gets noticed: `ChoiceCard featured` adds a brand bar and a solid badge ("Recomendado"). Rule: one per group, or nothing stands out. |
+| Serial position effect | People remember the first and last items best. Rule: the most-used destination goes first in `Sidebar`, and the one you want noticed (upgrade, settings) goes last or in its `footer`. Bury nothing important in the middle. |
+| Zeigarnik effect | Unfinished tasks stay on the mind: `progress-checklist` keeps "3 de 5" in view until the list is done. Rule: keep it on screen until it's finished, then let it go. |
+| Goal-gradient effect | People speed up near the goal: `progress-checklist` says how much is left ("Te falta 1 paso"). Rule: start with one step already done. |
+| Tesler's law | Some complexity can only be moved, so the app takes it on. Rule: guess what you can (timezone and currency from `Intl.DateTimeFormat().resolvedOptions()`, country from the locale) and let people correct it, instead of asking. |
+| Recognition over recall | Picking is easier than remembering: `Combobox recent` lists the last picks before anything is typed; date pickers offer presets ("Últimos 7 días"). |
+| Pareto principle | About 80% of the use comes from 20% of the features. Rule: show the two or three most-used actions and put the rest in a `DropdownMenu`, as the data table does with its row actions. |
+| Occam's razor | Of two designs that work, take the one with fewer parts. Rule: one primary action per screen and one call to action per hero (`inline-cta`, `sticky-cta`). Remove a part before you add one. |
+| Parkinson's law | A task fills the time it's given, so make it faster than expected: `otp-input` moves on by itself and takes a pasted or autofilled code. Rule: autofill (`autocomplete`), sensible defaults and one-step actions. |
+| Paradox of the active user | Nobody reads the manual first. Rule: teach in context, with a hint next to the action in `EmptyState` or a field `description`, never a tour that stands in front of the screen. |
+| Cognitive load | Every element costs effort. `chart-line directLabels` names each line where it ends, so there's no legend to decode; numbers use tabular figures; long forms are split into groups. |
+| Default effect | Most people keep what's already selected. Rule: preselect the safe, common or recommended choice (`ChoiceCard`, `SegmentedControl`, shipping method). Never preselect something that costs money or shares data without asking. |
+| Peak-end rule | People judge an experience by its best moment and its end: `success-state` closes a task with a clear outcome (a check that lands, the amount, the next step). Rule: also make errors at the end recoverable, never a dead end. |
 
 ## Type
 

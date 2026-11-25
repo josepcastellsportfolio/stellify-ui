@@ -37,3 +37,22 @@ describe("ChoiceCardGroup", () => {
     expect(selected.querySelector("[data-slot='choice-card-check']")).not.toBeNull()
   })
 })
+
+describe("ChoiceCard featured", () => {
+  it("marks one option as featured with a solid badge, separate from the checked state", () => {
+    render(
+      <ChoiceCardGroup aria-label="Plan" defaultValue="basic">
+        <ChoiceCard value="basic" title="Básico" description="9 € / mes" />
+        <ChoiceCard value="pro" title="Pro" description="19 € / mes" featured badge="Recomendado" />
+        <ChoiceCard value="team" title="Equipo" description="49 € / mes" badge="Nuevo" />
+      </ChoiceCardGroup>
+    )
+    const pro = screen.getByRole("radio", { name: /Pro/ })
+    expect(pro).toHaveAttribute("data-featured")
+    expect(pro).not.toBeChecked()
+    expect(pro.querySelector("[data-slot='choice-card-badge']")!.className).toContain("bg-brand")
+    const team = screen.getByRole("radio", { name: /Equipo/ })
+    expect(team).not.toHaveAttribute("data-featured")
+    expect(team.querySelector("[data-slot='choice-card-badge']")!.className).toContain("bg-brand-subtle")
+  })
+})
