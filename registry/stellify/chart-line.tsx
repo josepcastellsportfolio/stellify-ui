@@ -49,6 +49,12 @@ export interface ChartLineProps {
   dashes?: Record<string, string | undefined>
   /** "linear" for piecewise-linear data, where a smoothed curve would lie. */
   curve?: "natural" | "linear" | "monotone" | "step"
+  /**
+   * Names each series at the end of its line instead of making people match
+   * colors against a legend or hover (cognitive load). Best with 2-4 series
+   * whose last values are not too close together.
+   */
+  directLabels?: boolean
   /** Chart area height in px. Default: the container's aspect-video ratio. */
   height?: number
   title?: string
@@ -68,6 +74,7 @@ export default function Component({
   showYAxis = false,
   dashes,
   curve = "natural",
+  directLabels = false,
   height,
   title = "Line Chart",
   description = "Showing data for the last 6 months",
@@ -81,6 +88,17 @@ export default function Component({
     : (value: unknown) =>
         typeof value === "string" ? value.slice(0, 3) : String(value)
 
+  // Index of each series' last plotted point: the label sits there.
+  const lastIndex = (key: string) => {
+    for (let i = data.length - 1; i >= 0; i--) if (data[i][key] != null && data[i][key] !== "") return i
+    return -1
+  }
+  const seriesLabel = (key: string) => String(config[key]?.label ?? key)
+  // Room on the right for the longest label (~7px per char at text-xs) plus the gap.
+  const rightMargin = directLabels
+    ? Math.max(12, Math.max(0, ...keys.map((k) => seriesLabel(k).length)) * 7 + 16)
+    : 12
+
   return (
     <Card className={className}>
       <CardHeader>
@@ -93,7 +111,7 @@ export default function Component({
           className={height ? "aspect-auto w-full" : undefined}
           style={height ? { height } : undefined}
         >
-          <LineChart accessibilityLayer data={data} margin={{ left: 12, right: 12 }}>
+          <LineChart accessibilityLayer data={data} margin={{ left: 12, right: rightMargin }}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey={xKey}
@@ -133,6 +151,26 @@ export default function Component({
                 strokeWidth={2}
                 strokeDasharray={dashes?.[key]}
                 dot={false}
+                label={
+                  directLabels
+                    ? (props: { x?: number | string; y?: number | string; index?: number }) => {
+                        const { x, y, index } = props
+                        if (index !== lastIndex(key) || x == null || y == null) return <g key={`${key}-${index}`} />
+                        return (
+                          <text
+                            key={`${key}-label`}
+                            data-slot="chart-direct-label"
+                            x={Number(x) + 8}
+                            y={Number(y)}
+                            dominantBaseline="middle"
+                            className="fill-foreground text-xs font-medium"
+                          >
+                            {seriesLabel(key)}
+                          </text>
+                        )
+                      }
+                    : undefined
+                }
               />
             ))}
           </LineChart>

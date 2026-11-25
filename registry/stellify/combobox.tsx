@@ -30,6 +30,10 @@ export interface ComboboxLabels {
   remove: string
   /** Name of the chevron button that opens and closes the list. */
   toggle: string
+  /** Heading of the `recent` group. */
+  recent: string
+  /** Heading of the ungrouped options while the `recent` group is shown, so the two lists don't run together. */
+  all: string
 }
 
 const DEFAULT_LABELS: ComboboxLabels = {
@@ -38,6 +42,8 @@ const DEFAULT_LABELS: ComboboxLabels = {
   clear: "Borrar selección",
   remove: "Quitar",
   toggle: "Mostrar opciones",
+  recent: "Recientes",
+  all: "Todas",
 }
 
 interface ComboboxBaseProps {
@@ -46,6 +52,13 @@ interface ComboboxBaseProps {
   filter?: (option: ComboboxOption, query: string) => boolean
   /** Offers a "Crear «query»" row when the query matches no label exactly. Receives the trimmed query. */
   onCreate?: (query: string) => void
+  /**
+   * Values to offer first, under a "Recientes" heading, while nothing is typed
+   * (recognition over recall: pick from what you used, don't remember it).
+   * Most recent first; unknown values are skipped. They leave their own group
+   * meanwhile, so no option is listed twice.
+   */
+  recent?: readonly string[]
   placeholder?: string
   disabled?: boolean
   /** Class for the field box. */
@@ -81,7 +94,7 @@ const CREATE_KEY = "\u0000create"
 const FIRST_KEY = "\u0000first"
 
 type Row =
-  | { kind: "option"; key: string; option: ComboboxOption }
+  | { kind: "option"; key: string; option: ComboboxOption; group: string }
   | { kind: "create"; key: typeof CREATE_KEY; query: string }
 
 const DIACRITICS = /\p{Diacritic}/gu
@@ -150,6 +163,7 @@ function Combobox(props: ComboboxProps) {
     options,
     filter = defaultComboboxFilter,
     onCreate,
+    recent,
     placeholder,
     disabled = false,
     className,
@@ -162,6 +176,8 @@ function Combobox(props: ComboboxProps) {
     "aria-labelledby": ariaLabelledBy,
   } = props
   const l = { ...DEFAULT_LABELS, ...labels }
+  const recentLabel = l.recent
+  const allLabel = l.all
 
   const generatedId = React.useId()
   const inputId = idProp ?? `${generatedId}-input`
@@ -187,24 +203,35 @@ function Combobox(props: ComboboxProps) {
 
   // Rows in display order: grouped options keep their group together.
   const rows = React.useMemo<Row[]>(() => {
-    const kept = trimmed ? options.filter((o) => filter(o, trimmed)) : options.slice()
+    const recentValues = trimmed ? [] : [...new Set(recent ?? [])]
+    const recentSet = new Set(recentValues)
+    const kept = trimmed
+      ? options.filter((o) => filter(o, trimmed))
+      : options.filter((o) => !recentSet.has(o.value))
     const order: string[] = []
     const byGroup = new Map<string, ComboboxOption[]>()
+    const recentOptions = recentValues.flatMap((v) => options.filter((o) => o.value === v).slice(0, 1))
+    if (recentOptions.length) {
+      order.push(recentLabel)
+      byGroup.set(recentLabel, recentOptions)
+    }
     for (const o of kept) {
-      const g = o.group ?? ""
+      const g = o.group ?? (recentOptions.length ? allLabel : "")
       if (!byGroup.has(g)) {
         byGroup.set(g, [])
         order.push(g)
       }
       byGroup.get(g)!.push(o)
     }
-    const out: Row[] = order.flatMap((g) => byGroup.get(g)!.map((option) => ({ kind: "option" as const, key: option.value, option })))
+    const out: Row[] = order.flatMap((g) =>
+      byGroup.get(g)!.map((option) => ({ kind: "option" as const, key: option.value, option, group: g }))
+    )
     if (onCreate && trimmed) {
       const q = foldText(trimmed)
       if (!options.some((o) => foldText(o.label.trim()) === q)) out.push({ kind: "create", key: CREATE_KEY, query: trimmed })
     }
     return out
-  }, [options, filter, trimmed, onCreate])
+  }, [options, filter, trimmed, onCreate, recent, recentLabel, allLabel])
 
   const enabledKeys = React.useMemo(
     () => rows.filter((r) => r.kind === "create" || !r.option.disabled).map((r) => r.key),
@@ -368,7 +395,7 @@ function Combobox(props: ComboboxProps) {
   const groupHeadingId = (g: string) => `${generatedId}-group-${encodeURIComponent(g)}`
   const groups: { name: string; rows: { row: Row; index: number }[] }[] = []
   rows.forEach((row, index) => {
-    const g = row.kind === "option" ? (row.option.group ?? "") : ""
+    const g = row.kind === "option" ? row.group : ""
     if (row.kind === "create" || groups.length === 0 || g !== lastGroup) {
       groups.push({ name: row.kind === "create" ? "" : g, rows: [] })
       lastGroup = g

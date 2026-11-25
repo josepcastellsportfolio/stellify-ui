@@ -693,7 +693,7 @@
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
-      "description": "Searchable select (WAI-ARIA combobox + listbox): single or multiple (chips), groups, creatable, accent-insensitive filter, full keyboard, 44px rows on touch. Works as the control inside Field.",
+      "description": "Searchable select (WAI-ARIA combobox + listbox): single or multiple (chips), groups, creatable, `recent` values listed first while nothing is typed, accent-insensitive filter, full keyboard, 44px rows on touch. Works as the control inside Field.",
       "categories": [
         "ui"
       ],
@@ -713,6 +713,28 @@
         {
           "path": "registry/stellify/combobox.tsx",
           "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "otp-input",
+      "type": "registry:ui",
+      "title": "OtpInput",
+      "description": "One-time code input, one box per character: auto-advance, Backspace goes back, paste and SMS autofill (`one-time-code`) spread across the boxes, numeric or alphanumeric, 44px boxes. Works as the control inside Field.",
+      "categories": [
+        "ui"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/otp-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/otp-input.tsx"
         }
       ]
     },
@@ -1219,7 +1241,7 @@
       "name": "choice-card",
       "type": "registry:component",
       "title": "ChoiceCard",
-      "description": "Single-choice block options (Radix radio group): title + description, selected = primary border + check.",
+      "description": "Single-choice block options (Radix radio group): title + description + optional badge, selected = brand tint + check. `featured` marks the one option meant to stand out (Von Restorff).",
       "categories": [
         "ui"
       ],
@@ -1231,12 +1253,38 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@stellify/utils"
+        "@stellify/utils",
+        "@stellify/badge"
       ],
       "files": [
         {
           "path": "registry/stellify/choice-card.tsx",
           "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "stepper",
+      "type": "registry:ui",
+      "title": "Stepper",
+      "description": "Steps joined by a line (order tracking, multi-page forms): ordered list, `aria-current=\"step\"`, status read as text, responsive by default (stacked on phones, a row from sm), or fixed horizontal or vertical. Exports StepMarker and stepStatus, shared with progress-checklist.",
+      "categories": [
+        "ui"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/stepper.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/stepper.tsx"
         }
       ]
     },
@@ -1447,7 +1495,7 @@
       "name": "chart-line",
       "type": "registry:component",
       "title": "Line chart",
-      "description": "Line chart built on the chart primitive + Recharts 3, using stellify-base chart-N tokens. Optional per-series dashes, linear curve, Y axis and X formatter. Demo data inside.",
+      "description": "Line chart built on the chart primitive + Recharts 3, using stellify-base chart-N tokens. Optional per-series dashes, linear curve, Y axis, X formatter and `directLabels` (each series named at the end of its line, no legend). Demo data inside.",
       "categories": [
         "charts"
       ],
@@ -1908,6 +1956,54 @@
       ],
       "registryDependencies": [
         "@stellify/illustration"
+      ]
+    },
+    {
+      "name": "success-state",
+      "type": "registry:component",
+      "title": "SuccessState",
+      "description": "End-of-task screen (payment sent, setup finished): a check that lands with the spring ease (or a plate), title, the outcome as a large tabular figure, description and next action. Lives in a status region.",
+      "categories": [
+        "blocks/app"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@stellify/illustration",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/success-state.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "progress-checklist",
+      "type": "registry:component",
+      "title": "ProgressChecklist",
+      "description": "Onboarding/setup checklist with its progress in view: \"3 de 5\", a bar, \"Te faltan 2 pasos\"; only the next pending item shows its action. Copy via labels (Spanish defaults).",
+      "categories": [
+        "blocks/app"
+      ],
+      "meta": {
+        "status": "experimental"
+      },
+      "registryDependencies": [
+        "@stellify/stepper",
+        "@stellify/progress",
+        "@stellify/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/stellify/progress-checklist.tsx",
+          "type": "registry:component"
+        }
       ]
     },
     {

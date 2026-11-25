@@ -61,6 +61,25 @@ export const Single: Story = {
   },
 }
 
+/** Recognition over recall: with nothing typed, the last picks come first. */
+export const Recent: Story = {
+  render: function Render() {
+    const [v, setV] = useState<string | null>(null)
+    return (
+      <Frame>
+        <Combobox
+          aria-label="Provincia"
+          options={PROVINCIAS}
+          value={v}
+          onValueChange={setV}
+          recent={["valencia", "lleida", "malaga"]}
+          placeholder="Busca una provincia"
+        />
+      </Frame>
+    )
+  },
+}
+
 export const Multiple: Story = {
   render: function Render() {
     const [vs, setVs] = useState<string[]>(["barcelona", "girona"])

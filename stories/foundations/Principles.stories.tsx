@@ -12,10 +12,16 @@ import { NumberInput } from "@stellify/number-input"
 import { Stagger } from "@stellify/stagger"
 import { useViewTransition } from "@stellify/use-view-transition"
 import { Illustration, type IllustrationName } from "@stellify/illustration"
+import { ChoiceCard, ChoiceCardGroup } from "@stellify/choice-card"
+import { Combobox } from "@stellify/combobox"
+import { OtpInput } from "@stellify/otp-input"
+import { ProgressChecklist } from "@stellify/progress-checklist"
+import { Stepper } from "@stellify/stepper"
+import { SuccessState } from "@stellify/success-state"
 
 /**
- * The library's UX, motion and type principles, live. The full list (40, and
- * where each one is applied) is in `docs/principles.md`.
+ * The library's UX, motion and type principles and design laws, live. The
+ * full list, and where each one is applied, is in `docs/principles.md`.
  */
 const meta = {
   title: "Foundations/Principles",
@@ -287,6 +293,94 @@ export const UxLaws: Story = {
 /* ------------------------------------------------------------------ Type */
 
 const PRICES = [1111.11, 98.5, 20480, 7.07]
+
+const CITIES = ["Barcelona", "Girona", "Lleida", "Madrid", "Tarragona", "Valencia"].map((c) => ({
+  value: c.toLowerCase(),
+  label: c,
+}))
+
+export const DesignLaws: Story = {
+  name: "Design laws",
+  render: function Render() {
+    const [plan, setPlan] = useState("pro")
+    const [city, setCity] = useState<string | null>(null)
+    const [code, setCode] = useState("")
+    const [paid, setPaid] = useState(false)
+    return (
+      <div>
+        <Demo
+          title="Von Restorff · Default effect"
+          note="Among similar options the different one gets noticed: one featured card per group, and the one you recommend is already selected."
+        >
+          <ChoiceCardGroup aria-label="Plan" value={plan} onValueChange={setPlan} className="w-full sm:grid-cols-3">
+            <ChoiceCard value="basic" title="Básico" description="9 € / mes" />
+            <ChoiceCard value="pro" title="Pro" description="19 € / mes" featured badge="Recomendado" />
+            <ChoiceCard value="team" title="Equipo" description="49 € / mes" />
+          </ChoiceCardGroup>
+        </Demo>
+        <Demo
+          title="Zeigarnik · Goal gradient"
+          note="An unfinished list stays on the mind, and people speed up near the end: keep the count, the bar and what is left in view."
+        >
+          <ProgressChecklist
+            title="Configura tu tienda"
+            className="w-full max-w-md"
+            items={[
+              { id: "a", label: "Crear cuenta", done: true },
+              { id: "b", label: "Añadir tu logo", done: true },
+              { id: "c", label: "Elegir un tema", done: false, action: <Button size="sm">Empezar</Button> },
+              { id: "d", label: "Conectar pagos", done: false },
+            ]}
+          />
+        </Demo>
+        <Demo title="Uniform connectedness" note="Steps joined by a line read as one process.">
+          <Stepper
+            aria-label="Pedido #4821"
+            current={2}
+            className="max-w-xl"
+            steps={[
+              { id: "o", label: "Pedido" },
+              { id: "p", label: "Preparado" },
+              { id: "s", label: "Enviado" },
+              { id: "d", label: "Entregado" },
+            ]}
+          />
+        </Demo>
+        <Demo title="Recognition over recall" note="Open it without typing: recent picks come first, so people choose instead of remembering.">
+          <div className="w-full max-w-sm">
+            <Combobox
+              aria-label="Ciudad"
+              options={CITIES}
+              value={city}
+              onValueChange={setCity}
+              recent={["girona", "valencia"]}
+              placeholder="Busca una ciudad"
+            />
+          </div>
+        </Demo>
+        <Demo title="Parkinson's law" note="Make it quicker than expected: each box moves on by itself, and a pasted code fills them all.">
+          <OtpInput aria-label="Código" length={6} value={code} onValueChange={setCode} />
+        </Demo>
+        <Demo title="Peak-end rule" note="A flow is remembered by its peak and its end: finish with a clear outcome, not a line of small text.">
+          {paid ? (
+            <SuccessState
+              title="Pago completado"
+              value="240,00 €"
+              description="Enviado a Sam Lee."
+              action={
+                <Button variant="secondary" onClick={() => setPaid(false)}>
+                  Repetir
+                </Button>
+              }
+            />
+          ) : (
+            <Button onClick={() => setPaid(true)}>Pagar 240,00 €</Button>
+          )}
+        </Demo>
+      </div>
+    )
+  },
+}
 
 export const Type: Story = {
   render: () => (

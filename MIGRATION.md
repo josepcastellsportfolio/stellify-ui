@@ -1,5 +1,20 @@
 # Migration guide
 
+## Design laws (2026-11-25)
+
+Twenty UX and Gestalt laws checked against the library (`docs/principles.md` → *Design laws*, Storybook
+*Foundations → Principles → Design laws*). All changes are additive; nothing to migrate.
+
+- **`choice-card`**: `badge` (a short tag next to the title) and `featured` (Von Restorff: a brand bar and a solid
+  badge on the recommended option, independent of the checked state). It now depends on `@stellify/badge`: re-add
+  it with `npx shadcn add @stellify/choice-card` to pull it in.
+- **`combobox`**: `recent` (values listed first under "Recientes" while nothing is typed; ungrouped options then
+  go under "Todas") and `labels.recent` / `labels.all`.
+- **`chart-line`**: `directLabels` names each series at the end of its line and reserves the right margin for it.
+- **New items** (experimental): `stepper` (steps joined by a line, exports `StepMarker` and `stepStatus`),
+  `progress-checklist` (onboarding list with "3 de 5", bar and steps left), `otp-input` (auto-advancing code
+  boxes, paste and SMS autofill) and `success-state` (end-of-task screen).
+
 ## v2, phase 4: illustrations and principles (2026-11-14)
 
 - **`illustration` (new).** 21 public-domain plates (botanical, fauna, objects; Artvee), cleaned into ink-only
